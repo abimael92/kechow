@@ -1,0 +1,10 @@
+{
+  "name": "kechow-main",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"cd kechow-server && php artisan serve\" \"cd kechow-client && npm run dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

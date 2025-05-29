@@ -1,0 +1,5 @@
+kechow-server/vendor/
+kechow-client/node_modules/
+kechow-server/.env
+kechow-client/.env
+/kechow-client/dist/
