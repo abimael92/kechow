@@ -17,11 +17,12 @@ Inspirado en la energía de los cachorros, la cultura mexicana y el amor por la 
 
 ## Estructura
 
+```
 kechow-main/
 ├── kechow-server/ # API backend Laravel
 ├── kechow-client/ # Frontend Vue 3 + Vite + TS
 ├── package.json # Scripts para levantar backend y frontend
-
+```
 
 ---
 
