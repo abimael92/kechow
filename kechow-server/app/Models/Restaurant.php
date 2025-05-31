@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\MenuItem;
 
 class Restaurant extends Model
 {
@@ -21,5 +22,9 @@ class Restaurant extends Model
         'logo_url',
         'is_active',
     ];
-}
 
+    public function menuItems()
+    {
+        return $this->hasMany(MenuItem::class);
+    }
+}
