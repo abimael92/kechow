@@ -1,0 +1,155 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Kechow API",
+        "description": "API documentation for Kechow",
+        "contact": {
+            "email": "support@kechow.com"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/restaurants": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Get all restaurants",
+                "operationId": "b838384b35597707b6c46925fe4f77f1",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Create a new restaurant",
+                "operationId": "02d8bcd4a7ef5fb81279b27e4779c593",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Restaurant"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        },
+        "/api/restaurants/{id}": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Get a specific restaurant",
+                "operationId": "0e3fa956792712098b655ec817d9fea7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Update a restaurant",
+                "operationId": "ccffcce6b9eddf299a250d126812bcf8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Restaurant"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Delete a restaurant",
+                "operationId": "1e632e1ba0da1dca77e48a8c751384f8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Restaurant": {
+                "required": [
+                    "name",
+                    "location"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Restaurants",
+            "description": "Restaurant API endpoints"
+        }
+    ]
+}
