@@ -4,6 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\MenuItem;
+use OpenApi\Annotations as OA;
+
+
+/**
+ * @OA\Schema(
+ *     schema="Restaurant",
+ *     required={"name", "location"},
+ *     @OA\Property(property="name", type="string"),
+ *     @OA\Property(property="location", type="string"),
+ *     @OA\Property(property="description", type="string")
+ * )
+ */
+
 
 class Restaurant extends Model
 {
