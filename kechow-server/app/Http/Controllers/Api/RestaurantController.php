@@ -5,11 +5,35 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 
+/**
+ * @OA\Info(
+ *     title="Kechow API",
+ *     version="1.0.0"
+ * )
+ *
+ * @OA\Server(
+ *     url=L5_SWAGGER_CONST_HOST,
+ *     description="Kechow API Server"
+ * )
+ */
+
+/**
+ * @OA\Tag(
+ *     name="Restaurants",
+ *     description="Restaurant API endpoints"
+ * )
+ */
 class RestaurantController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/restaurants",
+     *     tags={"Restaurants"},
+     *     summary="Get all restaurants",
+     *     @OA\Response(response=200, description="OK")
+     * )
      */
     public function index()
     {
@@ -17,16 +41,21 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+ * @OA\Post(
+ *     path="/api/restaurants",
+ *     tags={"Restaurants"},
+ *     summary="Create a new restaurant",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Created"
+ *     )
+ * )
+ */
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $restaurant = Restaurant::create($request->all());
@@ -34,7 +63,18 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/restaurants/{id}",
+     *     tags={"Restaurants"},
+     *     summary="Get a specific restaurant",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="OK")
+     * )
      */
     public function show(Restaurant $restaurant)
     {
@@ -42,15 +82,22 @@ class RestaurantController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Restaurant $restaurant)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/restaurants/{id}",
+     *     tags={"Restaurants"},
+     *     summary="Update a restaurant",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+     *     ),
+     *     @OA\Response(response=200, description="Updated")
+     * )
      */
     public function update(Request $request, Restaurant $restaurant)
     {
@@ -58,14 +105,23 @@ class RestaurantController extends Controller
         return response()->json($restaurant);
     }
 
-
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/restaurants/{id}",
+     *     tags={"Restaurants"},
+     *     summary="Delete a restaurant",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=204, description="No Content")
+     * )
      */
     public function destroy(Restaurant $restaurant)
     {
         $restaurant->delete();
         return response()->json(null, 204);
     }
-
 }
