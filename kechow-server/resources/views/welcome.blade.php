@@ -22,6 +22,7 @@
             align-items: center;
             text-align: center;
             padding: 2rem;
+            position: relative;
         }
 
         h1 {
@@ -50,17 +51,22 @@
         }
 
         footer {
-            position: absolute;
-            bottom: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.6;
+    position: fixed; /* fix to viewport bottom */
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    opacity: 0.6;
         }
     </style>
 </head>
 <body>
     <h1>Kechow Backend API</h1>
     <p>This will power the Kechow food delivery platform.</p>
-    <a href="/api" class="api-btn">View API</a>
+    <a href="http://localhost:8000/api/documentation/" class="api-btn">
+    View API
+</a>
+
     <footer>© 2025 Kechow Technologies</footer>
 </body>
 </html>

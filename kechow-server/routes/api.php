@@ -11,3 +11,7 @@ Route::put('/restaurants/{restaurant}', [RestaurantController::class, 'update'])
 Route::delete('/restaurants/{restaurant}', [RestaurantController::class, 'destroy']);
 
 Route::apiResource('menu-items', MenuItemController::class);
+
+Route::get('/docs', \App\Http\Controllers\Api\DocsController::class);
+
+Route::get('/full-docs', \App\Http\Controllers\Api\FullDocsController::class);
