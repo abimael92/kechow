@@ -14,11 +14,10 @@
 
 <style scoped>
 .page {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
+  min-height: 100vh;
   background: linear-gradient(135deg, #f857a6, #ff5858);
   color: #fff;
   font-family: 'Segoe UI', sans-serif;
@@ -31,32 +30,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-}
-
-.hero h1 {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.hero p {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.cta {
-  padding: 0.75rem 2rem;
-  font-size: 1.2rem;
-  background-color: white;
-  color: #ff5858;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
-}
-.cta:hover {
-  background-color: #ffe0e0;
+  padding: 2rem;
 }
 
 .footer {
@@ -64,5 +38,7 @@
   padding: 1rem 0;
   font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.1);
+  width: 100%;
 }
 </style>
+
