@@ -10,13 +10,32 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<style>
+/* UNscoped global layout fix */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
-<style scoped>
-.page {
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#app {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+</style>
+
+<style scoped>
+.page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
   min-height: 100vh;
   background: linear-gradient(135deg, #f857a6, #ff5858);
   color: #fff;
@@ -29,8 +48,34 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
   padding: 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.hero p {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.cta {
+  padding: 0.75rem 2rem;
+  font-size: 1.2rem;
+  background-color: white;
+  color: #ff5858;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+.cta:hover {
+  background-color: #ffe0e0;
 }
 
 .footer {
@@ -41,4 +86,3 @@
   width: 100%;
 }
 </style>
-
