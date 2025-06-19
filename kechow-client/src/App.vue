@@ -15,15 +15,24 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 100%;
 }
 
 body {
   height: 100vh;
+  width: 100vw;
 }
 
+#app {
+  height: 100%;
+  width: 100%;
+}
+</style>
+
+<style scoped>
 .page {
-  width: 100vw;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -32,15 +41,14 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-
 .hero {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
   padding: 2rem;
+  text-align: center;
 }
 
 .hero h1 {
