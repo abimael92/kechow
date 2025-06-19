@@ -11,7 +11,6 @@
 </template>
 
 <style>
-/* UNscoped global layout fix */
 html, body {
   margin: 0;
   padding: 0;
@@ -19,26 +18,16 @@ html, body {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 }
 
-#app {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-</style>
-
-<style scoped>
 .page {
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-height: 100vh;
+  justify-content: space-between;
   background: linear-gradient(135deg, #f857a6, #ff5858);
-  color: #fff;
+  color: white;
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -48,19 +37,19 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
   text-align: center;
+  padding: 2rem;
 }
 
 .hero h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
   font-weight: bold;
 }
 
 .hero p {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .cta {
@@ -80,7 +69,7 @@ body {
 
 .footer {
   text-align: center;
-  padding: 1rem 0;
+  padding: 1rem;
   font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.1);
   width: 100%;
