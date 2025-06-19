@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory; // add this import
 use App\Models\Restaurant;
 use OpenApi\Annotations as OA;
 
@@ -25,6 +26,8 @@ use OpenApi\Annotations as OA;
  */
 class MenuItem extends Model
 {
+    use HasFactory; // ADD THIS LINE
+
     protected $fillable = [
         'restaurant_id',
         'name',
