@@ -10,17 +10,34 @@
   </div>
 </template>
 
-<script lang="ts" setup></script>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+}
+</style>
 
 <style scoped>
 .page {
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
+  justify-content: space-between;
   background: linear-gradient(135deg, #f857a6, #ff5858);
-  color: #fff;
+  color: white;
   font-family: 'Segoe UI', sans-serif;
 }
 
@@ -30,18 +47,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 2rem;
   text-align: center;
 }
 
 .hero h1 {
-  font-size: 4rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
   font-weight: bold;
 }
 
 .hero p {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .cta {
@@ -61,8 +79,9 @@
 
 .footer {
   text-align: center;
-  padding: 1rem 0;
+  padding: 1rem;
   font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.1);
+  width: 100%;
 }
 </style>

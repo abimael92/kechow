@@ -8,21 +8,9 @@ use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 /**
- * @OA\Info(
- *     title="Kechow API",
- *     version="1.0.0"
- * )
- *
- * @OA\Server(
- *     url=L5_SWAGGER_CONST_HOST,
- *     description="Kechow API Server"
- * )
- */
-
-/**
  * @OA\Tag(
  *     name="Restaurants",
- *     description="Restaurant API endpoints"
+ *     description="Restaurant operations"
  * )
  */
 class RestaurantController extends Controller
@@ -32,7 +20,7 @@ class RestaurantController extends Controller
      *     path="/api/restaurants",
      *     tags={"Restaurants"},
      *     summary="Get all restaurants",
-     *     @OA\Response(response=200, description="OK")
+     *     @OA\Response(response=200, description="List of restaurants")
      * )
      */
     public function index()
@@ -41,24 +29,27 @@ class RestaurantController extends Controller
     }
 
     /**
- * @OA\Post(
- *     path="/api/restaurants",
- *     tags={"Restaurants"},
- *     summary="Create a new restaurant",
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
- *     ),
- *     @OA\Response(
- *         response=201,
- *         description="Created"
- *     )
- * )
- */
-
+     * @OA\Post(
+     *     path="/api/restaurants",
+     *     tags={"Restaurants"},
+     *     summary="Create a new restaurant",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Restaurant created")
+     * )
+     */
     public function store(Request $request)
     {
-        $restaurant = Restaurant::create($request->all());
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $restaurant = Restaurant::create($data);
         return response()->json($restaurant, 201);
     }
 
@@ -73,12 +64,13 @@ class RestaurantController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="OK")
+     *     @OA\Response(response=200, description="Restaurant data"),
+     *     @OA\Response(response=404, description="Not found")
      * )
      */
-    public function show(Restaurant $restaurant)
+    public function show($id)
     {
-        return response()->json($restaurant);
+        return Restaurant::findOrFail($id);
     }
 
     /**
@@ -93,16 +85,18 @@ class RestaurantController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Restaurant")
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string")
+     *         )
      *     ),
-     *     @OA\Response(response=200, description="Updated")
+     *     @OA\Response(response=200, description="Restaurant updated")
      * )
      */
-    public function update(Request $request, Restaurant $restaurant)
+    public function update(Request $request, $id)
     {
+        $restaurant = Restaurant::findOrFail($id);
         $restaurant->update($request->all());
-        return response()->json($restaurant);
+        return response()->json($restaurant, 200);
     }
 
     /**
@@ -116,12 +110,12 @@ class RestaurantController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=204, description="No Content")
+     *     @OA\Response(response=204, description="Deleted successfully")
      * )
      */
-    public function destroy(Restaurant $restaurant)
+    public function destroy($id)
     {
-        $restaurant->delete();
+        Restaurant::destroy($id);
         return response()->json(null, 204);
     }
 }

@@ -18,7 +18,7 @@
                 "operationId": "b838384b35597707b6c46925fe4f77f1",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "List of restaurants"
                     }
                 }
             },
@@ -33,14 +33,22 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Restaurant"
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "201": {
-                        "description": "Created"
+                        "description": "Restaurant created"
                     }
                 }
             }
@@ -64,7 +72,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "Restaurant data"
+                    },
+                    "404": {
+                        "description": "Not found"
                     }
                 }
             },
@@ -85,18 +96,22 @@
                     }
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Restaurant"
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
                 },
                 "responses": {
                     "200": {
-                        "description": "Updated"
+                        "description": "Restaurant updated"
                     }
                 }
             },
@@ -118,7 +133,165 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "No Content"
+                        "description": "Deleted successfully"
+                    }
+                }
+            }
+        },
+        "/api/menu-items": {
+            "get": {
+                "tags": [
+                    "Menu Items"
+                ],
+                "summary": "Get all menu items",
+                "operationId": "f8f6266a0f281d4a6fd2924521990d27",
+                "responses": {
+                    "200": {
+                        "description": "List of menu items"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Menu Items"
+                ],
+                "summary": "Create a new menu item",
+                "operationId": "080371a7ab243e7fe3fb2e21af1190a8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "restaurant_id",
+                                    "name",
+                                    "price"
+                                ],
+                                "properties": {
+                                    "restaurant_id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "is_available": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Menu item created"
+                    }
+                }
+            }
+        },
+        "/api/menu-items/{id}": {
+            "get": {
+                "tags": [
+                    "Menu Items"
+                ],
+                "summary": "Get a specific menu item",
+                "operationId": "9a846f4be41fcdbe9832b94b39f95bf4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Menu item details"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Menu Items"
+                ],
+                "summary": "Update a menu item",
+                "operationId": "65192842ac27acc7bbe511a3e3d42215",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "is_available": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Menu item updated"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Menu Items"
+                ],
+                "summary": "Delete a menu item",
+                "operationId": "d28acee26f2a00a051b272f4b60af611",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully"
+                    },
+                    "404": {
+                        "description": "Not found"
                     }
                 }
             }
@@ -126,30 +299,191 @@
     },
     "components": {
         "schemas": {
-            "Restaurant": {
+            "MenuItem": {
+                "title": "MenuItem",
+                "description": "Menu Item model",
                 "required": [
+                    "restaurant_id",
                     "name",
-                    "location"
+                    "price"
                 ],
                 "properties": {
-                    "name": {
-                        "type": "string"
+                    "id": {
+                        "type": "integer",
+                        "example": 1
                     },
-                    "location": {
-                        "type": "string"
+                    "restaurant_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Cheeseburger"
                     },
                     "description": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "Juicy beef patty with cheese",
+                        "nullable": true
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 8.99
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "example": "https://example.com/image.jpg",
+                        "nullable": true
+                    },
+                    "is_available": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
-                "type": "object"
+                "type": "object",
+                "xml": {
+                    "name": "MenuItem"
+                }
+            },
+            "Restaurant": {
+                "title": "Restaurant",
+                "description": "Restaurant model",
+                "required": [
+                    "name",
+                    "address",
+                    "city"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Burger Palace"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Best burgers in town"
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "123 Main St"
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "New York"
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "NY"
+                    },
+                    "zip_code": {
+                        "type": "string",
+                        "example": "10001"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "example": "+1-212-555-1234"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "info@burgerpalace.com"
+                    },
+                    "website": {
+                        "type": "string",
+                        "example": "https://burgerpalace.com"
+                    },
+                    "opening_time": {
+                        "type": "string",
+                        "example": "10:00"
+                    },
+                    "closing_time": {
+                        "type": "string",
+                        "example": "22:00"
+                    },
+                    "logo_url": {
+                        "type": "string",
+                        "example": "https://example.com/logo.png"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Restaurant"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "johndoe@example.com"
+                    },
+                    "email_verified_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
             }
         }
     },
     "tags": [
         {
             "name": "Restaurants",
-            "description": "Restaurant API endpoints"
+            "description": "Restaurant operations"
+        },
+        {
+            "name": "Menu Items",
+            "description": "Menu Item operations"
         }
     ]
 }
