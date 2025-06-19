@@ -22,6 +22,7 @@ body {
 }
 
 .page {
+  width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -30,6 +31,7 @@ body {
   color: white;
   font-family: 'Segoe UI', sans-serif;
 }
+
 
 .hero {
   flex: 1;
