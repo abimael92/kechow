@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RestaurantController;
 use App\Http\Controllers\MenuItemController;
+use App\Http\Controllers\Api\OrderController;
+
+
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
@@ -11,6 +14,8 @@ Route::put('/restaurants/{restaurant}', [RestaurantController::class, 'update'])
 Route::delete('/restaurants/{restaurant}', [RestaurantController::class, 'destroy']);
 
 Route::apiResource('menu-items', MenuItemController::class);
+Route::apiResource('orders', OrderController::class);
+
 
 Route::get('/docs', \App\Http\Controllers\Api\DocsController::class);
 
