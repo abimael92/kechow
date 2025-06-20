@@ -7,13 +7,13 @@
           v-model="search"
           type="search"
           placeholder="🔍 Search for food, restaurants, or categories"
-          class="w-full px-5 py-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-pink-300 shadow-lg transition-all"
+          class="w-full px-5 py-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-pink-300 shadow-lg transition"
         />
       </div>
 
       <!-- Featured Categories -->
       <section class="mb-10">
-        <h2 class="text-2xl font-bold mb-4">✨ Featured Categories</h2>
+        <h2 class="text-3xl font-bold mb-6">✨ Featured Categories</h2>
         <div class="flex gap-4 overflow-x-auto pb-2">
           <button
             v-for="cat in filteredCategories"
@@ -27,15 +27,15 @@
 
       <!-- Restaurants List -->
       <section>
-        <h2 class="text-2xl font-bold mb-4">🍽️ Restaurants</h2>
-        <ul class="space-y-5">
+        <h2 class="text-3xl font-bold mb-6">🍽️ Restaurants</h2>
+        <ul class="space-y-6">
           <li
             v-for="rest in filteredRestaurants"
             :key="rest.id"
-            class="bg-white text-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer"
+            class="bg-white text-gray-900 p-6 rounded-3xl shadow-md hover:shadow-xl transition cursor-pointer"
           >
-            <h3 class="text-xl font-semibold">{{ rest.name }}</h3>
-            <p class="text-sm text-gray-600 mt-1">{{ rest.description }}</p>
+            <h3 class="text-2xl font-semibold">{{ rest.name }}</h3>
+            <p class="text-gray-700 mt-1">{{ rest.description }}</p>
           </li>
         </ul>
       </section>
@@ -85,7 +85,3 @@ const filteredCategories = computed(() =>
   )
 )
 </script>
-
-<style scoped>
-/* You can delete this entire block if you're only using Tailwind */
-</style>
