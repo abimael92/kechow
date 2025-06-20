@@ -1,14 +1,7 @@
 <template>
-  <div class="page">
-    <main class="hero">
-      <h1>Kechow Food Delivery</h1>
-      <p>Your local food delivery app is cooking 🔥</p>
-      <p>Your local city’s go-to food delivery app — coming soon!</p>
-      <button class="cta">Get Started</button>
-    </main>
-    <footer class="footer">© 2025 Kechow. All rights reserved.</footer>
-  </div>
+  <router-view />
 </template>
+
 
 <style>
 html, body {
