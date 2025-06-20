@@ -1,47 +1,52 @@
 <template>
-    <div class="p-6 max-w-5xl mx-auto">
-      <header class="mb-6">
+  <div class="min-h-screen bg-gradient-to-br from-pink-500 to-red-400 text-white font-sans px-6 py-10">
+    <div class="max-w-5xl mx-auto">
+      <!-- Search Bar -->
+      <div class="mb-8">
         <input
           v-model="search"
           type="search"
-          placeholder="Search restaurants or categories"
-          class="w-full p-3 rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          placeholder="🔍 Search for food, restaurants, or categories"
+          class="w-full px-5 py-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-white shadow-lg transition-all"
         />
-      </header>
-  
-      <section class="mb-8">
-        <h2 class="text-xl font-semibold mb-3">Featured Categories</h2>
-        <div class="flex gap-4 overflow-x-auto">
+      </div>
+
+      <!-- Featured Categories -->
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-4">✨ Featured Categories</h2>
+        <div class="flex gap-4 overflow-x-auto pb-2">
           <button
             v-for="cat in filteredCategories"
             :key="cat.id"
-            class="px-4 py-2 rounded-lg bg-indigo-100 dark:bg-indigo-700 text-indigo-700 dark:text-indigo-100 whitespace-nowrap"
+            class="px-5 py-2 rounded-full bg-white text-pink-600 font-semibold shadow hover:bg-pink-100 transition whitespace-nowrap"
           >
             {{ cat.name }}
           </button>
         </div>
       </section>
-  
+
+      <!-- Restaurants List -->
       <section>
-        <h2 class="text-xl font-semibold mb-3">Restaurants</h2>
-        <ul class="space-y-4">
+        <h2 class="text-2xl font-bold mb-4">🍽️ Restaurants</h2>
+        <ul class="space-y-5">
           <li
             v-for="rest in filteredRestaurants"
             :key="rest.id"
-            class="p-4 border border-gray-200 dark:border-gray-700 rounded-md cursor-pointer hover:shadow-md transition"
+            class="bg-white text-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition cursor-pointer"
           >
-            <h3 class="text-lg font-medium">{{ rest.name }}</h3>
-            <p class="text-sm text-gray-600 dark:text-gray-400">{{ rest.description }}</p>
+            <h3 class="text-xl font-semibold">{{ rest.name }}</h3>
+            <p class="text-sm text-gray-600 mt-1">{{ rest.description }}</p>
           </li>
         </ul>
       </section>
     </div>
-  </template>
-  
-  <script lang="ts" setup>
-  import { ref, computed } from 'vue'
-  
-  interface Restaurant {
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
+
+interface Restaurant {
   id: number
   name: string
   description: string
@@ -52,7 +57,6 @@ interface Category {
   name: string
 }
 
-// Add explicit types here
 const restaurants = ref<Restaurant[]>([
   { id: 1, name: 'Pizza Place', description: 'Delicious pizzas and more' },
   { id: 2, name: 'Sushi World', description: 'Fresh sushi daily' },
@@ -66,25 +70,18 @@ const categories = ref<Category[]>([
   { id: 'c4', name: 'Vegan' },
 ])
 
-  
-  const search = ref('')
-  
-  const filteredRestaurants = computed(() =>
-  restaurants.value.filter((r: Restaurant) =>
+const search = ref('')
+
+const filteredRestaurants = computed(() =>
+  restaurants.value.filter((r) =>
     r.name.toLowerCase().includes(search.value.toLowerCase()) ||
     r.description.toLowerCase().includes(search.value.toLowerCase())
   )
 )
 
 const filteredCategories = computed(() =>
-  categories.value.filter((c: Category) =>
+  categories.value.filter((c) =>
     c.name.toLowerCase().includes(search.value.toLowerCase())
   )
 )
-
 </script>
-  
-  <style scoped>
-  /* keep minimal, rely on Tailwind */
-  </style>
-  
