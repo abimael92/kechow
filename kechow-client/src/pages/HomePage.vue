@@ -7,7 +7,7 @@
           v-model="search"
           type="search"
           placeholder="🔍 Search for food, restaurants, or categories"
-          class="w-full px-5 py-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-white shadow-lg transition-all"
+          class="w-full px-5 py-4 rounded-xl bg-white text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-pink-300 shadow-lg transition-all"
         />
       </div>
 
@@ -85,3 +85,7 @@ const filteredCategories = computed(() =>
   )
 )
 </script>
+
+<style scoped>
+/* You can delete this entire block if you're only using Tailwind */
+</style>
