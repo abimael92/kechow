@@ -10,10 +10,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* REMOVE background-color here */
+/* ✅ Clean body – no hardcoded background */
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   display: flex;
+  background-color: transparent; /* Ensure it's not set here */
 }
