@@ -1,14 +1,13 @@
 # Kechow
 
-Kechow conecta a la raza con los mejores taquitos, antojitos y comida local, rápido y sin complicaciones.  
-Inspirado en la energía de los cachorros, la cultura mexicana y el amor por la buena comida.
+Kechow conecta a la gente con los mejores taquitos, antojitos y comida local, de manera rápida y sin complicaciones.
 
 ---
 
 ## ¿Por qué Kechow?
 
 - Entregas rápidas como un perro lujurioso en tu pierna 🐕‍🔥  
-- Apoya negocios locales y comida con sabor auténtico 🌯  
+- Apoya negocios locales y comida con sabor auténtico  
 - App ligera, fácil para todos en Jiménez  
 - Backend en Laravel para un rendimiento sólido y seguro  
 - Frontend moderno con Vue 3 + Vite + TypeScript
