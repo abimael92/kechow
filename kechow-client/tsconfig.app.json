@@ -1,15 +1,8 @@
 {
+	"extends": "./tsconfig.json",
 	"compilerOptions": {
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleResolution": "node",
-		"strict": true,
-		"jsx": "preserve",
-		"sourceMap": true,
-		"resolveJsonModule": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"lib": ["ESNext", "DOM"],
+		"outDir": "./dist",
+		"noEmit": false,
 		"types": ["vite/client"]
 	},
 	"include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
