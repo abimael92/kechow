@@ -4,4 +4,6 @@
   </div>
 </template>
 
-
+<script setup>
+// No script needed
+</script>
