@@ -1,3 +1,152 @@
 @tailwind base;
-@tailwind components; 
+@tailwind components;
 @tailwind utilities;
+
+/* === Root variables for colors, spacing, radius === */
+:root {
+  /* Gradient colors */
+  --color-gradient-start: #8183fd; /* blue-purple */
+  --color-gradient-end: #f569af;   /* pink */
+
+  /* Primary colors */
+  --color-primary: #6366F1;
+  --color-primary-light: #8B5CF6;
+  --color-primary-dark: #4F46E5;
+
+  /* Accent */
+  --color-accent: #EC4899;
+
+  /* Neutral text */
+  --color-text-primary: #1F2937;   /* dark slate */
+  --color-text-secondary: #4B5563; /* medium gray */
+  --color-text-muted: #9CA3AF;     /* light gray */
+
+  --color-text-primary: #e2e2e2;   /* dark slate */
+  --color-text-secondary: #4B5563; /* medium gray */
+  --color-text-muted: #1F2937;     /* light gray */
+
+  /* Background */
+  --color-bg-light: #FFFFFF;
+  --color-bg-dark: #111827;
+
+  /* UI constants */
+  --radius-default: 0.5rem; /* 8px */
+  --padding-default: 1rem;  /* 16px */
+  --margin-default: 1rem;   /* 16px */
+  --transition-fast: 0.2s ease-in-out;
+}
+
+/* === Global Reset & Box Sizing === */
+*,
+*::before,
+*::after {
+  @apply box-border m-0 p-0;
+}
+
+/* === Global body styles with gradient background === */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+/* === Typography === */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: calc(var(--margin-default) / 2);
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+
+p {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: var(--margin-default);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: color var(--transition-fast);
+}
+
+a:hover,
+a:focus {
+  color: var(--color-accent);
+  outline: none;
+}
+
+/* === Buttons === */
+button, .btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-default);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.4);
+}
+
+button:hover, .btn:hover {
+  background-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(139, 92, 246, 0.5);
+}
+
+button:active, .btn:active {
+  background-color: var(--color-primary-dark);
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.6);
+}
+
+button:disabled, .btn:disabled {
+  background-color: var(--color-text-muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* === Inputs, selects, textarea === */
+input, select, textarea {
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-default);
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-light);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+  outline: none;
+}
+
+/* === Layout container === */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--padding-default);
+  padding-right: var(--padding-default);
+}
+
+/* === Utility classes === */
+.mt-default { margin-top: var(--margin-default); }
+.mb-default { margin-bottom: var(--margin-default); }
+.p-default { padding: var(--padding-default); }
+.rounded-default { border-radius: var(--radius-default); }
