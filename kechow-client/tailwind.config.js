@@ -5,7 +5,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                bg: {
+                background: {
                     light: '#F9FAFB',
                     dark: '#111827',
                 },
@@ -14,12 +14,35 @@ module.exports = {
                     dark: '#F9FAFB',
                 },
                 primary: {
-                    light: '#6366F1',
-                    dark: '#8B5CF6',
+                    DEFAULT: '#6366F1',
+                    light: '#8B5CF6',
+                    dark: '#4F46E5',
                 },
+                accent: '#EC4899',
             },
             fontFamily: {
-                sans: ['Inter', 'General Sans', 'Outfit', 'sans-serif'],
+                sans: ['Inter', 'Poppins', 'Helvetica', 'Arial', 'sans-serif'],
+            },
+            boxShadow: {
+                soft: '0 4px 14px rgba(99, 102, 241, 0.3)',
+                strong: '0 8px 24px rgba(99, 102, 241, 0.5)',
+            },
+            borderRadius: {
+                xl: '1rem',
+            },
+            keyframes: {
+                fadeInUp: {
+                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                pulseScale: {
+                    '0%, 100%': { transform: 'scale(1)' },
+                    '50%': { transform: 'scale(1.05)' },
+                },
+            },
+            animation: {
+                fadeInUp: 'fadeInUp 0.8s ease forwards',
+                pulseScale: 'pulseScale 2s ease-in-out infinite',
             },
         },
     },
