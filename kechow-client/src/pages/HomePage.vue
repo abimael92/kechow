@@ -47,7 +47,7 @@ const restaurants = ref([
     id: 6,
     name: "Hamburguesas De Chito",
     description: "Hamburguesería",
-    image: restaurantImages.hamburguesasDeChito,
+    // image: restaurantImages.hamburguesasDeChito,
     menu: ["Hamburguesas clásicas", "Hamburguesa con queso y tocino", "Papas fritas", "Malteadas"],
     rating: 4.1
   },
@@ -71,7 +71,7 @@ const restaurants = ref([
     id: 9,
     name: "Los Girasoles",
     description: "Restaurante familiar",
-    image: restaurantImages.losGirasoles,
+    // image: restaurantImages.losGirasoles,
     menu: ["Platillos mexicanos", "Desayunos", "Café", "Jugos naturales"],
     rating: 4.1
   },
@@ -79,7 +79,7 @@ const restaurants = ref([
     id: 10,
     name: "Green Leaf",
     description: "Restaurante vegano y vegetariano",
-    image: restaurantImages.greenLeaf,
+    // image: restaurantImages.greenLeaf,
     menu: ["Ensaladas frescas", "Wraps veganos", "Jugos naturales", "Postres veganos"],
     rating: 4.5
   }
