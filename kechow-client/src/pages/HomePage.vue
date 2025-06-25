@@ -17,27 +17,29 @@
 
       <!-- Search Bar -->
       <div>
-        <div class="relative">
-          <input
-            v-model="search"
-            type="search"
-            placeholder="Buscar comida, restaurantes, categorías…"
-            class="search-input"
-          />
-          <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-          </div>
-        </div>
-      </div>
+  <div class="relative w-full">
+    <input
+      v-model="search"
+      type="search"
+      placeholder="Buscar comida, restaurantes, categorías…"
+      class="search-input w-full text-black"
+    />
+    <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    </div>
+  </div>
+</div>
+
 
       <!-- Featured Categories -->
       <section>
         <div class="flex justify-between items-center mb-4">
           <h2 class="section-heading">Categorías destacadas</h2>
-          <button class="link-button">Ver todas</button>
+          <button class="link-button" @click="search = ''; selectedCategory = ''">Ver todas</button>
+
         </div>
         <div class="flex gap-3 overflow-x-auto pb-2">
           <button
@@ -57,7 +59,8 @@
       <section>
         <div class="flex justify-between items-center mb-4">
           <h2 class="section-heading">Restaurantes destacados</h2>
-          <button class="link-button">Ver todos</button>
+          <button class="link-button" @click="search = ''; selectedCategory = ''">Ver todos</button>
+
         </div>
         <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <li v-for="r in filteredRestaurants" :key="r.id" class="card group">
