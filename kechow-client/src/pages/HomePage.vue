@@ -63,7 +63,13 @@
             <h3 class="text-lg font-semibold group-hover:text-primary-light transition">
               {{ r.name }}
             </h3>
+
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ r.description }}</p>
+              <ul class="mt-2 list-disc list-inside text-xs text-gray-500 dark:text-gray-400">
+                <li v-for="(item, index) in r.menu" :key="index">{{ item }}</li>
+              </ul>
+
+
             <div class="mt-3 flex items-center text-xs text-gray-500 dark:text-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="1.5">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
@@ -82,11 +88,78 @@
 import { ref, computed } from 'vue'
 
 const restaurants = ref([
-  { id: 1, name: 'Pizza Place', description: 'Artisanal pizzas built with organic ingredients' },
-  { id: 2, name: 'Sushi World', description: 'Omakase experience with seasonal fish' },
-  { id: 3, name: 'Burger Barn', description: 'Wagyu beef burgers with truffle fries' },
-  { id: 4, name: 'Green Leaf', description: 'Plant-based fine dining experience' },
+  {
+    id: 1,
+    name: "Porto Chico",
+    description: "Restaurante de mariscos",
+    menu: ["Ceviche clásico", "Camarones al mojo de ajo", "Cocktail de mariscos", "Filete empanizado"],
+    rating: 4.3
+  },
+  {
+    id: 2,
+    name: "Menuderia IME",
+    description: "Menudería tradicional",
+    menu: ["Menudo rojo", "Menudo blanco", "Tacos de menudo", "Tortillas hechas a mano"],
+    rating: 4.7
+  },
+  {
+    id: 3,
+    name: "Tacos Cano",
+    description: "Taquería",
+    menu: ["Tacos al pastor", "Tacos de carne asada", "Quesadillas", "Salsas caseras"],
+    rating: 4.1
+  },
+  {
+    id: 4,
+    name: "La Terraza",
+    description: "Restaurante familiar",
+    menu: ["Desayunos completos", "Platos regionales", "Ensaladas", "Jugos naturales"],
+    rating: 4.0
+  },
+  {
+    id: 5,
+    name: "Restaurante El Capi",
+    description: "Comida mexicana",
+    menu: ["Carnes asadas", "Tacos", "Guisados", "Postres tradicionales"],
+    rating: 4.2
+  },
+  {
+    id: 6,
+    name: "Hamburguesas De Chito",
+    description: "Hamburguesería",
+    menu: ["Hamburguesas clásicas", "Hamburguesa con queso y tocino", "Papas fritas", "Malteadas"],
+    rating: 4.1
+  },
+  {
+    id: 7,
+    name: "El Charco de la Rana",
+    description: "Restaurante de comida mexicana",
+    menu: ["Especialidades regionales", "Sopas", "Antojitos", "Bebidas tradicionales"],
+    rating: 4.3
+  },
+  {
+    id: 8,
+    name: "Gorditas Y Tortillas CHANITO",
+    description: "Comida rápida tradicional",
+    menu: ["Gorditas rellenas", "Tortillas hechas a mano", "Salsas variadas"],
+    rating: 4.4
+  },
+  {
+    id: 9,
+    name: "Los Girasoles",
+    description: "Restaurante familiar",
+    menu: ["Platillos mexicanos", "Desayunos", "Café", "Jugos naturales"],
+    rating: 4.1
+  },
+  {
+    id: 10,
+    name: "Green Leaf",
+    description: "Restaurante vegano y vegetariano",
+    menu: ["Ensaladas frescas", "Wraps veganos", "Jugos naturales", "Postres veganos"],
+    rating: 4.5
+  }
 ])
+
 const categories = ref([
   { id: 'c1', name: 'Italian' },
   { id: 'c2', name: 'Japanese' },
