@@ -40,9 +40,16 @@
           <button class="link-button">Ver todas</button>
         </div>
         <div class="flex gap-3 overflow-x-auto pb-2">
-          <button v-for="c in filteredCategories" :key="c.id" class="chip">
+          <button
+            v-for="c in filteredCategories"
+            :key="c.id"
+            class="chip"
+            :class="{ 'chip-active': selectedCategory === c.name }"
+            @click="selectedCategory = selectedCategory === c.name ? '' : c.name"
+          >
             {{ c.name }}
           </button>
+
         </div>
       </section>
 
@@ -160,20 +167,32 @@ const restaurants = ref([
 ])
 
 const categories = ref([
-  { id: 'c1', name: 'Italiana' },
-  { id: 'c2', name: 'Japonesa' },
-  { id: 'c3', name: 'Americana' },
-  { id: 'c4', name: 'Vegana' },
+  { id: 'c1', name: 'Mariscos' },
+  { id: 'c2', name: 'Menudería' },
+  { id: 'c3', name: 'Taquería' },
+  { id: 'c4', name: 'Familiar' },
+  { id: 'c5', name: 'Comida Mexicana' },
+  { id: 'c6', name: 'Hamburguesería' },
+  { id: 'c7', name: 'Comida Rápida Tradicional' },
+  { id: 'c8', name: 'Vegana y Vegetariana' },
 ])
+
 
 const search = ref('')
 
+const selectedCategory = ref('')
+
 const filteredRestaurants = computed(() =>
   restaurants.value.filter(r =>
-    r.name.toLowerCase().includes(search.value.toLowerCase()) ||
-    r.description.toLowerCase().includes(search.value.toLowerCase())
+    (r.name.toLowerCase().includes(search.value.toLowerCase()) ||
+    r.description.toLowerCase().includes(search.value.toLowerCase())) &&
+    (selectedCategory.value === '' || 
+      r.description.toLowerCase().includes(selectedCategory.value.toLowerCase())
+    )
   )
 )
+
+
 
 const filteredCategories = computed(() =>
   categories.value.filter(c =>
