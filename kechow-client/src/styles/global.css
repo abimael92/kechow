@@ -54,6 +54,10 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--transition-fast), color var(--transition-fast);
+  -webkit-transition: background-color var(--transition-fast), color var(--transition-fast);
+  -moz-transition: background-color var(--transition-fast), color var(--transition-fast);
+  -ms-transition: background-color var(--transition-fast), color var(--transition-fast);
+  -o-transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 /* === Typography === */
