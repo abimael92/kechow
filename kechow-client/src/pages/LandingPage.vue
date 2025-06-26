@@ -1,16 +1,19 @@
 <template>
 	<section
-		class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-8 fade-in-up"
+		class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-8 fade-in-up text-black dark:text-white"
 	>
-		<h1 class="text-5xl sm:text-6xl drop-shadow-lg font-semibold">
+		<h1
+			class="text-5xl sm:text-6xl drop-shadow-lg font-semibold text-black dark:text-white"
+		>
 			{{ $t('kechowFoodDelivery') }}
 		</h1>
 
-		<p class="text-xl max-w-lg opacity-90 text-text-secondary">
+		<p class="text-xl max-w-lg opacity-90 text-black dark:text-white/80">
 			{{ $t('yourLocalFoodDeliveryIsCooking') }}
 		</p>
+
 		<p
-			class="text-lg max-w-md opacity-80 underline underline-offset-4 decoration-accent"
+			class="text-lg max-w-md opacity-80 underline underline-offset-4 decoration-accent text-black dark:text-white/70"
 		>
 			{{ $t('comingSoonDescription') }}
 		</p>
