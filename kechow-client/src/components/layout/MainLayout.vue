@@ -1,12 +1,12 @@
 <template>
 	<div
-		class="min-h-screen bg-gradient-to-br from-gradient-start to-gradient-end text-white flex flex-col font-sans"
+		class="min-h-screen bg-gradient-to-br from-[#1B1333] via-[#3c2c54] via-50% to-[#6b4476] dark:from-gray-900 dark:to-gray-800 text-skin-base dark:text-skin-dark flex flex-col font-sans"
 		role="application"
 		aria-label="Kechow Food Delivery Application"
 	>
 		<!-- Top Nav -->
 		<nav
-			class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md bg-white/10 border-b border-white/10 shadow-soft"
+			class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md border-b border-white/10 shadow-soft"
 			role="navigation"
 			aria-label="Primary Navigation"
 		>
@@ -58,6 +58,44 @@
 
 				<!-- Language Toggle -->
 				<LanguageToggle />
+
+				<!-- Dark Mode Toggle -->
+				<button
+					class="icon-button"
+					@click="toggleDarkMode"
+					aria-label="Toggle dark mode"
+				>
+					<svg
+						v-if="isDark"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						class="w-6 h-6"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							d="M12 3a9 9 0 009 9 9 9 0 11-9-9z"
+						/>
+					</svg>
+					<svg
+						v-else
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						class="w-6 h-6"
+					>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+						/>
+					</svg>
+				</button>
 
 				<!-- User Menu -->
 				<div class="relative" @keydown.escape="closeUserMenu">
@@ -168,7 +206,7 @@
 
 		<!-- Footer -->
 		<div
-			class="bg-[#1B1333] px-8 py-6 border-t border-white/10 text-sm text-white/80"
+			class="bg-[#1B1333] px-8 py-6 border-t border-white/10 text-sm text-white/80 dark:bg-[your-dark-bg-color] dark:text-[your-dark-text-color]"
 		>
 			<div
 				class="flex flex-col md:flex-row justify-evenly items-start text-center gap-10 md:gap-0 px-4 md:px-12"
@@ -183,8 +221,9 @@
 						/>
 						<span class="text-lg font-semibold text-white">Kechow</span>
 					</div>
+
 					<p
-						class="opacity-80 max-w-xs mt-2 transition-colors duration-200 hover:text-[#ec4899] hover:opacity-100 text-[rgb(106,100,236)]"
+						class="opacity-80 max-w-xs mt-2 transition-colors duration-200 text-[rgb(106,100,236)] hover:text-[#ec4899] hover:opacity-100 dark:text-primary dark:hover:text-accent"
 					>
 						{{ $t('yourLocalFoodDeliveryIsCooking') }}
 					</p>
@@ -244,6 +283,13 @@ const { t } = useI18n();
 const isDrawerOpen = ref(false);
 const userMenuOpen = ref(false);
 const notifications = ref(3);
+
+const isDark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+function toggleDarkMode() {
+	isDark.value = !isDark.value;
+	document.documentElement.classList.toggle('dark', isDark.value);
+}
 
 function toggleDrawer() {
 	isDrawerOpen.value = !isDrawerOpen.value;
