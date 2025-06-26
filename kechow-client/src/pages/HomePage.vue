@@ -168,17 +168,6 @@ const filteredCategories = computed(() =>
 				<h1 class="text-4xl font-bold text-primary-gradient drop-shadow-md">
 					{{ t('restaurants') }}
 				</h1>
-				<button class="icon-button">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="w-6 h-6"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.5"
-					>
-						<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-					</svg>
-				</button>
 			</header>
 
 			<!-- Search Bar -->
