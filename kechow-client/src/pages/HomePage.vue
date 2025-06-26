@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import * as restaurantImages from '../assets/index';
+
+const { t } = useI18n();
 
 const restaurants = ref([
 	{
@@ -136,19 +139,21 @@ const selectedCategory = ref('');
 
 const filteredRestaurants = computed(() =>
 	restaurants.value.filter(
-		(r) =>
-			(r.name.toLowerCase().includes(search.value.toLowerCase()) ||
-				r.description.toLowerCase().includes(search.value.toLowerCase())) &&
+		(restaurant) =>
+			(restaurant.name.toLowerCase().includes(search.value.toLowerCase()) ||
+				restaurant.description
+					.toLowerCase()
+					.includes(search.value.toLowerCase())) &&
 			(selectedCategory.value === '' ||
-				r.description
+				restaurant.description
 					.toLowerCase()
 					.includes(selectedCategory.value.toLowerCase()))
 	)
 );
 
 const filteredCategories = computed(() =>
-	categories.value.filter((c) =>
-		c.name.toLowerCase().includes(search.value.toLowerCase())
+	categories.value.filter((category) =>
+		category.name.toLowerCase().includes(search.value.toLowerCase())
 	)
 );
 </script>
@@ -161,19 +166,8 @@ const filteredCategories = computed(() =>
 			<!-- Header -->
 			<header class="flex justify-between items-center">
 				<h1 class="text-4xl font-bold text-primary-gradient drop-shadow-md">
-					Restaurantes
+					{{ t('restaurants') }}
 				</h1>
-				<button class="icon-button">
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="w-6 h-6"
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.5"
-					>
-						<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-					</svg>
-				</button>
 			</header>
 
 			<!-- Search Bar -->
@@ -203,7 +197,7 @@ const filteredCategories = computed(() =>
 			<!-- Categories -->
 			<section>
 				<div class="flex justify-between items-center mb-4">
-					<h2 class="section-heading">Categorías destacadas</h2>
+					<h2 class="section-heading">{{ t('featuredCategories') }}</h2>
 					<button
 						class="link-button"
 						@click="
@@ -211,20 +205,21 @@ const filteredCategories = computed(() =>
 							selectedCategory = '';
 						"
 					>
-						Ver todas
+						{{ t('viewAll') }}
 					</button>
 				</div>
 				<div class="flex gap-3 overflow-x-auto pb-2">
 					<button
-						v-for="c in filteredCategories"
-						:key="c.id"
+						v-for="category in filteredCategories"
+						:key="category.id"
 						class="chip"
-						:class="{ 'chip-active': selectedCategory === c.name }"
+						:class="{ 'chip-active': selectedCategory === category.name }"
 						@click="
-							selectedCategory = selectedCategory === c.name ? '' : c.name
+							selectedCategory =
+								selectedCategory === category.name ? '' : category.name
 						"
 					>
-						{{ c.name }}
+						{{ category.name }}
 					</button>
 				</div>
 			</section>
@@ -232,7 +227,7 @@ const filteredCategories = computed(() =>
 			<!-- Restaurants -->
 			<section>
 				<div class="flex justify-between items-center mb-4">
-					<h2 class="section-heading">Restaurantes destacados</h2>
+					<h2 class="section-heading">{{ t('featuredRestaurants') }}</h2>
 					<button
 						class="link-button"
 						@click="
@@ -240,20 +235,20 @@ const filteredCategories = computed(() =>
 							selectedCategory = '';
 						"
 					>
-						Ver todos
+						{{ t('viewAll') }}
 					</button>
 				</div>
 				<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 					<li
-						v-for="r in filteredRestaurants"
-						:key="r.id"
+						v-for="restaurant in filteredRestaurants"
+						:key="restaurant.id"
 						class="card group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
 					>
 						<div class="overflow-hidden h-48">
 							<img
-								v-if="r.image"
-								:src="r.image"
-								:alt="r.name"
+								v-if="restaurant.image"
+								:src="restaurant.image"
+								:alt="restaurant.name"
 								class="h-full w-full object-cover transform transition-transform duration-300 group-hover:scale-105"
 								loading="lazy"
 								decoding="async"
@@ -262,7 +257,7 @@ const filteredCategories = computed(() =>
 								v-else
 								class="h-full w-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
 							>
-								Imagen no disponible
+								{{ t('imageUnavailable') }}
 							</div>
 						</div>
 
@@ -270,15 +265,17 @@ const filteredCategories = computed(() =>
 							<h3
 								class="text-lg font-semibold group-hover:text-primary-light transition"
 							>
-								{{ r.name }}
+								{{ restaurant.name }}
 							</h3>
 							<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-								{{ r.description }}
+								{{ restaurant.description }}
 							</p>
 							<ul
 								class="mt-2 list-disc list-inside text-xs text-gray-500 dark:text-gray-400"
 							>
-								<li v-for="(item, index) in r.menu" :key="index">{{ item }}</li>
+								<li v-for="(item, index) in restaurant.menu" :key="index">
+									{{ item }}
+								</li>
 							</ul>
 							<div
 								class="mt-3 flex items-center text-xs text-gray-500 dark:text-gray-400"
@@ -291,11 +288,10 @@ const filteredCategories = computed(() =>
 									stroke-width="1.5"
 								>
 									<polygon
-										points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77
-                      5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+										points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
 									/>
 								</svg>
-								{{ r.rating }} • $$$
+								{{ restaurant.rating }} • $$$
 							</div>
 						</div>
 					</li>

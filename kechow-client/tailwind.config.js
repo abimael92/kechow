@@ -5,20 +5,31 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                background: {
-                    light: '#F9FAFB',
-                    dark: '#111827',
+                backgroundColor: {
+                    skin: {
+                        fill: '#1B1333',
+                        darkFill: '#0f0f1f',
+                    },
                 },
-                text: {
-                    light: '#111827',
-                    dark: '#F9FAFB',
+                textColor: {
+                    skin: {
+                        base: '#ffffff',
+                        muted: '#ffffffcc',
+                        dark: '#d1d5db',
+                    },
+                },
+                gradient: {
+                    start: '#ec4899', // pink
+                    end: '#4f46e5',   // indigo
                 },
                 primary: {
-                    DEFAULT: '#6366F1',
-                    light: '#8B5CF6',
-                    dark: '#4F46E5',
+                    DEFAULT: '#6366f1',
+                    light: '#818cf8',
+                    dark: '#4f46e5',
                 },
-                accent: '#EC4899',
+                accent: '#f43f5e', // rose
+                // accent: '#EC4899',
+
             },
             fontFamily: {
                 sans: ['Inter', 'Poppins', 'Helvetica', 'Arial', 'sans-serif'],
