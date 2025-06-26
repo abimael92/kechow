@@ -19,6 +19,8 @@ module.exports = {
                     dark: '#4F46E5',
                 },
                 accent: '#EC4899',
+                'gradient-start': '#8183fd',
+                'gradient-end': '#f569af',
             },
             fontFamily: {
                 sans: ['Inter', 'Poppins', 'Helvetica', 'Arial', 'sans-serif'],
