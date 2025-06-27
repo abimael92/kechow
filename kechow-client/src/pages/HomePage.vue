@@ -70,7 +70,7 @@ const restaurants = ref([
 		id: 6,
 		name: 'Hamburguesas De Chito',
 		description: 'Hamburguesería',
-		// image: restaurantImages.hamburguesasDeChito,
+		image: restaurantImages.hamburguesasDeChito,
 		menu: [
 			'Hamburguesas clásicas',
 			'Hamburguesa con queso y tocino',
@@ -104,7 +104,7 @@ const restaurants = ref([
 		id: 9,
 		name: 'Los Girasoles',
 		description: 'Restaurante familiar',
-		// image: restaurantImages.losGirasoles,
+		image: restaurantImages.losGirasoles,
 		menu: ['Platillos mexicanos', 'Desayunos', 'Café', 'Jugos naturales'],
 		rating: 4.1,
 	},
