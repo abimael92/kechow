@@ -7,7 +7,7 @@ module.exports = {
             colors: {
                 backgroundColor: {
                     skin: {
-                        fill: '#1B1333',
+                        fill: '#7a51f0',
                         darkFill: '#0f0f1f',
                     },
                 },
