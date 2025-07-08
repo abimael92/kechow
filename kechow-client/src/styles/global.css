@@ -5,8 +5,8 @@
 /* === Root variables for colors, spacing, radius === */
 :root {
   /* Gradient colors */
-  --color-gradient-start: #8183fd; /* blue-purple */
-  --color-gradient-end: #f569af;   /* pink */
+  --color-gradient-start: #a3a4ff; /* blue-purple */
+  --color-gradient-end: #ff5eae;   /* pink */
 
   /* Primary colors */
   --color-primary: #6366F1;
@@ -49,7 +49,7 @@ html, body {
   padding: 0;
   min-height: 100vh;
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
+  background: linear-gradient(75deg, var(--color-gradient-start), var(--color-gradient-end));
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
