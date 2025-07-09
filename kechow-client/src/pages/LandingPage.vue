@@ -41,18 +41,19 @@
 					class="absolute w-10 h-10 text-black animate-float4"
 					style="top: 18%; right: 28%; transform: translate(50%, -50%)"
 					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					stroke="currentColor"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="currentColor"
 					stroke-width="2"
 					stroke-linecap="round"
 					stroke-linejoin="round"
-					viewBox="0 0 24 24"
 					aria-hidden="true"
 				>
-					<path d="M5 13h2l3-6 4 0"></path>
-					<circle cx="7" cy="19" r="2"></circle>
-					<circle cx="17" cy="19" r="2"></circle>
-					<path d="M10 10h6v4H10z"></path>
+					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+					<path
+						d="M13 4a1 1 0 0 1 1 1h4a1 1 0 0 1 .783 .378l.074 .108l3 5l.055 .103l.04 .107l.029 .109l.016 .11l.003 .085v6a1 1 0 0 1 -1 1h-1.171a3.001 3.001 0 0 1 -5.658 0h-4.342a3.001 3.001 0 0 1 -5.658 0h-1.171a1 1 0 0 1 -1 -1v-11a2 2 0 0 1 2 -2zm-6 12a1 1 0 1 0 0 2a1 1 0 0 0 0 -2m10 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2m.434 -9h-3.434v3h5.234z"
+					/>
 				</svg>
 
 				<!-- Clock / Timer -->
@@ -85,9 +86,11 @@
 					viewBox="0 0 24 24"
 					aria-hidden="true"
 				>
-					<path d="M6 2h12l-1 7H7l-1-7z"></path>
-					<path d="M6 9v13h12V9"></path>
-					<path d="M9 13h6"></path>
+					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+					<path
+						d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z"
+					/>
+					<path d="M9 11v-5a3 3 0 0 1 6 0v5" />
 				</svg>
 
 				<!-- Fork & Knife -->
@@ -103,15 +106,17 @@
 					viewBox="0 0 24 24"
 					aria-hidden="true"
 				>
-					<path d="M7 3v18"></path>
-					<path d="M17 3l-5 7v7"></path>
+					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+					<path
+						d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"
+					/>
 				</svg>
 
 				<!-- Hot Drink / Coffee Cup -->
 				<svg
 					class="absolute w-8 h-8 text-black animate-float8"
 					style="top: 62%; right: 33%; transform: translate(50%, -50%)"
-					xmlns="http://www.w3.org/2000/svg"
+					xmlns="https://tabler.io/icons"
 					fill="none"
 					stroke="currentColor"
 					stroke-width="2"
@@ -120,15 +125,20 @@
 					viewBox="0 0 24 24"
 					aria-hidden="true"
 				>
-					<path d="M8 21h8a4 4 0 0 0 0-8H8v8z" />
-					<path d="M12 13v-3" />
-					<path d="M16 6a4 4 0 0 0-8 0" />
+					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+					<path
+						d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"
+					/>
+					<path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2" />
+					<path d="M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2" />
+					<path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z" />
+					<path d="M16.746 16.726a3 3 0 1 0 .252 -5.555" />
 				</svg>
 
 				<!-- Shopping Cart -->
 				<svg
 					class="absolute w-8 h-8 text-black animate-float9"
-					style="top: 18%; right: 12%; transform: translate(50%, -50%)"
+					style="top: 32%; right: 12%; transform: translate(50%, -50%)"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					stroke="currentColor"
@@ -148,7 +158,7 @@
 				<!-- Box with Arrow (Shipping Box) -->
 				<svg
 					class="absolute w-8 h-8 text-black animate-float10"
-					style="bottom: 15%; left: 40%; transform: translate(-50%, 50%)"
+					style="bottom: 52%; left: 8%; transform: translate(-50%, 50%)"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					stroke="currentColor"
@@ -158,9 +168,13 @@
 					viewBox="0 0 24 24"
 					aria-hidden="true"
 				>
-					<path d="M3 9l9 6 9-6"></path>
-					<path d="M21 9v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9"></path>
-					<path d="M9 22V9"></path>
+					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+					<path d="M12 21l-8 -4.5v-9l8 -4.5l8 4.5v4.5" />
+					<path d="M12 12l8 -4.5" />
+					<path d="M12 12v9" />
+					<path d="M12 12l-8 -4.5" />
+					<path d="M15 18h7" />
+					<path d="M19 15l3 3l-3 3" />
 				</svg>
 
 				<!-- Heart / Like -->
@@ -175,6 +189,30 @@
 					<path
 						d="M12 21s-8-4.5-8-11a5 5 0 0 1 10 0 5 5 0 0 1 10 0c0 6.5-8 11-8 11z"
 					/>
+				</svg>
+
+				<!-- pizza slice -->
+				<svg
+					class="absolute w-8 h-8 text-black animate-float11"
+					style="top: 18%; left: 20%; transform: translate(-50%, -50%)"
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					viewBox="0 0 24 24"
+					aria-hidden="true"
+				>
+					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+					<path
+						d="M12 21.5c-3.04 0 -5.952 -.714 -8.5 -1.983l8.5 -16.517l8.5 16.517a19.09 19.09 0 0 1 -8.5 1.983z"
+					/>
+					<path
+						d="M5.38 15.866a14.94 14.94 0 0 0 6.815 1.634a14.944 14.944 0 0 0 6.502 -1.479"
+					/>
+					<path d="M13 11.01v-.01" />
+					<path d="M11 14v-.01" />
 				</svg>
 
 				<!-- Star (Rating) -->
@@ -229,7 +267,7 @@
 		aria-label="Customer testimonials"
 		class="max-w-4xl mx-auto mt-32 w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg p-10 shadow-lg text-center min-h-[40vh]"
 	>
-		<h2 class="text-3xl font-bold mb-6 text-gray-900">
+		<h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
 			What our customers say
 		</h2>
 		<ul class="space-y-6 text-lg">
