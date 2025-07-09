@@ -1,22 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MainLayout from '@/components/layout/MainLayout.vue';
+import MainLayout from '@layout/MainLayout.vue';
 import LandingPage from '@/pages/LandingPage.vue';
 import HomePage from '@/pages/HomePage.vue';
 
 const routes = [
-  {
-    path: '/',
-    component: MainLayout,
-    children: [
-      { path: '', name: 'Landing', component: LandingPage },
-      { path: 'home', name: 'Home', component: HomePage },
-    ],
-  },
+	{
+		path: '/',
+		component: MainLayout,
+		children: [
+			{ path: '', name: 'Landing', component: LandingPage },
+			{ path: 'home', name: 'Home', component: HomePage },
+		],
+	},
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+	history: createWebHistory(),
+	routes,
 });
 
 export default router;

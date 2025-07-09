@@ -279,7 +279,7 @@
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { UserCircle } from 'lucide-vue-next';
-import LanguageToggle from '@/components/layout/LanguageToggle.vue';
+import LanguageToggle from '@layout/LanguageToggle.vue';
 
 const { t } = useI18n();
 
