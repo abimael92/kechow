@@ -3,3 +3,4 @@ kechow-client/node_modules/
 kechow-server/.env
 kechow-client/.env
 kechow-client/dist/
+node_modules/
