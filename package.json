@@ -1,8 +1,14 @@
 {
   "name": "kechow-main",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently \"cd kechow-server && php artisan serve\" \"cd kechow-client && npm run dev\""
+    "dev": "npm run start",
+    "start": "concurrently \"cd kechow-server && php artisan serve\" \"cd kechow-client && npm run dev\"",
+    "lint": "cd kechow-client && npm run lint",
+    "build": "cd kechow-client && npm run build",
+    "test": "cd kechow-client && npm run test",
+    "format": "cd kechow-client && npm run format"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
