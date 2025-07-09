@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\RestaurantController;
-use App\Http\Controllers\MenuItemController;
-use App\Http\Controllers\Api\OrderController;
-
-
+use App\Modules\Restaurant\Controllers\MenuItemController;
+use App\Modules\Restaurant\Controllers\OrderController;
+use App\Docs\DocsController;
+use App\Docs\FullDocsController;
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
@@ -16,7 +15,6 @@ Route::delete('/restaurants/{restaurant}', [RestaurantController::class, 'destro
 Route::apiResource('menu-items', MenuItemController::class);
 Route::apiResource('orders', OrderController::class);
 
+Route::get('/docs', DocsController::class);
+Route::get('/full-docs', FullDocsController::class);
 
-Route::get('/docs', \App\Http\Controllers\Api\DocsController::class);
-
-Route::get('/full-docs', \App\Http\Controllers\Api\FullDocsController::class);
