@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import * as restaurantImages from '../assets/index';
+import { categoryIcons } from '../assets/svg/food';
 
 const { t } = useI18n();
 
@@ -124,14 +125,10 @@ const restaurants = ref([
 ]);
 
 const categories = ref([
-	{ id: 'c1', name: 'Mariscos' },
-	{ id: 'c2', name: 'Menudería' },
-	{ id: 'c3', name: 'Taquería' },
-	{ id: 'c4', name: 'Familiar' },
-	{ id: 'c5', name: 'Comida Mexicana' },
-	{ id: 'c6', name: 'Hamburguesería' },
-	{ id: 'c7', name: 'Comida Rápida Tradicional' },
-	{ id: 'c8', name: 'Vegana y Vegetariana' },
+	{ id: 'c1', name: 'Mariscos', icon: categoryIcons.Seafood },
+	{ id: 'c5', name: 'Mexicana', icon: categoryIcons.MexicanFood },
+	{ id: 'c7', name: 'Comida Rápida', icon: categoryIcons.FastFood },
+	{ id: 'c8', name: 'Vegetariana', icon: categoryIcons.Vegan },
 ]);
 
 const search = ref('');
@@ -210,16 +207,16 @@ const filteredCategories = computed(() =>
 				</div>
 				<div class="flex gap-3 overflow-x-auto pb-2">
 					<button
-						v-for="category in filteredCategories"
+						v-for="category in categories"
 						:key="category.id"
-						class="chip"
-						:class="{ 'chip-active': selectedCategory === category.name }"
-						@click="
-							selectedCategory =
-								selectedCategory === category.name ? '' : category.name
-						"
+						class="chip flex flex-col items-center gap-1"
 					>
-						{{ category.name }}
+						<span>{{ category.name }}</span>
+						<img
+							:src="category.icon"
+							alt="category icon"
+							class="w-6 h-6 text-primary"
+						/>
 					</button>
 				</div>
 			</section>
