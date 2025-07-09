@@ -212,14 +212,17 @@
 				class="flex flex-col md:flex-row justify-evenly items-start text-center gap-10 md:gap-0 px-4 md:px-12"
 			>
 				<!-- Logo + Message -->
-				<div class="flex flex-col items-center text-center mb-4">
+				<div class="flex flex-col items-center text-center mb-4 cursor-pointer">
 					<div class="flex items-center gap-2 mb-2">
 						<img
 							src="/images/kechow_logo.png"
 							alt="Kechow Logo"
 							class="w-8 h-8 object-contain"
 						/>
-						<span class="text-lg font-semibold text-white">Kechow</span>
+						<span
+							class="text-lg font-semibold text-white hover:text-[#ec4899] dark:hover:text-accent"
+							>Kechow</span
+						>
 					</div>
 
 					<p
