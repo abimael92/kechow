@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Docs;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
@@ -15,7 +15,6 @@ class FullDocsController extends Controller
         $apiRoutes = [];
 
         foreach ($routes as $route) {
-            // Filter only API routes with controllers
             if (
                 str_starts_with($route['uri'], 'api/') &&
                 isset($route['action']) &&
