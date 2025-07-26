@@ -1,12 +1,12 @@
 <template>
 	<div
-		class="min-h-screen bg-gradient-to-br from-[#7a51f0] via-[#d1b7f7] via-50% to-[#6b4476] dark:from-gray-900 dark:to-gray-800 text-skin-base dark:text-skin-dark flex flex-col font-sans"
+		class="min-h-screen bg-gradient-to-br from-[#734ce8] via-[#a98dd4] via-50% to-[#6b4476] dark:from-gray-900 dark:to-gray-800 text-skin-base dark:text-skin-dark flex flex-col font-sans"
 		role="application"
 		aria-label="Kechow Food Delivery Application"
 	>
 		<!-- Top Nav -->
 		<nav
-			class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md border-b border-white/10 shadow-soft"
+			class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white"
 			role="navigation"
 			aria-label="Primary Navigation"
 		>

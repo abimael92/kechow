@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainLayout from '@layout/MainLayout.vue';
 import LandingPage from '@/pages/LandingPage.vue';
 import HomePage from '@/pages/HomePage.vue';
+import RestaurantDetailView from '@/pages/RestaurantDetailView.vue';
 
 const routes = [
 	{
@@ -10,6 +11,12 @@ const routes = [
 		children: [
 			{ path: '', name: 'Landing', component: LandingPage },
 			{ path: 'home', name: 'Home', component: HomePage },
+			{
+				path: 'restaurants/:id',
+				name: 'RestaurantDetail',
+				component: RestaurantDetailView,
+				props: true,
+			},
 		],
 	},
 ];

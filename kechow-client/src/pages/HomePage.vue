@@ -4,6 +4,13 @@ import { useI18n } from 'vue-i18n';
 import * as restaurantImages from '../assets/index';
 import { categoryIcons } from '../assets/svg/food';
 
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+function goToRestaurant(id: number) {
+	router.push({ name: 'RestaurantDetail', params: { id } });
+}
+
 const { t } = useI18n();
 
 const restaurants = ref([
@@ -239,7 +246,8 @@ const filteredCategories = computed(() =>
 					<li
 						v-for="restaurant in filteredRestaurants"
 						:key="restaurant.id"
-						class="card group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300"
+						@click="goToRestaurant(restaurant.id)"
+						class="rounded-xl overflow-hidden border border-white/10 backdrop-blur-md bg-[#fdf6ff]/50 dark:bg-[#1f152f]/60 to-pink-500/10 dark:from-gray-800/40 dark:via-purple-800/30 dark:to-pink-700/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
 					>
 						<div class="overflow-hidden h-48">
 							<img
@@ -260,7 +268,7 @@ const filteredCategories = computed(() =>
 
 						<div class="p-4">
 							<h3
-								class="text-lg font-semibold group-hover:text-primary-light transition"
+								class="text-lg font-semibold text-gray-800 dark:text-white/80 group-hover:text-accent transition"
 							>
 								{{ restaurant.name }}
 							</h3>
