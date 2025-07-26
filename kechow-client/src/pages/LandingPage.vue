@@ -268,16 +268,16 @@
 		class="max-w-4xl mx-auto mt-32 w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg p-10 shadow-lg text-center min-h-[40vh]"
 	>
 		<h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-			What our customers say
+			{{ $t('customerTestimonialsTitle') }}
 		</h2>
 		<ul class="space-y-6 text-lg">
 			<li class="italic text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
-				"Amazing food delivered fast! The UI is super clean and easy to use."
+				"{{ $t('testimonial1') }}"
 				<br />
 				<span class="font-semibold">- Jamie L.</span>
 			</li>
 			<li class="italic text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
-				"Love the animations and smooth experience. Can't wait for launch!"
+				"{{ $t('testimonial2') }}"
 				<br />
 				<span class="font-semibold">- Maria G.</span>
 			</li>
