@@ -1,61 +1,94 @@
-<template>
-	<div class="p-6 max-w-4xl mx-auto">
-		<div v-if="restaurant">
-			<img
-				v-if="restaurant.image"
-				:src="restaurant.image"
-				:alt="restaurant.name"
-				class="w-full h-64 object-cover rounded-lg mb-4"
-			/>
-			<h1 class="text-3xl font-bold mb-2">{{ restaurant.name }}</h1>
-			<p class="text-gray-600 dark:text-gray-300 mb-4">
-				{{ restaurant.description }}
-			</p>
-
-			<h2 class="text-xl font-semibold mb-2">Menu</h2>
-			<ul class="space-y-2">
-				<li
-					v-for="(item, i) in restaurant.menu"
-					:key="i"
-					class="p-3 bg-gray-100 dark:bg-gray-800 rounded shadow-sm"
-				>
-					{{ item }}
-				</li>
-			</ul>
-		</div>
-
-		<div v-else class="text-center text-gray-500 dark:text-gray-400">
-			Restaurant not found.
-		</div>
-	</div>
-</template>
-
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { computed } from 'vue';
-
-const restaurants = [
-	{
-		id: 1,
-		name: 'Pizza Palace',
-		description: 'Authentic Italian pizza with fresh ingredients.',
-		image: 'https://source.unsplash.com/600x400/?pizza',
-		menu: ['Margherita', 'Pepperoni', 'Four Cheese'],
-		rating: 4.5,
-	},
-	{
-		id: 2,
-		name: 'Sushi World',
-		description: 'Fresh and delicious sushi rolls and sashimi.',
-		image: 'https://source.unsplash.com/600x400/?sushi',
-		menu: ['California Roll', 'Tuna Sashimi', 'Salmon Nigiri'],
-		rating: 4.8,
-	},
-];
+import { restaurants } from '@/data/restaurants';
 
 const route = useRoute();
 const restaurantId = parseInt(route.params.id as string);
 const restaurant = computed(() =>
 	restaurants.find((r) => r.id === restaurantId)
 );
+
+const cart = ref<Record<string, number>>({});
+
+function add(item: string) {
+	cart.value[item] = (cart.value[item] || 0) + 1;
+}
+
+function remove(item: string) {
+	if (cart.value[item] > 0) cart.value[item]--;
+}
 </script>
+
+<template>
+	<div v-if="restaurant" class="p-6 max-w-4xl mx-auto">
+		<!-- TOP IMAGE -->
+		<div class="relative w-full h-52 overflow-hidden rounded-xl mb-6">
+			<img
+				:src="restaurant.image"
+				alt=""
+				class="absolute inset-0 w-full h-full object-cover blur-sm scale-110"
+			/>
+			<img
+				:src="restaurant.image"
+				:alt="restaurant.name"
+				class="relative z-10 mx-auto h-full object-contain"
+			/>
+		</div>
+
+		<!-- RESTAURANT HEADER -->
+		<div class="text-center mb-6">
+			<h1 class="text-3xl font-bold">{{ restaurant.name }}</h1>
+			<p class="text-gray-500">{{ restaurant.description }}</p>
+		</div>
+
+		<!-- MENU ITEMS -->
+		<div class="space-y-6">
+			<div
+				v-for="(item, index) in restaurant.menu"
+				:key="index"
+				class="flex items-start gap-4 bg-white dark:bg-gray-800 rounded-xl shadow p-4"
+			>
+				<!-- ITEM IMAGE -->
+				<img
+					:src="item.image || 'https://via.placeholder.com/80'"
+					alt=""
+					class="w-20 h-20 object-cover rounded-lg"
+				/>
+
+				<!-- ITEM TEXT -->
+				<div class="flex-1">
+					<p class="text-lg font-semibold">{{ item.name }}</p>
+					<p class="text-sm text-gray-500 mb-1">
+						{{ item.description || 'Delicious and freshly prepared.' }}
+					</p>
+					<p class="text-sm text-gray-400">${{ item.price || '9.99' }}</p>
+				</div>
+
+				<!-- CART CONTROLS -->
+				<div class="flex items-center gap-2">
+					<button
+						@click="remove(item.name)"
+						:disabled="!cart[item.name]"
+						class="px-2 py-1 text-lg font-bold rounded bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
+					>
+						−
+					</button>
+					<span class="min-w-[20px] text-center">{{
+						cart[item.name] || 0
+					}}</span>
+					<button
+						@click="add(item.name)"
+						class="px-2 py-1 text-lg font-bold rounded bg-primary text-white"
+					>
+						+
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div v-else class="text-center py-20 text-gray-400">
+		Restaurant not found.
+	</div>
+</template>
