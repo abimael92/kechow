@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import * as restaurantImages from '../assets/index';
+import { restaurants as restaurantData } from '@/data/restaurants';
 import { categoryIcons } from '../assets/svg/food';
 
 import { useRouter } from 'vue-router';
+const restaurants = ref(restaurantData);
 const router = useRouter();
 
 function goToRestaurant(id: number) {
@@ -12,124 +13,6 @@ function goToRestaurant(id: number) {
 }
 
 const { t } = useI18n();
-
-const restaurants = ref([
-	{
-		id: 1,
-		name: 'Porto Chico',
-		description: 'Restaurante de mariscos',
-		image: restaurantImages.portoChico,
-		menu: [
-			'Ceviche clásico',
-			'Camarones al mojo de ajo',
-			'Cocktail de mariscos',
-			'Filete empanizado',
-		],
-		rating: 4.3,
-	},
-	{
-		id: 2,
-		name: 'Menuderia IME',
-		description: 'Menudería tradicional',
-		image: restaurantImages.menuderiaIme,
-		menu: [
-			'Menudo rojo',
-			'Menudo blanco',
-			'Tacos de menudo',
-			'Tortillas hechas a mano',
-		],
-		rating: 4.7,
-	},
-	{
-		id: 3,
-		name: 'Tacos Cano',
-		description: 'Taquería',
-		image: restaurantImages.tacosCano,
-		menu: [
-			'Tacos al pastor',
-			'Tacos de carne asada',
-			'Quesadillas',
-			'Salsas caseras',
-		],
-		rating: 4.1,
-	},
-	{
-		id: 4,
-		name: 'La Terraza',
-		description: 'Restaurante familiar',
-		image: restaurantImages.laTerraza,
-		menu: [
-			'Desayunos completos',
-			'Platos regionales',
-			'Ensaladas',
-			'Jugos naturales',
-		],
-		rating: 4.0,
-	},
-	{
-		id: 5,
-		name: 'Restaurante El Capi',
-		description: 'Comida mexicana',
-		image: restaurantImages.restauranteElCapi,
-		menu: ['Carnes asadas', 'Tacos', 'Guisados', 'Postres tradicionales'],
-		rating: 4.2,
-	},
-	{
-		id: 6,
-		name: 'Hamburguesas De Chito',
-		description: 'Hamburguesería',
-		image: restaurantImages.hamburguesasDeChito,
-		menu: [
-			'Hamburguesas clásicas',
-			'Hamburguesa con queso y tocino',
-			'Papas fritas',
-			'Malteadas',
-		],
-		rating: 4.1,
-	},
-	{
-		id: 7,
-		name: 'El Charco de la Rana',
-		description: 'Restaurante de comida mexicana',
-		image: restaurantImages.elCharcoDeLaRana,
-		menu: [
-			'Especialidades regionales',
-			'Sopas',
-			'Antojitos',
-			'Bebidas tradicionales',
-		],
-		rating: 4.3,
-	},
-	{
-		id: 8,
-		name: 'Gorditas Y Tortillas CHANITO',
-		description: 'Comida rápida tradicional',
-		image: restaurantImages.gorditasYTortillasChanito,
-		menu: ['Gorditas rellenas', 'Tortillas hechas a mano', 'Salsas variadas'],
-		rating: 4.4,
-	},
-	{
-		id: 9,
-		name: 'Los Girasoles',
-		description: 'Restaurante familiar',
-		image: restaurantImages.losGirasoles,
-		menu: ['Platillos mexicanos', 'Desayunos', 'Café', 'Jugos naturales'],
-		rating: 4.1,
-	},
-	{
-		id: 10,
-		name: 'Green Leaf',
-		description: 'Restaurante vegano y vegetariano',
-		// image: restaurantImages.greenLeaf,
-		menu: [
-			'Ensaladas frescas',
-			'Wraps veganos',
-			'Jugos naturales',
-			'Postres veganos',
-		],
-		rating: 4.5,
-	},
-]);
 
 const categories = ref([
 	{ id: 'c1', name: 'Mariscos', icon: categoryIcons.Seafood },
