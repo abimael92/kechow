@@ -6,7 +6,7 @@ use App\Modules\Restaurant\Controllers\MenuItemController;
 use App\Modules\Restaurant\Controllers\OrderController;
 use App\Docs\DocsController;
 use App\Docs\FullDocsController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\AuthController;
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);

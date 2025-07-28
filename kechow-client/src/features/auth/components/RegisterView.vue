@@ -33,7 +33,7 @@
 							v-model="registerForm.name"
 							type="text"
 							placeholder="Your name"
-							class="w-full p-2 outline-none"
+							class="w-full text-gray-800 p-2 outline-none"
 							required
 						/>
 					</div>
@@ -53,46 +53,52 @@
 							v-model="registerForm.email"
 							type="email"
 							placeholder="you@example.com"
-							class="w-full p-2 outline-none"
+							class="w-full text-gray-800 p-2 outline-none"
 							required
 						/>
 					</div>
 				</div>
 
-				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700"
-						>Password</label
+				<!-- Password -->
+				<div
+					class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
+				>
+					<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
+					<input
+						:type="showPassword ? 'text' : 'password'"
+						v-model="registerForm.password"
+						placeholder="••••••••"
+						class="w-full p-2 text-gray-800 outline-none"
+						required
+					/>
+					<button
+						type="button"
+						@click="showPassword = !showPassword"
+						class="absolute right-3 text-gray-600"
 					>
-					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
-					>
-						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
-						<input
-							v-model="registerForm.password"
-							type="password"
-							placeholder="••••••••"
-							class="w-full p-2 outline-none"
-							required
-						/>
-					</div>
+						{{ showPassword ? 'Hide' : 'Show' }}
+					</button>
 				</div>
 
-				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700"
-						>Confirm Password</label
+				<!-- Confirm Password -->
+				<div
+					class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
+				>
+					<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
+					<input
+						:type="showConfirmPassword ? 'text' : 'password'"
+						v-model="registerForm.password_confirmation"
+						placeholder="••••••••"
+						class="w-full text-gray-800 p-2 outline-none"
+						required
+					/>
+					<button
+						type="button"
+						@click="showConfirmPassword = !showConfirmPassword"
+						class="absolute right-3 text-gray-600"
 					>
-					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
-					>
-						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
-						<input
-							v-model="registerForm.password_confirmation"
-							type="password"
-							placeholder="••••••••"
-							class="w-full p-2 outline-none"
-							required
-						/>
-					</div>
+						{{ showConfirmPassword ? 'Hide' : 'Show' }}
+					</button>
 				</div>
 
 				<button
@@ -117,8 +123,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/features/auth/auth.store';
+
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 
 const authStore = useAuthStore();
 
@@ -135,6 +144,7 @@ async function handleRegister() {
 			name: registerForm.name,
 			email: registerForm.email,
 			password: registerForm.password,
+			password_confirmation: registerForm.password_confirmation, // add this
 		});
 	} catch (error) {
 		alert('Registration failed.');
