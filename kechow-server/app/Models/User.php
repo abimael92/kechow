@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;  // <-- add this
 use OpenApi\Annotations as OA;
 
 /**
@@ -23,8 +24,7 @@ use OpenApi\Annotations as OA;
  */
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;  // <-- add HasApiTokens here
 
     protected $fillable = [
         'name',
