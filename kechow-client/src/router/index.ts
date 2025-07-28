@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainLayout from '@layout/MainLayout.vue';
 import LandingPage from '@/pages/LandingPage.vue';
-import HomePage from '@/pages/HomePage.vue';
+// import HomePage from '@/pages/HomePage.vue';
+import RestaurantListPage from '@/pages/RestaurantListPage.vue';
 import RestaurantDetailView from '@/pages/RestaurantDetailView.vue';
 
 const routes = [
@@ -10,7 +11,7 @@ const routes = [
 		component: MainLayout,
 		children: [
 			{ path: '', name: 'Landing', component: LandingPage },
-			{ path: 'home', name: 'Home', component: HomePage },
+			{ path: 'home', name: 'Home', component: RestaurantListPage },
 			{
 				path: 'restaurants/:id',
 				name: 'RestaurantDetail',
