@@ -22,6 +22,11 @@ function remove(item: string) {
 
 <template>
 	<div v-if="restaurant" class="p-6 max-w-4xl mx-auto">
+		<!-- BACK BUTTON -->
+		<button @click="$router.push({ name: 'Home' })">
+			← Volver a restaurantes
+		</button>
+
 		<!-- TOP IMAGE -->
 		<div class="relative w-full h-52 overflow-hidden rounded-xl mb-6">
 			<img

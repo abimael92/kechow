@@ -276,7 +276,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { UserCircle } from 'lucide-vue-next';
 import LanguageToggle from '@layout/LanguageToggle.vue';
@@ -287,7 +287,15 @@ const isDrawerOpen = ref(false);
 const userMenuOpen = ref(false);
 const notifications = ref(3);
 
-const isDark = ref(window.matchMedia('(prefers-color-scheme: dark)').matches);
+const isDark = ref(
+	localStorage.getItem('theme') === 'dark' ||
+		(!localStorage.getItem('theme') &&
+			window.matchMedia('(prefers-color-scheme: dark)').matches)
+);
+
+onMounted(() => {
+	document.documentElement.classList.toggle('dark', isDark.value);
+});
 
 function toggleDarkMode() {
 	isDark.value = !isDark.value;
