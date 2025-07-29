@@ -1,8 +1,48 @@
+<script setup lang="ts">
+import { reactive, ref } from 'vue';
+import { useAuthStore } from '@/features/auth/auth.store';
+
+const showPassword = ref(false);
+const showConfirmPassword = ref(false);
+
+const authStore = useAuthStore();
+
+const registerForm = reactive({
+	name: '',
+	email: '',
+	password: '',
+	password_confirmation: '',
+	role: 'customer',
+});
+
+async function handleRegister() {
+	try {
+		await authStore.register({
+			name: registerForm.name,
+			email: registerForm.email,
+			password: registerForm.password,
+			password_confirmation: registerForm.password_confirmation, // add this
+		});
+	} catch (error) {
+		alert('Registration failed.');
+	}
+}
+</script>
+
 <template>
 	<div class="min-h-screen flex items-center justify-center">
 		<div
-			class="bg-white rounded-2xl shadow-lg p-10 w-full max-w-lg animate-fade-in"
+			class="bg-white shadow-lg p-10 w-full max-w-lg animate-fade-in relative"
+			style="border-radius: 12px 0 12px 12px"
 		>
+			>
+			<!-- Role Tabs -->
+			<div class="absolute top-0 right-0 -translate-y-full">
+				<div class="join-us-tab">
+					Join Us
+					<div class="tab-tongue"></div>
+				</div>
+			</div>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<h2
 					class="text-2xl font-bold mb-2 text-center text-gradient-pulse text-primary"
@@ -57,6 +97,15 @@
 							required
 						/>
 					</div>
+				</div>
+
+				<!-- Role Select -->
+				<div>
+					<label>Registering as</label>
+					<select v-model="registerForm.role" class="form-control w-full p-2">
+						<option value="owner">Owner</option>
+						<option value="delivery">Delivery</option>
+					</select>
 				</div>
 
 				<!-- Password -->
@@ -122,62 +171,35 @@
 	</div>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { useAuthStore } from '@/features/auth/auth.store';
-
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
-
-const authStore = useAuthStore();
-
-const registerForm = reactive({
-	name: '',
-	email: '',
-	password: '',
-	password_confirmation: '',
-});
-
-async function handleRegister() {
-	try {
-		await authStore.register({
-			name: registerForm.name,
-			email: registerForm.email,
-			password: registerForm.password,
-			password_confirmation: registerForm.password_confirmation, // add this
-		});
-	} catch (error) {
-		alert('Registration failed.');
-	}
-}
-</script>
-
 <style scoped>
-@keyframes fade-in {
-	from {
-		opacity: 0;
-		transform: translateY(30px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
-}
-.animate-fade-in {
-	animation: fade-in 0.5s ease-out;
+.join-us-tab {
+	background: #3b82f6; /* Blue-500 */
+	color: white;
+	padding: 8px 20px;
+	border: none;
+	border-bottom: none;
+	border-radius: 5px 5px 0 0;
+	position: relative;
+	z-index: 20;
 }
 
-@keyframes slide-up {
-	from {
-		opacity: 0;
-		transform: translateY(20px);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0);
-	}
+.tab-tongue {
+	position: absolute;
+	bottom: -6px;
+	left: 50%;
+	width: 12px;
+	height: 6px;
+	background: #3b82f6; /* Matches tab color */
+	clip-path: polygon(0 0, 100% 0, 50% 100%);
+	transform: translateX(-50%);
 }
-.animate-slide-up {
-	animation: slide-up 0.6s ease-out;
+
+/* Hide original select but keep functionality */
+select.form-control {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+	pointer-events: none;
 }
 </style>
