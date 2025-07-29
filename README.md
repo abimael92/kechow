@@ -264,6 +264,93 @@ Nos encanta la comida y el buen código 🍽️🧑‍💻
 rm -rf node_modules && npm install
 ```
 
+## ✅ Lista de funciones para la app de entrega Kechow
+
+### 🏠 Inicio / Explorar
+
+- [ ] Restaurantes destacados
+- [ ] Filtros por categoría (Pizza, Tacos, Hamburguesas, etc.)
+- [ ] Banners de promociones o sliders
+
+### 🔍 Búsqueda
+
+- [ ] Barra de búsqueda libre
+- [ ] Sugerencias automáticas (autocomplete)
+- [ ] Filtros/orden (por calificación, precio, tiempo de entrega)
+
+### 🍽️ Detalle del restaurante
+
+- [x] Información del restaurante, horarios, tiempo de entrega
+- [ ] Menú agrupado por categorías
+- [ ] Botón "Agregar al carrito" desde cada ítem
+- [ ] Modificadores de ítem (extra queso, nivel de picante, etc.)
+
+### 🛒 Carrito
+
+- [ ] Lista de productos seleccionados
+- [ ] Editar cantidad / eliminar
+- [ ] Subtotal + envío + impuestos
+- [ ] Botón de pagar
+
+### 📍 Dirección de entrega
+
+- [ ] Usar direcciones guardadas o ingresar nueva
+- [ ] Marcador en mapa (opcional)
+
+### 💳 Pago
+
+- [ ] Selección de método de pago (tarjeta, efectivo, wallet)
+- [ ] Confirmación del resumen del pedido
+
+### 🚚 Seguimiento del pedido
+
+- [ ] Estado en vivo del pedido (recibido, preparando, en camino)
+- [ ] Vista de mapa con ubicación del repartidor (opcional)
+
+### 📜 Historial de pedidos
+
+- [ ] Lista de pedidos pasados
+- [ ] Botón de reordenar
+- [ ] Calificar/comentar pedidos anteriores
+
+### 🙋‍♂️ Perfil
+
+- [ ] Ver/editar datos personales
+- [ ] Ver direcciones guardadas
+- [ ] Métodos de pago
+- [x] Cerrar sesión
+
+### 🏷️ Promociones
+
+- [ ] Ingreso y validación de código promocional
+- [ ] Lista de ofertas disponibles
+
+### 🛠️ Ajustes
+
+- [ ] Preferencias de notificación
+- [ ] Cambio de idioma / moneda
+- [ ] Política de privacidad / Términos
+
+---
+
+### 🛠️ Paneles opcionales para restaurante/admin
+
+#### 📊 Panel del restaurante
+
+- [ ] Agregar/editar ítems del menú
+- [ ] Ver pedidos entrantes
+- [ ] Configurar horarios/disponibilidad
+
+#### 🚦 Gestión de pedidos
+
+- [ ] Aceptar / rechazar pedidos
+- [ ] Marcar como preparando / listo / en camino
+
+#### 👤 Gestión de usuarios (Admin)
+
+- [ ] Bloquear cuentas
+- [ ] Resolver disputas
+
 ## 🚧 Próximos Pasos
 
 - Dashboard avanzado para negocios

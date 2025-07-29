@@ -90,4 +90,12 @@ class OrderController extends Controller
         Order::destroy($id);
         return response()->json(null, 204);
     }
+
+    public function updateStatus(Request $request, Order $order)
+{
+    $request->validate(['status' => 'required|string|in:received,preparing,ready,out_for_delivery']);
+    // Check ownership
+    // Update order status and save
+}
+
 }

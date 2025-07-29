@@ -25,6 +25,7 @@ return new class extends Migration
             $table->time('opening_time')->nullable();
             $table->time('closing_time')->nullable();
             $table->string('logo_url')->nullable();
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

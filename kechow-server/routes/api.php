@@ -24,3 +24,10 @@ Route::get('/full-docs', FullDocsController::class);
 // Auth routes
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+Route::middleware(['auth:sanctum', 'business.owner'])->group(function () {
+    Route::apiResource('menu-items', MenuItemController::class);
+    Route::post('orders/{order}/status', [OrderStatusController::class, 'updateStatus']);
+    Route::get('restaurants/{restaurant}/orders', [OrderController::class, 'restaurantOrders']);
+});
+
