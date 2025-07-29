@@ -2,11 +2,19 @@ import { defineStore } from 'pinia';
 import { login, register } from './auth.service';
 import { useRouter } from 'vue-router';
 
+// Define a User interface including role
+interface User {
+	id: number;
+	name: string;
+	email: string;
+	role: string; // e.g. 'owner', 'customer', etc.
+}
+
 export const useAuthStore = defineStore('auth', () => {
 	const router = useRouter();
 
 	const state = {
-		user: null as null | { id: number; name: string; email: string },
+		user: null as User | null, // Add role here
 		token: localStorage.getItem('token'),
 	};
 
