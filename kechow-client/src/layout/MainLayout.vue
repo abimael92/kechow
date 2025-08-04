@@ -280,12 +280,17 @@ import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { UserCircle } from 'lucide-vue-next';
 import LanguageToggle from '@layout/LanguageToggle.vue';
+import { useAuthStore } from '@/features/auth/auth.store';
+import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
 
 const isDrawerOpen = ref(false);
 const userMenuOpen = ref(false);
 const notifications = ref(3);
+
+const authStore = useAuthStore();
+const router = useRouter();
 
 const isDark = ref(
 	localStorage.getItem('theme') === 'dark' ||
@@ -324,8 +329,9 @@ function goProfile() {
 }
 
 function logout() {
-	alert('Logging out...');
-	closeUserMenu();
+	authStore.logout(); // This clears user/token
+	closeUserMenu(); // Closes dropdown menu
+	router.push('/'); // Redirects to login page
 }
 </script>
 
