@@ -6,6 +6,7 @@ const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
 const authStore = useAuthStore();
+const setRole = ref(false);
 
 const registerForm = reactive({
 	name: '',
@@ -15,13 +16,24 @@ const registerForm = reactive({
 	role: 'customer',
 });
 
+function joinUsClicked() {
+	if (!setRole.value) {
+		setRole.value = true;
+		registerForm.role = 'owner'; // default forced role when true
+	} else {
+		setRole.value = false;
+		registerForm.role = 'customer';
+	}
+}
+
 async function handleRegister() {
 	try {
 		await authStore.register({
 			name: registerForm.name,
 			email: registerForm.email,
 			password: registerForm.password,
-			password_confirmation: registerForm.password_confirmation, // add this
+			password_confirmation: registerForm.password_confirmation,
+			role: registerForm.role,
 		});
 	} catch (error) {
 		alert('Registration failed.');
@@ -33,16 +45,21 @@ async function handleRegister() {
 	<div class="min-h-screen flex items-center justify-center">
 		<div
 			class="bg-white shadow-lg p-10 w-full max-w-lg animate-fade-in relative"
+			:class="{ 'customer-view': setRole }"
 			style="border-radius: 12px 0 12px 12px"
 		>
-			>
 			<!-- Role Tabs -->
 			<div class="absolute top-0 right-0 -translate-y-full">
-				<div class="join-us-tab">
-					Join Us
-					<div class="tab-tongue"></div>
+				<div
+					class="join-us-tab cursor-pointer"
+					:class="{ 'change-customer': setRole }"
+					@click="joinUsClicked"
+				>
+					{{ setRole ? 'Order Now' : 'Join Us' }}
+					<div class="tab-tongue" :class="{ 'bg-changed': setRole }"></div>
 				</div>
 			</div>
+
 			<div class="flex flex-col items-center justify-center gap-2">
 				<h2
 					class="text-2xl font-bold mb-2 text-center text-gradient-pulse text-primary"
@@ -53,7 +70,11 @@ async function handleRegister() {
 
 			<p class="text-sm text-center text-gray-500 mb-6">
 				Join Kechow <br />
-				Get food fast, fresh, and right to your door.
+				{{
+					setRole
+						? 'Register as Owner or Delivery to get started.'
+						: 'Get food fast, fresh, and right to your door.'
+				}}
 			</p>
 
 			<form
@@ -99,15 +120,6 @@ async function handleRegister() {
 					</div>
 				</div>
 
-				<!-- Role Select -->
-				<div>
-					<label>Registering as</label>
-					<select v-model="registerForm.role" class="form-control w-full p-2">
-						<option value="owner">Owner</option>
-						<option value="delivery">Delivery</option>
-					</select>
-				</div>
-
 				<!-- Password -->
 				<div
 					class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
@@ -150,6 +162,21 @@ async function handleRegister() {
 					</button>
 				</div>
 
+				<!-- Role Select -->
+				<div v-if="setRole">
+					<label class="block mb-1 text-sm font-medium text-gray-700"
+						>Register as <span class="text-red-600">*</span></label
+					>
+					<select
+						v-model="registerForm.role"
+						required
+						class="w-full p-2 text-gray-600"
+					>
+						<option value="owner">Owner</option>
+						<option value="delivery">Delivery</option>
+					</select>
+				</div>
+
 				<button
 					type="submit"
 					class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition hover:scale-105 transition-transform active:scale-95 shadow-md"
@@ -182,7 +209,9 @@ async function handleRegister() {
 	position: relative;
 	z-index: 20;
 }
-
+.join-us-tab.change-customer {
+	background: #f59e0b;
+}
 .tab-tongue {
 	position: absolute;
 	bottom: -6px;
@@ -192,6 +221,16 @@ async function handleRegister() {
 	background: #3b82f6; /* Matches tab color */
 	clip-path: polygon(0 0, 100% 0, 50% 100%);
 	transform: translateX(-50%);
+	transition: background-color 0.3s ease;
+}
+.tab-tongue.bg-changed {
+	background: #f59e0b;
+}
+
+.customer-view {
+	box-shadow: inset 0 0 0 2px #f59e0b,
+		/* inner thin border */ inset 0 0 0 5px #fff,
+		/* inner spacing to simulate "double" effect */ inset 0 0 0 8px #f59e0b; /* outer thicker border */
 }
 
 /* Hide original select but keep functionality */
