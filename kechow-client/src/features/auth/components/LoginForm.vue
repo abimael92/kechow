@@ -41,7 +41,7 @@
 							v-model="loginForm.email"
 							type="email"
 							placeholder="you@example.com"
-							class="w-full p-2 outline-none"
+							class="w-full p-2 outline-none text-gray-900"
 							required
 						/>
 					</div>
@@ -59,7 +59,7 @@
 							v-model="loginForm.password"
 							type="password"
 							placeholder="••••••••"
-							class="w-full p-2 outline-none"
+							class="w-full p-2 outline-none text-gray-900"
 							required
 						/>
 					</div>
