@@ -158,13 +158,7 @@ const filteredCategories = computed(() =>
 							<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
 								{{ restaurant.description }}
 							</p>
-							<ul
-								class="mt-2 list-disc list-inside text-xs text-gray-500 dark:text-gray-400"
-							>
-								<li v-for="(item, index) in restaurant.menu" :key="index">
-									{{ item }}
-								</li>
-							</ul>
+
 							<div
 								class="mt-3 flex items-center text-xs text-gray-500 dark:text-gray-400"
 							>
