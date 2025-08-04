@@ -1,27 +1,27 @@
 import { defineStore } from 'pinia';
 import { login, register } from './auth.service';
 import { useRouter } from 'vue-router';
+import { ref, reactive } from 'vue';
 
 // Define a User interface including role
 interface User {
 	id: number;
 	name: string;
 	email: string;
-	role: string; // e.g. 'owner', 'customer', etc.
+	role: string;
 }
 
 export const useAuthStore = defineStore('auth', () => {
 	const router = useRouter();
 
-	const state = {
-		user: null as User | null, // Add role here
-		token: localStorage.getItem('token'),
-	};
+	// Make state reactive
+	const user = ref<User | null>(null);
+	const token = ref<string | null>(localStorage.getItem('token'));
 
 	async function loginAction(payload: { email: string; password: string }) {
 		const res = await login(payload);
-		state.user = res.data.user;
-		state.token = res.data.token;
+		user.value = res.data.user;
+		token.value = res.data.token;
 		localStorage.setItem('token', res.data.token);
 		router.push('/');
 	}
@@ -31,19 +31,20 @@ export const useAuthStore = defineStore('auth', () => {
 		email: string;
 		password: string;
 		password_confirmation: string;
+		role: string;
 	}) {
 		const res = await register(payload);
-		state.user = res.data.user;
-		state.token = res.data.token;
+		user.value = res.data.user;
+		token.value = res.data.token;
 		localStorage.setItem('token', res.data.token);
 		router.push('/');
 	}
 
 	function logout() {
-		state.user = null;
-		state.token = null;
+		user.value = null;
+		token.value = null;
 		localStorage.removeItem('token');
 	}
 
-	return { ...state, login: loginAction, register: registerAction, logout };
+	return { user, token, login: loginAction, register: registerAction, logout };
 });

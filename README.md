@@ -357,3 +357,5 @@ rm -rf node_modules && npm install
 - Notificaciones en tiempo real
 - Versión móvil nativa
 - Integración con pasarelas de pago
+
+https://lottiefiles.com/free-animation/delivery-food-splash-N1rHOrHdTD
