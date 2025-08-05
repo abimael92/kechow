@@ -1,6 +1,8 @@
 # 🌮 Kechow – Tu Guía Rápida al Antojo Local
 
-![Vista previa de Kechow](https://abimael-common-assets.s3.eu-west-1.amazonaws.com/myproject-resources/kechow-preview.png)
+![Vista previa de Kechow](https://abimael-common-assets.s3.eu-west-1.amazonaws.com/myproject-resources/kechow-front-preview.png)
+
+![Vista previa de Kechow](https://abimael-common-assets.s3.eu-west-1.amazonaws.com/myproject-resources/kechow-back-preview.png)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/abimael92/kechow/pulls)
