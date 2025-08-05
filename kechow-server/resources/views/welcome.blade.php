@@ -61,12 +61,14 @@
     </style>
 </head>
 <body>
-    <h1>Kechow Backend API</h1>
-    <p>This will power the Kechow food delivery platform.</p>
+    <h1>Kechow <br/> API Backend </h1>
+    <p>Esto impulsará la plataforma de entrega de comida Kechow.</p>
     <a href="http://localhost:8000/api/documentation/" class="api-btn">
-    View API
+    Ver API
 </a>
 
-    <footer>© 2025 Kechow Technologies</footer>
+<footer>© {{ date('Y') }} Tecnologías Kechow</footer>
+
+
 </body>
 </html>
