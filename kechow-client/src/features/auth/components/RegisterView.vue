@@ -121,45 +121,59 @@ async function handleRegister() {
 				</div>
 
 				<!-- Password -->
-				<div
-					class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
-				>
-					<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
-					<input
-						:type="showPassword ? 'text' : 'password'"
-						v-model="registerForm.password"
-						placeholder="••••••••"
-						class="w-full p-2 text-gray-800 outline-none"
-						required
-					/>
-					<button
-						type="button"
-						@click="showPassword = !showPassword"
-						class="absolute right-3 text-gray-600"
+				<div>
+					<label class="block mb-1 text-sm font-medium text-gray-700"
+						>Password</label
 					>
-						{{ showPassword ? 'Hide' : 'Show' }}
-					</button>
+					<div
+						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
+					>
+						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
+						<input
+							:type="showPassword ? 'text' : 'password'"
+							v-model="registerForm.password"
+							placeholder="••••••••"
+							class="w-full p-2 text-gray-800 outline-none"
+							required
+						/>
+						<button
+							type="button"
+							@click="showPassword = !showPassword"
+							class="absolute right-0 text-white"
+						>
+							<i :class="!showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+						</button>
+					</div>
 				</div>
 
 				<!-- Confirm Password -->
-				<div
-					class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
-				>
-					<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
-					<input
-						:type="showConfirmPassword ? 'text' : 'password'"
-						v-model="registerForm.password_confirmation"
-						placeholder="••••••••"
-						class="w-full text-gray-800 p-2 outline-none"
-						required
-					/>
-					<button
-						type="button"
-						@click="showConfirmPassword = !showConfirmPassword"
-						class="absolute right-3 text-gray-600"
+				<div>
+					<label class="block mb-1 text-sm font-medium text-gray-700"
+						>Confirm Password</label
 					>
-						{{ showConfirmPassword ? 'Hide' : 'Show' }}
-					</button>
+					<div
+						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
+					>
+						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
+						<input
+							:type="showConfirmPassword ? 'text' : 'password'"
+							v-model="registerForm.password_confirmation"
+							placeholder="••••••••"
+							class="w-full text-gray-800 p-2 outline-none"
+							required
+						/>
+						<button
+							type="button"
+							@click="showConfirmPassword = !showConfirmPassword"
+							class="absolute right-0 text-white"
+						>
+							<i
+								:class="
+									!showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
+								"
+							></i>
+						</button>
+					</div>
 				</div>
 
 				<!-- Role Select -->
