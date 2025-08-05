@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <title>Kechow API Backend</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -25,32 +27,43 @@
             padding: 0;
         }
 
-        body {
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
-            background: linear-gradient(135deg, var(--dark-bg), var(--dark-bg2), var(--dark-bg3));
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 2rem;
-            position: relative;
-            overflow-x: hidden;
-        }
+        html, body {
+  height: 100%;
+  margin: 0;
+}
 
-        body::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,75,43,0.1) 0%, transparent 70%);
-            animation: float 15s infinite linear;
-            z-index: 0;
-        }
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* remove justify-content:center */
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+}
+
+main {
+  flex: 1; /* take remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+footer {
+  margin-top: auto;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  color: #999;
+  user-select: none;
+  opacity: 1 !important;
+  position: relative; /* no fixed */
+}
+
 
         .container {
             position: relative;
@@ -58,12 +71,14 @@
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            padding: 4rem 2rem;
+            flex: 1;
         }
 
         h1 {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 800;
-            margin-bottom: 1.5rem;
+            margin: 1rem 0 1.5rem;
             line-height: 1.2;
             background: linear-gradient(90deg, var(--primary-hover), var(--primary));
             -webkit-background-clip: text;
@@ -90,7 +105,7 @@
             display: flex;
             gap: 1.5rem;
             justify-content: center;
-            margin-bottom: 3rem;
+            margin-bottom: 4rem;
             flex-wrap: wrap;
         }
 
@@ -153,17 +168,18 @@
 
         /* Features Section */
         .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2rem;
-            margin: 4rem 0;
-            justify-content: center;
-            max-width: 1100px;
-            z-index: 1;
-            position: relative;
-        }
+  display: flex; /* Changed from grid to flex */
+  justify-content: center; /* Center the cards */
+  gap: 1.5rem; /* Space between cards */
+  margin: 3rem auto;
+  max-width: 1200px; /* Adjust based on your needs */
+  flex-wrap: nowrap; /* Prevent wrapping to new line */
+  overflow-x: auto; /* Allow horizontal scrolling if needed */
+  padding: 1rem;
+}
 
-        .feature {
+.feature {
+  flex: 0 0 260px; /* Don't grow or shrink, fixed width */
             background: rgba(30, 41, 59, 0.7);
             backdrop-filter: blur(10px);
             border-radius: 16px;
@@ -178,6 +194,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
+            width: calc(25% - 2rem);
+            min-width: 260px;
         }
 
         .feature::after {
@@ -232,9 +250,107 @@
             transform: rotate(10deg) scale(1.1);
         }
 
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 5rem auto;
+            max-width: 900px;
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        /* Documentation Section */
+        .docs-section {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 4rem auto;
+            max-width: 900px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .docs-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-align: center;
+        }
+
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .doc-card {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .doc-card h3 {
+            color: var(--accent-yellow);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doc-card p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .doc-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .doc-link:hover {
+            color: var(--primary);
+        }
+
         footer {
-            margin-top: auto;
-            padding: 2rem 0 1rem;
+            padding: 2rem 0;
             font-size: 0.9rem;
             color: rgba(255, 255, 255, 0.6);
             user-select: none;
@@ -242,13 +358,20 @@
             opacity: 0;
             width: 100%;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .social-links {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .social-links a {
@@ -287,9 +410,19 @@
         }
 
         /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .feature {
+                width: calc(50% - 2rem);
+            }
+        }
+
         @media (max-width: 768px) {
-            .features {
-                grid-template-columns: 1fr;
+            .container {
+                padding: 3rem 1.5rem;
+            }
+
+            .feature {
+                width: 100%;
                 max-width: 400px;
             }
 
@@ -302,6 +435,15 @@
                 width: 100%;
                 max-width: 250px;
             }
+
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .docs-section {
+                padding: 2rem 1.5rem;
+            }
         }
 
         /* Animation delays */
@@ -312,6 +454,12 @@
     </style>
 </head>
 <body>
+
+<div style="text-align: center; padding-top: 2rem;">
+        <img src="/images/kechow_logo.png"
+             alt="Kechow Logo"
+             style="max-width: 200px; height: auto;">
+    </div>
     <div class="container">
         <h1>Kechow API Backend</h1>
         <p class="subtitle">El motor que impulsa la plataforma de entrega de comida Kechow con tecnología moderna y escalable.</p>
@@ -331,7 +479,7 @@
                     <i class="fas fa-server"></i>
                 </div>
                 <h3>API RESTful</h3>
-                <p>Interfaz robusta para consumir y gestionar datos fácilmente con endpoints bien documentados.</p>
+                <p>Interfaz robusta para consumir y gestionar datos fácilmente con endpoints bien documentados y soporte para GraphQL.</p>
             </article>
 
             <article class="feature" tabindex="0">
@@ -339,7 +487,7 @@
                     <i class="fas fa-shield-alt"></i>
                 </div>
                 <h3>Seguridad Avanzada</h3>
-                <p>Autenticación JWT y autorización por roles para proteger tus datos y transacciones.</p>
+                <p>Autenticación JWT, OAuth 2.0 y autorización por roles para proteger tus datos y transacciones.</p>
             </article>
 
             <article class="feature" tabindex="0">
@@ -347,7 +495,7 @@
                     <i class="fas fa-tachometer-alt"></i>
                 </div>
                 <h3>Alto Rendimiento</h3>
-                <p>Optimizado para manejar miles de solicitudes por segundo con tiempos de respuesta mínimos.</p>
+                <p>Optimizado para manejar miles de solicitudes por segundo con tiempos de respuesta menores a 100ms.</p>
             </article>
 
             <article class="feature" tabindex="0">
@@ -355,18 +503,69 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <h3>Monitoreo en Tiempo Real</h3>
-                <p>Dashboard completo para visualizar métricas y rendimiento de la plataforma.</p>
+                <p>Dashboard completo con métricas de rendimiento, errores y análisis de uso.</p>
             </article>
         </section>
+
+        <!-- Stats Section -->
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Endpoints</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10ms</div>
+                <div class="stat-label">Respuesta promedio</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Soporte</div>
+            </div>
+        </div>
+
+        <!-- Documentation Section -->
+        <!-- <section class="docs-section">
+            <h2><i class="fas fa-book-open"></i> Documentación y Recursos</h2>
+            <div class="docs-grid">
+                <div class="doc-card">
+                    <h3><i class="fas fa-file-code"></i> API Reference</h3>
+                    <p>Documentación técnica completa de todos los endpoints disponibles, parámetros y respuestas.</p>
+                    <a href="#" class="doc-link">
+                        Ver documentación <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="doc-card">
+                    <h3><i class="fas fa-graduation-cap"></i> Guías</h3>
+                    <p>Tutoriales paso a paso para integrar la API en tus aplicaciones y soluciones comunes.</p>
+                    <a href="#" class="doc-link">
+                        Explorar guías <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="doc-card">
+                    <h3><i class="fas fa-code-branch"></i> SDKs</h3>
+                    <p>Bibliotecas cliente para JavaScript, Python, Java y otros lenguajes populares.</p>
+                    <a href="#" class="doc-link">
+                        Descargar SDKs <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section> -->
     </div>
 
     <footer>
-        <p>© 2023 Tecnologías Kechow. Todos los derechos reservados.</p>
-        <div class="social-links">
-            <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-            <a href="#" aria-label="Documentación"><i class="fas fa-book"></i></a>
+        <div class="footer-content">
+            <p>© {{ date('Y') }}  Tecnologías Kechow. Todos los derechos reservados.</p>
+            <div class="social-links">
+                <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="#" aria-label="Documentación"><i class="fas fa-book"></i></a>
+                <a href="#" aria-label="Contacto"><i class="fas fa-envelope"></i></a>
+            </div>
         </div>
     </footer>
 </body>
