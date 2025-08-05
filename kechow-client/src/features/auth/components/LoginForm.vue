@@ -52,16 +52,23 @@
 						>Password</label
 					>
 					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
+						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
 					>
 						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
 						<input
+							:type="showPassword ? 'text' : 'password'"
 							v-model="loginForm.password"
-							type="password"
 							placeholder="••••••••"
 							class="w-full p-2 outline-none text-gray-900"
 							required
 						/>
+						<button
+							type="button"
+							@click="showPassword = !showPassword"
+							class="absolute right-0 text-white"
+						>
+							<i :class="!showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+						</button>
 					</div>
 				</div>
 
@@ -87,8 +94,10 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/features/auth/auth.store';
+
+const showPassword = ref(false);
 
 const authStore = useAuthStore();
 
