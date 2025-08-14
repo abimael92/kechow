@@ -5,35 +5,33 @@ export interface User {
 	id: string;
 	name: string;
 	email: string;
+	role?: string;
 	token?: string;
 	isLoggedIn: boolean;
 }
 
 export const useUserStore = defineStore('user', {
-	state: (): User => ({
-		id: '',
-		name: '',
-		email: '',
-		token: undefined,
-		isLoggedIn: false,
+	state: () => ({
+		user: null as null | {
+			id: number;
+			name: string;
+			email: string;
+			role: string;
+		},
+		token: null as null | string,
 	}),
+	getters: {
+		isAuthenticated: (state) => !!state.token,
+		isOwner: (state) => state.user?.role === 'owner',
+	},
 	actions: {
-		login(userData: Partial<User>) {
-			this.id = userData.id ?? '';
-			this.name = userData.name ?? '';
-			this.email = userData.email ?? '';
-			this.token = userData.token;
-			this.isLoggedIn = true;
+		setUser(user: any, token: string) {
+			this.user = user;
+			this.token = token;
 		},
 		logout() {
-			this.id = '';
-			this.name = '';
-			this.email = '';
-			this.token = undefined;
-			this.isLoggedIn = false;
+			this.user = null;
+			this.token = null;
 		},
-	},
-	getters: {
-		isAuthenticated: (state): boolean => state.isLoggedIn,
 	},
 });
