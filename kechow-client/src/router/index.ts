@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/features/auth/auth.store';
+
 import MainLayout from '@/layout/MainLayout.vue';
 
 // Import non-owner pages (eager)
@@ -83,15 +84,15 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 	const authStore = useAuthStore();
 
-	if (to.meta.requiresAuth && !authStore.token) {
+	if (to.meta.requiresAuth && !authStore.isAuthenticated) {
 		return next({ name: 'Login' });
 	}
 
-	if (to.meta.role === 'owner' && authStore.user?.role !== 'owner') {
-		return next({ name: 'Home' }); // or redirect to 403 page
+	if (to.meta.role === 'owner' && !authStore.isOwner) {
+		return next({ name: 'Home' });
 	}
 
-	return next();
+	next();
 });
 
 export default router;

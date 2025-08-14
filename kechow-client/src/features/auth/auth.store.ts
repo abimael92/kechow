@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { login, register } from './auth.service';
 import { useRouter } from 'vue-router';
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 
 // Define a User interface including role
 interface User {
@@ -14,16 +14,25 @@ interface User {
 export const useAuthStore = defineStore('auth', () => {
 	const router = useRouter();
 
-	// Make state reactive
+	// Reactive state
 	const user = ref<User | null>(null);
 	const token = ref<string | null>(localStorage.getItem('token'));
 
+	// Getters
+	const isAuthenticated = computed(() => !!user.value);
+	const isOwner = computed(() => user.value?.role === 'owner');
+
+	// Actions
 	async function loginAction(payload: { email: string; password: string }) {
 		const res = await login(payload);
 		user.value = res.data.user;
 		token.value = res.data.token;
 		localStorage.setItem('token', res.data.token);
-		router.push('/');
+
+		// Redirect based on role
+		if (user.value && user.value.role === 'owner')
+			router.push('/owner/dashboard');
+		else router.push('/home');
 	}
 
 	async function registerAction(payload: {
@@ -37,7 +46,10 @@ export const useAuthStore = defineStore('auth', () => {
 		user.value = res.data.user;
 		token.value = res.data.token;
 		localStorage.setItem('token', res.data.token);
-		router.push('/');
+
+		if (user.value && user.value.role === 'owner')
+			router.push('/owner/dashboard');
+		else router.push('/home');
 	}
 
 	function logout() {
@@ -46,5 +58,13 @@ export const useAuthStore = defineStore('auth', () => {
 		localStorage.removeItem('token');
 	}
 
-	return { user, token, login: loginAction, register: registerAction, logout };
+	return {
+		user,
+		token,
+		login: loginAction,
+		register: registerAction,
+		logout,
+		isAuthenticated,
+		isOwner,
+	};
 });
