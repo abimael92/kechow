@@ -1,6 +1,6 @@
-// src/store/user.store.ts
 import { defineStore } from 'pinia';
 
+// Define a User interface including role
 export interface User {
 	id: string;
 	name: string;
@@ -10,6 +10,7 @@ export interface User {
 	isLoggedIn: boolean;
 }
 
+// Define the user store
 export const useUserStore = defineStore('user', {
 	state: () => ({
 		user: null as null | {
