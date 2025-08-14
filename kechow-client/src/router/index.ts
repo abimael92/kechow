@@ -84,10 +84,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
 	const authStore = useAuthStore();
 
+	// If the route requires authentication and the user is not authenticated
 	if (to.meta.requiresAuth && !authStore.isAuthenticated) {
 		return next({ name: 'Login' });
 	}
 
+	// If the route requires a specific role and the user does not have that role
 	if (to.meta.role === 'owner' && !authStore.isOwner) {
 		return next({ name: 'Home' });
 	}
