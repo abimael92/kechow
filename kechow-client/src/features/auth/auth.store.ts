@@ -35,6 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
 		else router.push('/home');
 	}
 
+	// Register action
 	async function registerAction(payload: {
 		name: string;
 		email: string;
@@ -52,12 +53,14 @@ export const useAuthStore = defineStore('auth', () => {
 		else router.push('/home');
 	}
 
+	// Logout action
 	function logout() {
 		user.value = null;
 		token.value = null;
 		localStorage.removeItem('token');
 	}
 
+	// Check if the user is the owner of a restaurant
 	return {
 		user,
 		token,

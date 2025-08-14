@@ -11,6 +11,12 @@ use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
+    /**
+     * Handle user login and return a JWT token.
+     *
+     * @param LoginRequest $request
+     * @return JsonResponse
+     */
     public function login(LoginRequest $request): JsonResponse
     {
         $user = User::where('email', $request->email)->first();
@@ -34,6 +40,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Handle user registration and return a JWT token.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function register(Request $request): JsonResponse
     {
         $request->validate([
