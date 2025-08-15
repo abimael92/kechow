@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { login, register } from './auth.service';
+import { login, register, getUser } from './auth.service';
 import { useRouter } from 'vue-router';
 import { ref, reactive, computed } from 'vue';
 
@@ -45,6 +45,7 @@ export const useAuthStore = defineStore('auth', () => {
 			isLoading.value = true;
 
 			const res = (await login(payload)) as AuthResponse;
+			console.log('Full login response:', JSON.stringify(res, null, 2));
 
 			// Validate response structure
 			if (!res?.data) throw new Error('Invalid response from server');
@@ -140,18 +141,15 @@ export const useAuthStore = defineStore('auth', () => {
 		if (token.value && !user.value) {
 			try {
 				isLoading.value = true;
+				const data = await getUser(token.value);
 
-				// Fetch user data using the stored token
-				const response = await fetch('/api/auth/user', {
-					headers: {
-						Authorization: `Bearer ${token.value}`,
-					},
-				});
+				if (!data.user) throw new Error('Invalid user data');
 
-				if (!response.ok) throw new Error('Failed to verify token');
-
-				const data = (await response.json()) as { user: User };
 				user.value = data.user;
+
+				// Debug logging
+				console.log('Initialized user:', user.value);
+				console.log('Is owner:', isOwner.value);
 			} catch (err) {
 				console.error('Auth initialization failed:', err);
 				logout();
