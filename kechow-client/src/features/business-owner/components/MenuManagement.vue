@@ -116,8 +116,8 @@
 <script setup>
 import { ref } from 'vue';
 import { PencilIcon, TrashIcon, PhotoIcon } from '@heroicons/vue/outline';
-import MenuItemModal from '@/components/owner/MenuItemModal.vue';
-import ConfirmationModal from '@/components/ui/ConfirmationModal.vue';
+import MenuItemModal from '@/features/business-owner/components/MenuItemModal.vue';
+import ConfirmationModal from '@/components/ConfirmationModal.vue';
 
 const menuCategories = ref([
 	{
