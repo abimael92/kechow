@@ -196,7 +196,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { UserCircle } from 'lucide-vue-next';
 import LanguageToggle from '@layout/LanguageToggle.vue';
-import { useAuthStore } from '@services/auth/auth.store';
+import { useAuthStore } from '@/store/auth/auth.store';
 import { useRouter } from 'vue-router';
 
 const { t } = useI18n();
