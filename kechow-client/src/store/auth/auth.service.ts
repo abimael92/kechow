@@ -1,11 +1,49 @@
-import axios from '@/lib/axios';
+import axios from 'axios';
 
-export const login = (payload: { email: string; password: string }) =>
-	axios.post('/login', payload);
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/';
 
-export const register = (payload: {
+export const login = async (payload: { email: string; password: string }) => {
+	try {
+		const response = await axios.post(`${API_URL}/login`, payload);
+		return response.data;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			throw error.response?.data || error.message;
+		}
+		throw error;
+	}
+};
+
+export const register = async (payload: {
 	name: string;
 	email: string;
 	password: string;
 	password_confirmation: string;
-}) => axios.post('/register', payload);
+	role: string;
+}) => {
+	try {
+		const response = await axios.post(`${API_URL}/register`, payload);
+		return response.data;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			throw error.response?.data || error.message;
+		}
+		throw error;
+	}
+};
+
+export const getUser = async (token: string) => {
+	try {
+		const response = await axios.get(`${API_URL}/user`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			throw error.response?.data || error.message;
+		}
+		throw error;
+	}
+};
