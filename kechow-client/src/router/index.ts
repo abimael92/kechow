@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/features/auth/auth.store';
+import { useAuthStore } from '@/store/auth/auth.store';
 
 import MainLayout from '@/layout/MainLayout.vue';
 
@@ -83,6 +83,10 @@ const router = createRouter({
 // Navigation guard for auth and role checking
 router.beforeEach((to, from, next) => {
 	const authStore = useAuthStore();
+
+	console.log('Navigation guard - isAuthenticated:', authStore.isAuthenticated);
+	console.log('Navigation guard - isOwner:', authStore.isOwner);
+	console.log('Route requires role:', to.meta.role);
 
 	// If the route requires authentication and the user is not authenticated
 	if (to.meta.requiresAuth && !authStore.isAuthenticated) {
