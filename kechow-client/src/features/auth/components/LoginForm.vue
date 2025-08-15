@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { useAuthStore } from '@/features/auth/auth.store';
+import { useAuthStore } from '@/store/auth/auth.store';
 
 const showPassword = ref(false);
 
@@ -106,11 +106,19 @@ const loginForm = reactive({
 	password: '',
 });
 
+// Add a watcher to log the user role when it changes
 async function handleLogin() {
 	try {
 		await authStore.login({ ...loginForm });
-	} catch {
-		alert('Invalid credentials');
+
+		// Add debug logging
+		console.log('Login successful. User role:', authStore.user?.role);
+		console.log('Is owner:', authStore.isOwner);
+
+		// The router navigation should be handled by the auth store
+	} catch (error) {
+		console.error('Login error:', error);
+		alert('Invalid credentials. Please check your email and password.');
 	}
 }
 </script>

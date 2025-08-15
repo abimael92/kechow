@@ -10,7 +10,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import DashboardCard from '@/components/owner/DashboardCard.vue';
+import DashboardCard from '@/features/business-owner/components/DashboardCard.vue';
 
 const stats = ref([
 	{
