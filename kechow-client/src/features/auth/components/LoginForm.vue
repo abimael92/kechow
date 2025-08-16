@@ -96,29 +96,39 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/store/auth/auth.store';
+import { useRouter } from 'vue-router';
 
 const showPassword = ref(false);
-
 const authStore = useAuthStore();
+const router = useRouter(); // Add this line to get the router instance
 
 const loginForm = reactive({
 	email: '',
 	password: '',
 });
 
-// Add a watcher to log the user role when it changes
 async function handleLogin() {
 	try {
-		await authStore.login({ ...loginForm });
+		const response = await authStore.login({ ...loginForm });
 
-		// Add debug logging
-		console.log('Login successful. User role:', authStore.user?.role);
-		console.log('Is owner:', authStore.isOwner);
+		// Debug logging
+		console.log('Login successful', response);
+		console.log('User role:', authStore.user?.role);
+		console.log('Token:', authStore.token);
 
-		// The router navigation should be handled by the auth store
-	} catch (error) {
-		console.error('Login error:', error);
-		alert('Invalid credentials. Please check your email and password.');
+		// Redirect based on role - using exact route names from your router
+		if (authStore.isOwner) {
+			await router.push({ name: 'OwnerDashboard' }); // Changed from 'owner-dashboard'
+		} else {
+			await router.push({ name: 'Home' }); // Changed from 'home' to match your route definition
+		}
+	} catch (error: unknown) {
+		console.error('Login error details:', error);
+		const errorMessage =
+			error instanceof Error
+				? error.message
+				: 'Invalid credentials. Please check your email and password.';
+		alert(errorMessage);
 	}
 }
 </script>
