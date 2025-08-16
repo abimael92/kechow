@@ -28,16 +28,16 @@
 									: 'text-red-600'
 							"
 						>
-							<ArrowUpIcon
-								v-if="stat.changeType === 'increase'"
+							<span
 								class="self-center flex-shrink-0 h-5 w-5 text-green-500"
-								aria-hidden="true"
-							/>
-							<ArrowDownIcon
-								v-else
+								v-if="stat.changeType === 'increase'"
+								>⬆️</span
+							>
+							<span
 								class="self-center flex-shrink-0 h-5 w-5 text-red-500"
-								aria-hidden="true"
-							/>
+								v-else
+								>⬇️</span
+							>
 							<span class="sr-only">
 								{{
 									stat.changeType === 'increase' ? 'Increased' : 'Decreased'
@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/vue/solid';
+import { ref } from 'vue';
 
 const stats = ref([
 	{
