@@ -23,15 +23,16 @@
 						: 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
 				]"
 			>
-				<component
-					:is="item.icon"
+				<span
 					class="mr-3 h-5 w-5 flex-shrink-0"
 					:class="[
 						$route.path.includes(item.href)
 							? 'text-indigo-500'
 							: 'text-gray-400 group-hover:text-gray-500',
 					]"
-				/>
+				>
+					{{ item.icon }}
+				</span>
 				{{ item.name }}
 			</router-link>
 		</nav>
@@ -58,16 +59,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import {
-	HomeIcon,
-	ClipboardListIcon,
-	ShoppingBagIcon,
-	UsersIcon,
-	ChartBarIcon,
-	CogIcon,
-	BellIcon,
-	CalendarIcon,
-} from '@heroicons/vue/outline';
 
 const user = ref({
 	name: 'Juan Pérez',
@@ -75,13 +66,13 @@ const user = ref({
 });
 
 const navigation = ref([
-	{ name: 'Dashboard', href: '/owner', icon: HomeIcon },
-	{ name: 'Órdenes', href: '/owner/orders', icon: ClipboardListIcon },
-	{ name: 'Menú', href: '/owner/menu', icon: ShoppingBagIcon },
-	{ name: 'Clientes', href: '/owner/customers', icon: UsersIcon },
-	{ name: 'Analíticas', href: '/owner/analytics', icon: ChartBarIcon },
-	{ name: 'Promociones', href: '/owner/promotions', icon: BellIcon },
-	{ name: 'Horarios', href: '/owner/schedule', icon: CalendarIcon },
-	{ name: 'Configuración', href: '/owner/settings', icon: CogIcon },
+	{ name: 'Dashboard', href: '/owner', icon: '🏠' },
+	{ name: 'Órdenes', href: '/owner/orders', icon: '📋' },
+	{ name: 'Menú', href: '/owner/menu', icon: '🛍️' },
+	{ name: 'Clientes', href: '/owner/customers', icon: '👥' },
+	{ name: 'Analíticas', href: '/owner/analytics', icon: '📊' },
+	{ name: 'Promociones', href: '/owner/promotions', icon: '🔔' },
+	{ name: 'Horarios', href: '/owner/schedule', icon: '📅' },
+	{ name: 'Configuración', href: '/owner/settings', icon: '⚙️' },
 ]);
 </script>
