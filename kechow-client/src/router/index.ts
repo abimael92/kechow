@@ -4,18 +4,18 @@ import { useAuthStore } from '@/store/auth/auth.store';
 import MainLayout from '@/layout/MainLayout.vue';
 
 // Import non-owner pages (eager)
-import LandingPage from '@/pages/LandingPage.vue';
-import LoginView from '@/features/auth/components/LoginForm.vue';
-import RegisterView from '@/features/auth/components/RegisterView.vue';
-import HomePage from '@/pages/HomePage.vue';
-import RestaurantDetailView from '@/pages/RestaurantDetailView.vue';
-import RestaurantListPage from '@/pages/RestaurantListPage.vue';
+import LandingPage from '@pages/LandingPage.vue';
+import LoginView from '@features/auth/components/LoginForm.vue';
+import RegisterView from '@features/auth/components/RegisterView.vue';
+import HomePage from '@pages/HomePage.vue';
+import RestaurantDetailView from '@pages/RestaurantDetailView.vue';
+import RestaurantListPage from '@pages/RestaurantListPage.vue';
 
 // Lazy load owner pages
-const OwnerDashboardPage = () => import('@/pages/owner/OwnerDashboardPage.vue');
-const MenuItemsListPage = () => import('@/pages/owner/MenuItemsListPage.vue');
-const OrdersListPage = () => import('@/pages/owner/OrdersListPage.vue');
-const EditMenuItemPage = () => import('@/pages/owner/EditMenuItemPage.vue');
+const OwnerDashboardPage = () => import('@pages/owner/OwnerDashboardPage.vue');
+const MenuItemsListPage = () => import('@pages/owner/MenuItemsListPage.vue');
+const OrdersListPage = () => import('@pages/owner/OrdersListPage.vue');
+const EditMenuItemPage = () => import('@pages/owner/EditMenuItemPage.vue');
 
 const routes = [
 	{
