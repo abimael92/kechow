@@ -33,10 +33,7 @@
 								<div
 									class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
 								>
-									<ExclamationTriangleIcon
-										class="h-6 w-6 text-red-600"
-										aria-hidden="true"
-									/>
+									<span class="h-6 w-6 text-red-600 inline-block">!</span>
 								</div>
 								<div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
 									<DialogTitle
@@ -86,7 +83,6 @@ import {
 	TransitionChild,
 	TransitionRoot,
 } from '@headlessui/vue';
-import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
 	isOpen: {
