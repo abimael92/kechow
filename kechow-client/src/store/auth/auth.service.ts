@@ -1,14 +1,15 @@
 import axios from 'axios';
+import api from '@/lib/axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/';
 
 export const login = async (payload: { email: string; password: string }) => {
 	try {
-		const response = await axios.post(`${API_URL}/login`, payload);
+		const response = await api.post('/api/login', payload);
 		return response.data;
 	} catch (error) {
 		if (axios.isAxiosError(error)) {
-			throw error.response?.data || error.message;
+			throw new Error(error.response?.data?.message || error.message);
 		}
 		throw error;
 	}
