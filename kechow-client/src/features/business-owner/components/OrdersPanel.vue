@@ -40,15 +40,11 @@
 				<div class="mt-2">
 					<div class="flex items-center text-sm text-gray-500">
 						<div class="flex items-center">
-							<ShoppingBagIcon
-								class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-							/>
+							<span class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400">🛍️</span>
 							<p>{{ order.items.length }} artículos</p>
 						</div>
 						<div class="flex items-center ml-4">
-							<CurrencyDollarIcon
-								class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-							/>
+							<span class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400">💵</span>
 							<p>${{ order.total }}</p>
 						</div>
 					</div>
@@ -77,7 +73,6 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { ShoppingBagIcon, CurrencyDollarIcon } from '@heroicons/vue/outline';
 
 const statusLabels = {
 	received: 'Recibido',
