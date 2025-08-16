@@ -22,6 +22,7 @@ Route::get('/docs', DocsController::class);
 Route::get('/full-docs', FullDocsController::class);
 
 // Auth routes
+// Route::post('/login', [AuthController::class, 'login'])->middleware('cors');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
