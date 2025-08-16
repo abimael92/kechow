@@ -2,12 +2,8 @@
 	<div class="overflow-hidden rounded-lg bg-white shadow">
 		<div class="p-5">
 			<div class="flex items-center">
-				<div class="flex-shrink-0">
-					<component
-						:is="getIconComponent(stat.icon)"
-						class="h-6 w-6 text-gray-400"
-						aria-hidden="true"
-					/>
+				<div class="flex-shrink-0 text-2xl">
+					{{ getIcon(stat.icon) }}
 				</div>
 				<div class="ml-5 w-0 flex-1">
 					<dl>
@@ -31,14 +27,14 @@
 							: 'bg-red-100 text-red-800'
 					"
 				>
-					<component
-						:is="stat.changeType === 'increase' ? ArrowUpIcon : ArrowDownIcon"
-						class="-ml-0.5 mr-1 h-3 w-3"
+					<span
+						class="-ml-0.5 mr-1"
 						:class="
 							stat.changeType === 'increase' ? 'text-green-500' : 'text-red-500'
 						"
-						aria-hidden="true"
-					/>
+					>
+						{{ stat.changeType === 'increase' ? '⬆️' : '⬇️' }}
+					</span>
 					{{ stat.change }}
 				</span>
 			</div>
@@ -48,14 +44,6 @@
 
 <script setup>
 import { defineProps } from 'vue';
-import {
-	ArrowUpIcon,
-	ArrowDownIcon,
-	ShoppingBagIcon,
-	ClockIcon,
-	TruckIcon,
-	CurrencyDollarIcon,
-} from '@heroicons/vue/24/outline';
 
 const props = defineProps({
 	stat: {
@@ -64,13 +52,13 @@ const props = defineProps({
 	},
 });
 
-const getIconComponent = (iconName) => {
+const getIcon = (iconName) => {
 	const icons = {
-		NewOrdersIcon: ShoppingBagIcon,
-		PreparingIcon: ClockIcon,
-		ReadyIcon: TruckIcon,
-		RevenueIcon: CurrencyDollarIcon,
+		NewOrdersIcon: '🛒',
+		PreparingIcon: '⏳',
+		ReadyIcon: '🚚',
+		RevenueIcon: '💵',
 	};
-	return icons[iconName] || ShoppingBagIcon;
+	return icons[iconName] || '📦';
 };
 </script>

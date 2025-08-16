@@ -120,7 +120,12 @@
 												alt="Preview"
 												class="h-full w-full object-cover"
 											/>
-											<PhotoIcon v-else class="h-full w-full text-gray-300" />
+											<span
+												v-else
+												class="h-full w-full text-gray-300 flex items-center justify-center"
+											>
+												No image
+											</span>
 										</span>
 										<button
 											type="button"
@@ -172,7 +177,6 @@ import {
 	TransitionChild,
 	TransitionRoot,
 } from '@headlessui/vue';
-import { PhotoIcon } from '@heroicons/vue/24/outline';
 
 const props = defineProps({
 	isOpen: {

@@ -54,9 +54,9 @@
 							/>
 							<div
 								v-else
-								class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center text-gray-500"
+								class="w-16 h-16 bg-gray-300 rounded-full flex-shrink-0 flex items-center justify-center text-gray-500 text-xs"
 							>
-								<PhotoIcon class="h-8 w-8" />
+								No image
 							</div>
 						</div>
 						<div>
@@ -66,10 +66,7 @@
 										@click="openEditItemModal(item)"
 										class="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500"
 									>
-										<PencilIcon
-											class="w-5 h-5 text-gray-400"
-											aria-hidden="true"
-										/>
+										<span class="w-5 h-5 text-gray-400">✏️</span>
 										<span class="ml-3">Editar</span>
 									</button>
 								</div>
@@ -78,10 +75,7 @@
 										@click="confirmDeleteItem(item)"
 										class="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-br-lg hover:text-gray-500"
 									>
-										<TrashIcon
-											class="w-5 h-5 text-gray-400"
-											aria-hidden="true"
-										/>
+										<span class="w-5 h-5 text-gray-400">🗑️</span>
 										<span class="ml-3">Eliminar</span>
 									</button>
 								</div>
@@ -115,7 +109,6 @@
 
 <script setup>
 import { ref } from 'vue';
-import { PencilIcon, TrashIcon, PhotoIcon } from '@heroicons/vue/outline';
 import MenuItemModal from '@/features/business-owner/components/MenuItemModal.vue';
 import ConfirmationModal from '@/components/ConfirmationModal.vue';
 
@@ -188,18 +181,14 @@ function closeDeleteModal() {
 async function handleSaveItem(itemData) {
 	try {
 		if (itemData.id) {
-			// Update existing item
 			const category = menuCategories.value.find((c) =>
 				c.items.some((i) => i.id === itemData.id)
 			);
 			if (category) {
 				const itemIndex = category.items.findIndex((i) => i.id === itemData.id);
-				if (itemIndex !== -1) {
-					category.items[itemIndex] = { ...itemData };
-				}
+				if (itemIndex !== -1) category.items[itemIndex] = { ...itemData };
 			}
 		} else {
-			// Add new item
 			const newItem = {
 				...itemData,
 				id:
@@ -207,7 +196,6 @@ async function handleSaveItem(itemData) {
 						...menuCategories.value.flatMap((c) => c.items.map((i) => i.id))
 					) + 1,
 			};
-			// For simplicity, adding to first category
 			menuCategories.value[0].items.push(newItem);
 		}
 		closeItemModal();

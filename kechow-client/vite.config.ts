@@ -4,6 +4,7 @@ import path from 'path';
 
 export default defineConfig({
 	plugins: [vue()],
+	server: { fs: { strict: false } },
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
@@ -12,6 +13,7 @@ export default defineConfig({
 			'@layout': path.resolve(__dirname, './src/layout'),
 			'@features': path.resolve(__dirname, './src/features'),
 			'@store': path.resolve(__dirname, './src/store'),
+			'@pages': path.resolve(__dirname, './src/pages'),
 		},
 	},
 });

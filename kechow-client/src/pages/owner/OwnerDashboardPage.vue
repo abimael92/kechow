@@ -1,23 +1,6 @@
 <template>
 	<div class="p-6">
-		<ErrorBoundary>
-			<DashboardOverview />
-			<div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
-				<div class="lg:col-span-2 space-y-6">
-					<ErrorBoundary>
-						<OrdersPanel />
-					</ErrorBoundary>
-					<ErrorBoundary>
-						<MenuManagement />
-					</ErrorBoundary>
-				</div>
-				<div class="space-y-6">
-					<ErrorBoundary>
-						<QuickStats />
-					</ErrorBoundary>
-				</div>
-			</div>
-		</ErrorBoundary>
+		<DashboardOverview />
 	</div>
 </template>
 
