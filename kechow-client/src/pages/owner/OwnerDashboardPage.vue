@@ -1,22 +1,7 @@
 <template>
-	<div class="p-6">
-		<DashboardOverview />
-	</div>
+	<OwnerDashboard />
 </template>
 
-<script setup>
-import { onMounted } from 'vue';
-import { useAuthStore } from '@/store/auth/auth.store';
-import DashboardOverview from '@/features/business-owner/components/DashboardOverview.vue';
-
-const authStore = useAuthStore();
-
-onMounted(() => {
-	console.log('Dashboard mounted - auth state:', {
-		isAuthenticated: authStore.isAuthenticated,
-		isOwner: authStore.isOwner,
-		user: authStore.user,
-		token: authStore.token,
-	});
-});
+<script setup lang="ts">
+import OwnerDashboard from '@/features/business-owner/views/OwnerDashboard.vue';
 </script>
