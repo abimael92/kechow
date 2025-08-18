@@ -13,7 +13,7 @@ import RestaurantListPage from '@pages/RestaurantListPage.vue';
 
 // Lazy load owner pages
 const OwnerDashboardPage = () => import('@pages/owner/OwnerDashboardPage.vue');
-const MenuItemsListPage = () => import('@pages/owner/MenuItemsListPage.vue');
+const OwnerMenuPage = () => import('@pages/owner/MenuPage.vue');
 const OrdersListPage = () => import('@pages/owner/OrdersListPage.vue');
 const EditMenuItemPage = () => import('@pages/owner/EditMenuItemPage.vue');
 
@@ -53,9 +53,9 @@ const routes = [
 				meta: { requiresAuth: true, role: 'owner' },
 			},
 			{
-				path: 'owner/menu-items',
-				name: 'OwnerMenuItems',
-				component: MenuItemsListPage,
+				path: 'owner/menu',
+				name: 'OwnerMenu',
+				component: OwnerMenuPage,
 				meta: { requiresAuth: true, role: 'owner' },
 			},
 			{

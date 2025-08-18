@@ -8,9 +8,6 @@
 import { onMounted } from 'vue';
 import { useAuthStore } from '@/store/auth/auth.store';
 import DashboardOverview from '@/features/business-owner/components/DashboardOverview.vue';
-import OrdersPanel from '@/features/business-owner/components/OrdersPanel.vue';
-import MenuManagement from '@/features/business-owner/components/MenuManagement.vue';
-import QuickStats from '@/features/business-owner/components/QuickStats.vue';
 
 const authStore = useAuthStore();
 
