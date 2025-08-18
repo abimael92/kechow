@@ -1,16 +1,16 @@
 <template>
 	<div>
 		<h1 class="text-2xl font-bold text-gray-900">Resumen del Restaurante</h1>
-
 		<div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
 			<DashboardCard v-for="stat in stats" :key="stat.name" :stat="stat" />
 		</div>
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import DashboardCard from '@/features/business-owner/components/DashboardCard.vue';
+import DashboardCard from './DashboardCard.vue';
+import { fetchOwnerDashboard } from '@/features/business-owner/services/businessOwner.service';
 
 const stats = ref([
 	{
@@ -44,36 +44,33 @@ const stats = ref([
 ]);
 
 onMounted(async () => {
-	// Fetch data from API
-	const response = await fetch('/api/owner/dashboard');
-	const data = await response.json();
-
+	const data = await fetchOwnerDashboard();
 	stats.value = [
 		{
 			name: 'Pedidos Nuevos',
 			value: data.newOrders,
-			change: data.newOrdersChange,
+			change: data.newOrdersChange + '%',
 			changeType: data.newOrdersChange >= 0 ? 'increase' : 'decrease',
 			icon: 'NewOrdersIcon',
 		},
 		{
 			name: 'En Preparación',
 			value: data.preparing,
-			change: data.preparingChange,
+			change: data.preparingChange + '%',
 			changeType: data.preparingChange >= 0 ? 'increase' : 'decrease',
 			icon: 'PreparingIcon',
 		},
 		{
 			name: 'Listos para Entrega',
 			value: data.ready,
-			change: data.readyChange,
+			change: data.readyChange + '%',
 			changeType: data.readyChange >= 0 ? 'increase' : 'decrease',
 			icon: 'ReadyIcon',
 		},
 		{
 			name: 'Ingresos Hoy',
 			value: `$${data.revenue}`,
-			change: data.revenueChange,
+			change: data.revenueChange + '%',
 			changeType: data.revenueChange >= 0 ? 'increase' : 'decrease',
 			icon: 'RevenueIcon',
 		},
