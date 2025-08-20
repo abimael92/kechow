@@ -1,4 +1,5 @@
-import axios from '@/lib/axios';
+// businessOwner.service.ts
+import axios from '@/app/lib/axios';
 
 export const BusinessOwnerService = {
 	getDashboard: () => axios.get('/owner/dashboard'),
