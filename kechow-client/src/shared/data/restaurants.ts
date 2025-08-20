@@ -1,0 +1,328 @@
+import * as restaurantImages from '../../assets/index';
+
+export const restaurants = [
+	{
+		id: 1,
+		name: 'Porto Chico',
+		description: 'Restaurante de mariscos',
+		image: restaurantImages.portoChico,
+		menu: [
+			{
+				name: 'Ceviche clásico',
+				description: 'Pescado marinado en jugo de limón con vegetales frescos.',
+				image: 'https://source.unsplash.com/80x80/?ceviche',
+				price: 120,
+			},
+			{
+				name: 'Camarones al mojo de ajo',
+				description: 'Camarones salteados con ajo y mantequilla.',
+				image: 'https://source.unsplash.com/80x80/?shrimp',
+				price: 150,
+			},
+			{
+				name: 'Cocktail de mariscos',
+				description: 'Mezcla de mariscos servidos en salsa de tomate.',
+				image: 'https://source.unsplash.com/80x80/?seafood-cocktail',
+				price: 130,
+			},
+			{
+				name: 'Filete empanizado',
+				description: 'Filete de pescado empanizado con guarnición.',
+				image: 'https://source.unsplash.com/80x80/?fried-fish',
+				price: 140,
+			},
+		],
+		rating: 4.3,
+	},
+	{
+		id: 2,
+		name: 'Menuderia IME',
+		description: 'Menudería tradicional',
+		image: restaurantImages.menuderiaIme,
+		menu: [
+			{
+				name: 'Menudo rojo',
+				description: 'Menudo tradicional con chile rojo.',
+				image: 'https://source.unsplash.com/80x80/?menudo',
+				price: 95,
+			},
+			{
+				name: 'Menudo blanco',
+				description: 'Menudo estilo norteño sin chile.',
+				image: 'https://source.unsplash.com/80x80/?soup',
+				price: 95,
+			},
+			{
+				name: 'Tacos de menudo',
+				description: 'Tortillas rellenas con carne de menudo.',
+				image: 'https://source.unsplash.com/80x80/?taco',
+				price: 85,
+			},
+			{
+				name: 'Tortillas hechas a mano',
+				description: 'Tortillas frescas hechas al momento.',
+				image: 'https://source.unsplash.com/80x80/?tortilla',
+				price: 20,
+			},
+		],
+		rating: 4.7,
+	},
+	{
+		id: 3,
+		name: 'Tacos Cano',
+		description: 'Taquería',
+		image: restaurantImages.tacosCano,
+		menu: [
+			{
+				name: 'Tacos al pastor',
+				description: 'Carne marinada al trompo con piña.',
+				image: 'https://source.unsplash.com/80x80/?pastor-taco',
+				price: 18,
+			},
+			{
+				name: 'Tacos de carne asada',
+				description: 'Tacos con carne de res asada.',
+				image: 'https://source.unsplash.com/80x80/?carne-asada',
+				price: 20,
+			},
+			{
+				name: 'Quesadillas',
+				description: 'Tortilla con queso fundido y guarniciones.',
+				image: 'https://source.unsplash.com/80x80/?quesadilla',
+				price: 25,
+			},
+			{
+				name: 'Salsas caseras',
+				description: 'Variedad de salsas picantes y suaves.',
+				image: 'https://source.unsplash.com/80x80/?salsa',
+				price: 0,
+			},
+		],
+		rating: 4.1,
+	},
+	{
+		id: 4,
+		name: 'La Terraza',
+		description: 'Restaurante familiar',
+		image: restaurantImages.laTerraza,
+		menu: [
+			{
+				name: 'Desayunos completos',
+				description: 'Huevos, frijoles, tortillas y café.',
+				image: 'https://source.unsplash.com/80x80/?breakfast',
+				price: 90,
+			},
+			{
+				name: 'Platos regionales',
+				description: 'Especialidades de la región con ingredientes locales.',
+				image: 'https://source.unsplash.com/80x80/?mexican-food',
+				price: 110,
+			},
+			{
+				name: 'Ensaladas',
+				description: 'Variedad de ensaladas frescas y saludables.',
+				image: 'https://source.unsplash.com/80x80/?salad',
+				price: 70,
+			},
+			{
+				name: 'Jugos naturales',
+				description: 'Jugos frescos de frutas de temporada.',
+				image: 'https://source.unsplash.com/80x80/?juice',
+				price: 40,
+			},
+		],
+		rating: 4.0,
+	},
+	{
+		id: 5,
+		name: 'Restaurante El Capi',
+		description: 'Comida mexicana',
+		image: restaurantImages.restauranteElCapi,
+		menu: [
+			{
+				name: 'Carnes asadas',
+				description: 'Cortes selectos a la parrilla.',
+				image: 'https://source.unsplash.com/80x80/?grilled-meat',
+				price: 150,
+			},
+			{
+				name: 'Tacos',
+				description: 'Tacos variados con guarniciones tradicionales.',
+				image: 'https://source.unsplash.com/80x80/?tacos',
+				price: 20,
+			},
+			{
+				name: 'Guisados',
+				description: 'Guisos caseros con sabor tradicional.',
+				image: 'https://source.unsplash.com/80x80/?stew',
+				price: 100,
+			},
+			{
+				name: 'Postres tradicionales',
+				description: 'Dulces típicos mexicanos.',
+				image: 'https://source.unsplash.com/80x80/?dessert',
+				price: 60,
+			},
+		],
+		rating: 4.2,
+	},
+	{
+		id: 6,
+		name: 'Hamburguesas De Chito',
+		description: 'Hamburguesería',
+		image: restaurantImages.hamburguesasDeChito,
+		menu: [
+			{
+				name: 'Hamburguesas clásicas',
+				description: 'Hamburguesa con lechuga, tomate y queso.',
+				image: 'https://source.unsplash.com/80x80/?burger',
+				price: 85,
+			},
+			{
+				name: 'Hamburguesa con queso y tocino',
+				description: 'Clásica con extra queso y tocino crujiente.',
+				image: 'https://source.unsplash.com/80x80/?bacon-burger',
+				price: 100,
+			},
+			{
+				name: 'Papas fritas',
+				description: 'Papas fritas crujientes con sal.',
+				image: 'https://source.unsplash.com/80x80/?fries',
+				price: 40,
+			},
+			{
+				name: 'Malteadas',
+				description: 'Malteadas cremosas de vainilla, chocolate y fresa.',
+				image: 'https://source.unsplash.com/80x80/?milkshake',
+				price: 55,
+			},
+		],
+		rating: 4.1,
+	},
+	{
+		id: 7,
+		name: 'El Charco de la Rana',
+		description: 'Restaurante de comida mexicana',
+		image: restaurantImages.elCharcoDeLaRana,
+		menu: [
+			{
+				name: 'Especialidades regionales',
+				description: 'Platos típicos de la región.',
+				image: 'https://source.unsplash.com/80x80/?regional-food',
+				price: 120,
+			},
+			{
+				name: 'Sopas',
+				description: 'Variedad de sopas caseras.',
+				image: 'https://source.unsplash.com/80x80/?soup',
+				price: 80,
+			},
+			{
+				name: 'Antojitos',
+				description: 'Botanas y antojitos mexicanos.',
+				image: 'https://source.unsplash.com/80x80/?antojitos',
+				price: 60,
+			},
+			{
+				name: 'Bebidas tradicionales',
+				description: 'Aguas frescas y bebidas típicas.',
+				image: 'https://source.unsplash.com/80x80/?agua-fresca',
+				price: 35,
+			},
+		],
+		rating: 4.3,
+	},
+	{
+		id: 8,
+		name: 'Gorditas Y Tortillas CHANITO',
+		description: 'Comida rápida tradicional',
+		image: restaurantImages.gorditasYTortillasChanito,
+		menu: [
+			{
+				name: 'Gorditas rellenas',
+				description: 'Gorditas rellenas de diversos guisos.',
+				image: 'https://source.unsplash.com/80x80/?gorditas',
+				price: 50,
+			},
+			{
+				name: 'Tortillas hechas a mano',
+				description: 'Tortillas frescas y calientes.',
+				image: 'https://source.unsplash.com/80x80/?tortilla',
+				price: 20,
+			},
+			{
+				name: 'Salsas variadas',
+				description: 'Diferentes salsas para acompañar.',
+				image: 'https://source.unsplash.com/80x80/?salsa',
+				price: 0,
+			},
+		],
+		rating: 4.4,
+	},
+	{
+		id: 9,
+		name: 'Los Girasoles',
+		description: 'Restaurante familiar',
+		image: restaurantImages.losGirasoles,
+		menu: [
+			{
+				name: 'Platillos mexicanos',
+				description: 'Variedad de platillos tradicionales.',
+				image: 'https://source.unsplash.com/80x80/?mexican-food',
+				price: 110,
+			},
+			{
+				name: 'Desayunos',
+				description: 'Desayunos completos y variados.',
+				image: 'https://source.unsplash.com/80x80/?breakfast',
+				price: 90,
+			},
+			{
+				name: 'Café',
+				description: 'Café tradicional y especialidades.',
+				image: 'https://source.unsplash.com/80x80/?coffee',
+				price: 30,
+			},
+			{
+				name: 'Jugos naturales',
+				description: 'Jugos frescos de temporada.',
+				image: 'https://source.unsplash.com/80x80/?juice',
+				price: 40,
+			},
+		],
+		rating: 4.1,
+	},
+	{
+		id: 10,
+		name: 'Green Leaf',
+		description: 'Restaurante vegano y vegetariano',
+		// image: restaurantImages.greenLeaf, // Uncomment if image available
+		menu: [
+			{
+				name: 'Ensaladas frescas',
+				description: 'Mezcla de verduras frescas con aderezos.',
+				image: 'https://source.unsplash.com/80x80/?salad',
+				price: 90,
+			},
+			{
+				name: 'Wraps veganos',
+				description: 'Tortillas rellenas con vegetales y hummus.',
+				image: 'https://source.unsplash.com/80x80/?vegan-wrap',
+				price: 85,
+			},
+			{
+				name: 'Jugos naturales',
+				description: 'Jugos frescos de frutas orgánicas.',
+				image: 'https://source.unsplash.com/80x80/?juice',
+				price: 45,
+			},
+			{
+				name: 'Postres veganos',
+				description: 'Postres sin ingredientes animales.',
+				image: 'https://source.unsplash.com/80x80/?vegan-dessert',
+				price: 60,
+			},
+		],
+		rating: 4.5,
+	},
+];
