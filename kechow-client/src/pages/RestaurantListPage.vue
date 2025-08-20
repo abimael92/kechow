@@ -6,7 +6,7 @@ import SearchBar from '@/components/SearchBar.vue';
 import CategoryChips from '@/components/CategoryChips.vue';
 import RestaurantCard from '@/components/RestaurantCard.vue';
 
-import { restaurants as restaurantData } from '@/data/restaurants';
+import { restaurants as restaurantData } from '@/shared/data/restaurants';
 import { categoryIcons } from '@/assets/svg/food';
 
 const { t } = useI18n();

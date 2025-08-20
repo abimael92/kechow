@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { restaurants as restaurantData } from '@/data/restaurants';
+import { restaurants as restaurantData } from '@/shared/data/restaurants';
 import { categoryIcons } from '../assets/svg/food';
 
 import { useRouter } from 'vue-router';
