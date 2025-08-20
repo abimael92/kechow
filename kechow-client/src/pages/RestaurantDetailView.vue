@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { restaurants } from '@/data/restaurants';
+import { restaurants } from '@/shared/data/restaurants';
 
 const route = useRoute();
 const restaurantId = parseInt(route.params.id as string);

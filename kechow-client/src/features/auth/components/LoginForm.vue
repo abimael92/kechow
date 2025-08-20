@@ -95,7 +95,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { useAuthStore } from '@/store/auth/auth.store';
+import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
 
 const showPassword = ref(false);

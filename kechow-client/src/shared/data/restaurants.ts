@@ -1,4 +1,4 @@
-import * as restaurantImages from '../assets/index';
+import * as restaurantImages from '../../assets/index';
 
 export const restaurants = [
 	{

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useAuthStore } from '@/store/auth/auth.store';
+import { useAuthStore } from '@/app/store/auth/auth.store';
 import DashboardOverview from '@/features/business-owner/components/DashboardOverview.vue';
 
 const authStore = useAuthStore();

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/store/auth/auth.store';
+import { useAuthStore } from '@/app/store/auth/auth.store';
 
-import MainLayout from '@/layout/MainLayout.vue';
+import MainLayout from '@layout/MainLayout.vue';
 
 // Import non-owner pages (eager)
 import LandingPage from '@pages/LandingPage.vue';

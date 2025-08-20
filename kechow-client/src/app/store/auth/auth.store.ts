@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 import axios from 'axios';
 
-// Define a User interface including role
+// ! User type including role
 interface User {
 	id: number;
 	name: string;
@@ -12,26 +12,21 @@ interface User {
 	role: string;
 }
 
-// Define API response structure
-interface AuthResponse {
-	user: User;
-	token: string;
-}
-
+// * Auth store
 export const useAuthStore = defineStore('auth', () => {
 	const router = useRouter();
 
-	// Reactive state
-	const user = ref<User | null>(null);
-	const token = ref<string | null>(localStorage.getItem('token'));
+	const user = ref<User | null>(
+		JSON.parse(localStorage.getItem('user') || 'null')
+	);
+	const token = ref(localStorage.getItem('token'));
 	const error = ref<string | null>(null);
 	const isLoading = ref(false);
 
-	// Getters
 	const isAuthenticated = computed(() => !!token.value);
 	const isOwner = computed(() => user.value?.role === 'owner');
 
-	// Actions
+	// * Login
 	const loginAction = async (credentials: {
 		email: string;
 		password: string;
@@ -39,47 +34,31 @@ export const useAuthStore = defineStore('auth', () => {
 		try {
 			isLoading.value = true;
 			error.value = null;
-
 			const response = await login(credentials);
 
-			// Type guard to ensure proper response structure
-			if (!response || !('user' in response))
-				throw new Error('Invalid response structure');
+			if (!response || !response.user || !response.token)
+				throw new Error('Invalid response');
 
-			// Update state
 			user.value = response.user;
 			token.value = response.token;
 
-			// Save to localStorage
 			localStorage.setItem('user', JSON.stringify(response.user));
 			localStorage.setItem('token', response.token);
-
-			// Set axios default auth header
 			axios.defaults.headers.common[
 				'Authorization'
 			] = `Bearer ${response.token}`;
 
 			return response;
-		} catch (err) {
-			// Clear auth state on error
-			user.value = null;
-			token.value = null;
-			localStorage.removeItem('user');
-			localStorage.removeItem('token');
-			delete axios.defaults.headers.common['Authorization'];
-
-			if (err instanceof Error) {
-				error.value = err.message;
-			} else {
-				error.value = 'Login failed';
-			}
+		} catch (err: any) {
+			logout();
+			error.value = err.message || 'Login failed';
 			throw err;
 		} finally {
 			isLoading.value = false;
 		}
 	};
 
-	// Register action
+	// * Register
 	const registerAction = async (payload: {
 		name: string;
 		email: string;
@@ -90,47 +69,41 @@ export const useAuthStore = defineStore('auth', () => {
 		try {
 			isLoading.value = true;
 			error.value = null;
-
 			const response = await register(payload);
 
-			if (!response?.user || !response?.token) {
-				throw new Error('Invalid registration data');
-			}
+			if (!response.user || !response.token)
+				throw new Error('Invalid registration');
 
 			user.value = response.user;
 			token.value = response.token;
-			localStorage.setItem('token', response.token);
 
-			// Redirect based on role
-			if (user.value?.role === 'owner') {
-				await router.push('/owner/dashboard');
-			} else {
-				await router.push('/home');
-			}
-		} catch (err) {
-			if (err instanceof Error) {
-				error.value = err.message;
-			} else {
-				error.value = 'Registration failed';
-			}
+			localStorage.setItem('user', JSON.stringify(response.user));
+			localStorage.setItem('token', response.token);
+			axios.defaults.headers.common[
+				'Authorization'
+			] = `Bearer ${response.token}`;
+
+			if (user.value?.role === 'owner') router.push('/owner/dashboard');
+			else router.push('/home');
+		} catch (err: any) {
+			error.value = err.message || 'Registration failed';
 			throw err;
 		} finally {
 			isLoading.value = false;
 		}
 	};
 
-	// Initialize auth state
+	// * Initialize user
 	const initialize = async () => {
 		if (token.value && !user.value) {
 			try {
 				isLoading.value = true;
 				const data = await getUser(token.value);
-
-				if (!data?.user) throw new Error('Invalid user data');
-
 				user.value = data.user;
-			} catch (err) {
-				console.error('Auth initialization failed:', err);
+				axios.defaults.headers.common[
+					'Authorization'
+				] = `Bearer ${token.value}`;
+			} catch {
 				logout();
 			} finally {
 				isLoading.value = false;
@@ -138,7 +111,7 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
-	// Logout action
+	// * Logout
 	const logout = () => {
 		user.value = null;
 		token.value = null;

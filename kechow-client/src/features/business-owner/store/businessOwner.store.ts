@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from '@/lib/axios';
+import axios from '@/app/lib/axios';
 
 export const useBusinessOwnerStore = defineStore('businessOwner', {
 	state: () => ({ dashboard: {}, orders: [] }),
