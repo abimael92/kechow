@@ -71,6 +71,6 @@
 </template>
 
 <script setup>
-import { useAuthStore } from '@/store/auth/auth.store';
+import { useAuthStore } from '@/app/store/auth/auth.store';
 const authStore = useAuthStore();
 </script>
