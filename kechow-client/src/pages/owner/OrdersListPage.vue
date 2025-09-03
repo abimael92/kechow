@@ -4,6 +4,6 @@
 	</div>
 </template>
 
-<script setup>
-import OrdersPanel from '../containers/OrdersPanel.vue';
+<script setup lang="ts">
+import OrdersPanel from '@/features/business-owner/containers/OrdersPanel.vue';
 </script>
