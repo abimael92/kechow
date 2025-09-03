@@ -88,3 +88,47 @@ export interface DashboardStats {
 		revenue: number;
 	}>;
 }
+
+export interface MenuItem {
+	id: string;
+	name: string;
+	description: string;
+	price: number;
+	category: string;
+	available: boolean;
+	image: string;
+	ingredients?: string[];
+	preparationTime?: number;
+	calories?: number;
+	isVegetarian?: boolean;
+	isVegan?: boolean;
+	isGlutenFree?: boolean;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface MenuStats {
+	totalItems: number;
+	availableItems: number;
+	outOfStockItems: number;
+	averagePrice: number;
+	categories: {
+		name: string;
+		count: number;
+	}[];
+}
+
+export interface MenuItemFormData {
+	name: string;
+	description: string;
+	price: number;
+	category: string;
+	available: boolean;
+	image: string;
+	ingredients: string[];
+	preparationTime?: number;
+	calories?: number;
+	isVegetarian: boolean;
+	isVegan: boolean;
+	isGlutenFree: boolean;
+}

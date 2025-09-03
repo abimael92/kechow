@@ -1,9 +1,9 @@
 <template>
 	<div class="p-6">
-		<MenuItemsList />
+		<MenuManagement />
 	</div>
 </template>
 
-<script setup>
-import MenuItemsList from '@/features/business-owner/components/MenuItemsList.vue';
+<script setup lang="ts">
+import MenuManagement from '@/features/business-owner/containers/MenuManagement.vue';
 </script>
