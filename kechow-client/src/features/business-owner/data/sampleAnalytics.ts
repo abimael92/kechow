@@ -1,0 +1,47 @@
+import type { AnalyticsData } from '../types';
+
+export const sampleAnalyticsData: AnalyticsData = {
+	totalRevenue: 19247,
+	totalOrders: 1834,
+	averageOrderValue: 28.5,
+	customerRating: 4.8,
+	revenueChange: 15.3,
+	ordersChange: 12.1,
+	aovChange: 8.2,
+	ratingChange: 0.3,
+	revenueTrend: [
+		{ month: 'Jan', revenue: 12000 },
+		{ month: 'Feb', revenue: 13500 },
+		{ month: 'Mar', revenue: 14500 },
+		{ month: 'Apr', revenue: 16000 },
+		{ month: 'May', revenue: 17500 },
+		{ month: 'Jun', revenue: 18500 },
+		{ month: 'Jul', revenue: 19247 },
+	],
+	ordersByHour: [
+		{ hour: '6AM', orders: 5 },
+		{ hour: '8AM', orders: 15 },
+		{ hour: '10AM', orders: 25 },
+		{ hour: '12PM', orders: 65 },
+		{ hour: '2PM', orders: 45 },
+		{ hour: '4PM', orders: 35 },
+		{ hour: '6PM', orders: 75 },
+		{ hour: '8PM', orders: 55 },
+		{ hour: '10PM', orders: 30 },
+		{ hour: '12AM', orders: 15 },
+	],
+	salesByCategory: [
+		{ category: 'Pizza', sales: 6750, percentage: 35 },
+		{ category: 'Pasta', sales: 4825, percentage: 25 },
+		{ category: 'Salads', sales: 3850, percentage: 20 },
+		{ category: 'Desserts', sales: 2310, percentage: 12 },
+		{ category: 'Drinks', sales: 1540, percentage: 8 },
+	],
+	topSellingItems: [
+		{ name: 'Margherita Pizza', orders: 142, revenue: 2130, rank: 1 },
+		{ name: 'Chicken Alfredo', orders: 98, revenue: 1666, rank: 2 },
+		{ name: 'Caesar Salad', orders: 87, revenue: 869, rank: 3 },
+		{ name: 'Pepperoni Pizza', orders: 76, revenue: 1291, rank: 4 },
+		{ name: 'Tiramisu', orders: 65, revenue: 454, rank: 5 },
+	],
+};

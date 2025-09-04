@@ -66,6 +66,12 @@ const routes = [
 				meta: { requiresAuth: true, role: 'owner' },
 			},
 			{
+				path: '/owner/analytics',
+				name: 'OwnerAnalytics',
+				component: () => import('@/pages/owner/AnalyticsPage.vue'),
+				meta: { requiresAuth: true, requiresOwner: true },
+			},
+			{
 				path: 'owner/orders',
 				name: 'OwnerOrders',
 				component: OrdersListPage,
