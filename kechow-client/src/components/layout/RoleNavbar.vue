@@ -27,7 +27,7 @@
 					Menu Items
 				</router-link>
 				<router-link
-					to="/owner/stats"
+					to="/owner/analytics"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
 				>
