@@ -158,6 +158,8 @@ export interface MenuSettings {
 		showDescriptions: boolean;
 	};
 	sorting: 'alphabetical' | 'popularity' | 'price';
+	currency: string;
+	taxRate: number;
 }
 
 export interface DeliverySettings {
@@ -211,4 +213,39 @@ export interface StaffPermissions {
 	canManageMenu: boolean;
 	canViewAnalytics: boolean;
 	canManageStaff: boolean;
+}
+
+export interface Review {
+	id: string;
+	customerName: string;
+	rating: number;
+	comment: string;
+	date: string;
+	verified: boolean;
+	orderItems?: string[];
+	response?: string;
+	helpfulCount: number;
+	orderId?: string;
+	customerId?: string;
+}
+
+export interface ReviewStats {
+	averageRating: number;
+	totalReviews: number;
+	responseRate: number;
+	positiveReviews: number;
+	ratingDistribution: {
+		stars: number;
+		count: number;
+		percentage: number;
+	}[];
+	recentReviews: Review[];
+}
+
+export interface ReviewFilters {
+	rating?: number;
+	dateFrom?: string;
+	dateTo?: string;
+	hasResponse?: boolean;
+	verifiedOnly?: boolean;
 }
