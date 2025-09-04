@@ -249,3 +249,41 @@ export interface ReviewFilters {
 	hasResponse?: boolean;
 	verifiedOnly?: boolean;
 }
+
+export interface AnalyticsData {
+	totalRevenue: number;
+	totalOrders: number;
+	averageOrderValue: number;
+	customerRating: number;
+	revenueChange: number;
+	ordersChange: number;
+	aovChange: number;
+	ratingChange: number;
+	revenueTrend: RevenueData[];
+	ordersByHour: OrdersByHourData[];
+	salesByCategory: SalesByCategoryData[];
+	topSellingItems: TopSellingItemData[];
+}
+
+export interface RevenueData {
+	month: string;
+	revenue: number;
+}
+
+export interface OrdersByHourData {
+	hour: string;
+	orders: number;
+}
+
+export interface SalesByCategoryData {
+	category: string;
+	sales: number;
+	percentage: number;
+}
+
+export interface TopSellingItemData {
+	name: string;
+	orders: number;
+	revenue: number;
+	rank: number;
+}
