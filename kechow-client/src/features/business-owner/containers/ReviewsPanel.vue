@@ -112,7 +112,7 @@ import ReviewStatsCard from '../components/reviews/ReviewStatsCard.vue';
 import RatingDistribution from '../components/reviews/RatingDistribution.vue';
 import ReviewCard from '../components/reviews/ReviewCard.vue';
 import { fetchReviews } from '../services/businessOwner.service';
-import type { Review } from '../types';
+import type { Review } from '../types/';
 
 const reviews = ref<Review[]>([]);
 const activeFilter = ref('all');
