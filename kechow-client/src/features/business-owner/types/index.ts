@@ -132,3 +132,83 @@ export interface MenuItemFormData {
 	isVegan: boolean;
 	isGlutenFree: boolean;
 }
+
+export interface RestaurantSettings {
+	name: string;
+	phone: string;
+	address: string;
+	description: string;
+	isOpen: boolean;
+	operatingHours?: OperatingHours[];
+}
+
+export interface OperatingHours {
+	id: string;
+	day: string;
+	openTime: string;
+	closeTime: string;
+	closed: boolean;
+}
+
+export interface MenuSettings {
+	categories: string[];
+	displayOptions: {
+		showImages: boolean;
+		showPrices: boolean;
+		showDescriptions: boolean;
+	};
+	sorting: 'alphabetical' | 'popularity' | 'price';
+}
+
+export interface DeliverySettings {
+	deliveryRadius: number;
+	deliveryFee: number;
+	minimumOrder: number;
+	estimatedDeliveryTime: number;
+	deliveryZones: DeliveryZone[];
+}
+
+export interface DeliveryZone {
+	name: string;
+	fee: number;
+	minOrder: number;
+}
+
+export interface NotificationSettings {
+	emailNotifications: boolean;
+	smsNotifications: boolean;
+	pushNotifications: boolean;
+	orderConfirmation: boolean;
+	orderStatusUpdates: boolean;
+	newReviewNotification: boolean;
+}
+
+export interface PaymentSettings {
+	acceptedMethods: string[];
+	stripeEnabled: boolean;
+	paypalEnabled: boolean;
+	cashOnDelivery: boolean;
+	taxRate: number;
+}
+
+export interface StaffSettings {
+	staffMembers: StaffMember[];
+	roles: string[];
+	permissions: StaffPermissions;
+}
+
+export interface StaffMember {
+	id: string;
+	name: string;
+	email: string;
+	role: string;
+	permissions: string[];
+	active: boolean;
+}
+
+export interface StaffPermissions {
+	canManageOrders: boolean;
+	canManageMenu: boolean;
+	canViewAnalytics: boolean;
+	canManageStaff: boolean;
+}
