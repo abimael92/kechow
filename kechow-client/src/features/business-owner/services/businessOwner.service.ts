@@ -14,9 +14,13 @@ import type {
 	NotificationSettings,
 	PaymentSettings,
 	StaffSettings,
+	Review,
+	ReviewStats,
+	ReviewFilters,
 } from '../types';
 import { sampleMenuItems } from '../data/sampleMenuItems';
 import { sampleOrders } from '../data/sampleOrders';
+import { sampleReviews } from '../data/sampleReviews';
 
 // For development - use sample data
 const useSampleData = import.meta.env.MODE === 'development';
@@ -366,6 +370,8 @@ export const getMenuSettings = async (): Promise<MenuSettings> => {
 				showDescriptions: true,
 			},
 			sorting: 'popularity',
+			currency: 'USD',
+			taxRate: 8.5,
 		};
 	}
 
@@ -384,7 +390,6 @@ export const updateMenuSettings = async (
 	await api.put('/owner/settings/menu', settings);
 };
 
-// Stubs for other settings (expand as needed)
 export const getDeliverySettings = async (): Promise<DeliverySettings> => {
 	const response = await api.get<DeliverySettings>('/owner/settings/delivery');
 	return response.data;
@@ -430,4 +435,124 @@ export const updateStaffSettings = async (
 	settings: Partial<StaffSettings>
 ): Promise<void> => {
 	await api.put('/owner/settings/staff', settings);
+};
+
+/* ------------------------- REVIEWS ------------------------- */
+export const fetchReviews = async (
+	filters?: ReviewFilters
+): Promise<Review[]> => {
+	if (useSampleData) {
+		let filteredReviews = [...sampleReviews];
+
+		if (filters?.rating) {
+			filteredReviews = filteredReviews.filter(
+				(review) => review.rating === filters.rating
+			);
+		}
+
+		if (filters?.hasResponse !== undefined) {
+			filteredReviews = filteredReviews.filter((review) =>
+				filters.hasResponse
+					? review.response !== undefined
+					: review.response === undefined
+			);
+		}
+
+		if (filters?.verifiedOnly) {
+			filteredReviews = filteredReviews.filter((review) => review.verified);
+		}
+
+		filteredReviews.sort(
+			(a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+		);
+
+		return filteredReviews;
+	}
+
+	const response = await api.get<Review[]>('/owner/reviews', {
+		params: filters,
+	});
+	return response.data;
+};
+
+export const getReviewStats = async (): Promise<ReviewStats> => {
+	if (useSampleData) {
+		const totalReviews = sampleReviews.length;
+		const averageRating =
+			sampleReviews.reduce(
+				(sum: any, review: { rating: any }) => sum + review.rating,
+				0
+			) / totalReviews;
+		const responseRate =
+			(sampleReviews.filter((review) => review.response !== undefined).length /
+				totalReviews) *
+			100;
+		const positiveReviews = sampleReviews.filter(
+			(review: { rating: number }) => review.rating >= 4
+		).length;
+
+		const ratingDistribution = [5, 4, 3, 2, 1].map((stars) => ({
+			stars,
+			count: sampleReviews.filter(
+				(review: { rating: number }) => review.rating === stars
+			).length,
+			percentage:
+				(sampleReviews.filter(
+					(review: { rating: number }) => review.rating === stars
+				).length /
+					totalReviews) *
+				100,
+		}));
+
+		return {
+			averageRating,
+			totalReviews,
+			responseRate,
+			positiveReviews,
+			ratingDistribution,
+			recentReviews: sampleReviews.slice(0, 5),
+		};
+	}
+
+	const response = await api.get<ReviewStats>('/owner/reviews/stats');
+	return response.data;
+};
+
+export const addReviewResponse = async (
+	reviewId: string,
+	response: string
+): Promise<void> => {
+	if (useSampleData) {
+		const review = sampleReviews.find((r: { id: string }) => r.id === reviewId);
+		if (review) {
+			review.response = response;
+		}
+		return new Promise((resolve) => setTimeout(resolve, 500));
+	}
+
+	await api.post(`/owner/reviews/${reviewId}/response`, { response });
+};
+
+export const markReviewHelpful = async (reviewId: string): Promise<void> => {
+	if (useSampleData) {
+		const review = sampleReviews.find((r: { id: string }) => r.id === reviewId);
+		if (review) {
+			review.helpfulCount += 1;
+		}
+		return new Promise((resolve) => setTimeout(resolve, 300));
+	}
+
+	await api.post(`/owner/reviews/${reviewId}/helpful`);
+};
+
+export const flagReview = async (
+	reviewId: string,
+	reason: string
+): Promise<void> => {
+	if (useSampleData) {
+		console.log(`Flagging review ${reviewId} for reason: ${reason}`);
+		return new Promise((resolve) => setTimeout(resolve, 300));
+	}
+
+	await api.post(`/owner/reviews/${reviewId}/flag`, { reason });
 };
