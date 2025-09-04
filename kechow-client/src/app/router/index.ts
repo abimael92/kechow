@@ -71,6 +71,12 @@ const routes = [
 				component: OrdersListPage,
 				meta: { requiresAuth: true, role: 'owner' },
 			},
+			{
+				path: '/owner/settings',
+				name: 'OwnerSettings',
+				component: () => import('@/pages/owner/SettingsPage.vue'),
+				meta: { requiresAuth: true, requiresOwner: true },
+			},
 		],
 	},
 ];

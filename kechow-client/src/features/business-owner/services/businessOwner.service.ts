@@ -8,6 +8,12 @@ import type {
 	MenuItem,
 	MenuStats,
 	MenuItemFormData,
+	RestaurantSettings,
+	MenuSettings,
+	DeliverySettings,
+	NotificationSettings,
+	PaymentSettings,
+	StaffSettings,
 } from '../types';
 import { sampleMenuItems } from '../data/sampleMenuItems';
 import { sampleOrders } from '../data/sampleOrders';
@@ -15,9 +21,9 @@ import { sampleOrders } from '../data/sampleOrders';
 // For development - use sample data
 const useSampleData = import.meta.env.MODE === 'development';
 
+/* ------------------------- ORDERS ------------------------- */
 export const fetchOrders = async (filters?: OrderFilters): Promise<Order[]> => {
 	if (useSampleData) {
-		// Apply basic filtering for sample data
 		let filteredOrders = [...sampleOrders];
 
 		if (filters?.status) {
@@ -34,7 +40,6 @@ export const fetchOrders = async (filters?: OrderFilters): Promise<Order[]> => {
 			);
 		}
 
-		// Sort by date (newest first)
 		filteredOrders.sort(
 			(a, b) =>
 				new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -55,7 +60,6 @@ export const updateOrderStatus = async (
 	notes?: string
 ): Promise<void> => {
 	if (useSampleData) {
-		// Simulate API call and update local sample data
 		const order = sampleOrders.find((o) => o.id === orderId);
 		if (order) {
 			order.status = status as any;
@@ -145,6 +149,7 @@ export const getOrderById = async (orderId: string): Promise<Order> => {
 	return response.data;
 };
 
+/* ------------------------- MENU ------------------------- */
 export const fetchMenuItems = async (
 	category?: string
 ): Promise<MenuItem[]> => {
@@ -244,7 +249,6 @@ export const getMenuStats = async (): Promise<MenuStats> => {
 				  totalItems
 				: 0;
 
-		// Fixed: Properly type the categories array
 		const categoryCounts = new Map<string, number>();
 		sampleMenuItems.forEach((item) => {
 			const count = categoryCounts.get(item.category) || 0;
@@ -269,4 +273,161 @@ export const getMenuStats = async (): Promise<MenuStats> => {
 
 	const response = await api.get<MenuStats>('/owner/menu/stats');
 	return response.data;
+};
+
+/* ------------------------- SETTINGS ------------------------- */
+export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
+	if (useSampleData) {
+		return {
+			name: "Mario's Kitchen",
+			phone: '+1 (555) 123-4567',
+			address: '123 Restaurant Street, Food City, FC 12345',
+			description:
+				'Authentic Italian cuisine with fresh ingredients and traditional recipes. Family-owned restaurant serving delicious pizza, pasta, and more since 1985.',
+			isOpen: true,
+			operatingHours: [
+				{
+					id: 'monday',
+					day: 'Monday',
+					openTime: '10:00',
+					closeTime: '22:00',
+					closed: false,
+				},
+				{
+					id: 'tuesday',
+					day: 'Tuesday',
+					openTime: '10:00',
+					closeTime: '22:00',
+					closed: false,
+				},
+				{
+					id: 'wednesday',
+					day: 'Wednesday',
+					openTime: '10:00',
+					closeTime: '22:00',
+					closed: false,
+				},
+				{
+					id: 'thursday',
+					day: 'Thursday',
+					openTime: '10:00',
+					closeTime: '22:00',
+					closed: false,
+				},
+				{
+					id: 'friday',
+					day: 'Friday',
+					openTime: '10:00',
+					closeTime: '22:00',
+					closed: false,
+				},
+				{
+					id: 'saturday',
+					day: 'Saturday',
+					openTime: '10:00',
+					closeTime: '22:00',
+					closed: false,
+				},
+				{
+					id: 'sunday',
+					day: 'Sunday',
+					openTime: '10:00',
+					closeTime: '22:00',
+					closed: false,
+				},
+			],
+		};
+	}
+
+	const response = await api.get<RestaurantSettings>(
+		'/owner/settings/restaurant'
+	);
+	return response.data;
+};
+
+export const updateRestaurantSettings = async (
+	settings: Partial<RestaurantSettings>
+): Promise<void> => {
+	if (useSampleData) {
+		console.log('Updating restaurant settings:', settings);
+		return new Promise((resolve) => setTimeout(resolve, 500));
+	}
+
+	await api.put('/owner/settings/restaurant', settings);
+};
+
+export const getMenuSettings = async (): Promise<MenuSettings> => {
+	if (useSampleData) {
+		return {
+			categories: ['Pizza', 'Pasta', 'Drinks', 'Desserts'],
+			displayOptions: {
+				showImages: true,
+				showPrices: true,
+				showDescriptions: true,
+			},
+			sorting: 'popularity',
+		};
+	}
+
+	const response = await api.get<MenuSettings>('/owner/settings/menu');
+	return response.data;
+};
+
+export const updateMenuSettings = async (
+	settings: Partial<MenuSettings>
+): Promise<void> => {
+	if (useSampleData) {
+		console.log('Updating menu settings:', settings);
+		return new Promise((resolve) => setTimeout(resolve, 500));
+	}
+
+	await api.put('/owner/settings/menu', settings);
+};
+
+// Stubs for other settings (expand as needed)
+export const getDeliverySettings = async (): Promise<DeliverySettings> => {
+	const response = await api.get<DeliverySettings>('/owner/settings/delivery');
+	return response.data;
+};
+
+export const updateDeliverySettings = async (
+	settings: Partial<DeliverySettings>
+): Promise<void> => {
+	await api.put('/owner/settings/delivery', settings);
+};
+
+export const getNotificationSettings =
+	async (): Promise<NotificationSettings> => {
+		const response = await api.get<NotificationSettings>(
+			'/owner/settings/notifications'
+		);
+		return response.data;
+	};
+
+export const updateNotificationSettings = async (
+	settings: Partial<NotificationSettings>
+): Promise<void> => {
+	await api.put('/owner/settings/notifications', settings);
+};
+
+export const getPaymentSettings = async (): Promise<PaymentSettings> => {
+	const response = await api.get<PaymentSettings>('/owner/settings/payments');
+	return response.data;
+};
+
+export const updatePaymentSettings = async (
+	settings: Partial<PaymentSettings>
+): Promise<void> => {
+	await api.put('/owner/settings/payments', settings);
+};
+
+export const getStaffSettings = async (): Promise<StaffSettings> => {
+	const response = await api.get<StaffSettings>('/owner/settings/staff');
+	return response.data;
+};
+
+export const updateStaffSettings = async (
+	settings: Partial<StaffSettings>
+): Promise<void> => {
+	await api.put('/owner/settings/staff', settings);
 };
