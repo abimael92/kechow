@@ -44,7 +44,37 @@ const routes = [
 				props: true,
 				meta: { requiresAuth: true },
 			},
-
+			{
+				path: '/delivery',
+				name: 'Delivery',
+				component: MainLayout,
+				children: [
+					{
+						path: 'dashboard',
+						name: 'DeliveryDashboard',
+						component: () =>
+							import('@/features/delivery/views/DeliveryDashboard.vue'),
+					},
+					{
+						path: 'order/:id',
+						name: 'DeliveryOrderDetail',
+						component: () =>
+							import('@/features/delivery/views/DeliveryOrderDetail.vue'),
+					},
+					{
+						path: 'live/:id',
+						name: 'LiveDelivery',
+						component: () =>
+							import('@/features/delivery/views/LiveDelivery.vue'),
+					},
+					{
+						path: 'settings',
+						name: 'DeliverySettings',
+						component: () =>
+							import('@/features/delivery/views/DeliverySettings.vue'),
+					},
+				],
+			},
 			// Owner pages grouped under /owner
 			{
 				path: 'owner/dashboard',
