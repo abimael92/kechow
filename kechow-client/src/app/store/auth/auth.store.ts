@@ -1,10 +1,9 @@
+// kechow-client/src/app/store/auth/auth.store.ts
 import { defineStore } from 'pinia';
-import { login, register, getUser } from './auth.service';
+import { login, register, getUser, api } from './auth.service';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
-import axios from 'axios';
 
-// ! User type including role
 interface User {
 	id: number;
 	name: string;
@@ -12,7 +11,6 @@ interface User {
 	role: string;
 }
 
-// * Auth store
 export const useAuthStore = defineStore('auth', () => {
 	const router = useRouter();
 
@@ -25,8 +23,26 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const isAuthenticated = computed(() => !!token.value);
 	const isOwner = computed(() => user.value?.role === 'owner');
+	const isDelivery = computed(() => user.value?.role === 'delivery');
+	const isCustomer = computed(() => user.value?.role === 'customer');
 
-	// * Login
+	const setAuthHeader = () => {
+		if (token.value)
+			api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`;
+		else delete api.defaults.headers.common['Authorization'];
+	};
+	setAuthHeader();
+
+	const redirectByRole = () => {
+		if (!user.value) return;
+		const routes: Record<string, string> = {
+			owner: '/owner/dashboard',
+			delivery: '/delivery/dashboard',
+			customer: '/home',
+		};
+		router.push(routes[user.value.role] || '/home');
+	};
+
 	const loginAction = async (credentials: {
 		email: string;
 		password: string;
@@ -34,19 +50,16 @@ export const useAuthStore = defineStore('auth', () => {
 		try {
 			isLoading.value = true;
 			error.value = null;
+
 			const response = await login(credentials);
-
-			if (!response || !response.user || !response.token)
-				throw new Error('Invalid response');
-
 			user.value = response.user;
 			token.value = response.token;
 
 			localStorage.setItem('user', JSON.stringify(response.user));
 			localStorage.setItem('token', response.token);
-			axios.defaults.headers.common[
-				'Authorization'
-			] = `Bearer ${response.token}`;
+			setAuthHeader();
+
+			redirectByRole();
 
 			return response;
 		} catch (err: any) {
@@ -58,7 +71,6 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
-	// * Register
 	const registerAction = async (payload: {
 		name: string;
 		email: string;
@@ -69,22 +81,18 @@ export const useAuthStore = defineStore('auth', () => {
 		try {
 			isLoading.value = true;
 			error.value = null;
+
 			const response = await register(payload);
-
-			if (!response.user || !response.token)
-				throw new Error('Invalid registration');
-
 			user.value = response.user;
 			token.value = response.token;
 
 			localStorage.setItem('user', JSON.stringify(response.user));
 			localStorage.setItem('token', response.token);
-			axios.defaults.headers.common[
-				'Authorization'
-			] = `Bearer ${response.token}`;
+			setAuthHeader();
 
-			if (user.value?.role === 'owner') router.push('/owner/dashboard');
-			else router.push('/home');
+			redirectByRole();
+
+			return response;
 		} catch (err: any) {
 			error.value = err.message || 'Registration failed';
 			throw err;
@@ -93,16 +101,13 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
-	// * Initialize user
 	const initialize = async () => {
 		if (token.value && !user.value) {
 			try {
 				isLoading.value = true;
 				const data = await getUser(token.value);
 				user.value = data.user;
-				axios.defaults.headers.common[
-					'Authorization'
-				] = `Bearer ${token.value}`;
+				setAuthHeader();
 			} catch {
 				logout();
 			} finally {
@@ -111,13 +116,12 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
-	// * Logout
 	const logout = () => {
 		user.value = null;
 		token.value = null;
 		localStorage.removeItem('user');
 		localStorage.removeItem('token');
-		delete axios.defaults.headers.common['Authorization'];
+		setAuthHeader();
 		router.push('/login');
 	};
 
@@ -132,5 +136,8 @@ export const useAuthStore = defineStore('auth', () => {
 		initialize,
 		isAuthenticated,
 		isOwner,
+		isDelivery,
+		isCustomer,
+		redirectByRole,
 	};
 });
