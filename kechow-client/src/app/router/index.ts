@@ -1,21 +1,30 @@
+// kechow-client/src/app/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
-import { useAuthStore } from '@/app/store/auth/auth.store';
-
 import MainLayout from '@layout/MainLayout.vue';
+import { authGuard } from './guards';
 
-// Import non-owner pages (eager)
+// Pages (eager)
 import LandingPage from '@pages/LandingPage.vue';
 import LoginView from '@features/auth/components/LoginForm.vue';
 import RegisterView from '@features/auth/components/RegisterView.vue';
 import HomePage from '@pages/HomePage.vue';
-import RestaurantDetailView from '@pages/RestaurantDetailView.vue';
 import RestaurantListPage from '@pages/RestaurantListPage.vue';
+import RestaurantDetailView from '@pages/RestaurantDetailView.vue';
 
-// Lazy load owner pages
+// Owner pages (lazy)
 const OwnerDashboardPage = () => import('@pages/owner/OwnerDashboardPage.vue');
 const OwnerMenuPage = () => import('@pages/owner/MenuPage.vue');
 const OrdersListPage = () => import('@pages/owner/OrdersListPage.vue');
 const EditMenuItemPage = () => import('@pages/owner/EditMenuItemPage.vue');
+
+// Delivery pages (lazy)
+const DeliveryDashboard = () =>
+	import('@features/delivery/views/DeliveryDashboard.vue');
+const DeliveryOrderDetail = () =>
+	import('@features/delivery/views/DeliveryOrderDetail.vue');
+const LiveDelivery = () => import('@features/delivery/views/LiveDelivery.vue');
+const DeliverySettings = () =>
+	import('@features/delivery/views/DeliverySettings.vue');
 
 const routes = [
 	{
@@ -25,57 +34,60 @@ const routes = [
 			{ path: '', name: 'Landing', component: LandingPage },
 			{ path: 'login', name: 'Login', component: LoginView },
 			{ path: 'register', name: 'Register', component: RegisterView },
+
+			// Customer routes
 			{
 				path: 'home',
 				name: 'Home',
 				component: HomePage,
-				meta: { requiresAuth: true },
+				meta: { requiresAuth: true, role: 'customer' },
 			},
 			{
 				path: 'restaurants',
 				name: 'RestaurantList',
 				component: RestaurantListPage,
-				meta: { requiresAuth: true },
+				meta: { requiresAuth: true, role: 'customer' },
 			},
 			{
 				path: 'restaurants/:id',
 				name: 'RestaurantDetail',
 				component: RestaurantDetailView,
 				props: true,
-				meta: { requiresAuth: true },
+				meta: { requiresAuth: true, role: 'customer' },
 			},
+
+			// Delivery routes
 			{
 				path: '/delivery',
-				name: 'Delivery',
-				component: MainLayout,
 				children: [
 					{
 						path: 'dashboard',
 						name: 'DeliveryDashboard',
-						component: () =>
-							import('@/features/delivery/views/DeliveryDashboard.vue'),
+						component: DeliveryDashboard,
+						meta: { requiresAuth: true, role: 'delivery' },
 					},
 					{
 						path: 'order/:id',
 						name: 'DeliveryOrderDetail',
-						component: () =>
-							import('@/features/delivery/views/DeliveryOrderDetail.vue'),
+						component: DeliveryOrderDetail,
+						meta: { requiresAuth: true, role: 'delivery' },
 					},
 					{
 						path: 'live/:id',
 						name: 'LiveDelivery',
-						component: () =>
-							import('@/features/delivery/views/LiveDelivery.vue'),
+						component: LiveDelivery,
+						meta: { requiresAuth: true, role: 'delivery' },
 					},
 					{
 						path: 'settings',
 						name: 'DeliverySettings',
-						component: () =>
-							import('@/features/delivery/views/DeliverySettings.vue'),
+						component: DeliverySettings,
+						meta: { requiresAuth: true, role: 'delivery' },
 					},
 				],
 			},
-			// Owner pages grouped under /owner
+
+			// Owner routes
 			{
 				path: 'owner/dashboard',
 				name: 'OwnerDashboard',
@@ -96,28 +108,10 @@ const routes = [
 				meta: { requiresAuth: true, role: 'owner' },
 			},
 			{
-				path: '/owner/analytics',
-				name: 'OwnerAnalytics',
-				component: () => import('@/pages/owner/AnalyticsPage.vue'),
-				meta: { requiresAuth: true, requiresOwner: true },
-			},
-			{
 				path: 'owner/orders',
 				name: 'OwnerOrders',
 				component: OrdersListPage,
 				meta: { requiresAuth: true, role: 'owner' },
-			},
-			{
-				path: '/owner/reviews',
-				name: 'OwnerReviews',
-				component: () => import('@/pages/owner/ReviewsPage.vue'),
-				meta: { requiresAuth: true, requiresOwner: true },
-			},
-			{
-				path: '/owner/settings',
-				name: 'OwnerSettings',
-				component: () => import('@/pages/owner/SettingsPage.vue'),
-				meta: { requiresAuth: true, requiresOwner: true },
 			},
 		],
 	},
@@ -128,25 +122,7 @@ const router = createRouter({
 	routes,
 });
 
-// Navigation guard for auth and role checking
-router.beforeEach((to, from, next) => {
-	const authStore = useAuthStore();
-
-	console.log('Navigation guard - isAuthenticated:', authStore.isAuthenticated);
-	console.log('Navigation guard - isOwner:', authStore.isOwner);
-	console.log('Route requires role:', to.meta.role);
-
-	// If the route requires authentication and the user is not authenticated
-	if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-		return next({ name: 'Login' });
-	}
-
-	// If the route requires a specific role and the user does not have that role
-	if (to.meta.role === 'owner' && !authStore.isOwner) {
-		return next({ name: 'Home' });
-	}
-
-	next();
-});
+// Apply the auth guard globally
+router.beforeEach(authGuard);
 
 export default router;
