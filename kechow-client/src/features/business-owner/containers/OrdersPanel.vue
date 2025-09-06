@@ -12,7 +12,7 @@
 					class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-xl font-medium hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap"
 				>
 					<i
-						class="ri-filter-line mr-2 w-4 h-4 flex items-center justify-center inline"
+						class="ri-filter-line mr-2 w-4 h-4 flex items-center justify-center"
 					></i
 					>Filter
 				</button>
@@ -20,7 +20,7 @@
 					class="bg-orange-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
 					<i
-						class="ri-refresh-line mr-2 w-4 h-4 flex items-center justify-center inline"
+						class="ri-refresh-line mr-2 w-4 h-4 flex items-center justify-center"
 					></i
 					>Refresh
 				</button>
