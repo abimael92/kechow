@@ -9,37 +9,37 @@
 					to="/owner/dashboard"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Dashboard</router-link
+					>{{ $t('dashboard') }}</router-link
 				>
 				<router-link
 					to="/owner/orders"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Orders</router-link
+					>{{ $t('orders') }}</router-link
 				>
 				<router-link
 					to="/owner/menu"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Menu Items</router-link
+					>{{ $t('menuItems') }}</router-link
 				>
 				<router-link
 					to="/owner/analytics"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Analytics</router-link
+					>{{ $t('analytics') }}</router-link
 				>
 				<router-link
 					to="/owner/reviews"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Reviews</router-link
+					>{{ $t('reviews') }}</router-link
 				>
 				<router-link
 					to="/owner/settings"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Settings</router-link
+					>{{ $t('settings') }}</router-link
 				>
 			</template>
 
@@ -49,25 +49,25 @@
 					to="/delivery/dashboard"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Dashboard</router-link
+					>{{ $t('dashboard') }}</router-link
 				>
 				<router-link
 					to="/delivery/orders"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Orders</router-link
+					>{{ $t('orders') }}</router-link
 				>
 				<router-link
 					to="/delivery/Earnings"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Earnings</router-link
+					>{{ $t('earnings') }}</router-link
 				>
 				<router-link
 					to="/delivery/profile"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Profile</router-link
+					>{{ $t('profile') }}</router-link
 				>
 			</template>
 
@@ -77,19 +77,19 @@
 					to="/restaurants"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Restaurants</router-link
+					>{{ $t('restaurants') }}</router-link
 				>
 				<router-link
 					to="/cart"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Cart</router-link
+					>{{ $t('cart') }}</router-link
 				>
 				<router-link
 					to="/orders"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>My Orders</router-link
+					>{{ $t('myOrders') }}</router-link
 				>
 			</template>
 		</div>
@@ -98,5 +98,8 @@
 
 <script setup>
 import { useAuthStore } from '@/app/store/auth/auth.store';
+import { useI18n } from 'vue-i18n';
+
 const authStore = useAuthStore();
+const { t } = useI18n();
 </script>
