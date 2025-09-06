@@ -23,8 +23,8 @@ const DeliveryDashboard = () =>
 const DeliveryOrderDetail = () =>
 	import('@features/delivery/views/DeliveryOrderDetail.vue');
 const LiveDelivery = () => import('@features/delivery/views/LiveDelivery.vue');
-const DeliverySettings = () =>
-	import('@features/delivery/views/DeliverySettings.vue');
+const DeliveryProfile = () => import('@pages/delivery/ProfilePage.vue');
+const DeliveryEarnings = () => import('@pages/delivery/EarningsPage.vue');
 
 const routes = [
 	{
@@ -79,9 +79,15 @@ const routes = [
 						meta: { requiresAuth: true, role: 'delivery' },
 					},
 					{
-						path: 'settings',
-						name: 'DeliverySettings',
-						component: DeliverySettings,
+						path: 'profile',
+						name: 'DeliveryProfile',
+						component: DeliveryProfile,
+						meta: { requiresAuth: true, role: 'delivery' },
+					},
+					{
+						path: 'earnings',
+						name: 'DeliveryEarnings',
+						component: DeliveryEarnings,
 						meta: { requiresAuth: true, role: 'delivery' },
 					},
 				],
