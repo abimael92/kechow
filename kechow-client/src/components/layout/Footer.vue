@@ -11,12 +11,12 @@
 				<div class="flex items-center gap-2 mb-2">
 					<img
 						src="/images/kechow_logo.png"
-						alt="Kechow Logo"
+						:alt="$t('kechowFoodDelivery')"
 						class="w-8 h-8 object-contain"
 					/>
 					<span
 						class="text-lg font-semibold text-white hover:text-[#ec4899] dark:hover:text-accent"
-						>Kechow</span
+						>{{ $t('kechowFoodDelivery') }}</span
 					>
 				</div>
 
@@ -29,18 +29,18 @@
 
 			<!-- Links -->
 			<div class="flex flex-col items-center text-center">
-				<h5 class="text-white font-semibold mb-2">Explore</h5>
+				<h5 class="text-white font-semibold mb-2">{{ $t('explore') }}</h5>
 				<div class="grid grid-cols-2 gap-x-6 gap-y-1">
-					<a href="#" class="hover:underline">About Us</a>
-					<a href="#" class="hover:underline">Careers</a>
-					<a href="#" class="hover:underline">Terms</a>
-					<a href="#" class="hover:underline">Privacy</a>
+					<a href="#" class="hover:underline">{{ $t('aboutUs') }}</a>
+					<a href="#" class="hover:underline">{{ $t('careers') }}</a>
+					<a href="#" class="hover:underline">{{ $t('terms') }}</a>
+					<a href="#" class="hover:underline">{{ $t('privacy') }}</a>
 				</div>
 			</div>
 
 			<!-- Social Icons -->
 			<div>
-				<h5 class="text-white font-semibold mb-2">Connect</h5>
+				<h5 class="text-white font-semibold mb-2">{{ $t('connect') }}</h5>
 				<div class="flex gap-4 text-xl">
 					<a
 						href="mailto:support@kechow.com"
@@ -63,8 +63,11 @@
 		<div
 			class="mt-5 text-center text-md opacity-90 border-t border-white/10 pt-4"
 		>
-			© 2025 <span class="font-semibold text-white">Kechow</span>. All rights
-			reserved.
+			© 2025
+			<span class="font-semibold text-white">{{
+				$t('kechowFoodDelivery')
+			}}</span
+			>. {{ $t('allRightsReserved') }}
 		</div>
 	</footer>
 </template>
