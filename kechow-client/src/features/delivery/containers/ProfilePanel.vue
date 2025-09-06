@@ -2,8 +2,10 @@
 	<div class="space-y-6 p-6">
 		<!-- Header -->
 		<div class="space-y-2">
-			<h1 class="text-2xl font-bold text-gray-900">Profile & Settings</h1>
-			<p class="text-gray-600">Manage your account and preferences</p>
+			<h1 class="text-2xl font-bold text-gray-900">
+				{{ $t('profileAndSettings') }}
+			</h1>
+			<p class="text-gray-600">{{ $t('manageAccountPreferences') }}</p>
 		</div>
 
 		<!-- Profile Card -->
@@ -19,8 +21,10 @@
 					></i>
 				</div>
 				<div class="flex-1">
-					<h3 class="text-xl font-bold text-gray-900">Alex Rodriguez</h3>
-					<p class="text-gray-600">alex.rodriguez@email.com</p>
+					<h3 class="text-xl font-bold text-gray-900">
+						{{ authStore.user?.name }}
+					</h3>
+					<p class="text-gray-600">{{ authStore.user?.email }}</p>
 					<div class="flex items-center space-x-4 mt-2 text-sm text-gray-600">
 						<div class="flex items-center space-x-1">
 							<i
@@ -28,19 +32,19 @@
 								:key="n"
 								class="ri-star-fill text-yellow-400 w-3 h-3 flex items-center justify-center"
 							></i>
-							<span class="ml-1">4.9</span>
+							<span class="ml-1">{{ $t('rating') }}</span>
 						</div>
 						<span>•</span>
-						<span>1247 deliveries</span>
+						<span>{{ $t('deliveriesCount', { count: 1247 }) }}</span>
 						<span>•</span>
-						<span>Since March 2023</span>
+						<span>{{ $t('memberSince', { date: 'March 2023' }) }}</span>
 					</div>
 				</div>
 			</div>
 			<button
 				class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
 			>
-				Edit Profile
+				{{ $t('editProfile') }}
 			</button>
 		</div>
 
@@ -62,7 +66,7 @@
 						:class="tab.icon"
 						class="w-4 h-4 flex items-center justify-center"
 					></i>
-					<span>{{ tab.label }}</span>
+					<span>{{ $t(tab.label) }}</span>
 				</button>
 			</div>
 		</div>
@@ -82,19 +86,21 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useAuthStore } from '@/app/store/auth/auth.store';
 import ProfileInfo from '../components/profile/ProfileInfo.vue';
 import VehicleInfo from '../components/profile/VehicleInfo.vue';
 import ScheduleInfo from '../components/profile/ScheduleInfo.vue';
 import NotificationsSettings from '../components/profile/NotificationsSettings.vue';
 import SupportInfo from '../components/profile/SupportInfo.vue';
 
+const authStore = useAuthStore();
 const activeTab = ref('profile');
 
 const tabs = [
-	{ id: 'profile', label: 'Profile', icon: 'ri-user-line' },
-	{ id: 'vehicle', label: 'Vehicle', icon: 'ri-bike-line' },
-	{ id: 'schedule', label: 'Schedule', icon: 'ri-calendar-line' },
-	{ id: 'notifications', label: 'Notifications', icon: 'ri-notification-line' },
-	{ id: 'support', label: 'Support', icon: 'ri-customer-service-line' },
+	{ id: 'profile', label: 'profile', icon: 'ri-user-line' },
+	{ id: 'vehicle', label: 'vehicle', icon: 'ri-bike-line' },
+	{ id: 'schedule', label: 'schedule', icon: 'ri-calendar-line' },
+	{ id: 'notifications', label: 'notifications', icon: 'ri-notification-line' },
+	{ id: 'support', label: 'support', icon: 'ri-customer-service-line' },
 ];
 </script>
