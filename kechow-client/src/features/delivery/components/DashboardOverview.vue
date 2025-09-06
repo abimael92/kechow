@@ -1,244 +1,171 @@
 <template>
-	<div class="space-y-8">
-		<div class="flex justify-between items-center">
-			<div>
-				<h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-				<p class="text-gray-600 mt-1">
-					Welcome back! Here's what's happening at your restaurant.
-				</p>
-			</div>
-			<button
-				class="bg-orange-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
-			>
-				+ Add Menu Item
-			</button>
-		</div>
-
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-gray-600 text-sm">Today's Orders</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">24</p>
-						<p class="text-sm mt-1 text-green-600">+12% from yesterday</p>
-					</div>
-					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100"
-					>
-						<i
-							class="ri-file-list-line text-blue-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-gray-600 text-sm">Revenue</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">$1,247</p>
-						<p class="text-sm mt-1 text-green-600">+8% from yesterday</p>
-					</div>
-					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-green-100"
-					>
-						<i
-							class="ri-money-dollar-circle-line text-green-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-gray-600 text-sm">Avg. Order</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">$28.50</p>
-						<p class="text-sm mt-1 text-green-600">+3% from yesterday</p>
-					</div>
-					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-orange-100"
-					>
-						<i
-							class="ri-shopping-cart-line text-orange-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-gray-600 text-sm">Rating</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">4.8</p>
-						<p class="text-sm mt-1 text-green-600">+0.2 from yesterday</p>
-					</div>
-					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-100"
-					>
-						<i
-							class="ri-star-line text-purple-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="border-b border-gray-200">
-			<div class="flex space-x-8">
-				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-orange-600 text-orange-600"
-				>
-					Overview
+	<div class="flex-1 flex flex-col">
+		<!-- Header -->
+		<header
+			class="bg-white shadow-sm border-b border-gray-200 lg:shadow-none lg:border-0"
+		>
+			<div class="flex items-center justify-between h-16 px-6">
+				<button class="lg:hidden w-6 h-6 flex items-center justify-center">
+					<i class="ri-menu-line text-gray-500 text-xl"></i>
 				</button>
-				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-transparent text-gray-500 hover:text-gray-700"
+				<div
+					class="flex-1 flex justify-center lg:justify-end items-center space-x-4"
 				>
-					Active Orders
-				</button>
-				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-transparent text-gray-500 hover:text-gray-700"
-				>
-					Menu Management
-				</button>
-				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-transparent text-gray-500 hover:text-gray-700"
-				>
-					Analytics
-				</button>
-			</div>
-		</div>
-
-		<div class="grid lg:grid-cols-2 gap-8">
-			<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-				<h3 class="text-xl font-bold text-gray-900 mb-6">Recent Orders</h3>
-				<div class="space-y-4">
-					<div
-						class="bg-white rounded-xl border border-gray-100 p-4 hover:shadow-md transition-shadow"
-					>
-						<div class="flex items-start justify-between mb-3">
-							<div>
-								<h4 class="font-semibold text-gray-900">#12345</h4>
-								<p class="text-sm text-gray-600">John Doe</p>
-								<p class="text-xs text-gray-500">15 mins ago</p>
-							</div>
-							<div class="flex items-center space-x-2">
-								<span
-									class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
-								>
-									<i
-										class="ri-time-line mr-1 w-3 h-3 flex items-center justify-center inline"
-									></i
-									>Preparing
-								</span>
-							</div>
-						</div>
-						<div class="mb-3">
-							<p class="text-sm text-gray-700 mb-1">Items:</p>
-							<p class="text-sm text-gray-600">
-								Margherita Pizza, Caesar Salad
+					<div class="hidden md:flex items-center space-x-6 text-sm">
+						<div class="text-center">
+							<p class="text-gray-500">Today</p>
+							<p class="font-semibold text-gray-900">
+								{{ todayDeliveries }} deliveries
 							</p>
 						</div>
-						<div class="flex items-center justify-between">
-							<span class="font-bold text-lg text-gray-900">$24.98</span>
-							<div class="flex space-x-2">
-								<button
-									class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors cursor-pointer whitespace-nowrap"
-								>
-									Mark Ready
-								</button>
-								<button
-									class="text-gray-600 hover:text-gray-800 p-2 cursor-pointer"
-								>
-									<i
-										class="ri-more-line w-4 h-4 flex items-center justify-center"
-									></i>
-								</button>
-							</div>
+						<div class="text-center">
+							<p class="text-gray-500">Earnings</p>
+							<p class="font-semibold text-green-600">
+								${{ todayEarnings.toFixed(2) }}
+							</p>
 						</div>
 					</div>
 
-					<div
-						class="bg-white rounded-xl border border-gray-100 p-4 hover:shadow-md transition-shadow"
+					<button class="relative p-2 text-gray-400 hover:text-gray-600">
+						<i class="ri-notification-line text-xl"></i>
+						<span
+							class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
+						></span>
+					</button>
+
+					<div class="flex items-center space-x-3">
+						<div
+							class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center"
+						>
+							<i class="ri-user-line text-white text-sm"></i>
+						</div>
+						<div class="hidden md:block">
+							<p class="text-sm font-medium text-gray-900">
+								{{ authStore.user?.name }}
+							</p>
+							<p class="text-xs text-gray-500">Delivery Partner</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- Main -->
+		<main class="flex-1 overflow-auto pb-20 lg:pb-0 p-6 space-y-6">
+			<!-- Status -->
+			<div class="flex justify-between items-center">
+				<div>
+					<h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+					<p class="text-gray-600 mt-1">Ready to deliver amazing food!</p>
+				</div>
+
+				<div class="flex items-center space-x-3">
+					<span class="text-sm text-gray-600">Status:</span>
+					<button
+						class="relative inline-flex h-7 w-12 items-center rounded-full bg-green-600"
 					>
-						<div class="flex items-start justify-between mb-3">
-							<div>
-								<h4 class="font-semibold text-gray-900">#12346</h4>
-								<p class="text-sm text-gray-600">Jane Smith</p>
-								<p class="text-xs text-gray-500">5 mins ago</p>
+						<span
+							class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-6 transition-transform"
+						></span>
+					</button>
+					<div class="text-right">
+						<span class="text-sm font-semibold text-green-600">Online</span>
+						<p class="text-xs text-gray-500">Receiving orders</p>
+					</div>
+					<div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+				</div>
+			</div>
+
+			<!-- Current Delivery -->
+			<div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+				<h2 class="text-lg font-semibold text-gray-900 mb-4">
+					Current Delivery
+				</h2>
+				<div class="space-y-6">
+					<div class="relative flex justify-between">
+						<div
+							v-for="(step, index) in deliverySteps"
+							:key="index"
+							class="flex flex-col items-center relative flex-1"
+						>
+							<div
+								:class="[
+									'w-10 h-10 rounded-full flex items-center justify-center border-2 text-white',
+									step.completed
+										? 'bg-green-600 border-green-600'
+										: 'bg-white border-gray-300 text-gray-400',
+								]"
+							>
+								<i :class="step.icon"></i>
 							</div>
-							<div class="flex items-center space-x-2">
-								<span
-									class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
-								>
-									<i
-										class="ri-check-line mr-1 w-3 h-3 flex items-center justify-center inline"
-									></i
-									>Ready
-								</span>
-							</div>
-						</div>
-						<div class="mb-3">
-							<p class="text-sm text-gray-700 mb-1">Items:</p>
-							<p class="text-sm text-gray-600">Pepperoni Pizza, Garlic Bread</p>
-						</div>
-						<div class="flex items-center justify-between">
-							<span class="font-bold text-lg text-gray-900">$19.99</span>
-							<div class="flex space-x-2">
-								<button
-									class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors cursor-pointer whitespace-nowrap"
-								>
-									Out for Delivery
-								</button>
-								<button
-									class="text-gray-600 hover:text-gray-800 p-2 cursor-pointer"
-								>
-									<i
-										class="ri-more-line w-4 h-4 flex items-center justify-center"
-									></i>
-								</button>
-							</div>
+							<span
+								:class="[
+									'text-sm font-medium mt-2',
+									step.completed ? 'text-green-600' : 'text-gray-400',
+								]"
+								>{{ step.label }}</span
+							>
+							<div
+								v-if="index < deliverySteps.length - 1"
+								:class="[
+									'absolute top-5 left-1/2 w-full h-0.5 -z-10',
+									deliverySteps[index + 1].completed
+										? 'bg-green-600'
+										: 'bg-gray-200',
+								]"
+								style="transform: translateX(50%)"
+							></div>
 						</div>
 					</div>
 
-					<div
-						class="bg-white rounded-xl border border-gray-100 p-4 hover:shadow-md transition-shadow"
-					>
-						<div class="flex items-start justify-between mb-3">
+					<!-- Current Order Details -->
+					<div v-if="currentDelivery" class="bg-gray-50 rounded-xl p-4">
+						<div class="flex items-center justify-between mb-4">
 							<div>
-								<h4 class="font-semibold text-gray-900">#12347</h4>
-								<p class="text-sm text-gray-600">Mike Johnson</p>
-								<p class="text-xs text-gray-500">Just now</p>
+								<h4 class="font-semibold text-gray-900">
+									{{ currentDelivery.id }}
+								</h4>
+								<p class="text-sm text-gray-600">
+									{{ currentDelivery.pickupLocation }} →
+									{{ currentDelivery.dropoffName }}
+								</p>
 							</div>
-							<div class="flex items-center space-x-2">
-								<span
-									class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+							<div class="text-right">
+								<p class="font-bold text-green-600">
+									${{ currentDelivery.price.toFixed(2) }}
+								</p>
+								<p class="text-sm text-gray-500">
+									{{ currentDelivery.paymentMethod }}
+								</p>
+							</div>
+						</div>
+
+						<div class="space-y-3">
+							<div
+								class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200"
+							>
+								<div>
+									<p class="font-medium text-blue-900">Navigate to Customer</p>
+									<p class="text-sm text-blue-700">
+										{{ currentDelivery.dropoffAddress }}
+									</p>
+								</div>
+								<button
+									class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
 								>
-									<i
-										class="ri-file-add-line mr-1 w-3 h-3 flex items-center justify-center inline"
-									></i
-									>New
-								</span>
+									<i class="ri-navigation-line mr-2"></i>Navigate
+								</button>
 							</div>
-						</div>
-						<div class="mb-3">
-							<p class="text-sm text-gray-700 mb-1">Items:</p>
-							<p class="text-sm text-gray-600">Chicken Alfredo, Tiramisu</p>
-						</div>
-						<div class="flex items-center justify-between">
-							<span class="font-bold text-lg text-gray-900">$28.50</span>
 							<div class="flex space-x-2">
 								<button
-									class="bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
+									class="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
 								>
-									Accept
+									Mark as Delivered
 								</button>
 								<button
-									class="text-gray-600 hover:text-gray-800 p-2 cursor-pointer"
+									class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
 								>
-									<i
-										class="ri-more-line w-4 h-4 flex items-center justify-center"
-									></i>
+									<i class="ri-phone-line"></i>
 								</button>
 							</div>
 						</div>
@@ -246,31 +173,94 @@
 				</div>
 			</div>
 
-			<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-				<h3 class="text-xl font-bold text-gray-900 mb-6">Weekly Revenue</h3>
+			<!-- Stats Cards -->
+			<div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
 				<div
-					class="w-full h-48 flex items-center justify-center bg-gray-50 rounded-lg"
+					v-for="(stat, index) in stats"
+					:key="index"
+					class="bg-white p-4 rounded-xl shadow-sm border border-gray-100"
 				>
-					<div class="text-center text-gray-500">
-						<i class="ri-bar-chart-line text-3xl mb-2"></i>
-						<p>Revenue chart will be displayed here</p>
+					<div class="flex items-center justify-between">
+						<div>
+							<p class="text-gray-600 text-sm">{{ stat.label }}</p>
+							<p class="text-2xl font-bold text-gray-900">{{ stat.value }}</p>
+							<p class="text-xs text-green-600">{{ stat.change }}</p>
+						</div>
+						<div
+							:class="[
+								'w-10 h-10 rounded-lg flex items-center justify-center',
+								stat.bg,
+							]"
+						>
+							<i :class="stat.icon"></i>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 
 const authStore = useAuthStore();
 
-onMounted(() => {
-	console.log('Dashboard mounted - auth state:', {
-		isAuthenticated: authStore.isAuthenticated,
-		user: authStore.user,
-	});
+const todayDeliveries = ref(12);
+const todayEarnings = ref(145.5);
+
+const deliverySteps = ref([
+	{ label: 'Accepted', icon: 'ri-check-line w-5 h-5', completed: true },
+	{ label: 'Picked Up', icon: 'ri-shopping-bag-line w-5 h-5', completed: true },
+	{ label: 'On the Way', icon: 'ri-truck-line w-5 h-5', completed: false },
+	{ label: 'Delivered', icon: 'ri-map-pin-line w-5 h-5', completed: false },
+]);
+
+const currentDelivery = ref({
+	id: '#12348',
+	pickupLocation: 'Spice Garden',
+	dropoffName: 'Sarah Wilson',
+	dropoffAddress: '222 Flavor Ave',
+	price: 19.25,
+	paymentMethod: 'Card',
 });
+
+const stats = ref([
+	{
+		label: 'Today',
+		value: 12,
+		change: '+3 from yesterday',
+		icon: 'ri-truck-line text-blue-600 w-5 h-5',
+		bg: 'bg-blue-100',
+	},
+	{
+		label: 'Earnings',
+		value: '$145.5',
+		change: '+$12.50',
+		icon: 'ri-money-dollar-circle-line text-green-600 w-5 h-5',
+		bg: 'bg-green-100',
+	},
+	{
+		label: 'Distance',
+		value: '45.2km',
+		change: 'Avg 3.8km',
+		icon: 'ri-map-pin-line text-orange-600 w-5 h-5',
+		bg: 'bg-orange-100',
+	},
+	{
+		label: 'Rating',
+		value: 4.9,
+		change: '',
+		icon: 'ri-star-line text-purple-600 w-5 h-5',
+		bg: 'bg-purple-100',
+	},
+	{
+		label: 'Online',
+		value: '8.5h',
+		change: 'Since 9:00 AM',
+		icon: 'ri-time-line text-indigo-600 w-5 h-5',
+		bg: 'bg-indigo-100',
+	},
+]);
 </script>

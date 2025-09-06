@@ -1,6 +1,6 @@
 <template>
 	<nav
-		class="sticky top-16 z-40 bg-[#2a1a40]/90 backdrop-blur-md border-b border-white/10"
+		class="sticky top-16 z-40 px-6 py-4 bg-[#2a1a40]/90 backdrop-blur-md border-b border-white/10"
 	>
 		<div class="container mx-auto px-6 py-2 flex justify-center gap-8">
 			<!-- Owner Navigation -->
@@ -61,7 +61,13 @@
 					to="/delivery/settings"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
-					>Settings</router-link
+					>Earnings</router-link
+				>
+				<router-link
+					to="/delivery/settings"
+					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
+					active-class="font-bold border-b-2 border-purple-400"
+					>Profile</router-link
 				>
 			</template>
 
