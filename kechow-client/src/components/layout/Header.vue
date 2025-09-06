@@ -29,12 +29,10 @@
 		</h1>
 
 		<div class="flex items-center gap-6">
-			<!-- Hamburger menu (mobile only) -->
 			<button
 				@click="toggleDrawer"
 				class="lg:hidden text-primary hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
 				aria-label="Toggle menu"
-				:aria-expanded="userMenuOpen ? 'true' : 'false'"
 			>
 				<svg
 					class="w-7 h-7"
@@ -51,10 +49,8 @@
 				</svg>
 			</button>
 
-			<!-- Language Toggle -->
 			<LanguageToggle />
 
-			<!-- Dark Mode Toggle -->
 			<button
 				class="icon-button"
 				@click="toggleDarkMode"
@@ -92,7 +88,6 @@
 				</svg>
 			</button>
 
-			<!-- User Menu -->
 			<div class="relative" @keydown.escape="closeUserMenu">
 				<button
 					@click="toggleUserMenu"
@@ -106,7 +101,6 @@
 					<span
 						v-if="notifications > 0"
 						class="absolute -top-1 -right-1 bg-accent rounded-full w-4 h-4 text-xs flex items-center justify-center font-bold text-white"
-						aria-label="You have new notifications"
 						>{{ notifications }}</span
 					>
 				</button>
@@ -123,7 +117,6 @@
 						v-if="userMenuOpen"
 						class="absolute right-0 mt-2 w-40 bg-gradient-to-br from-primary-light to-primary-dark rounded-xl shadow-strong text-white text-sm py-2"
 						role="menu"
-						aria-label="User menu options"
 					>
 						<li>
 							<button
@@ -149,57 +142,17 @@
 		</div>
 	</nav>
 
-	<!-- Mobile drawer (sidebar) -->
-	<transition
-		enter-active-class="transition duration-300 ease-in-out"
-		enter-from-class="-translate-x-full"
-		enter-to-class="translate-x-0"
-		leave-active-class="transition duration-300 ease-in-out"
-		leave-from-class="translate-x-0"
-		leave-to-class="-translate-x-full"
-	>
-		<aside
-			v-if="isDrawerOpen"
-			class="fixed inset-y-0 left-0 z-40 w-64 bg-white bg-opacity-10 backdrop-blur-md border-r border-white/20 shadow-soft text-white p-6 lg:hidden"
-			@click.self="closeDrawer"
-		>
-			<nav
-				class="flex flex-col space-y-4"
-				role="menu"
-				aria-label="Mobile Navigation"
-			>
-				<router-link
-					to="/"
-					class="block px-3 py-2 rounded hover:bg-primary hover:text-white transition"
-					:class="{ 'bg-primary text-white': $route.name === 'Landing' }"
-					role="menuitem"
-					@click="closeDrawer"
-				>
-					{{ t('home') }}
-				</router-link>
-				<router-link
-					to="/home"
-					class="block px-3 py-2 rounded hover:bg-primary hover:text-white transition"
-					:class="{ 'bg-primary text-white': $route.name === 'Home' }"
-					role="menuitem"
-					@click="closeDrawer"
-				>
-					{{ t('restaurants') }}
-				</router-link>
-			</nav>
-		</aside>
-	</transition>
+	<!-- Role Navbar fixed below TopNav -->
+	<RoleNavbar v-if="authStore.isAuthenticated" class="sticky top-[80px] z-40" />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { UserCircle } from 'lucide-vue-next';
 import LanguageToggle from '@layout/LanguageToggle.vue';
+import RoleNavbar from '@/components/layout/RoleNavbar.vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
-
-const { t } = useI18n();
 
 const isDrawerOpen = ref(false);
 const userMenuOpen = ref(false);
@@ -207,7 +160,6 @@ const notifications = ref(3);
 
 const authStore = useAuthStore();
 const router = useRouter();
-
 const isDark = ref(
 	localStorage.getItem('theme') === 'dark' ||
 		(!localStorage.getItem('theme') &&
@@ -218,36 +170,31 @@ function toggleDarkMode() {
 	isDark.value = !isDark.value;
 	document.documentElement.classList.toggle('dark', isDark.value);
 }
-
 function toggleDrawer() {
 	isDrawerOpen.value = !isDrawerOpen.value;
 }
-
 function closeDrawer() {
 	isDrawerOpen.value = false;
 }
-
 function toggleUserMenu() {
 	userMenuOpen.value = !userMenuOpen.value;
 }
-
 function closeUserMenu() {
 	userMenuOpen.value = false;
 }
-
 function goProfile() {
-	alert('Go to profile page');
 	closeUserMenu();
+	router.push('/profile');
 }
-
 function logout() {
-	authStore.logout(); // This clears user/token
-	closeUserMenu(); // Closes dropdown menu
-	router.push('/'); // Redirects to login page
+	authStore.logout();
+	closeUserMenu();
+	router.push('/');
 }
 </script>
 
 <style scoped>
+/* Keep all existing animations exactly as they were */
 @keyframes rushIn {
 	0% {
 		opacity: 0;
@@ -267,7 +214,6 @@ function logout() {
 		transform: translateX(0%) rotate(0deg);
 	}
 }
-
 .animate-rushIn {
 	animation: rushIn 1s ease forwards;
 }
@@ -290,10 +236,9 @@ function logout() {
 		transform: rotate(3deg);
 	}
 }
-
 .animate-wiggle {
 	animation: wiggle 5s ease-in-out infinite;
-	animation-delay: 1.2s; /* after rushIn */
+	animation-delay: 1.2s;
 }
 
 @keyframes pulseScaleMinimal {
@@ -305,7 +250,6 @@ function logout() {
 		transform: scale(1.03);
 	}
 }
-
 .text-gradient-pulse {
 	animation: pulseScaleMinimal 2.5s ease-in-out infinite;
 }
