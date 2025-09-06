@@ -25,6 +25,7 @@ const DeliveryOrderDetail = () =>
 const LiveDelivery = () => import('@features/delivery/views/LiveDelivery.vue');
 const DeliveryProfile = () => import('@pages/delivery/ProfilePage.vue');
 const DeliveryEarnings = () => import('@pages/delivery/EarningsPage.vue');
+const OrderDetailPage = () => import('@pages/delivery/OrderDetailPage.vue');
 
 const routes = [
 	{
@@ -90,7 +91,13 @@ const routes = [
 						component: DeliveryEarnings,
 						meta: { requiresAuth: true, role: 'delivery' },
 					},
-				],
+					{
+						path: 'orders',
+						name: 'Orders',
+						component: OrderDetailPage,
+						meta: { requiresAuth: true, role: 'delivery' },
+					},
+				], //
 			},
 
 			// Owner routes
