@@ -1,7 +1,7 @@
 <template>
-	<OwnerDashboard />
+	<DeliveryDashboard />
 </template>
 
 <script setup lang="ts">
-import OwnerDashboard from '@/features/business-owner/views/OwnerDashboard.vue';
+import DeliveryDashboard from '@/features/delivery/views/DeliveryDashboard.vue';
 </script>

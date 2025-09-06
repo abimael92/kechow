@@ -1,33 +1,42 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
-import { useAuthStore } from '@/app/store/auth/auth.store';
+import { useAuthStore } from '@app/store/auth/auth.store';
 
-// * Route guards
 export const authGuard = async (
 	to: RouteLocationNormalized,
 	from: RouteLocationNormalized,
 	next: NavigationGuardNext
 ) => {
-	const authStore = useAuthStore();
+	const auth = useAuthStore();
+	await auth.initialize();
 
-	// ! Initialize auth if token exists
-	if (authStore.token && !authStore.user) {
-		try {
-			await authStore.initialize();
-		} catch {
-			authStore.logout();
-			return next({ name: 'login', query: { redirect: to.fullPath } });
-		}
+	const publicPages = ['Login', 'Register', 'Landing'];
+	const authRequired = to.meta.requiresAuth;
+	const user = auth.user;
+
+	// 1️⃣ Redirect logged-in users away from login/register
+	if (user && publicPages.includes(to.name as string)) {
+		const routes: Record<string, string> = {
+			owner: '/owner/dashboard',
+			delivery: '/delivery/dashboard',
+			customer: '/home',
+		};
+		return next(routes[user.role] || '/home');
 	}
 
-	const publicRoutes = ['login', 'register', 'landing'];
-	if (publicRoutes.includes(to.name as string)) return next();
-
-	if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-		return next({ name: 'login', query: { redirect: to.fullPath } });
+	// 2️⃣ Block access if not logged in
+	if (authRequired && !auth.isAuthenticated) {
+		return next('/login');
 	}
 
-	if (to.meta.role === 'owner' && !authStore.isOwner) {
-		return next({ name: 'home' });
+	// 3️⃣ Role-based route protection
+	const requiredRole = to.meta.role as string | undefined;
+	if (requiredRole && user?.role !== requiredRole) {
+		const routes: Record<string, string> = {
+			owner: '/owner/dashboard',
+			delivery: '/delivery/dashboard',
+			customer: '/home',
+		};
+		return next(routes[user?.role || 'customer']);
 	}
 
 	next();

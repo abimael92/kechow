@@ -23,8 +23,10 @@ Route::get('/full-docs', FullDocsController::class);
 
 // Auth routes
 // Route::post('/login', [AuthController::class, 'login'])->middleware('cors');
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::middleware('api')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+});
 
 Route::middleware(['auth:sanctum', 'business.owner'])->group(function () {
     Route::apiResource('menu-items', MenuItemController::class);
