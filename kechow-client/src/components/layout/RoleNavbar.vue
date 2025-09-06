@@ -58,13 +58,13 @@
 					>Orders</router-link
 				>
 				<router-link
-					to="/delivery/settings"
+					to="/delivery/Earnings"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
 					>Earnings</router-link
 				>
 				<router-link
-					to="/delivery/settings"
+					to="/delivery/profile"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
 					>Profile</router-link
