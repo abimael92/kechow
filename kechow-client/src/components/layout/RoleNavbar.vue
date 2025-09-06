@@ -9,69 +9,82 @@
 					to="/owner/dashboard"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Dashboard</router-link
 				>
-					Dashboard
-				</router-link>
 				<router-link
 					to="/owner/orders"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Orders</router-link
 				>
-					Orders
-				</router-link>
 				<router-link
 					to="/owner/menu"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Menu Items</router-link
 				>
-					Menu Items
-				</router-link>
 				<router-link
 					to="/owner/analytics"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Analytics</router-link
 				>
-					Analytics
-				</router-link>
 				<router-link
 					to="/owner/reviews"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Reviews</router-link
 				>
-					Reviews
-				</router-link>
 				<router-link
 					to="/owner/settings"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Settings</router-link
 				>
-					Settings
-				</router-link>
 			</template>
 
-			<!-- Member Navigation -->
+			<!-- Delivery Navigation -->
+			<template v-else-if="authStore.isDelivery">
+				<router-link
+					to="/delivery/dashboard"
+					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
+					active-class="font-bold border-b-2 border-purple-400"
+					>Dashboard</router-link
+				>
+				<router-link
+					to="/delivery/orders"
+					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
+					active-class="font-bold border-b-2 border-purple-400"
+					>Orders</router-link
+				>
+				<router-link
+					to="/delivery/settings"
+					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
+					active-class="font-bold border-b-2 border-purple-400"
+					>Settings</router-link
+				>
+			</template>
+
+			<!-- Customer Navigation -->
 			<template v-else-if="authStore.isAuthenticated">
 				<router-link
 					to="/restaurants"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Restaurants</router-link
 				>
-					Restaurants
-				</router-link>
 				<router-link
 					to="/cart"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>Cart</router-link
 				>
-					Cart
-				</router-link>
 				<router-link
 					to="/orders"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors"
 					active-class="font-bold border-b-2 border-purple-400"
+					>My Orders</router-link
 				>
-					My Orders
-				</router-link>
 			</template>
 		</div>
 	</nav>
