@@ -3,10 +3,8 @@
 		<!-- Header -->
 		<div>
 			<div>
-				<h1 class="text-2xl font-bold text-gray-900">Orders</h1>
-				<p class="text-gray-600 mt-1">
-					Manage your deliveries and track progress
-				</p>
+				<h1 class="text-2xl font-bold text-gray-900">{{ $t('orders') }}</h1>
+				<p class="text-gray-600 mt-1">{{ $t('manageDeliveries') }}</p>
 			</div>
 
 			<!-- Tabs -->
@@ -23,7 +21,7 @@
 								: 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50',
 						]"
 					>
-						{{ tab.label }} ({{ tab.count }})
+						{{ $t(tab.label) }} ({{ tab.count }})
 					</button>
 				</div>
 			</div>
@@ -36,12 +34,16 @@
 							class="ri-notification-line text-blue-600 mr-3 w-5 h-5 flex items-center justify-center"
 						></i>
 						<div>
-							<p class="font-medium text-blue-900">{{ ordersSummary.title }}</p>
-							<p class="text-sm text-blue-700">{{ ordersSummary.subtitle }}</p>
+							<p class="font-medium text-blue-900">
+								{{ $t(ordersSummary.title) }}
+							</p>
+							<p class="text-sm text-blue-700">
+								{{ $t(ordersSummary.subtitle) }}
+							</p>
 						</div>
 					</div>
 					<div class="text-right">
-						<p class="text-sm text-blue-600">Avg Distance</p>
+						<p class="text-sm text-blue-600">{{ $t('avgDistance') }}</p>
 						<p class="font-semibold text-blue-900">
 							{{ ordersSummary.avgDistance }}
 						</p>
@@ -66,13 +68,17 @@
 									</h4>
 								</div>
 								<p class="text-gray-600 font-medium">{{ order.restaurant }}</p>
-								<p class="text-sm text-gray-500">to {{ order.customer }}</p>
+								<p class="text-sm text-gray-500">
+									{{ $t('to') }} {{ order.customer }}
+								</p>
 							</div>
 							<div class="text-right">
 								<p class="text-2xl font-bold text-green-600">
 									${{ order.amount }}
 								</p>
-								<p class="text-sm text-gray-500">{{ order.items }} items</p>
+								<p class="text-sm text-gray-500">
+									{{ order.items }} {{ $t('items') }}
+								</p>
 								<p class="text-xs text-gray-400">{{ order.paymentMethod }}</p>
 							</div>
 						</div>
@@ -113,7 +119,9 @@
 									></i>
 								</div>
 								<div class="flex-1 min-w-0">
-									<p class="text-sm font-medium text-gray-900">Pickup</p>
+									<p class="text-sm font-medium text-gray-900">
+										{{ $t('pickup') }}
+									</p>
 									<p class="text-sm text-gray-600 truncate">
 										{{ order.pickup }}
 									</p>
@@ -134,7 +142,9 @@
 									></i>
 								</div>
 								<div class="flex-1 min-w-0">
-									<p class="text-sm font-medium text-gray-900">Drop-off</p>
+									<p class="text-sm font-medium text-gray-900">
+										{{ $t('dropoff') }}
+									</p>
 									<p class="text-sm text-gray-600 truncate">
 										{{ order.dropoff }}
 									</p>
@@ -147,12 +157,12 @@
 							<button
 								class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer whitespace-nowrap"
 							>
-								Accept Order
+								{{ $t('acceptOrder') }}
 							</button>
 							<button
 								class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap"
 							>
-								Decline
+								{{ $t('decline') }}
 							</button>
 						</div>
 					</div>
@@ -166,15 +176,15 @@
 import { ref } from 'vue';
 
 const tabs = ref([
-	{ label: 'Available', count: 3 },
-	{ label: 'Active', count: 1 },
-	{ label: 'Completed', count: 2 },
+	{ label: 'available', count: 3 },
+	{ label: 'active', count: 1 },
+	{ label: 'completed', count: 2 },
 ]);
 const activeTab = ref(0);
 
 const ordersSummary = ref({
-	title: '3 orders waiting for pickup',
-	subtitle: 'Potential earnings: $56.25',
+	title: 'ordersWaitingPickup',
+	subtitle: 'potentialEarnings',
 	avgDistance: '2.4 km',
 });
 
@@ -220,7 +230,3 @@ const orders = ref([
 	},
 ]);
 </script>
-
-<style scoped>
-/* optional custom styling */
-</style>

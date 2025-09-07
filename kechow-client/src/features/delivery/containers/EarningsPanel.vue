@@ -3,10 +3,8 @@
 		<!-- Header -->
 		<div class="flex justify-between items-center">
 			<div>
-				<h1 class="text-2xl font-bold text-gray-900">Earnings</h1>
-				<p class="text-gray-600 mt-1">
-					Track your delivery earnings and payments
-				</p>
+				<h1 class="text-2xl font-bold text-gray-900">{{ $t('earnings') }}</h1>
+				<p class="text-gray-600 mt-1">{{ $t('trackEarningsPayments') }}</p>
 			</div>
 			<div class="flex bg-gray-100 rounded-lg p-1">
 				<button
@@ -18,7 +16,7 @@
 					"
 					@click="period = 'week'"
 				>
-					This Week
+					{{ $t('thisWeek') }}
 				</button>
 				<button
 					class="px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer whitespace-nowrap"
@@ -29,7 +27,7 @@
 					"
 					@click="period = 'month'"
 				>
-					This Month
+					{{ $t('thisMonth') }}
 				</button>
 			</div>
 		</div>
@@ -38,12 +36,12 @@
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 			<div
 				v-for="card in statsCards"
-				:key="card.title"
+				:key="card.titleKey"
 				class="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
 			>
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-gray-600 text-sm">{{ card.title }}</p>
+						<p class="text-gray-600 text-sm">{{ $t(card.titleKey) }}</p>
 						<p class="text-3xl font-bold text-gray-900">{{ card.value }}</p>
 						<p :class="['text-sm mt-1', card.changeColor]">{{ card.change }}</p>
 					</div>
@@ -62,7 +60,9 @@
 
 		<!-- Earnings Trend -->
 		<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-			<h3 class="text-lg font-semibold text-gray-900 mb-6">Earnings Trend</h3>
+			<h3 class="text-lg font-semibold text-gray-900 mb-6">
+				{{ $t('earningsTrend') }}
+			</h3>
 			<LineChart :chart-data="trendChartData" :chart-options="chartOptions" />
 		</div>
 
@@ -70,7 +70,7 @@
 		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 			<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
 				<h3 class="text-lg font-semibold text-gray-900 mb-6">
-					Earnings Breakdown
+					{{ $t('earningsBreakdown') }}
 				</h3>
 				<PieChart
 					:chart-data="breakdownChartData"
@@ -82,11 +82,13 @@
 		<!-- Payment History -->
 		<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
 			<div class="flex justify-between items-center mb-6">
-				<h3 class="text-lg font-semibold text-gray-900">Payment History</h3>
+				<h3 class="text-lg font-semibold text-gray-900">
+					{{ $t('paymentHistory') }}
+				</h3>
 				<button
 					class="text-blue-600 hover:text-blue-800 text-sm font-medium cursor-pointer"
 				>
-					View All
+					{{ $t('viewAll') }}
 				</button>
 			</div>
 			<div class="space-y-4">
@@ -111,7 +113,7 @@
 						<span
 							class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
 						>
-							{{ payout.status }}
+							{{ $t(payout.status.toLowerCase()) }}
 						</span>
 					</div>
 				</div>
@@ -127,8 +129,8 @@
 					<CurrencyDollarIcon
 						class="text-blue-600 text-2xl mb-2 w-8 h-8 mx-auto"
 					/>
-					<p class="font-medium text-gray-900">Download Report</p>
-					<p class="text-sm text-gray-500">Export earnings data</p>
+					<p class="font-medium text-gray-900">{{ $t('downloadReport') }}</p>
+					<p class="text-sm text-gray-500">{{ $t('exportEarningsData') }}</p>
 				</div>
 			</button>
 
@@ -139,8 +141,8 @@
 					<BadgeCheckIcon
 						class="text-green-600 text-2xl mb-2 w-8 h-8 mx-auto"
 					/>
-					<p class="font-medium text-gray-900">Payment Methods</p>
-					<p class="text-sm text-gray-500">Manage bank accounts</p>
+					<p class="font-medium text-gray-900">{{ $t('paymentMethods') }}</p>
+					<p class="text-sm text-gray-500">{{ $t('manageBankAccounts') }}</p>
 				</div>
 			</button>
 
@@ -151,8 +153,8 @@
 					<CalculatorIcon
 						class="text-purple-600 text-2xl mb-2 w-8 h-8 mx-auto"
 					/>
-					<p class="font-medium text-gray-900">Tax Documents</p>
-					<p class="text-sm text-gray-500">1099 forms & receipts</p>
+					<p class="font-medium text-gray-900">{{ $t('taxDocuments') }}</p>
+					<p class="text-sm text-gray-500">{{ $t('taxFormsReceipts') }}</p>
 				</div>
 			</button>
 		</div>
@@ -161,6 +163,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import {
 	Chart as ChartJS,
 	Title,
@@ -173,7 +176,7 @@ import {
 	LineElement,
 	Filler,
 } from 'chart.js';
-import { Chart as VueChart, Line, Pie } from 'vue-chartjs';
+import { Line, Pie } from 'vue-chartjs';
 
 // Heroicons
 import {
@@ -197,38 +200,39 @@ ChartJS.register(
 	Filler
 );
 
+const { t } = useI18n();
 const period = ref('week');
 
 const statsCards = [
 	{
-		title: 'Total Earnings',
+		titleKey: 'totalEarnings',
 		value: '$557.00',
-		change: '+12.5% from last week',
+		change: t('changeFromLastWeek', { value: '12.5%' }),
 		changeColor: 'text-green-600',
 		icon: CurrencyDollarIcon,
 		iconColor: 'text-green-600',
 		bgColor: 'bg-green-100',
 	},
 	{
-		title: 'Deliveries',
+		titleKey: 'deliveries',
 		value: '51',
-		change: 'Avg $10.92 per order',
+		change: t('avgPerOrder', { value: '$10.92' }),
 		changeColor: 'text-blue-600',
 		icon: TruckIcon,
 		iconColor: 'text-blue-600',
 		bgColor: 'bg-blue-100',
 	},
 	{
-		title: 'Hours Online',
+		titleKey: 'hoursOnline',
 		value: '40.0h',
-		change: '$13.93/hr',
+		change: t('ratePerHour', { value: '$13.93' }),
 		changeColor: 'text-purple-600',
 		icon: ClockIcon,
 		iconColor: 'text-purple-600',
 		bgColor: 'bg-purple-100',
 	},
 	{
-		title: 'Avg Rating',
+		titleKey: 'avgRating',
 		value: '4.9',
 		change: '',
 		changeColor: '',
@@ -240,10 +244,18 @@ const statsCards = [
 
 // Earnings Trend Data
 const trendChartData = {
-	labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+	labels: [
+		t('dayMon'),
+		t('dayTue'),
+		t('dayWed'),
+		t('dayThu'),
+		t('dayFri'),
+		t('daySat'),
+		t('daySun'),
+	],
 	datasets: [
 		{
-			label: 'Earnings',
+			label: t('earnings'),
 			data: [50, 75, 60, 90, 120, 80, 100],
 			fill: true,
 			backgroundColor: 'rgba(59, 130, 246, 0.3)',
@@ -252,36 +264,37 @@ const trendChartData = {
 		},
 	],
 };
+
 const payouts = [
 	{
-		title: 'Weekly Payout',
+		title: t('weeklyPayout'),
 		date: '2024-01-15',
 		amount: 245.5,
-		status: 'Completed',
+		status: 'completed',
 	},
 	{
-		title: 'Weekly Payout',
+		title: t('weeklyPayout'),
 		date: '2024-01-08',
 		amount: 198.75,
-		status: 'Completed',
+		status: 'completed',
 	},
 	{
-		title: 'Weekly Payout',
+		title: t('weeklyPayout'),
 		date: '2024-01-01',
 		amount: 267.25,
-		status: 'Completed',
+		status: 'completed',
 	},
 	{
-		title: 'Weekly Payout',
+		title: t('weeklyPayout'),
 		date: '2023-12-25',
 		amount: 189.5,
-		status: 'Completed',
+		status: 'completed',
 	},
 ];
 
 // Earnings Breakdown Data
 const breakdownChartData = {
-	labels: ['Delivery Fees', 'Tips', 'Bonuses', 'Peak Hour'],
+	labels: [t('deliveryFees'), t('tips'), t('bonuses'), t('peakHour')],
 	datasets: [
 		{
 			data: [245.5, 178.25, 67, 89.25],
@@ -296,12 +309,4 @@ const chartOptions = {
 		legend: { position: 'bottom' },
 	},
 };
-
-// // Use VueChart components directly
-// const LineChart = (props: any) => <Line {...props} />;
-// const PieChart = (props: any) => <Pie {...props} />;
 </script>
-
-<style scoped>
-/* Optional custom styling */
-</style>
