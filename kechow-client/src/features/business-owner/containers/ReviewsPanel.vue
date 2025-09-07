@@ -2,10 +2,10 @@
 	<div class="space-y-6">
 		<div class="flex justify-between items-center">
 			<div>
-				<h1 class="text-3xl font-bold text-gray-900">Customer Reviews</h1>
-				<p class="text-gray-600 mt-1">
-					Manage and respond to customer feedback
-				</p>
+				<h1 class="text-3xl font-bold text-gray-900">
+					{{ $t('customerReviews') }}
+				</h1>
+				<p class="text-gray-600 mt-1">{{ $t('manageRespondFeedback') }}</p>
 			</div>
 			<div class="flex space-x-3">
 				<button
@@ -13,23 +13,23 @@
 				>
 					<i
 						class="ri-download-line mr-2 w-4 h-4 flex items-center justify-center inline"
-					></i
-					>Export
+					></i>
+					{{ $t('export') }}
 				</button>
 				<button
 					class="bg-orange-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
 					<i
 						class="ri-refresh-line mr-2 w-4 h-4 flex items-center justify-center inline"
-					></i
-					>Refresh
+					></i>
+					{{ $t('refresh') }}
 				</button>
 			</div>
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 			<ReviewStatsCard
-				title="Average Rating"
+				:title="$t('averageRating')"
 				value="4.4"
 				:showStars="true"
 				:stars="4.4"
@@ -39,7 +39,7 @@
 			/>
 
 			<ReviewStatsCard
-				title="Total Reviews"
+				:title="$t('totalReviews')"
 				value="5"
 				change="+12 this month"
 				changeType="positive"
@@ -49,7 +49,7 @@
 			/>
 
 			<ReviewStatsCard
-				title="Response Rate"
+				:title="$t('responseRate')"
 				value="85%"
 				change="+5% this month"
 				changeType="neutral"
@@ -59,7 +59,7 @@
 			/>
 
 			<ReviewStatsCard
-				title="Positive Reviews"
+				:title="$t('positiveReviews')"
 				value="4"
 				change="80% of total"
 				changeType="positive"
@@ -84,8 +84,12 @@
 							: 'text-gray-600 hover:bg-gray-50',
 					]"
 				>
-					{{ filter.label
-					}}<span
+					{{
+						filter.id === 'all'
+							? $t('allReviews')
+							: $t('stars', { n: filter.id })
+					}}
+					<span
 						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
 						>{{ filter.count }}</span
 					>
@@ -149,17 +153,14 @@ const loadReviews = async () => {
 
 const handleReply = (reviewId: string) => {
 	console.log('Reply to review:', reviewId);
-	// Implement reply functionality
 };
 
 const handleFlag = (reviewId: string) => {
 	console.log('Flag review:', reviewId);
-	// Implement flag functionality
 };
 
 const handleHelpful = (reviewId: string) => {
 	console.log('Mark review as helpful:', reviewId);
-	// Implement helpful functionality
 };
 
 onMounted(() => {
