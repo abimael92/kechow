@@ -29,7 +29,7 @@
 					:class="statusClasses"
 					class="px-3 py-1 rounded-full text-sm font-medium"
 				>
-					{{ formatStatus(order.status) }}
+					{{ $t('status' + order.status) }}
 				</span>
 				<p class="font-bold text-xl text-gray-900 mt-2">
 					${{ order.totalAmount.toFixed(2) }}
@@ -41,7 +41,7 @@
 		</div>
 
 		<div class="mb-4">
-			<h4 class="font-medium text-gray-900 mb-2">Items:</h4>
+			<h4 class="font-medium text-gray-900 mb-2">{{ $t('orderItems') }}</h4>
 			<div class="flex flex-wrap gap-2">
 				<span
 					v-for="item in order.items"
@@ -85,35 +85,35 @@
 					@click="updateStatus('declined')"
 					class="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-medium hover:bg-red-200 transition-colors cursor-pointer whitespace-nowrap"
 				>
-					Decline
+					{{ $t('btnDecline') }}
 				</button>
 				<button
 					v-if="order.status === 'new'"
 					@click="updateStatus('preparing')"
 					class="bg-orange-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
-					Accept
+					{{ $t('btnAccept') }}
 				</button>
 				<button
 					v-if="order.status === 'preparing'"
 					@click="updateStatus('ready')"
 					class="bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
-					Mark Ready
+					{{ $t('btnMarkReady') }}
 				</button>
 				<button
 					v-if="order.status === 'ready'"
 					@click="updateStatus('out_for_delivery')"
 					class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
-					Out for Delivery
+					{{ $t('btnOutForDelivery') }}
 				</button>
 				<button
 					v-if="order.status === 'out_for_delivery'"
 					@click="updateStatus('delivered')"
 					class="bg-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
-					Mark Delivered
+					{{ $t('btnMarkDelivered') }}
 				</button>
 			</div>
 		</div>
@@ -124,10 +124,7 @@
 import { computed } from 'vue';
 import type { Order } from '../types';
 
-const props = defineProps<{
-	order: Order;
-}>();
-
+const props = defineProps<{ order: Order }>();
 const emit = defineEmits<{
 	(event: 'update-status', orderId: string, newStatus: string): void;
 }>();
@@ -144,19 +141,6 @@ const statusClasses = computed(() => {
 	};
 	return statusMap[props.order.status] || 'bg-gray-100 text-gray-800';
 });
-
-const formatStatus = (status: string) => {
-	const statusMap: Record<string, string> = {
-		new: 'New',
-		preparing: 'Preparing',
-		ready: 'Ready',
-		out_for_delivery: 'Out for Delivery',
-		delivered: 'Delivered',
-		declined: 'Declined',
-		cancelled: 'Cancelled',
-	};
-	return statusMap[status] || status;
-};
 
 const formatTimeAgo = (date: string) => {
 	const now = new Date();
@@ -176,11 +160,6 @@ const updateStatus = (newStatus: string) => {
 	emit('update-status', props.order.id, newStatus);
 };
 
-const callCustomer = () => {
-	window.open(`tel:${props.order.phone}`, '_blank');
-};
-
-const messageCustomer = () => {
-	window.open(`sms:${props.order.phone}`, '_blank');
-};
+const callCustomer = () => window.open(`tel:${props.order.phone}`, '_blank');
+const messageCustomer = () => window.open(`sms:${props.order.phone}`, '_blank');
 </script>
