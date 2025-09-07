@@ -13,13 +13,13 @@
 				>
 					<div class="hidden md:flex items-center space-x-6 text-sm">
 						<div class="text-center">
-							<p class="text-gray-500">Today</p>
+							<p class="text-gray-500">{{ $t('today') }}</p>
 							<p class="font-semibold text-gray-900">
-								{{ todayDeliveries }} deliveries
+								{{ todayDeliveries }} {{ $t('deliveries') }}
 							</p>
 						</div>
 						<div class="text-center">
-							<p class="text-gray-500">Earnings</p>
+							<p class="text-gray-500">{{ $t('earnings') }}</p>
 							<p class="font-semibold text-green-600">
 								${{ todayEarnings.toFixed(2) }}
 							</p>
@@ -43,7 +43,7 @@
 							<p class="text-sm font-medium text-gray-900">
 								{{ authStore.user?.name }}
 							</p>
-							<p class="text-xs text-gray-500">Delivery Partner</p>
+							<p class="text-xs text-gray-500">{{ $t('deliveryPartner') }}</p>
 						</div>
 					</div>
 				</div>
@@ -55,12 +55,14 @@
 			<!-- Status -->
 			<div class="flex justify-between items-center">
 				<div>
-					<h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-					<p class="text-gray-600 mt-1">Ready to deliver amazing food!</p>
+					<h1 class="text-2xl font-bold text-gray-900">
+						{{ $t('dashboard') }}
+					</h1>
+					<p class="text-gray-600 mt-1">{{ $t('readyToDeliver') }}</p>
 				</div>
 
 				<div class="flex items-center space-x-3">
-					<span class="text-sm text-gray-600">Status:</span>
+					<span class="text-sm text-gray-600">{{ $t('status') }}:</span>
 					<button
 						class="relative inline-flex h-7 w-12 items-center rounded-full bg-green-600"
 					>
@@ -69,8 +71,10 @@
 						></span>
 					</button>
 					<div class="text-right">
-						<span class="text-sm font-semibold text-green-600">Online</span>
-						<p class="text-xs text-gray-500">Receiving orders</p>
+						<span class="text-sm font-semibold text-green-600">{{
+							$t('online')
+						}}</span>
+						<p class="text-xs text-gray-500">{{ $t('receivingOrders') }}</p>
 					</div>
 					<div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
 				</div>
@@ -79,7 +83,7 @@
 			<!-- Current Delivery -->
 			<div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
 				<h2 class="text-lg font-semibold text-gray-900 mb-4">
-					Current Delivery
+					{{ $t('currentDelivery') }}
 				</h2>
 				<div class="space-y-6">
 					<div class="relative flex justify-between">
@@ -103,8 +107,9 @@
 									'text-sm font-medium mt-2',
 									step.completed ? 'text-green-600' : 'text-gray-400',
 								]"
-								>{{ step.label }}</span
 							>
+								{{ $t(step.label) }}
+							</span>
 							<div
 								v-if="index < deliverySteps.length - 1"
 								:class="[
@@ -145,7 +150,9 @@
 								class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200"
 							>
 								<div>
-									<p class="font-medium text-blue-900">Navigate to Customer</p>
+									<p class="font-medium text-blue-900">
+										{{ $t('navigateCustomer') }}
+									</p>
 									<p class="text-sm text-blue-700">
 										{{ currentDelivery.dropoffAddress }}
 									</p>
@@ -153,14 +160,14 @@
 								<button
 									class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
 								>
-									<i class="ri-navigation-line mr-2"></i>Navigate
+									<i class="ri-navigation-line mr-2"></i>{{ $t('navigate') }}
 								</button>
 							</div>
 							<div class="flex space-x-2">
 								<button
 									class="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
 								>
-									Mark as Delivered
+									{{ $t('markDelivered') }}
 								</button>
 								<button
 									class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
@@ -182,7 +189,7 @@
 				>
 					<div class="flex items-center justify-between">
 						<div>
-							<p class="text-gray-600 text-sm">{{ stat.label }}</p>
+							<p class="text-gray-600 text-sm">{{ $t(stat.label) }}</p>
 							<p class="text-2xl font-bold text-gray-900">{{ stat.value }}</p>
 							<p class="text-xs text-green-600">{{ stat.change }}</p>
 						</div>
@@ -204,17 +211,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
+import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 const todayDeliveries = ref(12);
 const todayEarnings = ref(145.5);
 
 const deliverySteps = ref([
-	{ label: 'Accepted', icon: 'ri-check-line w-5 h-5', completed: true },
-	{ label: 'Picked Up', icon: 'ri-shopping-bag-line w-5 h-5', completed: true },
-	{ label: 'On the Way', icon: 'ri-truck-line w-5 h-5', completed: false },
-	{ label: 'Delivered', icon: 'ri-map-pin-line w-5 h-5', completed: false },
+	{ label: 'accepted', icon: 'ri-check-line w-5 h-5', completed: true },
+	{ label: 'pickedUp', icon: 'ri-shopping-bag-line w-5 h-5', completed: true },
+	{ label: 'onTheWay', icon: 'ri-truck-line w-5 h-5', completed: false },
+	{ label: 'delivered', icon: 'ri-map-pin-line w-5 h-5', completed: false },
 ]);
 
 const currentDelivery = ref({
@@ -228,35 +237,35 @@ const currentDelivery = ref({
 
 const stats = ref([
 	{
-		label: 'Today',
+		label: 'today',
 		value: 12,
 		change: '+3 from yesterday',
 		icon: 'ri-truck-line text-blue-600 w-5 h-5',
 		bg: 'bg-blue-100',
 	},
 	{
-		label: 'Earnings',
+		label: 'earnings',
 		value: '$145.5',
 		change: '+$12.50',
 		icon: 'ri-money-dollar-circle-line text-green-600 w-5 h-5',
 		bg: 'bg-green-100',
 	},
 	{
-		label: 'Distance',
+		label: 'distanceStat',
 		value: '45.2km',
 		change: 'Avg 3.8km',
 		icon: 'ri-map-pin-line text-orange-600 w-5 h-5',
 		bg: 'bg-orange-100',
 	},
 	{
-		label: 'Rating',
+		label: 'ratingStat',
 		value: 4.9,
 		change: '',
 		icon: 'ri-star-line text-purple-600 w-5 h-5',
 		bg: 'bg-purple-100',
 	},
 	{
-		label: 'Online',
+		label: 'online',
 		value: '8.5h',
 		change: 'Since 9:00 AM',
 		icon: 'ri-time-line text-indigo-600 w-5 h-5',
