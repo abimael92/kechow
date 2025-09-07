@@ -8,7 +8,7 @@
 			</div>
 			<div>
 				<p class="font-medium text-gray-900">{{ name }}</p>
-				<p class="text-sm text-gray-500">{{ orders }} orders</p>
+				<p class="text-sm text-gray-500">{{ orders }} {{ $t('orders') }}</p>
 			</div>
 		</div>
 		<span class="font-bold text-gray-900">{{ revenue }}</span>
