@@ -83,7 +83,7 @@
 					to="/cart"
 					class="text-white hover:text-purple-300 px-3 py-1 rounded transition-colors no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('cart') }}</router-link
+					>{{ $t('cartNav') }}</router-link
 				>
 				<router-link
 					to="/orders"

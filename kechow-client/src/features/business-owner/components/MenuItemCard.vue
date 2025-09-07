@@ -53,7 +53,11 @@
 						]"
 					></span>
 					<span class="text-sm text-gray-600">
-						{{ item.available ? 'Available' : 'Out of stock' }}
+						{{
+							item.available
+								? $t('menuItemAvailable')
+								: $t('menuItemOutOfStock')
+						}}
 					</span>
 				</div>
 
@@ -84,9 +88,7 @@
 import { ref } from 'vue';
 import type { MenuItem } from '../types';
 
-const props = defineProps<{
-	item: MenuItem;
-}>();
+const props = defineProps<{ item: MenuItem }>();
 
 const emit = defineEmits<{
 	(event: 'edit', item: MenuItem): void;
@@ -94,22 +96,13 @@ const emit = defineEmits<{
 	(event: 'toggle-availability', item: MenuItem): void;
 }>();
 
-const defaultImage = ref('https://via.placeholder.com/300x200?text=No+Image');
+const defaultImage = ref('https://demofree.sirv.com/nope-not-here.jpg');
 
 const handleImageError = (event: Event) => {
-	const img = event.target as HTMLImageElement;
-	img.src = defaultImage.value;
+	(event.target as HTMLImageElement).src = defaultImage.value;
 };
 
-const emitEdit = () => {
-	emit('edit', props.item);
-};
-
-const emitDelete = () => {
-	emit('delete', props.item);
-};
-
-const toggleAvailability = () => {
-	emit('toggle-availability', props.item);
-};
+const emitEdit = () => emit('edit', props.item);
+const emitDelete = () => emit('delete', props.item);
+const toggleAvailability = () => emit('toggle-availability', props.item);
 </script>

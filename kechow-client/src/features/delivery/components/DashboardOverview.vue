@@ -62,7 +62,11 @@
 				</div>
 
 				<div class="flex items-center space-x-3">
+					<<<<<<< HEAD
+					<span class="text-sm text-gray-600">{{ $t('status') }}:</span>
+					=======
 					<span class="text-sm text-gray-600">{{ $t('status') }}</span>
+					>>>>>>> origin/main
 					<button
 						class="relative inline-flex h-7 w-12 items-center rounded-full bg-green-600"
 					>
@@ -107,8 +111,9 @@
 									'text-sm font-medium mt-2',
 									step.completed ? 'text-green-600' : 'text-gray-400',
 								]"
-								>{{ $t(step.label) }}</span
 							>
+								{{ $t(step.label) }}
+							</span>
 							<div
 								v-if="index < deliverySteps.length - 1"
 								:class="[
@@ -150,7 +155,11 @@
 							>
 								<div>
 									<p class="font-medium text-blue-900">
+										<<<<<<< HEAD
+										{{ $t('navigateCustomer') }}
+										=======
 										{{ $t('navigateToCustomer') }}
+										>>>>>>> origin/main
 									</p>
 									<p class="text-sm text-blue-700">
 										{{ currentDelivery.dropoffAddress }}
@@ -166,7 +175,11 @@
 								<button
 									class="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
 								>
+									<<<<<<< HEAD
+									{{ $t('markDelivered') }}
+									=======
 									{{ $t('markAsDelivered') }}
+									>>>>>>> origin/main
 								</button>
 								<button
 									class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
@@ -210,8 +223,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
+import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 const todayDeliveries = ref(12);
 const todayEarnings = ref(145.5);
@@ -248,14 +263,14 @@ const stats = ref([
 		bg: 'bg-green-100',
 	},
 	{
-		label: 'distance',
+		label: 'distanceStat',
 		value: '45.2km',
 		change: 'Avg 3.8km',
 		icon: 'ri-map-pin-line text-orange-600 w-5 h-5',
 		bg: 'bg-orange-100',
 	},
 	{
-		label: 'rating',
+		label: 'ratingStat',
 		value: 4.9,
 		change: '',
 		icon: 'ri-star-line text-purple-600 w-5 h-5',

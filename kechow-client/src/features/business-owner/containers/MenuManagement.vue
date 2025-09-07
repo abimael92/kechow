@@ -2,10 +2,10 @@
 	<div class="space-y-6">
 		<div class="flex justify-between items-center">
 			<div>
-				<h1 class="text-3xl font-bold text-gray-900">Menu Management</h1>
-				<p class="text-gray-600 mt-1">
-					Add, edit, and manage your restaurant menu items
-				</p>
+				<h1 class="text-3xl font-bold text-gray-900">
+					{{ $t('menuManagement') }}
+				</h1>
+				<p class="text-gray-600 mt-1">{{ $t('trackMenuItems') }}</p>
 			</div>
 			<button
 				@click="openAddModal"
@@ -13,8 +13,8 @@
 			>
 				<i
 					class="ri-add-line mr-2 w-5 h-5 flex items-center justify-center inline"
-				></i
-				>Add Menu Item
+				></i>
+				{{ $t('addMenuItem') }}
 			</button>
 		</div>
 
@@ -32,7 +32,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							{{ stats.totalItems }}
 						</p>
-						<p class="text-gray-600 text-sm">Total Items</p>
+						<p class="text-gray-600 text-sm">{{ $t('totalItems') }}</p>
 					</div>
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							{{ stats.availableItems }}
 						</p>
-						<p class="text-gray-600 text-sm">Available</p>
+						<p class="text-gray-600 text-sm">{{ $t('availableItems') }}</p>
 					</div>
 				</div>
 			</div>
@@ -68,7 +68,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							{{ stats.outOfStockItems }}
 						</p>
-						<p class="text-gray-600 text-sm">Out of Stock</p>
+						<p class="text-gray-600 text-sm">{{ $t('outOfStockItems') }}</p>
 					</div>
 				</div>
 			</div>
@@ -86,7 +86,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							${{ stats.averagePrice.toFixed(2) }}
 						</p>
-						<p class="text-gray-600 text-sm">Avg. Price</p>
+						<p class="text-gray-600 text-sm">{{ $t('averagePrice') }}</p>
 					</div>
 				</div>
 			</div>
@@ -105,7 +105,7 @@
 							: 'text-gray-600 hover:bg-gray-50',
 					]"
 				>
-					{{ category }}
+					{{ $t(category.toLowerCase()) }}
 				</button>
 			</div>
 		</div>
@@ -126,10 +126,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import MenuItemCard from '../components/MenuItemCard.vue';
-import {
-	fetchMenuItems,
-	getMenuStats,
-} from '../services/businessOwner.service';
+import { fetchMenuItems } from '../services/businessOwner.service';
 import type { MenuItem } from '../types/';
 
 const menuItems = ref<MenuItem[]>([]);
@@ -188,25 +185,11 @@ const setActiveCategory = (category: string) => {
 	activeCategory.value = category;
 };
 
-const openAddModal = () => {
-	// Implement modal opening logic
-	console.log('Open add modal');
-};
-
-const openEditModal = (item: MenuItem) => {
-	// Implement edit modal logic
-	console.log('Edit item:', item);
-};
-
-const confirmDelete = (item: MenuItem) => {
-	// Implement delete confirmation
-	console.log('Delete item:', item);
-};
-
-const toggleAvailability = (item: MenuItem) => {
-	// Implement toggle availability
+const openAddModal = () => console.log('Open add modal');
+const openEditModal = (item: MenuItem) => console.log('Edit item:', item);
+const confirmDelete = (item: MenuItem) => console.log('Delete item:', item);
+const toggleAvailability = (item: MenuItem) =>
 	console.log('Toggle availability:', item);
-};
 
 onMounted(() => {
 	loadMenuItems();

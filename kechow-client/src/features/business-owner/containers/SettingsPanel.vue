@@ -1,10 +1,8 @@
 <template>
 	<div class="space-y-6">
 		<div>
-			<h1 class="text-3xl font-bold text-gray-900">Settings</h1>
-			<p class="text-gray-600 mt-1">
-				Manage your restaurant settings and preferences
-			</p>
+			<h1 class="text-3xl font-bold text-gray-900">{{ $t('settings') }}</h1>
+			<p class="text-gray-600 mt-1">{{ $t('manageRestaurantSettings') }}</p>
 		</div>
 
 		<div class="flex flex-col lg:flex-row gap-8">
@@ -27,7 +25,7 @@
 								:class="tab.icon"
 								class="mr-3 w-5 h-5 flex items-center justify-center"
 							></i>
-							{{ tab.label }}
+							{{ $t(tab.label) }}
 						</button>
 					</nav>
 				</div>
@@ -36,22 +34,11 @@
 			<!-- Main Content -->
 			<div class="lg:w-3/4">
 				<div class="space-y-6">
-					<!-- General Settings -->
 					<GeneralSettings v-if="activeTab === 'general'" />
-
-					<!-- Menu Settings -->
 					<MenuSettings v-if="activeTab === 'menu'" />
-
-					<!-- Delivery Settings -->
 					<DeliverySettings v-if="activeTab === 'delivery'" />
-
-					<!-- Notification Settings -->
 					<NotificationSettings v-if="activeTab === 'notifications'" />
-
-					<!-- Payment Settings -->
 					<PaymentSettings v-if="activeTab === 'payments'" />
-
-					<!-- Staff Settings -->
 					<StaffSettings v-if="activeTab === 'staff'" />
 				</div>
 
@@ -62,12 +49,12 @@
 					<button
 						class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap"
 					>
-						Cancel
+						{{ $t('cancel') }}
 					</button>
 					<button
 						class="px-6 py-3 bg-orange-600 text-white rounded-xl font-medium hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
 					>
-						Save Changes
+						{{ $t('saveChanges') }}
 					</button>
 				</div>
 			</div>
@@ -87,11 +74,11 @@ import StaffSettings from '../components/settings/StaffSettings.vue';
 const activeTab = ref('general');
 
 const tabs = [
-	{ id: 'general', label: 'General', icon: 'ri-settings-line' },
-	{ id: 'menu', label: 'Menu Settings', icon: 'ri-restaurant-line' },
-	{ id: 'delivery', label: 'Delivery', icon: 'ri-truck-line' },
-	{ id: 'notifications', label: 'Notifications', icon: 'ri-notification-line' },
-	{ id: 'payments', label: 'Payments', icon: 'ri-money-dollar-circle-line' },
-	{ id: 'staff', label: 'Staff', icon: 'ri-team-line' },
+	{ id: 'general', label: 'general', icon: 'ri-settings-line' },
+	{ id: 'menu', label: 'menuSettings', icon: 'ri-restaurant-line' },
+	{ id: 'delivery', label: 'delivery', icon: 'ri-truck-line' },
+	{ id: 'notifications', label: 'notifications', icon: 'ri-notification-line' },
+	{ id: 'payments', label: 'payments', icon: 'ri-money-dollar-circle-line' },
+	{ id: 'staff', label: 'staff', icon: 'ri-team-line' },
 ];
 </script>
