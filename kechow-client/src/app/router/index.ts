@@ -16,6 +16,8 @@ const OwnerDashboardPage = () => import('@pages/owner/OwnerDashboardPage.vue');
 const OwnerMenuPage = () => import('@pages/owner/MenuPage.vue');
 const OrdersListPage = () => import('@pages/owner/OrdersListPage.vue');
 const EditMenuItemPage = () => import('@pages/owner/EditMenuItemPage.vue');
+const AnalyticsPage = () => import('@pages/owner/AnalyticsPage.vue');
+const ReviewsPage = () => import('@pages/owner/ReviewsPage.vue');
 
 // Delivery pages (lazy)
 const DeliveryDashboard = () =>
@@ -121,9 +123,21 @@ const routes = [
 				meta: { requiresAuth: true, role: 'owner' },
 			},
 			{
+				path: 'owner/analytics',
+				name: 'OwnerAnalytics',
+				component: AnalyticsPage,
+				meta: { requiresAuth: true, role: 'owner' },
+			},
+			{
 				path: 'owner/orders',
 				name: 'OwnerOrders',
 				component: OrdersListPage,
+				meta: { requiresAuth: true, role: 'owner' },
+			},
+			{
+				path: 'owner/reviews',
+				name: 'ReviewsPage',
+				component: ReviewsPage,
 				meta: { requiresAuth: true, role: 'owner' },
 			},
 		],
