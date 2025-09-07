@@ -2,10 +2,8 @@
 	<div class="space-y-6">
 		<div class="flex justify-between items-center">
 			<div>
-				<h1 class="text-3xl font-bold text-gray-900">Orders</h1>
-				<p class="text-gray-600 mt-1">
-					Manage and track all your restaurant orders
-				</p>
+				<h1 class="text-3xl font-bold text-gray-900">{{ $t('orders') }}</h1>
+				<p class="text-gray-600 mt-1">{{ $t('manageTrackOrders') }}</p>
 			</div>
 			<div class="flex space-x-3">
 				<button
@@ -13,16 +11,16 @@
 				>
 					<i
 						class="ri-filter-line mr-2 w-4 h-4 flex items-center justify-center"
-					></i
-					>Filter
+					></i>
+					{{ $t('filter') }}
 				</button>
 				<button
 					class="bg-orange-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
 					<i
 						class="ri-refresh-line mr-2 w-4 h-4 flex items-center justify-center"
-					></i
-					>Refresh
+					></i>
+					{{ $t('refresh') }}
 				</button>
 			</div>
 		</div>
@@ -32,7 +30,8 @@
 				<button
 					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap bg-orange-100 text-orange-600"
 				>
-					All Orders<span
+					{{ $t('allOrders') }}
+					<span
 						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
 						>5</span
 					>
@@ -40,7 +39,8 @@
 				<button
 					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
 				>
-					New<span
+					{{ $t('new') }}
+					<span
 						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
 						>1</span
 					>
@@ -48,7 +48,8 @@
 				<button
 					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
 				>
-					Preparing<span
+					{{ $t('preparing') }}
+					<span
 						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
 						>2</span
 					>
@@ -56,7 +57,8 @@
 				<button
 					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
 				>
-					Ready<span
+					{{ $t('ready') }}
+					<span
 						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
 						>1</span
 					>
@@ -64,7 +66,8 @@
 				<button
 					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
 				>
-					Delivered<span
+					{{ $t('delivered') }}
+					<span
 						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
 						>1</span
 					>
@@ -109,7 +112,7 @@ const loadOrders = async () => {
 const handleStatusUpdate = async (orderId: string, newStatus: string) => {
 	try {
 		await updateOrderStatus(orderId, newStatus);
-		await loadOrders(); // Reload orders to reflect the change
+		await loadOrders();
 	} catch (error) {
 		console.error('Failed to update order status:', error);
 	}
