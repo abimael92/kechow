@@ -12,6 +12,10 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache rewrite
 RUN a2enmod rewrite
 
+# Set Apache document root to public
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
+RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
+
 # Copy composer and install dependencies
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY . .
