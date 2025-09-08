@@ -1,4 +1,4 @@
-import { api } from '@/app/lib/axios';
+import { api } from '@app/lib/axios';
 import type { Order, OrdersResponse } from '../types';
 
 export const fetchOrders = async (): Promise<Order[]> => {
