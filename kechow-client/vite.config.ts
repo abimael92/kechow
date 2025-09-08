@@ -1,12 +1,14 @@
+// vite.config.ts
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
+
 export default defineConfig({
 	plugins: [vue()],
 	server: {
 		fs: {
 			strict: false,
-			deny: ['.ts', '.tsx'], // Block direct TS file access
+			deny: ['.ts', '.tsx'],
 		},
 	},
 	resolve: {
@@ -21,5 +23,8 @@ export default defineConfig({
 			'@shared': path.resolve(__dirname, './src/shared'),
 			'@pages': path.resolve(__dirname, './src/pages'),
 		},
+	},
+	preview: {
+		allowedHosts: ['kechow-frontend.onrender.com'],
 	},
 });
