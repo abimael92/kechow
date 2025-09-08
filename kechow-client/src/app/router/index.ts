@@ -58,7 +58,16 @@ const routes = [
 				props: true,
 				meta: { requiresAuth: true, role: 'customer' },
 			},
-
+			{
+				path: '/cart',
+				name: 'CartPage',
+				component: () => import('@/pages/customer/CartPage.vue'),
+			},
+			{
+				path: '/orders',
+				name: 'OrdersPage',
+				component: () => import('@/pages/customer/OrdersPage.vue'),
+			},
 			// Delivery routes
 			{
 				path: '/delivery',
