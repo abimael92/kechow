@@ -1,7 +1,7 @@
 <template>
 	<!-- Top Nav -->
 	<nav
-		class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white"
+		class="sticky top-0 z-50 flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white"
 		role="navigation"
 		aria-label="Primary Navigation"
 	>
@@ -9,7 +9,7 @@
 			<img
 				src="/images/kechow_logo.png"
 				alt="Kechow Logo"
-				class="w-16 h-16 object-contain animate-rushIn animate-wiggle"
+				class="w-12 h-12 sm:w-16 sm:h-16 object-contain animate-rushIn animate-wiggle"
 				role="img"
 				aria-hidden="true"
 				tabindex="-1"
@@ -17,7 +17,7 @@
 		</div>
 
 		<h1
-			class="text-5xl font-bold tracking-wide select-text text-gradient-pulse"
+			class="text-3xl sm:text-5xl font-bold tracking-wide select-text text-gradient-pulse"
 			aria-label="Kechow"
 			style="
 				color: #ec4899;
@@ -28,14 +28,15 @@
 			Kechow
 		</h1>
 
-		<div class="flex items-center gap-6">
+		<div class="flex items-center gap-4 sm:gap-6">
+			<!-- Burger menu button - visible only on mobile -->
 			<button
 				@click="toggleDrawer"
 				class="lg:hidden text-primary hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
 				aria-label="Toggle menu"
 			>
 				<svg
-					class="w-7 h-7"
+					class="w-6 h-6 sm:w-7 sm:h-7"
 					fill="none"
 					stroke="currentColor"
 					stroke-width="2"
@@ -49,10 +50,10 @@
 				</svg>
 			</button>
 
-			<LanguageToggle />
-
+			<!-- Desktop items - hidden on mobile -->
+			<LanguageToggle class="hidden lg:block" />
 			<button
-				class="icon-button"
+				class="icon-button hidden lg:block"
 				@click="toggleDarkMode"
 				aria-label="Toggle dark mode"
 			>
@@ -62,7 +63,7 @@
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
-					class="w-6 h-6"
+					class="w-5 h-5 sm:w-6 sm:h-6"
 				>
 					<path
 						stroke-linecap="round"
@@ -77,7 +78,7 @@
 					fill="none"
 					viewBox="0 0 24 24"
 					stroke="currentColor"
-					class="w-6 h-6"
+					class="w-5 h-5 sm:w-6 sm:h-6"
 				>
 					<path
 						stroke-linecap="round"
@@ -88,7 +89,7 @@
 				</svg>
 			</button>
 
-			<div class="relative" @keydown.escape="closeUserMenu">
+			<div class="relative hidden lg:block" @keydown.escape="closeUserMenu">
 				<button
 					@click="toggleUserMenu"
 					class="hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded relative bg-gradient-to-r from-primary-light to-primary-dark p-1"
@@ -97,7 +98,9 @@
 					aria-label="User menu"
 					title="User menu"
 				>
-					<UserCircle class="w-7 h-7 text-white bg-transparent rounded" />
+					<UserCircle
+						class="w-6 h-6 sm:w-7 sm:h-7 text-white bg-transparent rounded"
+					/>
 					<span
 						v-if="notifications > 0"
 						class="absolute -top-1 -right-1 bg-accent rounded-full w-4 h-4 text-xs flex items-center justify-center font-bold text-white"
@@ -140,14 +143,92 @@
 				</transition>
 			</div>
 		</div>
+
+		<!-- Mobile drawer menu -->
+		<transition
+			enter-active-class="transition ease-out duration-200"
+			enter-from-class="opacity-0 transform -translate-y-4"
+			enter-to-class="opacity-100 transform translate-y-0"
+			leave-active-class="transition ease-in duration-150"
+			leave-from-class="opacity-100 transform translate-y-0"
+			leave-to-class="opacity-0 transform -translate-y-4"
+		>
+			<div
+				v-if="isDrawerOpen"
+				class="absolute top-full left-0 right-0 bg-[#2a1a40] border-b border-white/10 shadow-soft lg:hidden"
+			>
+				<div class="px-4 py-3 space-y-3">
+					<!-- Dark mode toggle in mobile menu -->
+					<button
+						@click="toggleDarkMode"
+						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
+						aria-label="Toggle dark mode"
+					>
+						<svg
+							v-if="isDark"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							class="w-5 h-5 mr-3"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M12 3a9 9 0 009 9 9 9 0 11-9-9z"
+							/>
+						</svg>
+						<svg
+							v-else
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							class="w-5 h-5 mr-3"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="1.5"
+								d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+							/>
+						</svg>
+						{{ isDark ? 'Light Mode' : 'Dark Mode' }}
+					</button>
+
+					<!-- Language toggle in mobile menu -->
+					<div class="px-3 py-2">
+						<LanguageToggle />
+					</div>
+
+					<!-- User options in mobile menu -->
+					<button
+						@click="goProfile"
+						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
+					>
+						Profile
+					</button>
+					<button
+						@click="logout"
+						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
+					>
+						Logout
+					</button>
+				</div>
+			</div>
+		</transition>
 	</nav>
 
 	<!-- Role Navbar fixed below TopNav -->
-	<RoleNavbar v-if="authStore.isAuthenticated" class="sticky top-[80px] z-40" />
+	<RoleNavbar
+		v-if="authStore.isAuthenticated"
+		class="sticky top-[68px] sm:top-[80px] z-40"
+	/>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { UserCircle } from 'lucide-vue-next';
 import LanguageToggle from '@layout/LanguageToggle.vue';
 import RoleNavbar from '@/components/layout/RoleNavbar.vue';
@@ -166,9 +247,41 @@ const isDark = ref(
 			window.matchMedia('(prefers-color-scheme: dark)').matches)
 );
 
+// Close menu when clicking outside
+const closeOnClickOutside = (event: MouseEvent) => {
+	const userMenu = document.querySelector('.user-menu-button');
+	if (
+		userMenuOpen.value &&
+		userMenu &&
+		!userMenu.contains(event.target as Node)
+	) {
+		closeUserMenu();
+	}
+};
+
+// Close drawer when clicking outside
+const closeDrawerOnClickOutside = (event: MouseEvent) => {
+	const nav = document.querySelector('nav');
+	if (isDrawerOpen.value && nav && !nav.contains(event.target as Node)) {
+		closeDrawer();
+	}
+};
+
+onMounted(() => {
+	document.addEventListener('click', closeOnClickOutside);
+	document.addEventListener('click', closeDrawerOnClickOutside);
+});
+
+onUnmounted(() => {
+	document.removeEventListener('click', closeOnClickOutside);
+	document.removeEventListener('click', closeDrawerOnClickOutside);
+});
+
 function toggleDarkMode() {
 	isDark.value = !isDark.value;
 	document.documentElement.classList.toggle('dark', isDark.value);
+	localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
+	closeDrawer();
 }
 function toggleDrawer() {
 	isDrawerOpen.value = !isDrawerOpen.value;
@@ -184,11 +297,13 @@ function closeUserMenu() {
 }
 function goProfile() {
 	closeUserMenu();
+	closeDrawer();
 	router.push('/profile');
 }
 function logout() {
 	authStore.logout();
 	closeUserMenu();
+	closeDrawer();
 	router.push('/');
 }
 </script>
@@ -252,5 +367,18 @@ function logout() {
 }
 .text-gradient-pulse {
 	animation: pulseScaleMinimal 2.5s ease-in-out infinite;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+	nav {
+		padding: 0.75rem 1rem;
+	}
+
+	/* Ensure buttons have proper touch targets */
+	button {
+		min-height: 44px;
+		min-width: 44px;
+	}
 }
 </style>
