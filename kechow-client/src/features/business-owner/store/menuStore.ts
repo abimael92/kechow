@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from '@/lib/axios';
+import axios from '@app/lib/axios';
 
 export const useMenuStore = defineStore('menu', {
 	state: () => ({ items: [] }),
