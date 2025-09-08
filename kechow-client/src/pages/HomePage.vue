@@ -3,16 +3,18 @@ import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { restaurants as restaurantData } from '@/shared/data/restaurants';
 import { categoryIcons } from '../assets/svg/food';
-
 import { useRouter } from 'vue-router';
-const restaurants = ref(restaurantData);
+
+const { t } = useI18n();
 const router = useRouter();
+
+const restaurants = ref(restaurantData);
+const search = ref('');
+const selectedCategory = ref('');
 
 function goToRestaurant(id: number) {
 	router.push({ name: 'RestaurantDetail', params: { id } });
 }
-
-const { t } = useI18n();
 
 const categories = ref([
 	{ id: 'c1', name: 'Mariscos', icon: categoryIcons.Seafood },
@@ -21,56 +23,45 @@ const categories = ref([
 	{ id: 'c8', name: 'Vegetariana', icon: categoryIcons.Vegan },
 ]);
 
-const search = ref('');
-const selectedCategory = ref('');
-
 const filteredRestaurants = computed(() =>
 	restaurants.value.filter(
-		(restaurant) =>
-			(restaurant.name.toLowerCase().includes(search.value.toLowerCase()) ||
-				restaurant.description
-					.toLowerCase()
-					.includes(search.value.toLowerCase())) &&
+		(r) =>
+			(r.name.toLowerCase().includes(search.value.toLowerCase()) ||
+				r.description.toLowerCase().includes(search.value.toLowerCase())) &&
 			(selectedCategory.value === '' ||
-				restaurant.description
+				r.description
 					.toLowerCase()
 					.includes(selectedCategory.value.toLowerCase()))
-	)
-);
-
-const filteredCategories = computed(() =>
-	categories.value.filter((category) =>
-		category.name.toLowerCase().includes(search.value.toLowerCase())
 	)
 );
 </script>
 
 <template>
 	<div
-		class="min-h-screen bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans transition-colors duration-300"
+		class="min-h-screen bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans"
 	>
-		<div class="container py-10 space-y-10">
+		<div class="container px-4 py-6 space-y-8">
 			<!-- Header -->
-			<header class="flex justify-between items-center">
-				<h1 class="text-4xl font-bold text-primary-gradient drop-shadow-md">
+			<header class="text-center">
+				<h1
+					class="text-3xl sm:text-4xl font-bold text-primary-gradient drop-shadow-md"
+				>
 					{{ t('restaurants') }}
 				</h1>
 			</header>
 
 			<!-- Search Bar -->
-			<div class="relative w-full">
-				<input
-					v-model="search"
-					type="search"
-					placeholder="Buscar comida, restaurantes, categorías…"
-					class="search-input w-full text-black"
-				/>
-				<div
-					class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
-				>
+			<div class="sticky top-0 bg-bg-light dark:bg-bg-dark z-20 pb-2">
+				<div class="relative">
+					<input
+						v-model="search"
+						type="search"
+						:placeholder="t('searchPlaceholder')"
+						class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base text-black"
+					/>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
-						class="w-5 h-5"
+						class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
 						fill="none"
 						stroke="currentColor"
 						stroke-width="1.5"
@@ -83,10 +74,10 @@ const filteredCategories = computed(() =>
 
 			<!-- Categories -->
 			<section>
-				<div class="flex justify-between items-center mb-4">
-					<h2 class="section-heading">{{ t('featuredCategories') }}</h2>
+				<div class="flex justify-between items-center mb-3">
+					<h2 class="text-lg font-semibold">{{ t('featuredCategories') }}</h2>
 					<button
-						class="link-button"
+						class="text-sm text-primary font-medium"
 						@click="
 							search = '';
 							selectedCategory = '';
@@ -95,28 +86,29 @@ const filteredCategories = computed(() =>
 						{{ t('viewAll') }}
 					</button>
 				</div>
-				<div class="flex gap-3 overflow-x-auto pb-2">
+				<div class="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
 					<button
 						v-for="category in categories"
 						:key="category.id"
-						class="chip flex flex-col items-center gap-1"
+						@click="selectedCategory = category.name"
+						class="flex flex-col items-center min-w-[72px] px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-xs sm:text-sm hover:bg-primary/10 transition"
+						:class="{
+							'border-primary text-primary font-semibold':
+								selectedCategory === category.name,
+						}"
 					>
-						<span>{{ category.name }}</span>
-						<img
-							:src="category.icon"
-							alt="category icon"
-							class="w-6 h-6 text-primary"
-						/>
+						<img :src="category.icon" alt="icon" class="w-6 h-6 mb-1" />
+						<span class="whitespace-nowrap">{{ category.name }}</span>
 					</button>
 				</div>
 			</section>
 
 			<!-- Restaurants -->
 			<section>
-				<div class="flex justify-between items-center mb-4">
-					<h2 class="section-heading">{{ t('featuredRestaurants') }}</h2>
+				<div class="flex justify-between items-center mb-3">
+					<h2 class="text-lg font-semibold">{{ t('featuredRestaurants') }}</h2>
 					<button
-						class="link-button"
+						class="text-sm text-primary font-medium"
 						@click="
 							search = '';
 							selectedCategory = '';
@@ -125,55 +117,56 @@ const filteredCategories = computed(() =>
 						{{ t('viewAll') }}
 					</button>
 				</div>
-				<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+				<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 					<li
 						v-for="restaurant in filteredRestaurants"
 						:key="restaurant.id"
 						@click="goToRestaurant(restaurant.id)"
-						class="rounded-xl overflow-hidden border border-white/10 backdrop-blur-md bg-[#fdf6ff]/50 dark:bg-[#1f152f]/60 to-pink-500/10 dark:from-gray-800/40 dark:via-purple-800/30 dark:to-pink-700/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+						class="cursor-pointer rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition hover:-translate-y-1"
 					>
-						<div class="overflow-hidden h-48">
+						<div class="overflow-hidden h-40 sm:h-48">
 							<img
 								v-if="restaurant.image"
 								:src="restaurant.image"
 								:alt="restaurant.name"
-								class="h-full w-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+								class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
 								loading="lazy"
-								decoding="async"
 							/>
 							<div
 								v-else
-								class="h-full w-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
+								class="h-full w-full flex items-center justify-center bg-gray-100 dark:bg-gray-700 text-gray-500 text-sm"
 							>
 								{{ t('imageUnavailable') }}
 							</div>
 						</div>
 
-						<div class="p-4">
+						<div class="p-4 space-y-2">
 							<h3
-								class="text-lg font-semibold text-gray-800 dark:text-white/80 group-hover:text-accent transition"
+								class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100"
 							>
 								{{ restaurant.name }}
 							</h3>
-							<p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+							<p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
 								{{ restaurant.description }}
 							</p>
 
 							<div
-								class="mt-3 flex items-center text-xs text-gray-500 dark:text-gray-400"
+								class="flex items-center text-xs text-gray-500 dark:text-gray-400"
 							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
-									class="w-4 h-4 mr-1"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.5"
+									class="w-4 h-4 mr-1 text-yellow-400"
+									fill="currentColor"
+									viewBox="0 0 24 24"
 								>
-									<polygon
-										points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+									<path
+										d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.868 
+										1.48 8.326L12 18.896 4.584 23.5l1.48-8.326L0 9.306l8.332-1.151z"
 									/>
 								</svg>
-								{{ restaurant.rating }} • $$$
+								<span>{{ restaurant.rating }}</span>
+								<span class="mx-1">•</span>
+								<span>$$$</span>
 							</div>
 						</div>
 					</li>
@@ -182,3 +175,13 @@ const filteredCategories = computed(() =>
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+</style>
