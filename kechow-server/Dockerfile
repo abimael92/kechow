@@ -4,10 +4,11 @@ FROM php:8.2-apache
 # Set working directory
 WORKDIR /var/www/html
 
-# Install dependencies
+# Install dependencies including PostgreSQL driver
 RUN apt-get update && apt-get install -y \
-    libpng-dev libonig-dev libxml2-dev zip unzip git curl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    libpng-dev libonig-dev libxml2-dev zip unzip git curl libpq-dev \
+    && docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
+
 
 # Enable Apache rewrite
 RUN a2enmod rewrite
