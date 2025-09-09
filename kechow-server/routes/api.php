@@ -7,6 +7,7 @@ use App\Modules\Restaurant\Controllers\OrderController;
 use App\Docs\DocsController;
 use App\Docs\FullDocsController;
 use App\Http\Controllers\Api\AuthController;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/restaurants', [RestaurantController::class, 'index']);
 Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
@@ -34,3 +35,16 @@ Route::middleware(['auth:sanctum', 'business.owner'])->group(function () {
     Route::get('restaurants/{restaurant}/orders', [OrderController::class, 'restaurantOrders']);
 });
 
+
+
+Route::get('/run-migrations', function () {
+    try {
+        Artisan::call('migrate', ['--force' => true]); // Force run on production
+        return response()->json(['message' => 'Migrations completed successfully']);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Migration failed',
+            'error' => $e->getMessage()
+        ], 500);
+    }
+});
