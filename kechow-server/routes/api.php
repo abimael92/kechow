@@ -37,6 +37,16 @@ Route::get('/full-docs', FullDocsController::class);
     Route::post('/register', [AuthController::class, 'register']);
 // });
 
+Route::get('/test-db', function() {
+    try {
+        \DB::connection()->getPdo();
+        return response()->json(['status' => 'DB connected ✅']);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'DB failed ❌', 'error' => $e->getMessage()]);
+    }
+});
+
+
 // Route::middleware(['auth:sanctum', 'business.owner'])->group(function () {
 //     Route::apiResource('menu-items', MenuItemController::class);
 //     Route::post('orders/{order}/status', [OrderStatusController::class, 'updateStatus']);
