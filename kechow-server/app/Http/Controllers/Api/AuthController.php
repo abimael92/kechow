@@ -14,11 +14,16 @@ class AuthController extends Controller
     /**
      * Handle user login and return a JWT token.
      *
-     * @param LoginRequest $request
+     * @param Request $request
      * @return JsonResponse
      */
-    public function login(LoginRequest $request): JsonResponse
+    public function login(Request $request): JsonResponse
     {
+        $request->validate([
+            'email'    => 'required|string|email',
+            'password' => 'required|string|min:6',
+        ]);
+
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
