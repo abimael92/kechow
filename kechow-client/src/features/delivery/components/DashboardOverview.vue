@@ -62,11 +62,8 @@
 				</div>
 
 				<div class="flex items-center space-x-3">
-					<<<<<<< HEAD
 					<span class="text-sm text-gray-600">{{ $t('status') }}:</span>
-					=======
-					<span class="text-sm text-gray-600">{{ $t('status') }}</span>
-					>>>>>>> origin/main
+
 					<button
 						class="relative inline-flex h-7 w-12 items-center rounded-full bg-green-600"
 					>
@@ -155,11 +152,7 @@
 							>
 								<div>
 									<p class="font-medium text-blue-900">
-										<<<<<<< HEAD
 										{{ $t('navigateCustomer') }}
-										=======
-										{{ $t('navigateToCustomer') }}
-										>>>>>>> origin/main
 									</p>
 									<p class="text-sm text-blue-700">
 										{{ currentDelivery.dropoffAddress }}
@@ -175,11 +168,7 @@
 								<button
 									class="flex-1 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
 								>
-									<<<<<<< HEAD
 									{{ $t('markDelivered') }}
-									=======
-									{{ $t('markAsDelivered') }}
-									>>>>>>> origin/main
 								</button>
 								<button
 									class="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"

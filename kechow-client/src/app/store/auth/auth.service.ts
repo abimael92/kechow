@@ -26,7 +26,7 @@ export const register = async (payload: {
 };
 
 export const getUser = async (token: string) => {
-	const response = await api.get('/user', {
+	const response = await api.get('api/user', {
 		headers: { Authorization: `Bearer ${token}` },
 	});
 	return response.data;
