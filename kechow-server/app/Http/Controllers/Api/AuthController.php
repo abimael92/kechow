@@ -3,75 +3,63 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class AuthController extends Controller
 {
     /**
-     * Handle user login
+     * Register new user
+     */
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'role'     => 'required|string'
+        ]);
+
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),
+            'role'     => $request->role,
+        ]);
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json([
+            'user'    => $user,
+            'token'   => $token,
+            'message' => 'User registered successfully ✅'
+        ], 201);
+    }
+
+    /**
+     * Login user
      */
     public function login(Request $request)
     {
-        // Simple validation
-        if (!$request->email || !$request->password) {
-            return response()->json([
-                'message' => 'Email and password are required',
-            ], 400);
-        }
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string'
+        ]);
 
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Invalid credentials',
-            ], 401);
+            return response()->json(['message' => 'Invalid credentials ❌'], 401);
         }
 
-        // Simple token response without Sanctum for now
-        return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ],
-            'token' => $user->createToken('auth_token')->plainTextToken,// Temporary
-            'message' => 'Login successful (Sanctum disabled)'
-        ]);
-    }
-
-    /**
-     * Handle user registration
-     */
-    public function register(Request $request)
-    {
-        // Simple validation
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'role' => 'required|in:customer,owner,delivery',
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $user->role,
-            ],
-            'token' => $user->createToken('auth_token')->plainTextToken,
-            // Temporary
-            'message' => 'User created successfully'
-        ], 201);
+            'user'    => $user,
+            'token'   => $token,
+            'message' => 'Login successful 🎉'
+        ]);
     }
 }
