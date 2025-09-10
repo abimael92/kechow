@@ -31,6 +31,11 @@ Route::get('/full-docs', FullDocsController::class);
         ]);
     });
 
+    // 🔍 Debug route (temporary)
+Route::get('/debug-routes', function () {
+    return \Illuminate\Support\Facades\Route::getRoutes()->get();
+});
+
 // Auth routes
 // Route::middleware('api')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
