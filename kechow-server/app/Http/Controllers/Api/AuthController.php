@@ -37,7 +37,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role' => $user->role,
             ],
-            'token' => 'simple-token-for-now', // Temporary
+            'token' => $user->createToken('auth_token')->plainTextToken,// Temporary
             'message' => 'Login successful (Sanctum disabled)'
         ]);
     }
@@ -69,7 +69,8 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role' => $user->role,
             ],
-            'token' => 'simple-token-for-now', // Temporary
+            'token' => $user->createToken('auth_token')->plainTextToken,
+            // Temporary
             'message' => 'User created successfully'
         ], 201);
     }
