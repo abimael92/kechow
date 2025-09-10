@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class AuthController extends Controller
 {
     /**
-     * Register new user
+     * Register new user (simple, no Sanctum)
      */
     public function register(Request $request)
     {
@@ -29,17 +28,14 @@ class AuthController extends Controller
             'role'     => $request->role,
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'user'    => $user,
-            'token'   => $token,
             'message' => 'User registered successfully ✅'
         ], 201);
     }
 
     /**
-     * Login user
+     * Login user (simple, no Sanctum)
      */
     public function login(Request $request)
     {
@@ -54,11 +50,8 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials ❌'], 401);
         }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
-
         return response()->json([
             'user'    => $user,
-            'token'   => $token,
             'message' => 'Login successful 🎉'
         ]);
     }
