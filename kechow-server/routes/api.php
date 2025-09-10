@@ -33,8 +33,8 @@ Route::get('/full-docs', FullDocsController::class);
 
 // Auth routes
 // Route::middleware('api')->group(function () {
-    Route::post('/login', [AuthController::class, 'login'])->withoutMiddleware(['auth:sanctum']);
-    Route::post('/register', [AuthController::class, 'register'])->withoutMiddleware(['auth:sanctum']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
 // });
 
 // Route::middleware(['auth:sanctum', 'business.owner'])->group(function () {
