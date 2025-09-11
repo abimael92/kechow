@@ -99,6 +99,8 @@
     "status": "Estado",
     "online": "En línea",
     "receivingOrders": "Recibiendo pedidos",
+    "offline": "Desconectado",
+    "notReceivingOrders": "No recibiendo pedidos",
     "currentDelivery": "Entrega Actual",
     "accepted": "Aceptado",
     "pickedUp": "Recogido",

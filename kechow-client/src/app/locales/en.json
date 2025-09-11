@@ -98,6 +98,8 @@
     "readyToDeliver": "Ready to deliver amazing food!",
     "status": "Status",
     "online": "Online",
+    "offline": "Offline",
+    "notReceivingOrders": "Not receiving orders",
     "receivingOrders": "Receiving orders",
     "currentDelivery": "Current Delivery",
     "accepted": "Accepted",

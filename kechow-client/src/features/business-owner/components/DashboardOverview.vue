@@ -1,144 +1,95 @@
 <template>
-	<div class="space-y-8">
-		<div class="flex justify-between items-center">
+	<div class="space-y-6 lg:space-y-8">
+		<!-- Header -->
+		<div
+			class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+		>
 			<div>
-				<h1 class="text-3xl font-bold text-gray-900">
+				<h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
 					{{ $t('dashboard') }}
 				</h1>
-				<p class="text-gray-600 mt-1">
+				<p class="text-gray-600 mt-1 text-sm sm:text-base">
 					{{ $t('subtitle') }}
 				</p>
 			</div>
 			<button
-				class="bg-orange-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
+				class="bg-orange-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold hover:bg-orange-700 transition-colors cursor-pointer text-sm sm:text-base"
 			>
 				{{ $t('addMenuItem') }}
 			</button>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+		<!-- Stats Grid -->
+		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+			<!-- Card -->
+			<div
+				v-for="(stat, i) in stats"
+				:key="i"
+				class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100"
+			>
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-gray-600 text-sm">
-							{{ $t('todaysOrders') }}
+						<p class="text-gray-600 text-xs sm:text-sm">{{ stat.label }}</p>
+						<p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">
+							{{ stat.value }}
 						</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">24</p>
-						<p class="text-sm mt-1 text-green-600">
-							+12% {{ $t('fromYesterday') }}
+						<p class="text-xs sm:text-sm mt-1 text-green-600">
+							{{ stat.change }}
 						</p>
 					</div>
 					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-100"
+						:class="stat.bg"
+						class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center"
 					>
-						<i
-							class="ri-file-list-line text-blue-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-gray-600 text-sm">{{ $t('revenue') }}</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">$1,247</p>
-						<p class="text-sm mt-1 text-green-600">
-							+8% {{ $t('fromYesterday') }}
-						</p>
-					</div>
-					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-green-100"
-					>
-						<i
-							class="ri-money-dollar-circle-line text-green-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-gray-600 text-sm">{{ $t('avgOrder') }}</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">$28.50</p>
-						<p class="text-sm mt-1 text-green-600">
-							+3% {{ $t('fromYesterday') }}
-						</p>
-					</div>
-					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-orange-100"
-					>
-						<i
-							class="ri-shopping-cart-line text-orange-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
-					</div>
-				</div>
-			</div>
-
-			<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-				<div class="flex items-center justify-between">
-					<div>
-						<p class="text-gray-600 text-sm">{{ $t('rating') }}</p>
-						<p class="text-3xl font-bold text-gray-900 mt-1">4.8</p>
-						<p class="text-sm mt-1 text-green-600">
-							+0.2 {{ $t('fromYesterday') }}
-						</p>
-					</div>
-					<div
-						class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-100"
-					>
-						<i
-							class="ri-star-line text-purple-600 text-xl w-6 h-6 flex items-center justify-center"
-						></i>
+						<i :class="stat.icon" class="text-xl sm:text-2xl"></i>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<div class="border-b border-gray-200">
-			<div class="flex space-x-8">
+		<!-- Tabs -->
+		<div class="border-b border-gray-200 overflow-x-auto">
+			<div class="flex space-x-6 min-w-max">
 				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-orange-600 text-orange-600"
+					v-for="(tab, i) in tabs"
+					:key="i"
+					:class="[
+						'py-3 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer',
+						tab.active
+							? 'border-orange-600 text-orange-600'
+							: 'border-transparent text-gray-500 hover:text-gray-700',
+					]"
 				>
-					{{ $t('tabs.overview') }}
-				</button>
-				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-transparent text-gray-500 hover:text-gray-700"
-				>
-					{{ $t('tabs.activeOrders') }}
-				</button>
-				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-transparent text-gray-500 hover:text-gray-700"
-				>
-					{{ $t('tabs.menuManagement') }}
-				</button>
-				<button
-					class="py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap cursor-pointer border-transparent text-gray-500 hover:text-gray-700"
-				>
-					{{ $t('tabs.analytics') }}
+					{{ tab.label }}
 				</button>
 			</div>
 		</div>
 
-		<div class="grid lg:grid-cols-2 gap-8">
-			<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-				<h3 class="text-xl font-bold text-gray-900 mb-6">
+		<!-- Content Grid -->
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+			<div
+				class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6"
+			>
+				<h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
 					{{ $t('recentOrders') }}
 				</h3>
-				<!-- Orders content unchanged, can be localized later -->
+				<!-- Orders content -->
 			</div>
 
-			<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-				<h3 class="text-xl font-bold text-gray-900 mb-6">
+			<div
+				class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6"
+			>
+				<h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
 					{{ $t('weeklyRevenue') }}
 				</h3>
 				<div
-					class="w-full h-48 flex items-center justify-center bg-gray-50 rounded-lg"
+					class="w-full h-40 sm:h-48 flex items-center justify-center bg-gray-50 rounded-lg"
 				>
 					<div class="text-center text-gray-500">
-						<i class="ri-bar-chart-line text-3xl mb-2"></i>
-						<p>{{ $t('revenueChartPlaceholder') }}</p>
+						<i class="ri-bar-chart-line text-2xl sm:text-3xl mb-2"></i>
+						<p class="text-sm sm:text-base">
+							{{ $t('revenueChartPlaceholder') }}
+						</p>
 					</div>
 				</div>
 			</div>
@@ -151,6 +102,44 @@ import { onMounted } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 
 const authStore = useAuthStore();
+
+const stats = [
+	{
+		label: 'Todays Orders',
+		value: '24',
+		change: '+12% from yesterday',
+		bg: 'bg-blue-100 text-blue-600',
+		icon: 'ri-file-list-line',
+	},
+	{
+		label: 'Revenue',
+		value: '$1,247',
+		change: '+8% from yesterday',
+		bg: 'bg-green-100 text-green-600',
+		icon: 'ri-money-dollar-circle-line',
+	},
+	{
+		label: 'Avg Order',
+		value: '$28.50',
+		change: '+3% from yesterday',
+		bg: 'bg-orange-100 text-orange-600',
+		icon: 'ri-shopping-cart-line',
+	},
+	{
+		label: 'Rating',
+		value: '4.8',
+		change: '+0.2 from yesterday',
+		bg: 'bg-purple-100 text-purple-600',
+		icon: 'ri-star-line',
+	},
+];
+
+const tabs = [
+	{ label: 'Overview', active: true },
+	{ label: 'Active Orders', active: false },
+	{ label: 'Menu Management', active: false },
+	{ label: 'Analytics', active: false },
+];
 
 onMounted(() => {
 	console.log('Dashboard mounted - auth state:', {
