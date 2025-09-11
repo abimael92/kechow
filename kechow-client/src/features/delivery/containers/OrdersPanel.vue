@@ -7,42 +7,31 @@
 		</div>
 
 		<!-- Tabs -->
-		<div class="border-b border-gray-200 sticky top-0 bg-white z-10">
-			<div class="flex space-x-0 overflow-x-auto hide-scrollbar">
+		<div class="sticky top-0 z-10 py-3 px-4 shadow-sm">
+			<div class="flex gap-3 overflow-x-auto hide-scrollbar">
 				<button
 					v-for="(tab, i) in tabs"
 					:key="i"
 					@click="activeTab = i"
-					:class="[
-						'py-3 px-5 font-medium text-sm whitespace-nowrap border-b-2 transition-colors flex-shrink-0',
-						activeTab === i
-							? 'border-blue-600 text-blue-600 bg-blue-50'
-							: 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50',
-					]"
+					class="relative px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 flex-shrink-0 transition-colors"
+					:class="{
+						'bg-green-100 text-green-800':
+							tab.key === 'completed' && activeTab === i,
+						'bg-blue-100 text-blue-800':
+							tab.key === 'active' && activeTab === i,
+						'bg-orange-100 text-orange-800':
+							tab.key === 'available' && activeTab === i,
+						'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800':
+							activeTab !== i,
+					}"
 				>
+					<i :class="getTabIcon(tab.key)" class="w-6 h-6 text-xl"></i>
 					{{ $t(tab.label) }} ({{ tabCount(tab.key) }})
+					<span
+						v-if="activeTab === i"
+						class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-2 m-1 rounded-full bg-current transition-all"
+					></span>
 				</button>
-			</div>
-		</div>
-
-		<!-- Orders Summary -->
-		<div
-			class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center"
-		>
-			<div class="flex items-center space-x-3 mb-3 md:mb-0">
-				<i
-					class="ri-notification-line text-blue-600 w-5 h-5 flex items-center justify-center"
-				></i>
-				<div>
-					<p class="font-medium text-blue-900">{{ $t(ordersSummary.title) }}</p>
-					<p class="text-sm text-blue-700">{{ $t(ordersSummary.subtitle) }}</p>
-				</div>
-			</div>
-			<div class="text-right">
-				<p class="text-sm text-blue-600">{{ $t('avgDistance') }}</p>
-				<p class="font-semibold text-blue-900">
-					{{ ordersSummary.avgDistance }}
-				</p>
 			</div>
 		</div>
 
@@ -169,42 +158,13 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Today's Summary -->
-		<div class="bg-white rounded-xl border border-gray-100 p-6">
-			<h3 class="font-semibold text-gray-900 mb-4">Today's Summary</h3>
-			<div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-				<div>
-					<p class="text-2xl font-bold text-gray-900">
-						{{ summary.deliveries }}
-					</p>
-					<p class="text-sm text-gray-600">Deliveries</p>
-				</div>
-				<div>
-					<p class="text-2xl font-bold text-green-600">
-						${{ summary.earnings }}
-					</p>
-					<p class="text-sm text-gray-600">Earnings</p>
-				</div>
-				<div>
-					<p class="text-2xl font-bold text-blue-600">{{ summary.distance }}</p>
-					<p class="text-sm text-gray-600">Distance</p>
-				</div>
-				<div>
-					<p class="text-2xl font-bold text-purple-600">
-						{{ summary.avgRating }}
-					</p>
-					<p class="text-sm text-gray-600">Avg Rating</p>
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { ThemeConfig } from '@/app/config/theme.config';
 
+// Tabs
 const tabs = ref([
 	{ label: 'available', key: 'available' },
 	{ label: 'active', key: 'active' },
@@ -212,10 +172,7 @@ const tabs = ref([
 ]);
 const activeTab = ref(0);
 
-const hoverStates = ref<Record<number, boolean>>({});
-const setHover = (id: number, state: boolean) =>
-	(hoverStates.value[id] = state);
-
+// Orders
 const orders = ref([
 	{
 		id: 1,
@@ -264,20 +221,20 @@ const orders = ref([
 	},
 ]);
 
+// Tab counts & filtered orders
 const filteredOrders = computed(() => {
 	const key = tabs.value[activeTab.value].key;
 	return orders.value.filter((order) => order.status === key);
 });
-
 const tabCount = (key: string) =>
 	orders.value.filter((o) => o.status === key).length;
 
+// Orders summary
 const ordersSummary = ref({
 	title: 'ordersWaitingPickup',
 	subtitle: 'potentialEarnings',
 	avgDistance: '2.4 km',
 });
-
 const summary = ref({
 	deliveries: 3,
 	earnings: 56.75,
@@ -285,13 +242,21 @@ const summary = ref({
 	avgRating: 4.9,
 });
 
-// Show More / Less
+// Show more / less
 const expandedOrders = ref(new Set<number>());
 const toggleExpand = (orderId: number) => {
 	if (expandedOrders.value.has(orderId)) expandedOrders.value.delete(orderId);
 	else expandedOrders.value.add(orderId);
 };
 const isExpanded = (orderId: number) => expandedOrders.value.has(orderId);
+
+// Tab icons
+const getTabIcon = (key: string) => {
+	if (key === 'available') return 'ri-store-line';
+	if (key === 'active') return 'ri-motorbike-line';
+	if (key === 'completed') return 'ri-check-line';
+	return '';
+};
 </script>
 
 <style>
