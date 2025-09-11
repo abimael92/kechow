@@ -35,6 +35,27 @@
 			</div>
 		</div>
 
+		<!-- Orders Summary -->
+		<div
+			class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center"
+		>
+			<div class="flex items-center space-x-3 mb-3 md:mb-0">
+				<i
+					class="ri-notification-line text-blue-600 w-5 h-5 flex items-center justify-center"
+				></i>
+				<div>
+					<p class="font-medium text-blue-900">{{ $t(ordersSummary.title) }}</p>
+					<p class="text-sm text-blue-700">{{ $t(ordersSummary.subtitle) }}</p>
+				</div>
+			</div>
+			<div class="text-right">
+				<p class="text-sm text-blue-600">{{ $t('avgDistance') }}</p>
+				<p class="font-semibold text-blue-900">
+					{{ ordersSummary.avgDistance }}
+				</p>
+			</div>
+		</div>
+
 		<!-- Orders List -->
 		<div class="space-y-4">
 			<div
