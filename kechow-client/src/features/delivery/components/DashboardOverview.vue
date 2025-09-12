@@ -187,6 +187,19 @@
 					</div>
 				</div>
 			</div>
+			<!-- Insights Feed -->
+			<div class="bg-white rounded-xl p-4 shadow-sm">
+				<h4 class="font-semibold mb-2">Live Insights</h4>
+				<ul class="space-y-2">
+					<li
+						v-for="(item, i) in insights"
+						:key="i"
+						class="text-sm text-gray-700 flex items-center gap-2"
+					>
+						<i class="ri-lightbulb-flash-line text-yellow-500"></i> {{ item }}
+					</li>
+				</ul>
+			</div>
 		</main>
 	</div>
 </template>
@@ -208,6 +221,12 @@ const deliverySteps = ref([
 	{ label: 'pickedUp', icon: 'ri-shopping-bag-line', completed: false },
 	{ label: 'onTheWay', icon: 'ri-truck-line', completed: false },
 	{ label: 'delivered', icon: 'ri-map-pin-line', completed: false },
+]);
+
+const insights = ref([
+	'High demand near Downtown',
+	'Low coverage in Westside area',
+	'Restaurant SushiGo has surge orders',
 ]);
 
 const nextStepIndex = computed(() =>
