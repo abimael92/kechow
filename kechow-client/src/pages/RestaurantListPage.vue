@@ -12,7 +12,6 @@ import { categoryIcons } from '@/assets/svg/food';
 const { t } = useI18n();
 
 const restaurants = ref(restaurantData);
-
 const categories = ref([
 	{ id: 'c1', name: 'Mariscos', icon: categoryIcons.Seafood },
 	{ id: 'c5', name: 'Mexicana', icon: categoryIcons.MexicanFood },
@@ -35,12 +34,6 @@ const filteredRestaurants = computed(() =>
 	)
 );
 
-const filteredCategories = computed(() =>
-	categories.value.filter((category) =>
-		category.name.toLowerCase().includes(search.value.toLowerCase())
-	)
-);
-
 function resetFilters() {
 	search.value = '';
 	selectedCategory.value = '';
@@ -60,6 +53,7 @@ function resetFilters() {
 
 			<SearchBar v-model:search="search" />
 
+			<!-- Categories -->
 			<section>
 				<div class="flex justify-between items-center mb-4">
 					<h2 class="section-heading">{{ t('featuredCategories') }}</h2>
@@ -67,16 +61,18 @@ function resetFilters() {
 						{{ t('viewAll') }}
 					</button>
 				</div>
-				<div class="flex gap-3 overflow-x-auto pb-2">
+				<div class="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
 					<CategoryChips
 						v-for="category in categories"
 						:key="category.id"
 						:category="category"
 						:selected="category.name === selectedCategory"
+						@click="selectedCategory = category.name"
 					/>
 				</div>
 			</section>
 
+			<!-- Restaurants -->
 			<section>
 				<div class="flex justify-between items-center mb-4">
 					<h2 class="section-heading">{{ t('featuredRestaurants') }}</h2>
@@ -95,3 +91,13 @@ function resetFilters() {
 		</div>
 	</div>
 </template>
+
+<style scoped>
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+</style>
