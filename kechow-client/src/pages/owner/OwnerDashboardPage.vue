@@ -1,7 +1,7 @@
 <template>
-	<DeliveryDashboard />
+	<DashboardOverview />
 </template>
 
 <script setup lang="ts">
-import DeliveryDashboard from '@/features/delivery/views/DeliveryDashboard.vue';
+import DashboardOverview from '@/features/business-owner/components/DashboardOverview.vue';
 </script>
