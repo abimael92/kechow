@@ -77,7 +77,7 @@ const filteredRestaurants = computed(() =>
 				<div class="flex justify-between items-center mb-3">
 					<h2 class="text-lg font-semibold">{{ t('featuredCategories') }}</h2>
 					<button
-						class="text-sm text-primary font-medium"
+						class="text-sm text-white font-medium hover:bg-purple-200 hover:text-primary transition"
 						@click="
 							search = '';
 							selectedCategory = '';
@@ -91,7 +91,7 @@ const filteredRestaurants = computed(() =>
 						v-for="category in categories"
 						:key="category.id"
 						@click="selectedCategory = category.name"
-						class="flex flex-col items-center min-w-[72px] px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-xs sm:text-sm hover:bg-primary/10 transition"
+						class="flex flex-col items-center min-w-[72px] px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-primary/200 dark:bg-gray-800 text-xs sm:text-sm hover:bg-purple-200 hover:text-primary transition"
 						:class="{
 							'border-primary text-primary font-semibold':
 								selectedCategory === category.name,
@@ -108,7 +108,7 @@ const filteredRestaurants = computed(() =>
 				<div class="flex justify-between items-center mb-3">
 					<h2 class="text-lg font-semibold">{{ t('featuredRestaurants') }}</h2>
 					<button
-						class="text-sm text-primary font-medium"
+						class="text-sm text-white font-medium hover:bg-purple-200 hover:text-primary transition"
 						@click="
 							search = '';
 							selectedCategory = '';
