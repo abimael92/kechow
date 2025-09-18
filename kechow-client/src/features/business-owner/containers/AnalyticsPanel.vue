@@ -23,28 +23,28 @@
 			<AnalyticsCard
 				:title="$t('totalRevenue')"
 				value="$19,247"
-				change="+15.3% {{ $t('fromLastMonth') }}"
+				:change="`+15.3% ${t('fromLastMonth')}`"
 				icon="ri-money-dollar-circle-line"
 				:positive="true"
 			/>
 			<AnalyticsCard
 				:title="$t('totalOrders')"
 				value="1,834"
-				change="+12.1% {{ $t('fromLastMonth') }}"
+				:change="`+12.1% ${t('fromLastMonth')}`"
 				icon="ri-file-list-line"
 				:positive="true"
 			/>
 			<AnalyticsCard
 				:title="$t('avgOrderValue')"
 				value="$28.50"
-				change="+8.2% {{ $t('fromLastMonth') }}"
+				:change="`+8.2% ${t('fromLastMonth')}`"
 				icon="ri-shopping-cart-line"
 				:positive="true"
 			/>
 			<AnalyticsCard
 				:title="$t('customerRating')"
 				value="4.8"
-				change="+0.3 {{ $t('fromLastMonth') }}"
+				:change="`+0.3 ${t('fromLastMonth')}`"
 				icon="ri-star-line"
 				:positive="true"
 			/>
@@ -158,6 +158,9 @@ import { onMounted } from 'vue';
 import AnalyticsCard from '../components/AnalyticsCard.vue';
 import TopSellingItem from '../components/TopSellingItem.vue';
 import { getAnalyticsData } from '../services/businessOwner.service';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const loadAnalyticsData = async () => {
 	try {
