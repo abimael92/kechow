@@ -41,7 +41,7 @@
 			<ReviewStatsCard
 				:title="$t('totalReviews')"
 				value="5"
-				change="+12 this month"
+				:change="$t('changeThisMonth', { value: 12 })"
 				changeType="positive"
 				icon="ri-message-line"
 				bgColor="bg-blue-100"
@@ -51,7 +51,7 @@
 			<ReviewStatsCard
 				:title="$t('responseRate')"
 				value="85%"
-				change="+5% this month"
+				:change="$t('changeThisMonth', { value: '+5% ' })"
 				changeType="neutral"
 				icon="ri-chat-check-line"
 				bgColor="bg-green-100"
@@ -61,7 +61,7 @@
 			<ReviewStatsCard
 				:title="$t('positiveReviews')"
 				value="4"
-				change="80% of total"
+				:change="$t('percentageOfTotal', { value: 80 })"
 				changeType="positive"
 				icon="ri-thumb-up-line"
 				bgColor="bg-green-100"
@@ -122,13 +122,16 @@ const reviews = ref<Review[]>([]);
 const activeFilter = ref('all');
 const loading = ref(false);
 
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 const reviewFilters = [
-	{ id: 'all', label: 'All Reviews', count: 5 },
-	{ id: '5', label: '5 Stars', count: 3 },
-	{ id: '4', label: '4 Stars', count: 1 },
-	{ id: '3', label: '3 Stars', count: 1 },
-	{ id: '2', label: '2 Stars', count: 0 },
-	{ id: '1', label: '1 Star', count: 0 },
+	{ id: 'all', label: t('allReviews'), count: 5 },
+	{ id: '5', label: t('stars', { n: 5 }), count: 3 },
+	{ id: '4', label: t('stars', { n: 4 }), count: 1 },
+	{ id: '3', label: t('stars', { n: 3 }), count: 1 },
+	{ id: '2', label: t('stars', { n: 2 }), count: 0 },
+	{ id: '1', label: t('stars', { n: 1 }), count: 0 },
 ];
 
 const filteredReviews = computed(() => {
