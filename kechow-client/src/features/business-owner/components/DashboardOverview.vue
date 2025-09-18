@@ -6,22 +6,21 @@
 		>
 			<div>
 				<h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
-					{{ $t('dashboard') }}
+					{{ t('dashboard') }}
 				</h1>
 				<p class="text-gray-600 mt-1 text-sm sm:text-base">
-					{{ $t('subtitle') }}
+					{{ t('subtitle') }}
 				</p>
 			</div>
 			<button
 				class="bg-orange-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold hover:bg-orange-700 transition-colors cursor-pointer text-sm sm:text-base"
 			>
-				{{ $t('addMenuItem') }}
+				{{ t('addMenuItem') }}
 			</button>
 		</div>
 
 		<!-- Stats Grid -->
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-			<!-- Card -->
 			<div
 				v-for="(stat, i) in stats"
 				:key="i"
@@ -71,7 +70,7 @@
 				class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6"
 			>
 				<h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
-					{{ $t('recentOrders') }}
+					{{ t('recentOrders') }}
 				</h3>
 				<!-- Orders content -->
 			</div>
@@ -80,7 +79,7 @@
 				class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6"
 			>
 				<h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6">
-					{{ $t('weeklyRevenue') }}
+					{{ t('weeklyRevenue') }}
 				</h3>
 				<div
 					class="w-full h-40 sm:h-48 flex items-center justify-center bg-gray-50 rounded-lg"
@@ -88,7 +87,7 @@
 					<div class="text-center text-gray-500">
 						<i class="ri-bar-chart-line text-2xl sm:text-3xl mb-2"></i>
 						<p class="text-sm sm:text-base">
-							{{ $t('revenueChartPlaceholder') }}
+							{{ t('revenueChartPlaceholder') }}
 						</p>
 					</div>
 				</div>
@@ -98,48 +97,52 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
+import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
+const { t } = useI18n();
 
-const stats = [
+// Reactive stats with translations
+const stats = computed(() => [
 	{
-		label: 'Todays Orders',
+		label: t('todaysOrders'),
 		value: '24',
-		change: '+12% from yesterday',
+		change: `+12% ${t('fromYesterday')}`,
 		bg: 'bg-blue-100 text-blue-600',
 		icon: 'ri-file-list-line',
 	},
 	{
-		label: 'Revenue',
+		label: t('revenue'),
 		value: '$1,247',
-		change: '+8% from yesterday',
+		change: `+8% ${t('fromYesterday')}`,
 		bg: 'bg-green-100 text-green-600',
 		icon: 'ri-money-dollar-circle-line',
 	},
 	{
-		label: 'Avg Order',
+		label: t('avgOrder'),
 		value: '$28.50',
-		change: '+3% from yesterday',
+		change: `+3% ${t('fromYesterday')}`,
 		bg: 'bg-orange-100 text-orange-600',
 		icon: 'ri-shopping-cart-line',
 	},
 	{
-		label: 'Rating',
+		label: t('rating'),
 		value: '4.8',
-		change: '+0.2 from yesterday',
+		change: `+0.2 ${t('fromYesterday')}`,
 		bg: 'bg-purple-100 text-purple-600',
 		icon: 'ri-star-line',
 	},
-];
+]);
 
-const tabs = [
-	{ label: 'Overview', active: true },
-	{ label: 'Active Orders', active: false },
-	{ label: 'Menu Management', active: false },
-	{ label: 'Analytics', active: false },
-];
+// Reactive tabs with translations
+const tabs = computed(() => [
+	{ label: t('tabs.overview'), active: true },
+	{ label: t('tabs.activeOrders'), active: false },
+	{ label: t('tabs.menuManagement'), active: false },
+	{ label: t('tabs.analytics'), active: false },
+]);
 
 onMounted(() => {
 	console.log('Dashboard mounted - auth state:', {
