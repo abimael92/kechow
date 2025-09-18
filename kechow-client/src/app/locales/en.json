@@ -83,6 +83,8 @@
     "positiveReviews": "Positive Reviews",
     "allReviews": "All Reviews",
     "stars": "{n} Stars",
+    "changeThisMonth": "+{value} this month",
+    "percentageOfTotal": "{value}% of total",
     "manageRestaurantSettings": "Manage your restaurant settings and preferences",
     "general": "General",
     "menuSettings": "Menu Settings",
