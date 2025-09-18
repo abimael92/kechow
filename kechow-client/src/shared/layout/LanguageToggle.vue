@@ -1,18 +1,25 @@
 <template>
+	<!-- Use same style as Profile/Logout buttons -->
 	<button
 		@click="toggleLanguage"
-		class="uppercase text-xs font-semibold px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition border border-white/30 focus:outline-none focus:ring focus:ring-white/20 focus:ring-offset-0"
+		class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
 	>
-		{{ locale === 'en-US' ? 'ESP' : 'ENG' }}
+		{{ currentLocale === 'en-US' ? 'ESP' : 'ENG' }}
 	</button>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+import { isRef, ref, unref } from 'vue';
 
 const { locale } = useI18n();
+const currentLocale = isRef(locale) ? locale : ref(locale);
 
 function toggleLanguage() {
-	locale.value = locale.value === 'en-US' ? 'es-ES' : 'en-US';
+	currentLocale.value = unref(currentLocale) === 'en-US' ? 'es-ES' : 'en-US';
+	if (!isRef(locale)) {
+		// @ts-ignore
+		locale = currentLocale.value;
+	}
 }
 </script>
