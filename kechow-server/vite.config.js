@@ -1,16 +1,32 @@
+// vite.config.ts
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
 
 export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-    ],
+    plugins: [vue()],
+    server: {
+        fs: {
+            strict: false,
+            deny: ['.ts', '.tsx'],
+        },
+    },
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+            '@app': path.resolve(__dirname, './src/app'),
+            '@assets': path.resolve(__dirname, './src/assets'),
+            '@components': path.resolve(__dirname, './src/components'),
+            '@layout': path.resolve(__dirname, './src/shared/layout'),
+            '@features': path.resolve(__dirname, './src/features'),
+            '@store': path.resolve(__dirname, './src/store'),
+            '@shared': path.resolve(__dirname, './src/shared'),
+            '@pages': path.resolve(__dirname, './src/pages'),
+        },
+    },
     preview: {
-        // allow Render host
+        host: '0.0.0.0',
+        port: Number(process.env.PORT) || 4173,
         allowedHosts: ['kechow-frontend.onrender.com'],
-        port: 5173, // optional, match your default Vite port
     },
 });
