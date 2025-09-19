@@ -8,4 +8,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    preview: {
+        // allow Render host
+        allowedHosts: ['kechow-frontend.onrender.com'],
+        port: 5173, // optional, match your default Vite port
+    },
 });
