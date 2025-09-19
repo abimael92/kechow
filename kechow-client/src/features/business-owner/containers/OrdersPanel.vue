@@ -3,7 +3,9 @@
 		<div class="flex justify-between items-center">
 			<div>
 				<h1 class="text-3xl font-bold text-gray-900">{{ $t('orders') }}</h1>
-				<p class="text-gray-600 mt-1">{{ $t('manageTrackOrders') }}</p>
+				<p class="text-black font-thin text-lg mt-1">
+					{{ $t('manageTrackOrders') }}
+				</p>
 			</div>
 			<div class="flex space-x-3">
 				<button

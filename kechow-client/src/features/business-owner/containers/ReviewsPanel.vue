@@ -5,7 +5,9 @@
 				<h1 class="text-3xl font-bold text-gray-900">
 					{{ $t('customerReviews') }}
 				</h1>
-				<p class="text-gray-600 mt-1">{{ $t('manageRespondFeedback') }}</p>
+				<p class="text-black font-thin text-lg mt-1">
+					{{ $t('manageRespondFeedback') }}
+				</p>
 			</div>
 			<div class="flex space-x-3">
 				<button

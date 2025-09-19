@@ -9,15 +9,11 @@
 				<button
 					v-if="editingInfoChanged"
 					@click="saveRestaurantInfo"
-					class="text-blue-600 hover:text-blue-800 font-medium"
+					class="font-medium"
 				>
 					Save
 				</button>
-				<button
-					v-else
-					@click="toggleEditingInfo"
-					class="text-blue-600 hover:text-blue-800 font-medium"
-				>
+				<button v-else @click="toggleEditingInfo" class="font-medium">
 					{{ editingInfo ? 'Cancel' : 'Edit' }}
 				</button>
 			</div>
@@ -122,10 +118,7 @@
 		>
 			<div class="flex justify-between items-center">
 				<h3 class="text-lg font-bold text-gray-900">Operating Hours</h3>
-				<button
-					@click="toggleEditingHours"
-					class="text-blue-600 hover:text-blue-800 font-medium"
-				>
+				<button @click="toggleEditingHours" class="font-medium">
 					{{ editingHours ? 'Save' : 'Edit' }}
 				</button>
 			</div>

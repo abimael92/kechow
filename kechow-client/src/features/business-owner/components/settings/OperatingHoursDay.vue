@@ -1,62 +1,58 @@
 <template>
 	<div class="space-y-6 p-4 sm:p-6">
-		<h3 class="text-xl font-bold text-gray-900">Schedule & Availability</h3>
+		<h4 class="font-semibold items-center text-gray-800">Weekly Preferences</h4>
 		<p class="text-gray-600">
 			Set your weekly preferences and add special day overrides or days off.
 		</p>
 
 		<!-- Weekly Schedule -->
-		<div
-			class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-4"
-		>
-			<h4 class="font-semibold text-gray-800">Weekly Preferences</h4>
-			<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+		<div class="bg-white rounded-xl space-y-4">
+			<div class="grid grid-cols-1 gap-2">
 				<div
 					v-for="day in days"
 					:key="day.id"
-					class="flex flex-col sm:flex-row sm:items-center gap-2 p-2 rounded-lg hover:bg-gray-50"
+					class="grid grid-cols-12 items-center gap-2 p-2 rounded-lg hover:bg-gray-50"
 				>
-					<span class="w-full sm:w-24 font-medium">{{ day.label }}</span>
+					<!-- Day label -->
+					<span class="col-span-2 font-medium">{{ day.label }}</span>
 
 					<!-- Availability toggle -->
-					<label class="flex items-center gap-2 cursor-pointer">
+					<label class="col-span-2 flex items-center gap-2 cursor-pointer">
 						<input type="checkbox" v-model="day.available" class="rounded" />
 						<span class="text-sm text-gray-700">Available</span>
 					</label>
 
-					<!-- Time inputs only if available -->
-					<div
-						v-if="day.available"
-						class="flex flex-col sm:flex-row sm:items-center flex-1 gap-2 w-full"
-					>
+					<!-- If available: time inputs + edit -->
+					<template v-if="day.available">
 						<input
 							type="time"
 							v-model="day.from"
 							:readonly="!day.editable"
-							class="flex-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+							class="col-span-3 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
 						/>
 						<input
 							type="time"
 							v-model="day.to"
 							:readonly="!day.editable"
-							class="flex-1 w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100"
+							class="col-span-3 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
 						/>
 						<button
 							@click="day.editable = !day.editable"
-							class="sm:ml-2 text-blue-600 hover:text-blue-800 text-sm font-medium whitespace-nowrap"
+							class="col-span-2 text-sm font-medium whitespace-nowrap"
 						>
 							{{ day.editable ? 'Save' : 'Edit' }}
 						</button>
-					</div>
+					</template>
 
-					<!-- Quick day off -->
-					<button
-						v-else
-						@click="markDayOff(day)"
-						class="text-red-600 hover:text-red-800 text-sm font-medium whitespace-nowrap"
-					>
-						Day Off
-					</button>
+					<!-- If not available: day off button -->
+					<template v-else>
+						<button
+							@click="markDayOff(day)"
+							class="col-span-8 text-red-400 hover:text-red-800 text-md font-large whitespace-nowrap"
+						>
+							Day Off
+						</button>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -95,15 +91,12 @@
 					/>
 					<button
 						@click="removeOverride(index)"
-						class="text-red-600 hover:text-red-800 text-sm font-medium"
+						class="col-span-8 text-red-400 hover:text-red-800 text-md font-large whitespace-nowrap"
 					>
 						Remove
 					</button>
 				</div>
-				<button
-					@click="addOverride"
-					class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-				>
+				<button @click="addOverride" class="text-sm font-medium">
 					+ Add Special Day
 				</button>
 			</div>

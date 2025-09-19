@@ -2,7 +2,9 @@
 	<div class="space-y-6">
 		<div>
 			<h1 class="text-3xl font-bold text-gray-900">{{ $t('settings') }}</h1>
-			<p class="text-gray-600 mt-1">{{ $t('manageRestaurantSettings') }}</p>
+			<p class="text-black font-thin text-lg mt-1">
+				{{ $t('manageRestaurantSettings') }}
+			</p>
 		</div>
 
 		<div class="flex flex-col lg:flex-row gap-8">
@@ -18,7 +20,7 @@
 								'w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-colors cursor-pointer',
 								activeTab === tab.id
 									? 'bg-orange-50 text-orange-600 border border-orange-200'
-									: 'text-gray-700 hover:bg-gray-50',
+									: 'text-gray-300 hover:bg-gray-50',
 							]"
 						>
 							<i

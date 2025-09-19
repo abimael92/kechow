@@ -8,7 +8,7 @@
 				<h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
 					{{ t('dashboard') }}
 				</h1>
-				<p class="text-gray-600 mt-1 text-sm sm:text-base">
+				<p class="text-black font-thin text-lg mt-1">
 					{{ t('subtitle') }}
 				</p>
 			</div>
