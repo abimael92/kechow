@@ -8,4 +8,7 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    preview: {
+        allowedHosts: ['kechow-frontend.onrender.com'],
+    },
 });
