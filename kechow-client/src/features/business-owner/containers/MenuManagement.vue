@@ -5,7 +5,9 @@
 				<h1 class="text-3xl font-bold text-gray-900">
 					{{ $t('menuManagement') }}
 				</h1>
-				<p class="text-gray-600 mt-1">{{ $t('trackMenuItems') }}</p>
+				<p class="text-black font-thin text-lg mt-1">
+					{{ $t('trackMenuItems') }}
+				</p>
 			</div>
 			<button
 				@click="openAddModal"
