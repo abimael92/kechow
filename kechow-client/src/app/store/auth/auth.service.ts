@@ -11,10 +11,19 @@ export const api = axios.create({
 
 // Auth API calls
 export const login = async (payload: { email: string; password: string }) => {
-	await api.get('/sanctum/csrf-cookie');
+	try {
+		// First, get the CSRF cookie
+		await api.get('/sanctum/csrf-cookie');
+		console.log('CSRF cookie obtained');
 
-	const response = await api.post('/api/login', payload);
-	return response.data;
+		// Then, attempt login
+		const response = await api.post('/api/login', payload);
+		console.log('Login response:', response);
+		return response.data;
+	} catch (error) {
+		console.error('Login error:', error);
+		throw error; // Re-throw the error after logging it
+	}
 };
 
 export const register = async (payload: {

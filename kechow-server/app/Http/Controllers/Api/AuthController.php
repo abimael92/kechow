@@ -19,6 +19,10 @@ class AuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
+
+        Log::info('Login attempt', $request->all());
+
+
         $request->validate([
             'email'    => 'required|string|email',
             'password' => 'required|string|min:6',
