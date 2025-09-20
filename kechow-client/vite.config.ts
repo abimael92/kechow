@@ -33,5 +33,6 @@ export default defineConfig({
 	preview: {
 		host: '127.0.0.1',
 		port: Number(process.env.PORT) || 4173,
+		allowedHosts: ['kechow-frontend.onrender.com'],
 	},
 });
