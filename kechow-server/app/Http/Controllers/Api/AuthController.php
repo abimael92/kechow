@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
