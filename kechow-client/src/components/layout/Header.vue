@@ -1,34 +1,38 @@
 <template>
 	<!-- Top Nav -->
 	<nav
-		class="sticky top-0 z-50 flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white"
+		class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white flex items-center justify-between relative"
 		role="navigation"
 		aria-label="Primary Navigation"
 	>
-		<div class="flex items-center gap-3">
+		<!-- Left logo -->
+		<div class="flex items-center gap-3 z-10">
 			<img
 				src="/images/kechow_logo.png"
 				alt="Kechow Logo"
 				class="w-12 h-12 sm:w-16 sm:h-16 object-contain animate-rushIn animate-wiggle"
-				role="img"
-				aria-hidden="true"
-				tabindex="-1"
 			/>
 		</div>
 
-		<h1
-			class="text-3xl sm:text-5xl font-bold tracking-wide select-text text-gradient-pulse"
-			aria-label="Kechow"
-			style="
-				color: #ec4899;
-				text-shadow: -1px -1px 0 #4f46e5, 1px -1px 0 #4f46e5, -1px 1px 0 #4f46e5,
-					1px 1px 0 #4f46e5;
-			"
+		<!-- Center title -->
+		<div
+			class="absolute inset-0 flex justify-center items-center pointer-events-none"
 		>
-			Kechow
-		</h1>
+			<h1
+				class="text-3xl sm:text-5xl font-bold tracking-wide select-text text-gradient-pulse"
+				aria-label="Kechow"
+				style="
+					color: #ec4899;
+					text-shadow: -1px -1px 0 #4f46e5, 1px -1px 0 #4f46e5,
+						-1px 1px 0 #4f46e5, 1px 1px 0 #4f46e5;
+				"
+			>
+				Kechow
+			</h1>
+		</div>
 
-		<div class="flex items-center gap-4 sm:gap-6">
+		<!-- Right buttons -->
+		<div class="flex items-center gap-4 sm:gap-6 z-10">
 			<!-- Burger menu button - visible only on mobile -->
 			<button
 				@click="toggleDrawer"
@@ -58,7 +62,7 @@
 				aria-label="Toggle dark mode"
 			>
 				<svg
-					v-if="isDark"
+					v-if="!isDark"
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
@@ -92,7 +96,7 @@
 			<div class="relative hidden lg:block" @keydown.escape="closeUserMenu">
 				<button
 					@click="toggleUserMenu"
-					class="hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded relative bg-gradient-to-r from-primary-light to-primary-dark p-1"
+					class="hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded relative bg-gradient-to-r from-primary-light to-primary-dark p-1 user-menu-button"
 					aria-haspopup="true"
 					:aria-expanded="userMenuOpen ? 'true' : 'false'"
 					aria-label="User menu"
@@ -158,7 +162,6 @@
 				class="absolute top-full left-0 right-0 bg-[#2a1a40] border-b border-white/10 shadow-soft lg:hidden"
 			>
 				<div class="px-4 py-3 space-y-3">
-					<!-- Dark mode toggle in mobile menu -->
 					<button
 						@click="toggleDarkMode"
 						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
@@ -197,14 +200,8 @@
 						{{ isDark ? 'Light Mode' : 'Dark Mode' }}
 					</button>
 
-					<!-- Language toggle in mobile menu -->
-					<!-- <div class="px-3 py-2">
-						<LanguageToggle />
-					</div> -->
-					<!-- Language toggle -->
 					<LanguageToggle class="w-full px-2 py-1" />
 
-					<!-- User options in mobile menu -->
 					<button
 						@click="goProfile"
 						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
@@ -243,33 +240,15 @@ const notifications = ref(3);
 
 const authStore = useAuthStore();
 const router = useRouter();
-const isDark = ref(
-	localStorage.getItem('theme') === 'dark' ||
-		(!localStorage.getItem('theme') &&
-			window.matchMedia('(prefers-color-scheme: dark)').matches)
-);
 
-// Close menu when clicking outside
-const closeOnClickOutside = (event: MouseEvent) => {
-	const userMenu = document.querySelector('.user-menu-button');
-	if (
-		userMenuOpen.value &&
-		userMenu &&
-		!userMenu.contains(event.target as Node)
-	) {
-		closeUserMenu();
-	}
-};
-
-// Close drawer when clicking outside
-const closeDrawerOnClickOutside = (event: MouseEvent) => {
-	const nav = document.querySelector('nav');
-	if (isDrawerOpen.value && nav && !nav.contains(event.target as Node)) {
-		closeDrawer();
-	}
-};
+const isDark = ref(false);
 
 onMounted(() => {
+	const savedTheme = localStorage.getItem('theme');
+	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	isDark.value = savedTheme ? savedTheme === 'dark' : prefersDark;
+	document.documentElement.classList.toggle('dark', isDark.value);
+
 	document.addEventListener('click', closeOnClickOutside);
 	document.addEventListener('click', closeDrawerOnClickOutside);
 });
@@ -285,33 +264,55 @@ function toggleDarkMode() {
 	localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
 	closeDrawer();
 }
+
 function toggleDrawer() {
 	isDrawerOpen.value = !isDrawerOpen.value;
 }
 function closeDrawer() {
 	isDrawerOpen.value = false;
 }
+
 function toggleUserMenu() {
 	userMenuOpen.value = !userMenuOpen.value;
 }
 function closeUserMenu() {
 	userMenuOpen.value = false;
 }
+
 function goProfile() {
 	closeUserMenu();
 	closeDrawer();
 	router.push('/profile');
 }
+
 function logout() {
 	authStore.logout();
 	closeUserMenu();
 	closeDrawer();
 	router.push('/');
 }
+
+// Outside click handlers
+const closeOnClickOutside = (event: MouseEvent) => {
+	const menuBtn = document.querySelector('.user-menu-button');
+	if (
+		userMenuOpen.value &&
+		menuBtn &&
+		!menuBtn.contains(event.target as Node)
+	) {
+		closeUserMenu();
+	}
+};
+
+const closeDrawerOnClickOutside = (event: MouseEvent) => {
+	const nav = document.querySelector('nav');
+	if (isDrawerOpen.value && nav && !nav.contains(event.target as Node)) {
+		closeDrawer();
+	}
+};
 </script>
 
 <style scoped>
-/* Keep all existing animations exactly as they were */
 @keyframes rushIn {
 	0% {
 		opacity: 0;
@@ -371,13 +372,10 @@ function logout() {
 	animation: pulseScaleMinimal 2.5s ease-in-out infinite;
 }
 
-/* Mobile-specific improvements */
 @media (max-width: 640px) {
 	nav {
 		padding: 0.75rem 1rem;
 	}
-
-	/* Ensure buttons have proper touch targets */
 	button {
 		min-height: 44px;
 		min-width: 44px;
