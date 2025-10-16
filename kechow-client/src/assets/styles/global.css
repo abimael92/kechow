@@ -16,15 +16,12 @@
   /* Accent */
   --color-accent: #EC4899;
 
-  /* Neutral text */
-  --color-text-primary: #1F2937;   /* dark slate */
-  --color-text-secondary: #4B5563; /* medium gray */
-  --color-text-muted: #9CA3AF;     /* light gray */
-
-  --color-text-primary: #4B5563;   /* dark slate */
-  --color-text-secondary: #9CA3AF; /* medium gray */
-  --color-text-ternary: #e2e2e2; /* medium gray */
-  --color-text-muted: #1F2937;     /* light gray */
+  /* Neutral text - Light Mode */
+  --color-text-primary: #ffffff;       /* old muted → now primary */
+  --color-text-secondary: #000000;     /* old tertiary → now secondary */
+  --color-text-tertiary: #4B5563;      /* old quaternary → now tertiary */
+  --color-text-quaternary: #e6e6e6;    /* old secondary → now quaternary */
+  --color-text-muted: #1F2937;
 
   /* Background */
   --color-bg-light: #FFFFFF;
@@ -35,6 +32,15 @@
   --padding-default: 1rem;  /* 16px */
   --margin-default: 1rem;   /* 16px */
   --transition-fast: 0.2s ease-in-out;
+}
+
+/* === Dark Mode Variables === */
+.dark {
+  --color-text-primary: #000000;        /* primary flips dark */
+  --color-text-secondary: #ffffff;      /* secondary flips light */
+  --color-text-tertiary: #D1D5DB;       /* lighter tertiary */
+  --color-text-quaternary: #9CA3AF;     /* lighter quaternary */
+  --color-text-muted: #374151;          /* muted darker for contrast */
 }
 
 /* === Global Reset & Box Sizing === */
