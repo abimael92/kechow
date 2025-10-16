@@ -246,7 +246,7 @@
 			</p>
 
 			<p
-				class="text-lg max-w-md opacity-80 underline underline-offset-4 decoration-accent cursor-pointer hover:decoration-secondary transition mx-auto"
+				class="text-lg max-w-md opacity-80 underline underline-offset- decoration-accent decoration-4 cursor-pointer hover:decoration-secondary transition mx-auto"
 				@click="alertComingSoon"
 			>
 				{{ $t('comingSoonDescription') }}
