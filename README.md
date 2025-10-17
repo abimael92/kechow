@@ -1,4 +1,4 @@
-# 🌮 Kechow – Tu Guía Rápida al Antojo Local
+# Kechow – Tu Guía Rápida al Antojo Local
 
 ![Vista previa de Kechow](https://abimael-common-assets.s3.eu-west-1.amazonaws.com/myproject-resources/kechow-front-preview.png)
 
@@ -16,13 +16,13 @@ Rápida, fácil de usar y accesible desde cualquier dispositivo, diseñada para 
 
 ---
 
-## 🚀 Demo en Vivo
+## Demo en Vivo
 
 [![Probar ahora](https://img.shields.io/badge/Probar_ahora-FF6B6B?style=for-the-badge&logo=vercel&logoColor=white)](https://kechow.vercel.app)
 
 ---
 
-## 🤔 ¿Por qué Kechow?
+## ¿Por qué Kechow?
 
 - Entregas rápidas como un perro lujurioso en tu pierna 🐕‍🔥
 - Apoya negocios locales y comida con sabor auténtico
@@ -32,18 +32,18 @@ Rápida, fácil de usar y accesible desde cualquier dispositivo, diseñada para 
 
 ---
 
-## 🌟 Características Principales
+## Características Principales
 
-- 🚀 App súper rápida construida con Vue 3 + Vite
-- 🔒 Backend robusto con Laravel 10
-- 📱 Diseño responsivo para cualquier dispositivo
-- 🛒 Sistema completo de pedidos
-- 📊 Dashboard para negocios locales
-- 🔍 Búsqueda inteligente por tipo de comida
+- App súper rápida construida con Vue 3 + Vite
+- Backend robusto con Laravel 10
+- Diseño responsivo para cualquier dispositivo
+- Sistema completo de pedidos
+- Dashboard para negocios locales
+- Búsqueda inteligente por tipo de comida
 
 ---
 
-## 🛠 Stack Tecnológico
+## Stack Tecnológico
 
 | Categoría         | Tecnologías                                  |
 | ----------------- | -------------------------------------------- |
@@ -55,7 +55,7 @@ Rápida, fácil de usar y accesible desde cualquier dispositivo, diseñada para 
 
 ---
 
-## 📦 Estructura del Proyecto
+## Estructura del Proyecto
 
 ```bash
 kechow/
@@ -75,16 +75,16 @@ kechow/
 
 ---
 
-## 🚀 Demo en Vivo (próximamente)
+## Demo en Vivo (próximamente)
 
 [![Probar Demo](https://img.shields.io/badge/Probar_Demo-FF6B6B?style=for-the-badge&logo=vercel&logoColor=white)](https://kechow.vercel.app)
 [![Estado del API](https://img.shields.io/badge/API_Status-LIVE-brightgreen)](https://api.kechow.dev/health)
 
 ---
 
-## ⚙️ Configuración del Proyecto
+## Configuración del Proyecto
 
-### 📋 Requisitos del Sistema
+### Requisitos del Sistema
 
 | Componente    | Versión Requerida | Comando de Verificación |
 | ------------- | ----------------- | ----------------------- |
@@ -93,7 +93,7 @@ kechow/
 | Composer      | 2.0+              | `composer --version`    |
 | Base de Datos | MySQL 5.7+/SQLite | `mysql --version`       |
 
-### 🛠️ Instalación Paso a Paso
+### Instalación Paso a Paso
 
 #### 1. Clonar el repositorio
 
@@ -156,7 +156,7 @@ php kechow-server/artisan serve
 npm run dev --prefix kechow-client
 ```
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 ### Frontend:
 
@@ -177,7 +177,7 @@ npm run dev --prefix kechow-client
 - **MySQL** - Base de datos relacional
 - **SQLite** - Alternativa ligera
 
-### ❓ ¿Por qué este stack?
+### ¿Por qué este stack?
 
 | Componente   | Beneficio                              |
 | ------------ | -------------------------------------- |
@@ -201,9 +201,9 @@ flowchart TD
     S --> B
 ```
 
-# ✨ Funcionalidades
+# Funcionalidades
 
-### 👨‍🍳 Para los usuarios:
+### Para los usuarios:
 
 - Ver y explorar restaurantes
 - Buscar por tipo de comida
@@ -213,7 +213,7 @@ flowchart TD
 - Diseño mobile-first
 - Sistema de valoraciones
 
-### 🍽️ Para dueños de negocios:
+### Para dueños de negocios:
 
 - Registrar su restaurante
 - Administrar productos y pedidos
@@ -222,7 +222,7 @@ flowchart TD
 - Seguimiento de pedidos
 - Estadísticas básicas
 
-# 📁 Estructura del Código
+# Estructura del Código
 
 ```
 kechow-client/
@@ -243,7 +243,7 @@ kechow-server/
 │   └── Requests/      # Validaciones personalizadas
 ```
 
-## 🤝 Contribuciones
+## Contribuciones
 
 ¡Todos son bienvenidos! Abre un issue, haz un fork y manda tu PR.
 Nos encanta la comida y el buen código 🍽️🧑‍💻
@@ -256,7 +256,7 @@ Nos encanta la comida y el buen código 🍽️🧑‍💻
     4. Haz push a la rama (`git push origin mi-feature`)
     5. Abre un Pull Request
 
-## 🧯 Ayuda Rápida
+## Ayuda Rápida
 
 ¿Algo no funciona? Revisa tu .env, asegúrate que las migraciones corrieron correctamente y que el backend y frontend están corriendo.
 
@@ -266,68 +266,68 @@ Nos encanta la comida y el buen código 🍽️🧑‍💻
 rm -rf node_modules && npm install
 ```
 
-## ✅ Lista de funciones para la app de entrega Kechow
+## Lista de funciones para la app de entrega Kechow
 
-### 🏠 Inicio / Explorar
+### Inicio / Explorar
 
 - [ ] Restaurantes destacados
 - [ ] Filtros por categoría (Pizza, Tacos, Hamburguesas, etc.)
 - [ ] Banners de promociones o sliders
 
-### 🔍 Búsqueda
+### Búsqueda
 
 - [ ] Barra de búsqueda libre
 - [ ] Sugerencias automáticas (autocomplete)
 - [ ] Filtros/orden (por calificación, precio, tiempo de entrega)
 
-### 🍽️ Detalle del restaurante
+### Detalle del restaurante
 
 - [x] Información del restaurante, horarios, tiempo de entrega
 - [ ] Menú agrupado por categorías
 - [ ] Botón "Agregar al carrito" desde cada ítem
 - [ ] Modificadores de ítem (extra queso, nivel de picante, etc.)
 
-### 🛒 Carrito
+### Carrito
 
 - [ ] Lista de productos seleccionados
 - [ ] Editar cantidad / eliminar
 - [ ] Subtotal + envío + impuestos
 - [ ] Botón de pagar
 
-### 📍 Dirección de entrega
+### Dirección de entrega
 
 - [ ] Usar direcciones guardadas o ingresar nueva
 - [ ] Marcador en mapa (opcional)
 
-### 💳 Pago
+### Pago
 
 - [ ] Selección de método de pago (tarjeta, efectivo, wallet)
 - [ ] Confirmación del resumen del pedido
 
-### 🚚 Seguimiento del pedido
+### Seguimiento del pedido
 
 - [ ] Estado en vivo del pedido (recibido, preparando, en camino)
 - [ ] Vista de mapa con ubicación del repartidor (opcional)
 
-### 📜 Historial de pedidos
+### Historial de pedidos
 
 - [ ] Lista de pedidos pasados
 - [ ] Botón de reordenar
 - [ ] Calificar/comentar pedidos anteriores
 
-### 🙋‍♂️ Perfil
+### Perfil
 
 - [ ] Ver/editar datos personales
 - [ ] Ver direcciones guardadas
 - [ ] Métodos de pago
 - [x] Cerrar sesión
 
-### 🏷️ Promociones
+### Promociones
 
 - [ ] Ingreso y validación de código promocional
 - [ ] Lista de ofertas disponibles
 
-### 🛠️ Ajustes
+### Ajustes
 
 - [ ] Preferencias de notificación
 - [ ] Cambio de idioma / moneda
@@ -335,25 +335,25 @@ rm -rf node_modules && npm install
 
 ---
 
-### 🛠️ Paneles opcionales para restaurante/admin
+### Paneles opcionales para restaurante/admin
 
-#### 📊 Panel del restaurante
+#### Panel del restaurante
 
 - [ ] Agregar/editar ítems del menú
 - [ ] Ver pedidos entrantes
 - [ ] Configurar horarios/disponibilidad
 
-#### 🚦 Gestión de pedidos
+#### Gestión de pedidos
 
 - [ ] Aceptar / rechazar pedidos
 - [ ] Marcar como preparando / listo / en camino
 
-#### 👤 Gestión de usuarios (Admin)
+#### Gestión de usuarios (Admin)
 
 - [ ] Bloquear cuentas
 - [ ] Resolver disputas
 
-## 🚧 Próximos Pasos
+## Próximos Pasos
 
 - Dashboard avanzado para negocios
 - Notificaciones en tiempo real
