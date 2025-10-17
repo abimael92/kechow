@@ -470,3 +470,4 @@ function alertComingSoon() {
 	animation: spinSlow 60s linear infinite;
 }
 </style>
+// Updated landing page styles and layout
