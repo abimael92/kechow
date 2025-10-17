@@ -162,5 +162,4 @@ input:focus, select:focus, textarea:focus {
 .mb-default { margin-bottom: var(--margin-default); }
 .p-default { padding: var(--padding-default); }
 .rounded-default { border-radius: var(--radius-default); }
-// Added global CSS updates
-// Added global CSS updates
+
