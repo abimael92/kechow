@@ -29,3 +29,4 @@ app.use(Toast as any, toastOptions);
 ThemeConfig.applyTheme();
 
 app.mount('#app');
+// Updated main.ts for app config and toast setup
