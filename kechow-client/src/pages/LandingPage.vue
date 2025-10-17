@@ -1,6 +1,6 @@
 <template>
 	<section
-		class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-12 fade-in-up text-black dark:text-white px-6 py-24 min-h-[75vh] relative overflow-hidden"
+		class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-12 fade-in-up text-black dark:text-white px-6 py-24 min-h-[90vh] relative overflow-hidden"
 	>
 		<!-- Delivery-themed animated background (black) -->
 		<div
@@ -8,7 +8,7 @@
 		>
 			<!-- Bigger delivery route circle -->
 			<div
-				class="relative w-[80vmin] h-[80vmin] border-4 border-dashed border-black rounded-full animate-spin-slow opacity-30 flex items-center justify-center"
+				class="relative w-[80vmin] h-[80vmin] border-8 border-dashed border-black rounded-full animate-spin-slow opacity-30 flex items-center justify-center"
 			>
 				<!-- Floating package -->
 				<div
@@ -236,7 +236,7 @@
 			class="z-10 relative flex flex-col items-center text-center space-y-8 max-w-xl mx-auto"
 		>
 			<h1
-				class="text-5xl sm:text-6xl font-extrabold drop-shadow-lg text-black dark:text-white"
+				class="text-5xl sm:text-6xl mt-16 font-extrabold drop-shadow-lg text-black dark:text-white"
 			>
 				{{ $t('kechowFoodDelivery') }}
 			</h1>
