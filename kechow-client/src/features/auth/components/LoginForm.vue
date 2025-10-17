@@ -97,10 +97,13 @@
 import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
+// Get the toast instance
+const toast = useToast();
 const showPassword = ref(false);
 const authStore = useAuthStore();
-const router = useRouter(); // Add this line to get the router instance
+const router = useRouter();
 
 const loginForm = reactive({
 	email: '',
@@ -110,17 +113,12 @@ const loginForm = reactive({
 async function handleLogin() {
 	try {
 		const response = await authStore.login({ ...loginForm });
+		toast.success('Login successful!');
 
-		// Debug logging
-		console.log('Login successful', response);
-		console.log('User role:', authStore.user?.role);
-		console.log('Token:', authStore.token);
-
-		// Redirect based on role - using exact route names from your router
 		if (authStore.isOwner) {
-			await router.push({ name: 'OwnerDashboard' }); // Changed from 'owner-dashboard'
+			await router.push({ name: 'OwnerDashboard' });
 		} else {
-			await router.push({ name: 'Home' }); // Changed from 'home' to match your route definition
+			await router.push({ name: 'Home' });
 		}
 	} catch (error: unknown) {
 		console.error('Login error details:', error);
@@ -128,7 +126,7 @@ async function handleLogin() {
 			error instanceof Error
 				? error.message
 				: 'Invalid credentials. Please check your email and password.';
-		alert(errorMessage);
+		toast.error(`${errorMessage}`);
 	}
 }
 </script>
