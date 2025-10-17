@@ -199,3 +199,5 @@ async function handleLogin() {
 	animation: pulseScaleMinimal 2.5s ease-in-out infinite;
 }
 </style>
+// Updated login form with toast notifications
+// Updated login form with toast notifications
