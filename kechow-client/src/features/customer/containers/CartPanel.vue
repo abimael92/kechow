@@ -406,10 +406,10 @@ onMounted(() => {
 								@click="checkout"
 								:disabled="showSuccess"
 								:class="[
-									'w-full py-4 rounded-xl font-semibold text-white transition-all duration-300 shadow-sm',
+									'relative w-full gap-1 px-3 py-4 rounded-xl font-semibold flex items-center justify-center transition-colors duration-200',
 									showSuccess
-										? 'bg-green-500 cursor-not-allowed'
-										: 'bg-orange-500 hover:bg-orange-600 hover:shadow-md',
+										? 'bg-gray-400 text-white cursor-not-allowed'
+										: 'bg-primary text-white hover:bg-primary/90 hover:text-white',
 								]"
 							>
 								<div class="flex items-center justify-center gap-2">
