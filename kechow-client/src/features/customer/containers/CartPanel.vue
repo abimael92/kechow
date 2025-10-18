@@ -137,10 +137,10 @@ onMounted(() => {
 			<header class="flex items-center justify-between mb-8">
 				<button
 					@click="continueShopping"
-					class="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors group"
+					class="flex items-center gap-1 px-3 py-2 text-white-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
 				>
 					<div
-						class="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm group-hover:shadow-md transition-shadow"
+						class="w-8 h-8 flex items-center justify-center rounded-full shadow-sm group-hover:shadow-md transition-shadow"
 					>
 						<span class="text-lg">←</span>
 					</div>
