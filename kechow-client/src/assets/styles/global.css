@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Dacade';
+  src: url('/fonts/Dacade.woff2') format('woff2');
+  font-display: swap;
+}
 /* === Root variables for colors, spacing, radius === */
 :root {
   /* Gradient colors */
@@ -55,7 +60,8 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+  font-family: 'Dacade', 'Inter', sans-serif;
   background: linear-gradient(75deg, var(--color-gradient-start), var(--color-gradient-end));
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
