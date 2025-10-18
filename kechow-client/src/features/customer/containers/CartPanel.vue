@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const router = useRouter();
 
@@ -110,7 +113,10 @@ async function checkout() {
 	// Simulate API call
 	await new Promise((resolve) => setTimeout(resolve, 1500));
 
-	alert(`Order placed successfully! Total: $${finalTotal.value.toFixed(2)}`);
+	toast.success(
+		`Order placed successfully! Total: $${finalTotal.value.toFixed(2)}`
+	);
+
 	cart.value = [];
 	showSuccess.value = false;
 }
@@ -413,7 +419,7 @@ onMounted(() => {
 								]"
 							>
 								<div class="flex items-center justify-center gap-2">
-									<span v-if="showSuccess">Order Placed! 🎉</span>
+									<span v-if="showSuccess">Order Placed! </span>
 									<span v-else>Checkout - ${{ finalTotal.toFixed(2) }}</span>
 								</div>
 							</button>
