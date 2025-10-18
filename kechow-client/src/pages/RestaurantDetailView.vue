@@ -154,9 +154,9 @@ function goBack() {
 					<!-- IMAGE -->
 					<div class="flex-shrink-0 relative">
 						<img
-							:src="item.image || 'https://via.placeholder.com/100'"
+							:src="item.image || '/images/placeholder-image.png'"
 							:alt="item.name"
-							class="w-30 h-30 rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow duration-300"
+							class="w-24 h-24 sm:w-32 sm:h-32 rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow duration-300"
 							loading="lazy"
 						/>
 						<!-- Stock indicator -->
