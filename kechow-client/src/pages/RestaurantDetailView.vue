@@ -100,25 +100,31 @@ function goBack() {
 					<button
 						@click="router.push({ name: 'Cart' })"
 						:disabled="!totalItems"
-						class="p-2 rounded-lg transition-colors duration-200"
+						class="relative p-2 rounded-lg transition-colors duration-200"
 						:class="
 							totalItems ? 'text-primary hover:bg-primary/10' : 'text-gray-400'
 						"
 						aria-label="View cart"
 					>
+						<!-- Cart Icon -->
 						<svg
 							class="w-6 h-6"
+							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
 							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
 							viewBox="0 0 24 24"
 						>
+							<circle cx="9" cy="21" r="1"></circle>
+							<circle cx="20" cy="21" r="1"></circle>
 							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5.5M7 13l2.5 5.5m0 0L17 21"
-							/>
+								d="M1 1h4l2.68 13.39a1 1 0 0 0 1 .61h9a1 1 0 0 0 1-.76l1.38-7.59H6"
+							></path>
 						</svg>
+
+						<!-- Item count badge -->
 						<span
 							v-if="totalItems"
 							class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
