@@ -32,7 +32,7 @@ module.exports = {
 
             },
             fontFamily: {
-                sans: ['Inter', 'Poppins', 'Helvetica', 'Arial', 'sans-serif'],
+                chewy: ['Chewy', 'cursive'], /*   // sans: ['Inter', 'Poppins', 'Helvetica', 'Arial', 'sans-serif'],  // dacade: ['Dacade', 'sans-serif'], */
             },
             boxShadow: {
                 soft: '0 4px 14px rgba(99, 102, 241, 0.3)',

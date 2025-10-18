@@ -19,7 +19,7 @@
 			class="absolute inset-0 flex justify-center items-center pointer-events-none"
 		>
 			<h1
-				class="text-3xl sm:text-5xl font-bold tracking-wide select-text text-gradient-pulse"
+				class="text-3xl sm:text-8xl font-bold tracking-wide select-text font-chewy text-gradient-pulse"
 				aria-label="Kechow"
 				style="
 					color: #ec4899;
