@@ -204,25 +204,22 @@ onMounted(() => {
 												{{ item.description }}
 											</p>
 										</div>
-										<button
+										<svg
 											@click="removeItem(item.id)"
-											class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
+											xmlns="http://www.w3.org/2000/svg"
+											fill="none"
+											viewBox="0 0 16 16"
+											stroke="currentColor"
+											class="w-5 h-5 text-red-400 hover:text-red-600 cursor-pointer transition-colors duration-200"
 											aria-label="Remove item"
 										>
-											<svg
-												class="w-4 h-4"
-												fill="none"
-												stroke="currentColor"
-												viewBox="0 0 24 24"
-											>
-												<path
-													stroke-linecap="round"
-													stroke-linejoin="round"
-													stroke-width="2"
-													d="M6 18L18 6M6 6l12 12"
-												/>
-											</svg>
-										</button>
+											<path
+												d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+											/>
+											<path
+												d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+											/>
+										</svg>
 									</div>
 
 									<!-- Quantity Controls & Price -->
@@ -232,12 +229,7 @@ onMounted(() => {
 											<button
 												@click="decrease(item.id)"
 												:disabled="item.quantity <= 1"
-												:class="[
-													'w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-200',
-													item.quantity <= 1
-														? 'border-gray-200 text-gray-400 cursor-not-allowed'
-														: 'border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-orange-50 hover:text-orange-600',
-												]"
+												class="w-[60px] h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 												aria-label="Decrease quantity"
 											>
 												<svg
@@ -274,14 +266,13 @@ onMounted(() => {
 													"
 													min="1"
 													max="99"
-													class="w-16 text-center border border-gray-300 rounded-lg py-2 text-sm font-semibold focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none transition-colors"
+													class="w-18 text-center border border-gray-300 rounded-md text-lg font-medium text-primary focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"
 												/>
 											</div>
 
 											<button
 												@click="increase(item.id)"
-												class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-300 text-gray-700 hover:border-orange-500 hover:bg-orange-50 hover:text-orange-600 transition-all duration-200"
-												aria-label="Increase quantity"
+												class="w-[60px] h-8 flex items-center justify-center rounded-full bg-primary text-white text-lg font-bold hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 											>
 												<svg
 													class="w-4 h-4"
