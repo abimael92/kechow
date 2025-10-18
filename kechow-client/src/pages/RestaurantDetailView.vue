@@ -204,7 +204,7 @@ function goBack() {
 									@click="remove(item.id)"
 									:disabled="(cart[item.id] ?? 0) <= 0"
 									:aria-label="`Remove one ${item.name}`"
-									class="w-8 h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+									class="w-[60px] h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 								>
 									−
 								</button>
@@ -219,7 +219,7 @@ function goBack() {
 									@blur="$event.target.value = cart[item.id] || 0"
 									min="0"
 									:max="Math.min(20, item.stock ?? 20)"
-									class="w-12 text-center border border-gray-300 rounded-md py-1 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"
+									class="w-18 text-center border border-gray-300 rounded-md text-lg font-medium text-primary focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"
 									aria-label="Quantity"
 								/>
 
@@ -231,7 +231,7 @@ function goBack() {
 											(cart[item.id] ?? 0) >= item.stock)
 									"
 									:aria-label="`Add one ${item.name}`"
-									class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+									class="w-[60px] h-8 flex items-center justify-center rounded-full bg-primary text-white text-lg font-bold hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 								>
 									+
 								</button>
@@ -334,5 +334,14 @@ input {
 		box-shadow;
 	transition-duration: 200ms;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type='number'] {
+	-moz-appearance: textfield;
 }
 </style>
