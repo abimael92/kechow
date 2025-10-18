@@ -99,7 +99,10 @@ function goBack() {
 					>
 						−
 					</button>
-					<span class="w-5 text-center font-medium text-primary">
+					<span
+						class="w-5 text-center font-medium text-primary transition-transform duration-200"
+						:class="{ 'scale-110': cart[item.id] > 0 }"
+					>
 						{{ cart[item.id] || 0 }}
 					</span>
 					<button
