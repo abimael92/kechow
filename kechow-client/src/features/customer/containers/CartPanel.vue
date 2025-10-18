@@ -184,7 +184,7 @@ onMounted(() => {
 								<!-- Product Image -->
 								<div class="flex-shrink-0">
 									<img
-										:src="item.image"
+										:src="'/images/placeholder-image.png'"
 										:alt="item.name"
 										class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-sm"
 									/>
