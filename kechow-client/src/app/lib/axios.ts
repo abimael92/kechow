@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { getEnv } from './env';
 
-const API_URL = getEnv('VITE_API_URL', 'http://localhost:8000');
+const API_URL = getEnv('VITE_API_URL', 'http://127.0.0.1:8000');
 
 export const api = axios.create({
 	baseURL: API_URL,

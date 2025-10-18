@@ -465,7 +465,7 @@ footer {
         <p class="subtitle">El motor que impulsa la plataforma de entrega de comida Kechow con tecnología moderna y escalable.</p>
 
         <div class="btn-group">
-            <a href="http://localhost:8000/api/documentation/" class="api-btn" target="_blank" rel="noopener noreferrer">
+            <a href="http://127.0.0.1:8000/api/documentation/" class="api-btn" target="_blank" rel="noopener noreferrer">
                 <i class="fas fa-code"></i> Ver Documentación API
             </a>
             <a href="#" class="api-btn secondary">
