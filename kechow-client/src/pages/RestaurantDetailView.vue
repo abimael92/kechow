@@ -71,7 +71,7 @@ function goBack() {
 <template>
 	<div v-if="restaurant" class="pb-24">
 		<!-- HEADER - Improved with better visual hierarchy -->
-		<header class="sticky top-0 z-30 bg-white shadow-sm">
+		<header class="sticky top-0 z-30 shadow-sm">
 			<div class="flex items-center justify-between px-4 py-3">
 				<button
 					@click="goBack"
@@ -82,11 +82,15 @@ function goBack() {
 					<span class="font-medium">Back</span>
 				</button>
 
-				<div class="text-center flex-1 px-4">
-					<h1 class="text-lg font-semibold text-gray-900 truncate">
+				<div class="flex-1 px-4 text-center">
+					<h1
+						class="text-3xl sm:text-6xl font-extrabold text-gray-900 leading-snug"
+					>
 						{{ restaurant.name }}
 					</h1>
-					<p class="text-xs text-gray-500 truncate">
+					<p
+						class="text-lg sm:text-2xl text-gray-600 mt-2 max-w-2xl mx-auto text-white"
+					>
 						{{ restaurant.description }}
 					</p>
 				</div>
