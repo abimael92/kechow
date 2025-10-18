@@ -2,6 +2,13 @@
 import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { restaurants } from '@/shared/data/restaurants';
+import { onMounted } from 'vue';
+
+onMounted(() => {
+	restaurant.value.menu.forEach((item) => {
+		if (!(item.id in cart.value)) cart.value[item.id] = 0;
+	});
+});
 
 const route = useRoute();
 const router = useRouter();
@@ -16,10 +23,17 @@ const restaurant = computed(() =>
 const cart = ref<Record<number, number>>({});
 
 function add(id: number) {
-	cart.value[id] = (cart.value[id] || 0) + 1;
+	if (!cart.value[id]) cart.value[id] = 0;
+	cart.value[id] = Math.min(
+		cart.value[id] + 1,
+		20,
+		restaurant.value.menu.find((i) => i.id === id)?.stock ?? 20
+	);
 }
+
 function remove(id: number) {
-	if (cart.value[id]) cart.value[id]--;
+	if (!cart.value[id]) cart.value[id] = 0;
+	cart.value[id] = Math.max(cart.value[id] - 1, 0);
 }
 
 const totalItems = computed(() =>
@@ -96,10 +110,10 @@ function goBack() {
 					<button
 						@click="remove(item.id)"
 						:aria-label="'Remove ' + item.name"
-						:disabled="!cart[item.id]"
-						class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 disabled:opacity-40"
+						:disabled="(cart[item.id] ?? 0) <= 0"
+						class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white disabled:opacity-40 text-lg font-bold"
 					>
-						−
+						-
 					</button>
 					<span
 						class="w-5 text-center font-medium text-primary transition-transform duration-200"
@@ -110,7 +124,11 @@ function goBack() {
 					<button
 						@click="add(item.id)"
 						:aria-label="'Add ' + item.name"
-						class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white"
+						:disabled="
+							(cart[item.id] ?? 0) >= 20 ||
+							(item.stock !== undefined && (cart[item.id] ?? 0) >= item.stock)
+						"
+						class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white disabled:opacity-40 text-lg font-bold"
 					>
 						+
 					</button>
