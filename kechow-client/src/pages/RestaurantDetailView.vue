@@ -41,7 +41,7 @@ function goBack() {
 		>
 			<button
 				@click="goBack"
-				class="flex items-center text-white font-medium text-base"
+				class="flex items-center text-white font-medium text-base px-2 py-1 bg-gray-800 rounded-lg shadow"
 			>
 				<span class="mr-1 text-sm">←</span>
 				Back
@@ -95,6 +95,7 @@ function goBack() {
 				<div class="flex items-center gap-2">
 					<button
 						@click="remove(item.id)"
+						:aria-label="'Remove ' + item.name"
 						:disabled="!cart[item.id]"
 						class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 disabled:opacity-40"
 					>
@@ -108,6 +109,7 @@ function goBack() {
 					</span>
 					<button
 						@click="add(item.id)"
+						:aria-label="'Add ' + item.name"
 						class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white"
 					>
 						+
