@@ -73,13 +73,14 @@ function goBack() {
 			<div
 				v-for="(item, index) in restaurant.menu"
 				:key="index"
-				class="bg-white rounded-lg shadow p-3 flex items-center justify-between gap-3"
+				class="bg-white rounded-lg shadow p-3 flex items-center justify-between gap-3 hover:shadow-lg hover:scale-105 transition-transform"
 			>
 				<!-- LEFT: IMAGE + INFO -->
 				<div class="flex gap-3 items-start">
 					<img
 						:src="item.image || 'https://via.placeholder.com/100'"
 						class="w-20 h-20 rounded-md object-cover"
+						loading="lazy"
 					/>
 					<div class="flex-1">
 						<p class="text-sm font-semibold">{{ item.name }}</p>
