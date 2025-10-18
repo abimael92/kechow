@@ -147,9 +147,15 @@ onMounted(() => {
 					<span class="font-medium">Continue Shopping</span>
 				</button>
 
-				<div class="text-center">
-					<h1 class="text-3xl font-bold text-gray-900">My Cart</h1>
-					<p class="text-gray-500 mt-1">
+				<div class="flex-1 px-4 text-center">
+					<h1
+						class="text-3xl sm:text-6xl font-extrabold text-gray-900 leading-snug"
+					>
+						My Cart
+					</h1>
+					<p
+						class="text-lg sm:text-2xl text-gray-600 mt-2 max-w-2xl mx-auto text-white"
+					>
 						{{ itemCount }} item{{ itemCount !== 1 ? 's' : '' }} in your cart
 					</p>
 				</div>
