@@ -99,9 +99,9 @@ function goBack() {
 					>
 						−
 					</button>
-					<span class="w-5 text-center font-medium">{{
-						cart[item.id] || 0
-					}}</span>
+					<span class="w-5 text-center font-medium text-primary">
+						{{ cart[item.id] || 0 }}
+					</span>
 					<button
 						@click="add(item.id)"
 						class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white"
