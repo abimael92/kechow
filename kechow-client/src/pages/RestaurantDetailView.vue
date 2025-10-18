@@ -1,14 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { restaurants } from '@/shared/data/restaurants';
-import { onMounted } from 'vue';
-
-onMounted(() => {
-	restaurant.value.menu.forEach((item) => {
-		if (!(item.id in cart.value)) cart.value[item.id] = 0;
-	});
-});
 
 const route = useRoute();
 const router = useRouter();
@@ -19,16 +12,31 @@ const restaurant = computed(() =>
 	restaurants.find((r) => r.id.toString() === restaurantId.value)
 );
 
-// Cart state (use IDs, not names)
+// Cart state
 const cart = ref<Record<number, number>>({});
+const showAddedFeedback = ref<number | null>(null); // For item add feedback
+
+onMounted(() => {
+	restaurant.value?.menu.forEach((item) => {
+		if (!(item.id in cart.value)) cart.value[item.id] = 0;
+	});
+});
 
 function add(id: number) {
 	if (!cart.value[id]) cart.value[id] = 0;
-	cart.value[id] = Math.min(
-		cart.value[id] + 1,
-		20,
-		restaurant.value.menu.find((i) => i.id === id)?.stock ?? 20
-	);
+
+	const item = restaurant.value?.menu.find((i) => i.id === id);
+	const maxQuantity = Math.min(20, item?.stock ?? 20);
+
+	if (cart.value[id] < maxQuantity) {
+		cart.value[id]++;
+
+		// Show feedback animation
+		showAddedFeedback.value = id;
+		setTimeout(() => {
+			showAddedFeedback.value = null;
+		}, 600);
+	}
 }
 
 function remove(id: number) {
@@ -36,9 +44,22 @@ function remove(id: number) {
 	cart.value[id] = Math.max(cart.value[id] - 1, 0);
 }
 
+function setQuantity(id: number, quantity: number) {
+	const item = restaurant.value?.menu.find((i) => i.id === id);
+	const maxQuantity = Math.min(20, item?.stock ?? 20);
+	cart.value[id] = Math.max(0, Math.min(quantity, maxQuantity));
+}
+
 const totalItems = computed(() =>
 	Object.values(cart.value).reduce((a, b) => a + b, 0)
 );
+
+const totalPrice = computed(() => {
+	return Object.entries(cart.value).reduce((total, [id, quantity]) => {
+		const item = restaurant.value?.menu.find((i) => i.id === Number(id));
+		return total + (item?.price || 0) * quantity;
+	}, 0);
+});
 
 // Safe back navigation
 function goBack() {
@@ -49,110 +70,265 @@ function goBack() {
 
 <template>
 	<div v-if="restaurant" class="pb-24">
-		<!-- HEADER -->
-		<div
-			class="flex items-center justify-between px-4 py-4 sticky top-0 z-20 shadow"
-		>
-			<button
-				@click="goBack"
-				class="flex items-center text-white font-medium text-base px-2 py-1 bg-gray-800 rounded-lg shadow"
-			>
-				<span class="mr-1 text-sm">←</span>
-				Back
-			</button>
-			<div class="w-12"></div>
-		</div>
+		<!-- HEADER - Improved with better visual hierarchy -->
+		<header class="sticky top-0 z-30 bg-white shadow-sm">
+			<div class="flex items-center justify-between px-4 py-3">
+				<button
+					@click="goBack"
+					class="flex items-center gap-1 px-3 py-2 text-white-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+					aria-label="Go back"
+				>
+					<span class="text-lg">←</span>
+					<span class="font-medium">Back</span>
+				</button>
 
-		<!-- BANNER -->
-		<div class="relative w-full h-44 sm:h-56 overflow-hidden">
+				<div class="text-center flex-1 px-4">
+					<h1 class="text-lg font-semibold text-gray-900 truncate">
+						{{ restaurant.name }}
+					</h1>
+					<p class="text-xs text-gray-500 truncate">
+						{{ restaurant.description }}
+					</p>
+				</div>
+
+				<!-- Cart indicator in header -->
+				<div class="relative">
+					<button
+						@click="router.push({ name: 'Cart' })"
+						:disabled="!totalItems"
+						class="p-2 rounded-lg transition-colors duration-200"
+						:class="
+							totalItems ? 'text-primary hover:bg-primary/10' : 'text-gray-400'
+						"
+						aria-label="View cart"
+					>
+						<svg
+							class="w-6 h-6"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5.5M7 13l2.5 5.5m0 0L17 21"
+							/>
+						</svg>
+						<span
+							v-if="totalItems"
+							class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
+						>
+							{{ totalItems }}
+						</span>
+					</button>
+				</div>
+			</div>
+		</header>
+
+		<!-- BANNER - Improved loading and aspect ratio -->
+		<div class="relative w-full h-48 sm:h-56 bg-gray-200 overflow-hidden">
 			<img
 				:src="restaurant.image"
+				:alt="restaurant.name"
 				class="absolute inset-0 w-full h-full object-cover blur-sm scale-110"
+				loading="eager"
 			/>
 			<img
 				:src="restaurant.image"
 				:alt="restaurant.name"
 				class="relative z-10 mx-auto h-full object-contain"
 			/>
+			<div class="absolute inset-0 bg-black/20"></div>
 		</div>
 
-		<!-- INFO -->
-		<div class="text-center p-4">
-			<h1 class="text-xl font-bold">{{ restaurant.name }}</h1>
-			<p class="text-gray-500 text-sm">{{ restaurant.description }}</p>
-		</div>
-
-		<!-- MENU ITEMS -->
-		<div class="space-y-3 px-3">
+		<!-- MENU ITEMS - Enhanced interaction feedback -->
+		<main class="space-y-4 p-4">
 			<div
 				v-for="(item, index) in restaurant.menu"
-				:key="index"
-				class="bg-white rounded-lg shadow p-3 flex items-center justify-between gap-3 hover:shadow-lg hover:scale-105 transition-transform"
+				:key="item.id"
+				class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-all duration-300 group"
+				:class="{ 'ring-2 ring-primary/20': showAddedFeedback === item.id }"
 			>
-				<!-- LEFT: IMAGE + INFO -->
-				<div class="flex gap-3 items-start">
-					<img
-						:src="item.image || 'https://via.placeholder.com/100'"
-						class="w-20 h-20 rounded-md object-cover"
-						loading="lazy"
-					/>
-					<div class="flex-1">
-						<p class="text-sm font-semibold">{{ item.name }}</p>
-						<p class="text-xs text-gray-500 line-clamp-2">
-							{{ item.description || 'Freshly made and tasty.' }}
-						</p>
-						<p class="text-sm font-bold mt-1">${{ item.price || '9.99' }}</p>
+				<div class="flex gap-4 items-start">
+					<!-- IMAGE -->
+					<div class="flex-shrink-0 relative">
+						<img
+							:src="item.image || 'https://via.placeholder.com/100'"
+							:alt="item.name"
+							class="w-30 h-30 rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow duration-300"
+							loading="lazy"
+						/>
+						<!-- Stock indicator -->
+						<div
+							v-if="item.stock !== undefined && item.stock < 10"
+							class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1 rounded"
+						>
+							Low stock
+						</div>
+					</div>
+
+					<!-- INFO -->
+					<div class="flex-1 min-w-0">
+						<div class="flex justify-between items-start gap-2">
+							<div class="flex-1 min-w-0">
+								<h3 class="font-semibold text-gray-900 truncate">
+									{{ item.name }}
+								</h3>
+								<p class="text-sm text-gray-600 mt-1 line-clamp-2">
+									{{ item.description || 'Freshly made and tasty.' }}
+								</p>
+							</div>
+							<p class="text-lg font-bold text-primary whitespace-nowrap">
+								${{ (item.price || 9.99).toFixed(2) }}
+							</p>
+						</div>
+
+						<!-- CART CONTROLS - Enhanced with quantity input -->
+						<div class="flex items-center justify-between mt-3">
+							<!-- Stock info -->
+							<div class="text-xs text-gray-500">
+								<span v-if="item.stock !== undefined">
+									{{ item.stock }} available
+								</span>
+								<span v-else>In stock</span>
+							</div>
+
+							<!-- Controls -->
+							<div class="flex items-center gap-3">
+								<button
+									@click="remove(item.id)"
+									:disabled="(cart[item.id] ?? 0) <= 0"
+									:aria-label="`Remove one ${item.name}`"
+									class="w-8 h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+								>
+									−
+								</button>
+
+								<!-- Quantity input with direct editing -->
+								<input
+									type="number"
+									:value="cart[item.id] || 0"
+									@input="
+										setQuantity(item.id, parseInt($event.target.value) || 0)
+									"
+									@blur="$event.target.value = cart[item.id] || 0"
+									min="0"
+									:max="Math.min(20, item.stock ?? 20)"
+									class="w-12 text-center border border-gray-300 rounded-md py-1 text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"
+									aria-label="Quantity"
+								/>
+
+								<button
+									@click="add(item.id)"
+									:disabled="
+										(cart[item.id] ?? 0) >= 20 ||
+										(item.stock !== undefined &&
+											(cart[item.id] ?? 0) >= item.stock)
+									"
+									:aria-label="`Add one ${item.name}`"
+									class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+								>
+									+
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
+			</div>
+		</main>
 
-				<!-- RIGHT: CART CONTROLS -->
-				<div class="flex items-center gap-2">
+		<!-- FLOATING CART BAR - Enhanced with price and better positioning -->
+		<Transition
+			enter-active-class="transition-transform duration-300"
+			enter-from-class="translate-y-full"
+			enter-to-class="translate-y-0"
+			leave-active-class="transition-transform duration-300"
+			leave-from-class="translate-y-0"
+			leave-to-class="translate-y-full"
+		>
+			<div
+				v-if="totalItems"
+				class="fixed bottom-4 left-4 right-4 bg-white text-gray-900 rounded-xl shadow-lg border border-gray-200 p-4 z-40"
+			>
+				<div class="flex items-center justify-between">
+					<div class="flex-1">
+						<p class="font-semibold text-sm">
+							{{ totalItems }} item{{ totalItems !== 1 ? 's' : '' }}
+						</p>
+						<p class="text-primary font-bold text-lg">
+							${{ totalPrice.toFixed(2) }}
+						</p>
+					</div>
 					<button
-						@click="remove(item.id)"
-						:aria-label="'Remove ' + item.name"
-						:disabled="(cart[item.id] ?? 0) <= 0"
-						class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white disabled:opacity-40 text-lg font-bold"
+						@click="router.push({ name: 'Cart' })"
+						class="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-200 shadow-sm flex items-center gap-2"
 					>
-						-
-					</button>
-					<span
-						class="w-5 text-center font-medium text-primary transition-transform duration-200"
-						:class="{ 'scale-110': cart[item.id] > 0 }"
-					>
-						{{ cart[item.id] || 0 }}
-					</span>
-					<button
-						@click="add(item.id)"
-						:aria-label="'Add ' + item.name"
-						:disabled="
-							(cart[item.id] ?? 0) >= 20 ||
-							(item.stock !== undefined && (cart[item.id] ?? 0) >= item.stock)
-						"
-						class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white disabled:opacity-40 text-lg font-bold"
-					>
-						+
+						<svg
+							class="w-4 h-4"
+							fill="none"
+							stroke="currentColor"
+							viewBox="0 0 24 24"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5.5M7 13l2.5 5.5m0 0L17 21"
+							/>
+						</svg>
+						View Cart
 					</button>
 				</div>
 			</div>
-		</div>
-
-		<!-- CART BAR -->
-		<div
-			v-if="totalItems"
-			class="fixed bottom-0 left-0 right-0 bg-primary text-white flex justify-between items-center px-5 py-4 shadow-lg"
-		>
-			<span class="font-medium text-sm">{{ totalItems }} items in cart</span>
-			<button
-				@click="router.push({ name: 'Cart' })"
-				class="bg-white text-primary font-semibold px-5 py-2 rounded-lg shadow"
-			>
-				View Cart
-			</button>
-		</div>
+		</Transition>
 	</div>
 
-	<!-- ERROR STATE -->
-	<div v-else class="text-center py-16 text-gray-400">
-		Restaurant not found.
+	<!-- ERROR STATE - Improved error handling -->
+	<div
+		v-else
+		class="flex flex-col items-center justify-center min-h-screen p-8 text-center"
+	>
+		<div
+			class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4"
+		>
+			<span class="text-4xl">🍕</span>
+		</div>
+		<h2 class="text-xl font-semibold text-gray-900 mb-2">
+			Restaurant Not Found
+		</h2>
+		<p class="text-gray-500 mb-6">
+			The restaurant you're looking for doesn't exist or has been removed.
+		</p>
+		<button
+			@click="router.push({ name: 'Home' })"
+			class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
+		>
+			Browse Restaurants
+		</button>
 	</div>
 </template>
+
+<style scoped>
+/* Custom scrollbar for better mobile experience */
+@media (max-width: 640px) {
+	.space-y-4 > * + * {
+		margin-top: 1rem;
+	}
+}
+
+/* Improve touch targets for mobile */
+button,
+input {
+	min-height: 44px;
+	min-width: 44px;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+	transition-property: color, background-color, border-color, transform,
+		box-shadow;
+	transition-duration: 200ms;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
