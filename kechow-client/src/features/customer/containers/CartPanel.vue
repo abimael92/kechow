@@ -131,7 +131,7 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6">
+	<div class="min-h-screen py-6">
 		<div class="max-w-4xl mx-auto px-4 sm:px-6">
 			<!-- Header -->
 			<header class="flex items-center justify-between mb-8">
