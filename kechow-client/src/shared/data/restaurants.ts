@@ -6,6 +6,7 @@ export type MenuItem = {
 	description: string;
 	image: string;
 	price: number;
+	stock?: number;
 };
 
 export type Restaurant = {
@@ -29,6 +30,7 @@ export const restaurants = [
 				description: 'Pescado marinado en jugo de limón con vegetales frescos.',
 				image: '/images/placeholder-image.png',
 				price: 120,
+				stock: 8,
 			},
 			{
 				id: 102,
@@ -43,6 +45,7 @@ export const restaurants = [
 				description: 'Mezcla de mariscos servidos en salsa de tomate.',
 				image: '/images/placeholder-image.png',
 				price: 130,
+				stock: 3,
 			},
 			{
 				id: 104,
@@ -50,6 +53,7 @@ export const restaurants = [
 				description: 'Filete de pescado empanizado con guarnición.',
 				image: '/images/placeholder-image.png',
 				price: 140,
+				stock: 2,
 			},
 		],
 		rating: 4.3,
