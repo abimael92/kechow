@@ -99,8 +99,7 @@ function goBack() {
 					<!-- Cart indicator in header -->
 					<div class="relative">
 						<button
-							@click="router.push({ name: 'Cart' })"
-							:disabled="!totalItems"
+							@click="router.push({ name: 'CartPage' })"
 							class="relative p-2 rounded-lg transition-colors duration-200"
 							:class="
 								totalItems
