@@ -94,6 +94,7 @@ export interface MenuItem {
 	name: string;
 	description: string;
 	price: number;
+	stock?: number;
 	category: string;
 	available: boolean;
 	image: string;
