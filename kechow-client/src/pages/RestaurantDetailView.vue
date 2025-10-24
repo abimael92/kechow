@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { restaurants } from '@/shared/data/restaurants';
+import type { MenuItem } from '../types';
 
 const route = useRoute();
 const router = useRouter();
@@ -25,8 +26,11 @@ onMounted(() => {
 function add(id: number) {
 	if (!cart.value[id]) cart.value[id] = 0;
 
-	const item = restaurant.value?.menu.find((i) => i.id === id);
-	const maxQuantity = Math.min(20, item?.stock ?? 20);
+	const item = restaurant.value?.menu.find((i) => i.id === id) as
+		| MenuItem
+		| undefined;
+
+	const maxQuantity = Math.min(20, item?.stock ?? 0);
 
 	if (cart.value[id] < maxQuantity) {
 		cart.value[id]++;
@@ -45,7 +49,10 @@ function remove(id: number) {
 }
 
 function setQuantity(id: number, quantity: number) {
-	const item = restaurant.value?.menu.find((i) => i.id === id);
+	const item = restaurant.value?.menu.find((i) => i.id === id) as
+		| MenuItem
+		| undefined;
+
 	const maxQuantity = Math.min(20, item?.stock ?? 20);
 	cart.value[id] = Math.max(0, Math.min(quantity, maxQuantity));
 }
@@ -71,7 +78,6 @@ function goBack() {
 <template>
 	<div v-if="restaurant" class="min-h-screen py-6">
 		<div class="max-w-4xl mx-auto px-4 sm:px-6">
-			<!-- HEADER - Improved with better visual hierarchy -->
 			<header class="sticky top-0 z-30 shadow-sm">
 				<div class="flex items-center justify-between px-4 py-3">
 					<button
@@ -174,7 +180,7 @@ function goBack() {
 							/>
 							<!-- Stock indicator -->
 							<div
-								v-if="item.stock !== undefined && item.stock < 10"
+								v-if="'stock' in item && item.stock < 10"
 								class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1 rounded"
 							>
 								Low stock
@@ -201,7 +207,7 @@ function goBack() {
 							<div class="flex items-center justify-between mt-3">
 								<!-- Stock info -->
 								<div class="text-xs text-gray-500">
-									<span v-if="item.stock !== undefined">
+									<span v-if="'stock' in item">
 										{{ item.stock }} available
 									</span>
 									<span v-else>In stock</span>
