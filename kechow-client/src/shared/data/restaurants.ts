@@ -38,6 +38,7 @@ export const restaurants = [
 				description: 'Camarones salteados con ajo y mantequilla.',
 				image: '/images/placeholder-image.png',
 				price: 150,
+				stock: 1,
 			},
 			{
 				id: 103,
