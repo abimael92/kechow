@@ -93,7 +93,11 @@
 				</svg>
 			</button>
 
-			<div class="relative hidden lg:block" @keydown.escape="closeUserMenu">
+			<div
+				class="relative hidden lg:block"
+				@keydown.escape="closeUserMenu"
+				v-if="authStore.isAuthenticated"
+			>
 				<button
 					@click="toggleUserMenu"
 					class="hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded relative bg-gradient-to-r from-primary-light to-primary-dark p-1 user-menu-button"

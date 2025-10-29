@@ -15,12 +15,12 @@
 				<h2
 					class="text-3xl font-bold mb-2 text-center text-gradient-pulse text-primary"
 				>
-					Welcome back!
+					{{ t('welcomeBack') }}
 				</h2>
 			</div>
 
 			<p class="text-sm text-center text-gray-500 mb-6">
-				Login to your Kechow account
+				{{ t('loginToAccount') }}
 			</p>
 
 			<form
@@ -28,9 +28,9 @@
 				class="space-y-6 animate-slide-up p-6 rounded-2xl max-w-md mx-auto"
 			>
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700"
-						>Email</label
-					>
+					<label class="block mb-1 text-sm font-medium text-gray-700">{{
+						t('email')
+					}}</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
 					>
@@ -40,7 +40,7 @@
 						<input
 							v-model="loginForm.email"
 							type="email"
-							placeholder="you@example.com"
+							:placeholder="t('emailPlaceholder')"
 							class="w-full p-2 outline-none text-gray-900"
 							required
 						/>
@@ -48,9 +48,9 @@
 				</div>
 
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700"
-						>Password</label
-					>
+					<label class="block mb-1 text-sm font-medium text-gray-700">{{
+						t('password')
+					}}</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
 					>
@@ -58,7 +58,7 @@
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							v-model="loginForm.password"
-							placeholder="••••••••"
+							:placeholder="t('passwordPlaceholder')"
 							class="w-full p-2 outline-none text-gray-900"
 							required
 						/>
@@ -76,17 +76,17 @@
 					type="submit"
 					class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition hover:scale-105 transition-transform"
 				>
-					Login
+					{{ t('login') }}
 				</button>
 			</form>
 
 			<p class="mt-6 text-sm text-center text-gray-600">
-				Don't have an account?
+				{{ t('noAccount') }}
 				<router-link
 					to="/register"
 					class="text-indigo-600 hover:underline font-semibold"
 				>
-					Register here
+					{{ t('registerHere') }}
 				</router-link>
 			</p>
 		</div>
@@ -98,12 +98,14 @@ import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
 // Get the toast instance
 const toast = useToast();
 const showPassword = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
+const { t } = useI18n();
 
 const loginForm = reactive({
 	email: '',
@@ -113,7 +115,7 @@ const loginForm = reactive({
 async function handleLogin() {
 	try {
 		const response = await authStore.login({ ...loginForm });
-		toast.success('Login successful!');
+		toast.success(t('loginSuccessful'));
 
 		if (authStore.isOwner) {
 			await router.push({ name: 'OwnerDashboard' });
@@ -123,9 +125,7 @@ async function handleLogin() {
 	} catch (error: unknown) {
 		console.error('Login error details:', error);
 		const errorMessage =
-			error instanceof Error
-				? error.message
-				: 'Invalid credentials. Please check your email and password.';
+			error instanceof Error ? error.message : t('invalidCredentials');
 		toast.error(`${errorMessage}`);
 	}
 }
@@ -199,5 +199,3 @@ async function handleLogin() {
 	animation: pulseScaleMinimal 2.5s ease-in-out infinite;
 }
 </style>
-// Updated login form with toast notifications
-// Updated login form with toast notifications
