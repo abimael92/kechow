@@ -8,7 +8,7 @@
 				<h1 class="text-xl sm:text-2xl font-bold text-gray-900">
 					{{ $t('earnings') }}
 				</h1>
-				<p class="text-gray-600 text-sm sm:text-base mt-1">
+				<p class="text-white text-sm sm:text-base mt-1">
 					{{ $t('trackEarningsPayments') }}
 				</p>
 			</div>
@@ -18,7 +18,7 @@
 					:class="
 						period === 'week'
 							? 'bg-white text-gray-900 shadow-sm'
-							: 'text-gray-600 hover:text-gray-900'
+							: 'text-white hover:text-gray-900'
 					"
 					@click="
 						period = 'week';
@@ -32,7 +32,7 @@
 					:class="
 						period === 'month'
 							? 'bg-white text-gray-900 shadow-sm'
-							: 'text-gray-600 hover:text-gray-900'
+							: 'text-white hover:text-gray-900'
 					"
 					@click="
 						period = 'month';
@@ -53,7 +53,7 @@
 			>
 				<div class="flex items-center justify-between">
 					<div class="min-w-0">
-						<p class="text-gray-600 text-sm sm:text-base truncate">
+						<p class="text-white text-sm sm:text-base truncate">
 							{{ $t(card.titleKey) }}
 						</p>
 						<p class="text-2xl sm:text-3xl font-bold text-gray-900 truncate">
@@ -131,7 +131,7 @@
 							<p class="font-medium text-gray-900 truncate">
 								{{ payout.title }}
 							</p>
-							<p class="text-sm text-gray-600 truncate">{{ payout.date }}</p>
+							<p class="text-sm text-white truncate">{{ payout.date }}</p>
 						</div>
 					</div>
 					<div class="text-right min-w-0">
