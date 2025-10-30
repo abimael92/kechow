@@ -3,7 +3,7 @@
 		<!-- Header -->
 		<div>
 			<h1 class="text-2xl font-bold text-gray-900">{{ $t('orders') }}</h1>
-			<p class="text-gray-600 mt-1">{{ $t('manageDeliveries') }}</p>
+			<p class="text-white mt-1">{{ $t('manageDeliveries') }}</p>
 		</div>
 
 		<!-- Tabs -->
@@ -21,7 +21,7 @@
 							tab.key === 'active' && activeTab === i,
 						'bg-orange-100 text-orange-800':
 							tab.key === 'available' && activeTab === i,
-						'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800':
+						'bg-gray-100 text-white hover:bg-gray-200 hover:text-gray-800':
 							activeTab !== i,
 					}"
 				>
@@ -83,7 +83,7 @@
 								{{ order.statusLabel }}
 							</span>
 						</div>
-						<p class="text-gray-600 font-medium">{{ order.restaurant }}</p>
+						<p class="text-white font-medium">{{ order.restaurant }}</p>
 						<p class="text-sm text-gray-500">
 							{{ $t('to') }} {{ order.customer }}
 						</p>
@@ -101,13 +101,13 @@
 				<div class="p-4">
 					<div class="flex items-center justify-between text-sm mb-4">
 						<div class="flex items-center space-x-4">
-							<div class="flex items-center text-gray-600">
+							<div class="flex items-center text-white">
 								<i
 									class="ri-map-pin-distance-line mr-1 w-4 h-4 flex items-center justify-center"
 								></i>
 								<span>{{ order.distance }}</span>
 							</div>
-							<div class="flex items-center text-gray-600">
+							<div class="flex items-center text-white">
 								<i
 									class="ri-time-line mr-1 w-4 h-4 flex items-center justify-center"
 								></i>
@@ -135,7 +135,7 @@
 								<p class="text-sm font-medium text-gray-900">
 									{{ $t('pickup') }}
 								</p>
-								<p class="text-sm text-gray-600 truncate">{{ order.pickup }}</p>
+								<p class="text-sm text-white truncate">{{ order.pickup }}</p>
 							</div>
 						</div>
 
@@ -156,7 +156,7 @@
 								<p class="text-sm font-medium text-gray-900">
 									{{ $t('dropoff') }}
 								</p>
-								<p class="text-sm text-gray-600 truncate">
+								<p class="text-sm text-white truncate">
 									{{ order.dropoff }}
 								</p>
 							</div>
