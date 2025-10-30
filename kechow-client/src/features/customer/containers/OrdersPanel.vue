@@ -105,7 +105,7 @@ const activeTab = ref('My Orders');
 					<div class="flex justify-between items-start mb-4">
 						<div>
 							<h3 class="font-semibold text-gray-900">{{ o.restaurant }}</h3>
-							<p class="text-gray-600 text-sm">
+							<p class="text-white text-sm">
 								Order #{{ o.id }} • {{ o.items.length }} items
 							</p>
 						</div>
@@ -120,7 +120,7 @@ const activeTab = ref('My Orders');
 							>{{ o.status }}</span
 						>
 					</div>
-					<div class="text-sm text-gray-600 mb-2">{{ o.items.join(', ') }}</div>
+					<div class="text-sm text-white mb-2">{{ o.items.join(', ') }}</div>
 					<div class="flex justify-between items-center">
 						<span class="font-semibold text-gray-900"
 							>${{ o.total.toFixed(2) }}</span
