@@ -5,7 +5,7 @@
 			<h1 class="text-2xl font-bold text-gray-900">
 				{{ $t('profileAndSettings') }}
 			</h1>
-			<p class="text-gray-600 text-sm sm:text-base">
+			<p class="text-white text-sm sm:text-base">
 				{{ $t('manageAccountPreferences') }}
 			</p>
 		</div>
@@ -26,11 +26,11 @@
 					<h3 class="text-lg sm:text-xl font-bold text-gray-900 truncate">
 						{{ authStore.user?.name || 'John Doe' }}
 					</h3>
-					<p class="text-gray-600 text-sm truncate">
+					<p class="text-white text-sm truncate">
 						{{ authStore.user?.email || 'johndoe@example.com' }}
 					</p>
 					<div
-						class="flex flex-wrap justify-center sm:justify-start items-center gap-2 mt-2 text-sm text-gray-600"
+						class="flex flex-wrap justify-center sm:justify-start items-center gap-2 mt-2 text-sm text-white"
 					>
 						<div class="flex items-center gap-1">
 							<i
