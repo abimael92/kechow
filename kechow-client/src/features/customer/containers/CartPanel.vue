@@ -160,7 +160,7 @@ onMounted(() => {
 						My Cart
 					</h1>
 					<p
-						class="text-lg sm:text-2xl text-gray-600 mt-2 max-w-2xl mx-auto text-white"
+						class="text-lg sm:text-2xl text-white mt-2 max-w-2xl mx-auto text-white"
 					>
 						{{ itemCount }} item{{ itemCount !== 1 ? 's' : '' }} in your cart
 					</p>
@@ -206,7 +206,7 @@ onMounted(() => {
 											<p class="text-gray-500 text-sm mt-1">
 												{{ item.category }}
 											</p>
-											<p class="text-gray-600 text-sm mt-2 line-clamp-2">
+											<p class="text-white text-sm mt-2 line-clamp-2">
 												{{ item.description }}
 											</p>
 										</div>
@@ -360,11 +360,11 @@ onMounted(() => {
 
 							<!-- Pricing Breakdown -->
 							<div class="space-y-3 mb-6">
-								<div class="flex justify-between text-gray-600">
+								<div class="flex justify-between text-white">
 									<span>Subtotal ({{ itemCount }} items)</span>
 									<span>${{ total.toFixed(2) }}</span>
 								</div>
-								<div class="flex justify-between text-gray-600">
+								<div class="flex justify-between text-white">
 									<span>Delivery Fee</span>
 									<span :class="deliveryFee === 0 ? 'text-green-600' : ''">
 										{{
@@ -372,7 +372,7 @@ onMounted(() => {
 										}}
 									</span>
 								</div>
-								<div class="flex justify-between text-gray-600">
+								<div class="flex justify-between text-white">
 									<span>Tax (8%)</span>
 									<span>${{ tax.toFixed(2) }}</span>
 								</div>
@@ -388,7 +388,7 @@ onMounted(() => {
 								<!-- Free delivery progress -->
 								<div v-if="total < 25" class="bg-gray-50 rounded-lg p-3 mt-4">
 									<div class="flex justify-between text-sm mb-2">
-										<span class="text-gray-600"
+										<span class="text-white"
 											>Add ${{ (25 - total).toFixed(2) }} for free
 											delivery!</span
 										>
