@@ -96,7 +96,7 @@ function goBack() {
 							{{ restaurant.name }}
 						</h1>
 						<p
-							class="text-lg sm:text-2xl text-gray-600 mt-2 max-w-2xl mx-auto text-white"
+							class="text-lg sm:text-2xl text-white mt-2 max-w-2xl mx-auto text-white"
 						>
 							{{ restaurant.description }}
 						</p>
@@ -194,7 +194,7 @@ function goBack() {
 									<h3 class="font-semibold text-gray-900 truncate">
 										{{ item.name }}
 									</h3>
-									<p class="text-sm text-gray-600 mt-1 line-clamp-2">
+									<p class="text-sm text-white mt-1 line-clamp-2">
 										{{ item.description || 'Freshly made and tasty.' }}
 									</p>
 								</div>
