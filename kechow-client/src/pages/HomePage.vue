@@ -146,7 +146,7 @@ const filteredRestaurants = computed(() =>
 							>
 								{{ restaurant.name }}
 							</h3>
-							<p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+							<p class="text-sm text-white dark:text-gray-400 line-clamp-2">
 								{{ restaurant.description }}
 							</p>
 
