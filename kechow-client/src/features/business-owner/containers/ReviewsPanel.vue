@@ -83,7 +83,7 @@
 						'px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap',
 						activeFilter === filter.id
 							? 'bg-orange-100 text-orange-600'
-							: 'text-gray-600 hover:bg-gray-50',
+							: 'text-white hover:bg-gray-50',
 					]"
 				>
 					{{
@@ -92,7 +92,7 @@
 							: $t('stars', { n: filter.id })
 					}}
 					<span
-						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+						class="ml-2 bg-gray-100 text-white px-2 py-1 rounded-full text-xs"
 						>{{ filter.count }}</span
 					>
 				</button>
