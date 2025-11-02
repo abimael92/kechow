@@ -6,7 +6,7 @@
 		>
 			<div>
 				<h3 class="font-bold text-gray-900">Availability</h3>
-				<p class="text-sm text-gray-600">
+				<p class="text-sm text-white">
 					You are currently
 					<span :class="isOnline ? 'text-green-600' : 'text-red-600'">
 						{{ isOnline ? 'Online' : 'Offline' }}
@@ -76,7 +76,7 @@
 					:key="day.date"
 					class="flex justify-between py-2"
 				>
-					<span class="text-gray-600">{{ day.date }}</span>
+					<span class="text-white">{{ day.date }}</span>
 					<span class="text-gray-900"
 						>{{ day.hours }}h / {{ day.deliveries }} deliveries / ${{
 							day.earnings
@@ -89,7 +89,7 @@
 		<!-- Insights -->
 		<div class="bg-white rounded-xl border p-4 shadow-sm">
 			<h4 class="font-semibold text-gray-800 mb-2">Best Times to Work</h4>
-			<p class="text-sm text-gray-600 mb-3">Based on last 7 days</p>
+			<p class="text-sm text-white mb-3">Based on last 7 days</p>
 			<!-- chart placeholder -->
 			<div
 				class="h-32 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400"
