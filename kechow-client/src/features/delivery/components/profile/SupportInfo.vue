@@ -1,7 +1,7 @@
 <template>
 	<div class="space-y-6">
 		<h3 class="text-lg font-semibold text-gray-900">Support & Help</h3>
-		<p class="text-gray-600">Get quick help or contact support.</p>
+		<p class="text-white">Get quick help or contact support.</p>
 
 		<!-- Support Options -->
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">

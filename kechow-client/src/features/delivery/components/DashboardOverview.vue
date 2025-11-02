@@ -7,7 +7,7 @@
 					<h1 class="text-2xl font-bold text-gray-900">
 						{{ $t('dashboard') }}
 					</h1>
-					<p class="text-gray-600 mt-1">{{ $t('readyToDeliver') }}</p>
+					<p class="text-white mt-1">{{ $t('readyToDeliver') }}</p>
 				</div>
 			</div>
 			<!-- Status -->
@@ -132,7 +132,7 @@
 							<h4 class="font-semibold text-gray-900">
 								Order {{ currentDelivery.id }}
 							</h4>
-							<p class="text-sm text-gray-600 mt-1">
+							<p class="text-sm text-white mt-1">
 								<i class="ri-map-pin-line mr-1"></i>
 								{{ currentDelivery.pickupLocation }} →
 								{{ currentDelivery.dropoffName }}
@@ -172,7 +172,7 @@
 				>
 					<div class="flex items-center justify-between">
 						<div>
-							<p class="text-gray-600 text-sm">{{ $t(stat.label) }}</p>
+							<p class="text-white text-sm">{{ $t(stat.label) }}</p>
 							<p class="text-2xl font-bold text-gray-900">{{ stat.value }}</p>
 							<p class="text-xs text-green-600">{{ stat.change }}</p>
 						</div>

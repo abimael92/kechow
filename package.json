@@ -1,6 +1,6 @@
 {
-  "name": "kechow-main",
-  "version": "1.0.0",
+  "name": "kechow",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "npm run start",
