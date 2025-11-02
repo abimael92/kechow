@@ -34,7 +34,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							{{ stats.totalItems }}
 						</p>
-						<p class="text-gray-600 text-sm">{{ $t('totalItems') }}</p>
+						<p class="text-white text-sm">{{ $t('totalItems') }}</p>
 					</div>
 				</div>
 			</div>
@@ -52,7 +52,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							{{ stats.availableItems }}
 						</p>
-						<p class="text-gray-600 text-sm">{{ $t('availableItems') }}</p>
+						<p class="text-white text-sm">{{ $t('availableItems') }}</p>
 					</div>
 				</div>
 			</div>
@@ -70,7 +70,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							{{ stats.outOfStockItems }}
 						</p>
-						<p class="text-gray-600 text-sm">{{ $t('outOfStockItems') }}</p>
+						<p class="text-white text-sm">{{ $t('outOfStockItems') }}</p>
 					</div>
 				</div>
 			</div>
@@ -88,7 +88,7 @@
 						<p class="text-2xl font-bold text-gray-900">
 							${{ stats.averagePrice.toFixed(2) }}
 						</p>
-						<p class="text-gray-600 text-sm">{{ $t('averagePrice') }}</p>
+						<p class="text-white text-sm">{{ $t('averagePrice') }}</p>
 					</div>
 				</div>
 			</div>
@@ -104,7 +104,7 @@
 						'px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap',
 						activeCategory === category
 							? 'bg-orange-100 text-orange-600'
-							: 'text-gray-600 hover:bg-gray-50',
+							: 'text-white hover:bg-gray-50',
 					]"
 				>
 					{{ $t(category.toLowerCase()) }}
