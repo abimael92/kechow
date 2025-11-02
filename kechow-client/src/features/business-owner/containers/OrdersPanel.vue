@@ -34,43 +34,43 @@
 				>
 					{{ $t('allOrders') }}
 					<span
-						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+						class="ml-2 bg-gray-800 text-white px-2 py-1 rounded-full text-xs"
 						>5</span
 					>
 				</button>
 				<button
-					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
+					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-white hover:bg-gray-50"
 				>
 					{{ $t('new') }}
 					<span
-						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+						class="ml-2 bg-gray-800 text-white px-2 py-1 rounded-full text-xs"
 						>1</span
 					>
 				</button>
 				<button
-					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
+					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-white hover:bg-gray-50"
 				>
 					{{ $t('preparing') }}
 					<span
-						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+						class="ml-2 bg-gray-800 text-white px-2 py-1 rounded-full text-xs"
 						>2</span
 					>
 				</button>
 				<button
-					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
+					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-white hover:bg-gray-50"
 				>
 					{{ $t('ready') }}
 					<span
-						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+						class="ml-2 bg-gray-800 text-white px-2 py-1 rounded-full text-xs"
 						>1</span
 					>
 				</button>
 				<button
-					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-gray-600 hover:bg-gray-50"
+					class="px-4 py-2 rounded-lg font-medium text-sm transition-colors cursor-pointer whitespace-nowrap text-white hover:bg-gray-50"
 				>
 					{{ $t('delivered') }}
 					<span
-						class="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
+						class="ml-2 bg-gray-800 text-white px-2 py-1 rounded-full text-xs"
 						>1</span
 					>
 				</button>
