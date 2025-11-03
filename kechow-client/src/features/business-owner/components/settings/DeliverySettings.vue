@@ -61,7 +61,7 @@
 						<div class="flex items-center justify-between">
 							<div>
 								<h4 class="font-medium text-gray-900">Enable Pickup</h4>
-								<p class="text-sm text-gray-600">
+								<p class="text-sm text-white">
 									Allow customers to pick up orders
 								</p>
 							</div>
@@ -74,7 +74,7 @@
 						<div class="flex items-center justify-between">
 							<div>
 								<h4 class="font-medium text-gray-900">Enable Delivery</h4>
-								<p class="text-sm text-gray-600">Offer delivery service</p>
+								<p class="text-sm text-white">Offer delivery service</p>
 							</div>
 							<input
 								class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
