@@ -15,7 +15,7 @@
 						></i>
 						<div>
 							<p class="font-medium text-gray-900">Credit/Debit Cards</p>
-							<p class="text-sm text-gray-600">
+							<p class="text-sm text-white">
 								Visa, Mastercard, American Express
 							</p>
 						</div>
@@ -37,7 +37,7 @@
 						></i>
 						<div>
 							<p class="font-medium text-gray-900">PayPal</p>
-							<p class="text-sm text-gray-600">Digital payment platform</p>
+							<p class="text-sm text-white">Digital payment platform</p>
 						</div>
 					</div>
 					<input
@@ -57,7 +57,7 @@
 						></i>
 						<div>
 							<p class="font-medium text-gray-900">Cash on Delivery</p>
-							<p class="text-sm text-gray-600">Pay when order arrives</p>
+							<p class="text-sm text-white">Pay when order arrives</p>
 						</div>
 					</div>
 					<input

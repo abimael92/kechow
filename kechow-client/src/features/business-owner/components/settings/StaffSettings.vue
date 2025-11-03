@@ -29,9 +29,7 @@
 						</div>
 						<div>
 							<p class="font-medium text-gray-900">Mario Rossi</p>
-							<p class="text-sm text-gray-600">
-								Owner • mario@marioskitchen.com
-							</p>
+							<p class="text-sm text-white">Owner • mario@marioskitchen.com</p>
 						</div>
 					</div>
 					<span
@@ -54,9 +52,7 @@
 						</div>
 						<div>
 							<p class="font-medium text-gray-900">Anna Smith</p>
-							<p class="text-sm text-gray-600">
-								Manager • anna@marioskitchen.com
-							</p>
+							<p class="text-sm text-white">Manager • anna@marioskitchen.com</p>
 						</div>
 					</div>
 					<span
@@ -79,7 +75,7 @@
 						</div>
 						<div>
 							<p class="font-medium text-gray-900">John Chef</p>
-							<p class="text-sm text-gray-600">
+							<p class="text-sm text-white">
 								Kitchen Staff • john@marioskitchen.com
 							</p>
 						</div>
