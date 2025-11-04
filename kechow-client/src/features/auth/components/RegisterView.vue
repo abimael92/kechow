@@ -182,7 +182,7 @@ async function handleRegister() {
 					<select
 						v-model="registerForm.role"
 						required
-						class="w-full p-2 text-gray-600"
+						class="w-full p-2 text-white"
 					>
 						<option value="owner">{{ t('owner') }}</option>
 						<option value="delivery">{{ t('delivery') }}</option>
@@ -197,7 +197,7 @@ async function handleRegister() {
 				</button>
 			</form>
 
-			<p class="mt-6 text-sm text-center text-gray-600">
+			<p class="mt-6 text-sm text-center text-white">
 				{{ t('alreadyHaveAccount') }}
 				<router-link
 					to="/login"

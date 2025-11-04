@@ -80,7 +80,7 @@
 				</button>
 			</form>
 
-			<p class="mt-6 text-sm text-center text-gray-600">
+			<p class="mt-6 text-sm text-center text-white">
 				{{ t('noAccount') }}
 				<router-link
 					to="/register"
