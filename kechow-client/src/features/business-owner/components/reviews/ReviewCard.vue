@@ -37,7 +37,7 @@
 					</div>
 				</div>
 			</div>
-			<button class="text-gray-400 hover:text-gray-600 cursor-pointer">
+			<button class="text-gray-400 hover:text-white cursor-pointer">
 				<i class="ri-more-line w-5 h-5 flex items-center justify-center"></i>
 			</button>
 		</div>
@@ -45,7 +45,7 @@
 		<p class="text-gray-700 mb-4">{{ review.comment }}</p>
 
 		<div v-if="review.orderItems && review.orderItems.length > 0" class="mb-4">
-			<p class="text-sm text-gray-600 mb-2">Order items:</p>
+			<p class="text-sm text-white mb-2">Order items:</p>
 			<div class="flex flex-wrap gap-2">
 				<span
 					v-for="item in review.orderItems"
@@ -74,7 +74,7 @@
 			<div class="flex items-center space-x-4">
 				<button
 					@click="emitHelpful"
-					class="flex items-center text-gray-600 hover:text-orange-600 transition-colors cursor-pointer"
+					class="flex items-center text-white hover:text-orange-600 transition-colors cursor-pointer"
 				>
 					<i
 						class="ri-thumb-up-line mr-1 w-4 h-4 flex items-center justify-center"
@@ -95,7 +95,7 @@
 				</button>
 				<button
 					@click="emitFlag"
-					class="text-gray-600 hover:text-gray-800 p-2 cursor-pointer"
+					class="text-white hover:text-gray-800 p-2 cursor-pointer"
 				>
 					<i class="ri-flag-line w-4 h-4 flex items-center justify-center"></i>
 				</button>
