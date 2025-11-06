@@ -11,7 +11,7 @@
 				</div>
 				<div>
 					<h3 class="font-semibold text-gray-900 text-lg">#{{ order.id }}</h3>
-					<p class="text-gray-600">{{ order.customerName }}</p>
+					<p class="text-white">{{ order.customerName }}</p>
 					<p class="text-sm text-gray-500">
 						{{ formatTimeAgo(order.createdAt) }} • {{ order.phone }}
 					</p>
@@ -54,7 +54,7 @@
 		</div>
 
 		<div class="mb-4 p-3 bg-gray-50 rounded-lg">
-			<p class="text-sm text-gray-600">
+			<p class="text-sm text-white">
 				<i
 					class="ri-map-pin-line mr-2 w-4 h-4 flex items-center justify-center inline"
 				></i>
@@ -66,13 +66,13 @@
 			<div class="flex space-x-2">
 				<button
 					@click="callCustomer"
-					class="text-gray-600 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
+					class="text-white hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-colors cursor-pointer"
 				>
 					<i class="ri-phone-line w-5 h-5 flex items-center justify-center"></i>
 				</button>
 				<button
 					@click="messageCustomer"
-					class="text-gray-600 hover:text-green-600 p-2 rounded-lg hover:bg-green-50 transition-colors cursor-pointer"
+					class="text-white hover:text-green-600 p-2 rounded-lg hover:bg-green-50 transition-colors cursor-pointer"
 				>
 					<i
 						class="ri-message-line w-5 h-5 flex items-center justify-center"
