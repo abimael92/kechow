@@ -1,7 +1,7 @@
 <template>
 	<div class="space-y-6 p-4 sm:p-6">
 		<h4 class="font-semibold items-center text-gray-800">Weekly Preferences</h4>
-		<p class="text-gray-600">
+		<p class="text-white">
 			Set your weekly preferences and add special day overrides or days off.
 		</p>
 
