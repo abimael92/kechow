@@ -28,7 +28,7 @@
 			>
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-gray-600 text-xs sm:text-sm">{{ stat.label }}</p>
+						<p class="text-white text-xs sm:text-sm">{{ stat.label }}</p>
 						<p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">
 							{{ stat.value }}
 						</p>

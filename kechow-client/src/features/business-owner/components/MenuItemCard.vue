@@ -42,7 +42,7 @@
 				>
 			</div>
 
-			<p class="text-gray-600 text-sm mb-4">{{ item.description }}</p>
+			<p class="text-white text-sm mb-4">{{ item.description }}</p>
 
 			<div class="flex items-center justify-between">
 				<div class="flex items-center space-x-2">
@@ -52,7 +52,7 @@
 							item.available ? 'bg-green-500' : 'bg-red-500',
 						]"
 					></span>
-					<span class="text-sm text-gray-600">
+					<span class="text-sm text-white">
 						{{
 							item.available
 								? $t('menuItemAvailable')
@@ -64,7 +64,7 @@
 				<div class="flex space-x-2">
 					<button
 						@click="emitEdit"
-						class="text-gray-600 hover:text-orange-600 p-2 cursor-pointer"
+						class="text-white hover:text-orange-600 p-2 cursor-pointer"
 					>
 						<i
 							class="ri-edit-line w-4 h-4 flex items-center justify-center"
@@ -72,7 +72,7 @@
 					</button>
 					<button
 						@click="emitDelete"
-						class="text-gray-600 hover:text-red-600 p-2 cursor-pointer"
+						class="text-white hover:text-red-600 p-2 cursor-pointer"
 					>
 						<i
 							class="ri-delete-bin-line w-4 h-4 flex items-center justify-center"

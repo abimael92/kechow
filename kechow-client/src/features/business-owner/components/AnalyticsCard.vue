@@ -2,7 +2,7 @@
 	<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
 		<div class="flex items-center justify-between">
 			<div>
-				<p class="text-gray-600 text-sm">{{ title }}</p>
+				<p class="text-white text-sm">{{ title }}</p>
 				<p class="text-3xl font-bold text-gray-900 mt-1">{{ value }}</p>
 				<p
 					class="text-sm mt-1"

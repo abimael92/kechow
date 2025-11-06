@@ -7,7 +7,7 @@
 				:key="rating.stars"
 				class="flex items-center"
 			>
-				<span class="text-sm text-gray-600 w-8">{{ rating.stars }}</span>
+				<span class="text-sm text-white w-8">{{ rating.stars }}</span>
 				<i
 					class="ri-star-fill text-yellow-400 w-4 h-4 flex items-center justify-center mr-3"
 				></i>
@@ -17,7 +17,7 @@
 						:style="{ width: rating.percentage + '%' }"
 					></div>
 				</div>
-				<span class="text-sm text-gray-600 w-12">{{ rating.count }}</span>
+				<span class="text-sm text-white w-12">{{ rating.count }}</span>
 			</div>
 		</div>
 	</div>

@@ -2,7 +2,7 @@
 	<div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
 		<div class="flex items-center justify-between">
 			<div>
-				<p class="text-gray-600 text-sm">{{ title }}</p>
+				<p class="text-white text-sm">{{ title }}</p>
 				<p class="text-3xl font-bold text-gray-900 mt-1">{{ value }}</p>
 
 				<div v-if="showStars" class="flex mt-2">
@@ -62,7 +62,7 @@ const changeTypeClass = computed(() => {
 		case 'neutral':
 			return 'text-orange-600';
 		default:
-			return 'text-gray-600';
+			return 'text-white';
 	}
 });
 </script>
