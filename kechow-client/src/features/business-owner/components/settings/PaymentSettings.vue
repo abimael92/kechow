@@ -1,86 +1,51 @@
 <template>
 	<div class="space-y-6">
-		<!-- Payment Methods -->
 		<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-			<h3 class="text-lg font-bold text-gray-900 mb-6">Payment Methods</h3>
+			<h3 class="text-lg font-bold text-gray-900 mb-6">
+				{{ t('paymentMethods') }}
+			</h3>
 
 			<div class="space-y-4">
-				<!-- Credit/Debit Cards -->
 				<div
+					v-for="method in paymentMethods"
+					:key="method.name"
 					class="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
 				>
 					<div class="flex items-center">
 						<i
-							class="ri-bank-card-line text-2xl text-blue-600 mr-3 w-6 h-6 flex items-center justify-center"
+							:class="[
+								method.icon,
+								method.iconColor,
+								'text-2xl mr-3 w-6 h-6 flex items-center justify-center',
+							]"
 						></i>
 						<div>
-							<p class="font-medium text-gray-900">Credit/Debit Cards</p>
-							<p class="text-sm text-white">
-								Visa, Mastercard, American Express
-							</p>
+							<p class="font-medium text-gray-900">{{ t(method.name) }}</p>
+							<p class="text-sm text-gray-500">{{ t(method.description) }}</p>
 						</div>
 					</div>
 					<input
-						class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
 						type="checkbox"
-						checked
-					/>
-				</div>
-
-				<!-- PayPal -->
-				<div
-					class="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
-				>
-					<div class="flex items-center">
-						<i
-							class="ri-paypal-line text-2xl text-blue-600 mr-3 w-6 h-6 flex items-center justify-center"
-						></i>
-						<div>
-							<p class="font-medium text-gray-900">PayPal</p>
-							<p class="text-sm text-white">Digital payment platform</p>
-						</div>
-					</div>
-					<input
 						class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-						type="checkbox"
-						checked
-					/>
-				</div>
-
-				<!-- Cash on Delivery -->
-				<div
-					class="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
-				>
-					<div class="flex items-center">
-						<i
-							class="ri-money-dollar-circle-line text-2xl text-green-600 mr-3 w-6 h-6 flex items-center justify-center"
-						></i>
-						<div>
-							<p class="font-medium text-gray-900">Cash on Delivery</p>
-							<p class="text-sm text-white">Pay when order arrives</p>
-						</div>
-					</div>
-					<input
-						class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
-						type="checkbox"
 						checked
 					/>
 				</div>
 			</div>
 		</div>
 
-		<!-- Tax Settings -->
 		<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-			<h3 class="text-lg font-bold text-gray-900 mb-6">Tax Settings</h3>
+			<h3 class="text-lg font-bold text-gray-900 mb-6">
+				{{ t('taxSettings') }}
+			</h3>
 
 			<div class="grid md:grid-cols-2 gap-6">
 				<div>
-					<label class="block text-sm font-medium text-gray-700 mb-2"
-						>Tax Rate (%)</label
-					>
+					<label class="block text-sm font-medium text-gray-700 mb-2">{{
+						t('taxRate')
+					}}</label>
 					<input
-						step="0.1"
 						type="number"
+						step="0.1"
 						value="8.5"
 						class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
 					/>
@@ -88,31 +53,52 @@
 
 				<div class="flex items-center">
 					<input
-						class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 mr-3"
 						type="checkbox"
+						class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500 mr-3"
 						checked
 					/>
-					<span class="text-gray-700">Include tax in displayed prices</span>
+					<span class="text-gray-700">{{ t('includeTax') }}</span>
 				</div>
 			</div>
 		</div>
 
-		<!-- Actions -->
 		<div class="flex justify-end space-x-4">
 			<button
 				class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap"
 			>
-				Cancel
+				{{ t('cancel') }}
 			</button>
 			<button
 				class="px-6 py-3 bg-orange-600 text-white rounded-xl font-medium hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
 			>
-				Save Changes
+				{{ t('saveChanges') }}
 			</button>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-// Payment settings component
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
+const paymentMethods = [
+	{
+		name: 'creditDebitCards',
+		description: 'supportedCards',
+		icon: 'ri-bank-card-line',
+		iconColor: 'text-blue-600',
+	},
+	{
+		name: 'paypal',
+		description: 'paypalDescription',
+		icon: 'ri-paypal-line',
+		iconColor: 'text-blue-600',
+	},
+	{
+		name: 'cashOnDelivery',
+		description: 'cashOnDeliveryDescription',
+		icon: 'ri-money-dollar-circle-line',
+		iconColor: 'text-green-600',
+	},
+];
 </script>
