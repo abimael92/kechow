@@ -1,28 +1,30 @@
 <template>
 	<div class="space-y-6">
-		<!-- Restaurant Information -->
+		<!-- Información del restaurante -->
 		<div
 			class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-6"
 		>
 			<div class="flex justify-between items-center">
-				<h3 class="text-lg font-bold text-gray-900">Restaurant Information</h3>
+				<h3 class="text-lg font-bold text-gray-900">
+					Información del restaurante
+				</h3>
 				<button
 					v-if="editingInfoChanged"
 					@click="saveRestaurantInfo"
 					class="font-medium"
 				>
-					Save
+					Guardar
 				</button>
 				<button v-else @click="toggleEditingInfo" class="font-medium">
-					{{ editingInfo ? 'Cancel' : 'Edit' }}
+					{{ editingInfo ? 'Cancelar' : 'Editar' }}
 				</button>
 			</div>
 
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-				<!-- Name (Always Label) -->
+				<!-- Nombre -->
 				<div>
 					<label class="block text-sm font-medium text-gray-700 mb-2"
-						>Restaurant Name</label
+						>Nombre</label
 					>
 					<p
 						class="px-4 py-3 bg-gray-100 rounded-lg text-gray-800 cursor-not-allowed"
@@ -31,79 +33,79 @@
 					</p>
 				</div>
 
-				<!-- Phone -->
+				<!-- Teléfono -->
 				<div>
 					<label class="block text-sm font-medium text-gray-700 mb-2"
-						>Phone Number</label
+						>Teléfono</label
 					>
 					<component
 						:is="editingInfo ? 'input' : 'p'"
 						v-model="restaurantInfo.phone"
 						type="tel"
-						placeholder="E.g. +52 123 456 7890"
+						placeholder="Ej. +52 123 456 7890"
 						class="w-full px-4 py-3 border rounded-lg focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100"
 					>
 						<template #default>{{ restaurantInfo.phone }}</template>
 					</component>
 				</div>
 
-				<!-- Email -->
+				<!-- Correo -->
 				<div>
 					<label class="block text-sm font-medium text-gray-700 mb-2"
-						>Contact Email</label
+						>Correo</label
 					>
 					<component
 						:is="editingInfo ? 'input' : 'p'"
 						v-model="restaurantInfo.email"
 						type="email"
-						placeholder="E.g. contact@restaurant.com"
+						placeholder="Ej. contacto@restaurante.com"
 						class="w-full px-4 py-3 border rounded-lg focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100"
 					>
 						<template #default>{{ restaurantInfo.email }}</template>
 					</component>
 				</div>
 
-				<!-- Website -->
+				<!-- Sitio web -->
 				<div>
 					<label class="block text-sm font-medium text-gray-700 mb-2"
-						>Website</label
+						>Sitio web</label
 					>
 					<component
 						:is="editingInfo ? 'input' : 'p'"
 						v-model="restaurantInfo.website"
 						type="url"
-						placeholder="E.g. https://myrestaurant.com"
+						placeholder="Ej. https://mi-restaurante.com"
 						class="w-full px-4 py-3 border rounded-lg focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100"
 					>
 						<template #default>{{ restaurantInfo.website }}</template>
 					</component>
 				</div>
 
-				<!-- Address -->
+				<!-- Dirección -->
 				<div class="md:col-span-2">
 					<label class="block text-sm font-medium text-gray-700 mb-2"
-						>Address</label
+						>Dirección</label
 					>
 					<component
 						:is="editingInfo ? 'input' : 'p'"
 						v-model="restaurantInfo.address"
-						placeholder="Street, City, State, ZIP"
+						placeholder="Calle, Ciudad, Estado, CP"
 						class="w-full px-4 py-3 border rounded-lg focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100"
 					>
 						<template #default>{{ restaurantInfo.address }}</template>
 					</component>
 				</div>
 
-				<!-- Description -->
+				<!-- Descripción -->
 				<div class="md:col-span-2">
 					<label class="block text-sm font-medium text-gray-700 mb-2"
-						>Description</label
+						>Descripción</label
 					>
 					<component
 						:is="editingInfo ? 'textarea' : 'p'"
 						v-model="restaurantInfo.description"
 						rows="4"
-						placeholder="Describe your restaurant, specialties, or popular dishes"
+						placeholder="Describe tu restaurante, especialidades o platos populares"
 						class="w-full px-4 py-3 border rounded-lg focus:ring-orange-500 focus:border-orange-500 disabled:bg-gray-100"
 					>
 						<template #default>{{ restaurantInfo.description }}</template>
@@ -112,14 +114,14 @@
 			</div>
 		</div>
 
-		<!-- Operating Hours -->
+		<!-- Horarios de operación -->
 		<div
 			class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 space-y-4"
 		>
 			<div class="flex justify-between items-center">
-				<h3 class="text-lg font-bold text-gray-900">Operating Hours</h3>
+				<h3 class="text-lg font-bold text-gray-900">Horarios de operación</h3>
 				<button @click="toggleEditingHours" class="font-medium">
-					{{ editingHours ? 'Save' : 'Edit' }}
+					{{ editingHours ? 'Guardar' : 'Editar' }}
 				</button>
 			</div>
 			<div class="space-y-4">
@@ -139,12 +141,12 @@ const editingHours = ref(false);
 
 const restaurantInfo = reactive({
 	name: "Mario's Kitchen",
-	phone: '+1 (555) 123-4567',
-	email: 'contact@marioskitchen.com',
+	phone: '+52 123 456 7890',
+	email: 'contacto@marioskitchen.com',
 	website: 'https://marioskitchen.com',
-	address: '123 Restaurant Street, Food City, FC 12345',
+	address: 'Av. Principal 123, Ciudad Gourmet, MX 54321',
 	description:
-		'Authentic Italian cuisine with fresh ingredients and traditional recipes.',
+		'Cocina italiana auténtica con ingredientes frescos y recetas tradicionales.',
 });
 
 const originalInfo = reactive({ ...restaurantInfo });
@@ -161,65 +163,62 @@ const editingInfoChanged = computed(() => {
 });
 
 function toggleEditingInfo() {
-	if (editingInfo) {
-		// Cancel edits, reset values
-		Object.assign(restaurantInfo, originalInfo);
-	}
+	if (editingInfo.value) Object.assign(restaurantInfo, originalInfo);
 	editingInfo.value = !editingInfo.value;
 }
 
 function saveRestaurantInfo() {
 	Object.assign(originalInfo, restaurantInfo);
 	editingInfo.value = false;
-	console.log('Saved restaurant info:', restaurantInfo);
+	console.log('Información del restaurante guardada:', restaurantInfo);
 }
 
 const operatingHours = reactive<OperatingHours[]>([
 	{
 		id: 'monday',
-		day: 'Monday',
+		day: 'Lunes',
 		openTime: '10:00',
 		closeTime: '22:00',
 		closed: false,
 	},
 	{
 		id: 'tuesday',
-		day: 'Tuesday',
+		day: 'Martes',
 		openTime: '10:00',
 		closeTime: '22:00',
 		closed: false,
 	},
 	{
 		id: 'wednesday',
-		day: 'Wednesday',
+		day: 'Miércoles',
 		openTime: '10:00',
 		closeTime: '22:00',
 		closed: false,
 	},
 	{
 		id: 'thursday',
-		day: 'Thursday',
+		day: 'Jueves',
 		openTime: '10:00',
 		closeTime: '22:00',
 		closed: false,
 	},
 	{
 		id: 'friday',
-		day: 'Friday',
+		day: 'Viernes',
 		openTime: '10:00',
 		closeTime: '22:00',
 		closed: false,
 	},
 	{
 		id: 'saturday',
-		day: 'Saturday',
+		day: 'Sábado',
 		openTime: '10:00',
 		closeTime: '22:00',
 		closed: false,
 	},
 	{
 		id: 'sunday',
-		day: 'Sunday',
+		day: 'Domingo',
 		openTime: '10:00',
 		closeTime: '22:00',
 		closed: false,
@@ -228,10 +227,7 @@ const operatingHours = reactive<OperatingHours[]>([
 
 function toggleEditingHours() {
 	editingHours.value = !editingHours.value;
-	if (!editingHours.value) {
-		// Save logic here
-		console.log('Saved operating hours', operatingHours);
-	}
+	if (!editingHours.value) console.log('Horarios guardados:', operatingHours);
 }
 
 function updateOperatingHours(updatedDay: OperatingHours) {
