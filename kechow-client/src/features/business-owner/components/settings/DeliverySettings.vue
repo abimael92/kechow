@@ -6,13 +6,13 @@
 				<!-- Delivery Settings -->
 				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
 					<h3 class="text-lg font-bold text-gray-900 mb-6">
-						Delivery Settings
+						{{ t('deliverySettings') }}
 					</h3>
 					<div class="grid md:grid-cols-2 gap-6">
 						<div>
-							<label class="block text-sm font-medium text-gray-700 mb-2"
-								>Delivery Radius (km)</label
-							>
+							<label class="block text-sm font-medium text-gray-700 mb-2">
+								{{ t('deliveryRadius') }} (km)
+							</label>
 							<input
 								class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
 								type="number"
@@ -20,9 +20,9 @@
 							/>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 mb-2"
-								>Delivery Fee ($)</label
-							>
+							<label class="block text-sm font-medium text-gray-700 mb-2">
+								{{ t('deliveryFee') }} ($)
+							</label>
 							<input
 								step="0.01"
 								class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
@@ -31,9 +31,9 @@
 							/>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 mb-2"
-								>Minimum Order ($)</label
-							>
+							<label class="block text-sm font-medium text-gray-700 mb-2">
+								{{ t('minimumOrder') }} ($)
+							</label>
 							<input
 								step="0.01"
 								class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
@@ -42,9 +42,9 @@
 							/>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 mb-2"
-								>Average Delivery Time (mins)</label
-							>
+							<label class="block text-sm font-medium text-gray-700 mb-2">
+								{{ t('averageDeliveryTime') }} ({{ t('minutes') }})
+							</label>
 							<input
 								class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-orange-500 focus:border-orange-500"
 								type="number"
@@ -56,13 +56,17 @@
 
 				<!-- Delivery Options -->
 				<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-					<h3 class="text-lg font-bold text-gray-900 mb-6">Delivery Options</h3>
+					<h3 class="text-lg font-bold text-gray-900 mb-6">
+						{{ t('deliveryOptions') }}
+					</h3>
 					<div class="space-y-4">
 						<div class="flex items-center justify-between">
 							<div>
-								<h4 class="font-medium text-gray-900">Enable Pickup</h4>
+								<h4 class="font-medium text-gray-900">
+									{{ t('enablePickup') }}
+								</h4>
 								<p class="text-sm text-white">
-									Allow customers to pick up orders
+									{{ t('allowCustomersPickup') }}
 								</p>
 							</div>
 							<input
@@ -73,8 +77,12 @@
 						</div>
 						<div class="flex items-center justify-between">
 							<div>
-								<h4 class="font-medium text-gray-900">Enable Delivery</h4>
-								<p class="text-sm text-white">Offer delivery service</p>
+								<h4 class="font-medium text-gray-900">
+									{{ t('enableDelivery') }}
+								</h4>
+								<p class="text-sm text-white">
+									{{ t('offerDeliveryService') }}
+								</p>
 							</div>
 							<input
 								class="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
@@ -91,12 +99,12 @@
 				<button
 					class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 transition-colors cursor-pointer whitespace-nowrap"
 				>
-					Cancel
+					{{ t('cancel') }}
 				</button>
 				<button
 					class="px-6 py-3 bg-orange-600 text-white rounded-xl font-medium hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
 				>
-					Save Changes
+					{{ t('saveChanges') }}
 				</button>
 			</div>
 		</div>
@@ -104,5 +112,6 @@
 </template>
 
 <script setup lang="ts">
-// Delivery settings component
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 </script>
