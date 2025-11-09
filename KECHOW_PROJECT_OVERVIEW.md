@@ -191,31 +191,31 @@ Key Screens:
 
 ## BACKEND (Laravel)
 
-User authentication system
+- User authentication system
 
-Role-based permissions (customer, restaurant, driver, admin)
+- Role-based permissions (customer, restaurant, driver, admin)
 
-Restaurant CRUD operations
+- Restaurant CRUD operations
 
-Menu management system
+- Menu management system
 
-Order processing workflow
+- Order processing workflow
 
-Payment gateway integration
+- Payment gateway integration
 
-Real-time notifications
+- Real-time notifications
 
-Location services API
+- Location services API
 
-Review & rating system
+- Review & rating system
 
-Database migrations & seeders
+- Database migrations & seeders
 
-API documentation
+- API documentation
 
-Security middleware
+- Security middleware
 
-Error handling & logging
+- Error handling & logging
 
 ## DATABASE
 
