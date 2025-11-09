@@ -261,17 +261,17 @@ Key Screens:
 
 ## RESTAURANT DASHBOARD
 
-Order management interface
+- Order management interface
 
-Menu editor
+- Menu editor
 
-Business analytics
+- Business analytics
 
-Operating hours setup
+- Operating hours setup
 
-Order notification system
+- Order notification system
 
-Earnings dashboard
+- Earnings dashboard
 
 ## MOBILE APPS (React Native)
 
