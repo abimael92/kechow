@@ -297,15 +297,15 @@ Key Screens:
 
 ## PAYMENT SYSTEM
 
-Multiple payment methods (card, cash, digital)
+- Multiple payment methods (card, cash, digital)
 
-Payment processing integration
+- Payment processing integration
 
-Commission calculation
+- Commission calculation
 
-Payout system for restaurants
+- Payout system for restaurants
 
-Refund handling
+- Refund handling
 
 ## REAL-TIME FEATURES
 
