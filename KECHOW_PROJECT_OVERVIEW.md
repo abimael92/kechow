@@ -191,121 +191,121 @@ Key Screens:
 
 ## BACKEND (Laravel)
 
-User authentication system
+- User authentication system
 
-Role-based permissions (customer, restaurant, driver, admin)
+- Role-based permissions (customer, restaurant, driver, admin)
 
-Restaurant CRUD operations
+- Restaurant CRUD operations
 
-Menu management system
+- Menu management system
 
-Order processing workflow
+- Order processing workflow
 
-Payment gateway integration
+- Payment gateway integration
 
-Real-time notifications
+- Real-time notifications
 
-Location services API
+- Location services API
 
-Review & rating system
+- Review & rating system
 
-Database migrations & seeders
+- Database migrations & seeders
 
-API documentation
+- API documentation
 
-Security middleware
+- Security middleware
 
-Error handling & logging
+- Error handling & logging
 
 ## DATABASE
 
-Users table with roles
+- Users table with roles
 
-Restaurants table with location data
+- Restaurants table with location data
 
-Menu items & categories
+- Menu items & categories
 
-Orders & order items
+- Orders & order items
 
-Payments table
+- Payments table
 
-Reviews table
+- Reviews table
 
-Delivery tracking
+- Delivery tracking
 
-Notifications table
+- Notifications table
 
-Proper indexes & relationships
+- Proper indexes & relationships
 
 ## CUSTOMER WEB APP (Vue.js)
 
-User registration & login
+- User registration & login
 
-Restaurant browsing & search
+- Restaurant browsing & search
 
-Menu display & cart management
+- Menu display & cart management
 
-Checkout process
+- Checkout process
 
-Order tracking interface
+- Order tracking interface
 
-User profile management
+- User profile management
 
-Order history
+- Order history
 
-Review submission
+- Review submission
 
-Responsive design
+- Responsive design
 
-State management (Pinia)
+- State management (Pinia)
 
 ## RESTAURANT DASHBOARD
 
-Order management interface
+- Order management interface
 
-Menu editor
+- Menu editor
 
-Business analytics
+- Business analytics
 
-Operating hours setup
+- Operating hours setup
 
-Order notification system
+- Order notification system
 
-Earnings dashboard
+- Earnings dashboard
 
 ## MOBILE APPS (React Native)
 
 - ### Customer app:
 
-Restaurant browsing
+- Restaurant browsing
 
-Order placement
+- Order placement
 
-Real-time tracking
+- Real-time tracking
 
-Push notifications
+- Push notifications
 
 - ### Driver app:
 
-Order acceptance
+- Order acceptance
 
-Navigation integration
+- Navigation integration
 
-Delivery completion
+- Delivery completion
 
-Earnings tracking
+- Earnings tracking
 
 ## PAYMENT SYSTEM
 
-Multiple payment methods (card, cash, digital)
+- Multiple payment methods (card, cash, digital)
 
-Payment processing integration
+- Payment processing integration
 
-Commission calculation
+- Commission calculation
 
-Payout system for restaurants
+- Payout system for restaurants
 
-Refund handling
+- Refund handling
 
 ## REAL-TIME FEATURES
 
@@ -387,21 +387,22 @@ Marketing materials
 Legal documents (ToS, Privacy Policy)
 
 ### SUCCESS METRICS TO TRACK
-User registration completion rate
 
-Order conversion rate
+#### User registration completion rate
 
-Average order value
+- Order conversion rate
 
-Delivery time averages
+- Average order value
 
-Customer satisfaction scores
+- Delivery time averages
 
-Restaurant retention rate
+- Customer satisfaction scores
 
-System uptime percentage
+- Restaurant retention rate
 
-App store ratings
+- System uptime percentage
+
+- App store ratings
 
 
 
