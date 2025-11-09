@@ -239,25 +239,25 @@ Key Screens:
 
 ## CUSTOMER WEB APP (Vue.js)
 
-User registration & login
+- User registration & login
 
-Restaurant browsing & search
+- Restaurant browsing & search
 
-Menu display & cart management
+- Menu display & cart management
 
-Checkout process
+- Checkout process
 
-Order tracking interface
+- Order tracking interface
 
-User profile management
+- User profile management
 
-Order history
+- Order history
 
-Review submission
+- Review submission
 
-Responsive design
+- Responsive design
 
-State management (Pinia)
+- State management (Pinia)
 
 ## RESTAURANT DASHBOARD
 
