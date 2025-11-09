@@ -277,13 +277,13 @@ Key Screens:
 
 - ### Customer app:
 
-Restaurant browsing
+- Restaurant browsing
 
-Order placement
+- Order placement
 
-Real-time tracking
+- Real-time tracking
 
-Push notifications
+- Push notifications
 
 - ### Driver app:
 
