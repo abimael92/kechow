@@ -219,23 +219,23 @@ Key Screens:
 
 ## DATABASE
 
-Users table with roles
+- Users table with roles
 
-Restaurants table with location data
+- Restaurants table with location data
 
-Menu items & categories
+- Menu items & categories
 
-Orders & order items
+- Orders & order items
 
-Payments table
+- Payments table
 
-Reviews table
+- Reviews table
 
-Delivery tracking
+- Delivery tracking
 
-Notifications table
+- Notifications table
 
-Proper indexes & relationships
+- Proper indexes & relationships
 
 ## CUSTOMER WEB APP (Vue.js)
 
