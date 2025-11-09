@@ -287,13 +287,13 @@ Key Screens:
 
 - ### Driver app:
 
-Order acceptance
+- Order acceptance
 
-Navigation integration
+- Navigation integration
 
-Delivery completion
+- Delivery completion
 
-Earnings tracking
+- Earnings tracking
 
 ## PAYMENT SYSTEM
 
