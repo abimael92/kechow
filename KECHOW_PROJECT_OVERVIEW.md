@@ -387,21 +387,22 @@ Marketing materials
 Legal documents (ToS, Privacy Policy)
 
 ### SUCCESS METRICS TO TRACK
-User registration completion rate
 
-Order conversion rate
+#### User registration completion rate
 
-Average order value
+- Order conversion rate
 
-Delivery time averages
+- Average order value
 
-Customer satisfaction scores
+- Delivery time averages
 
-Restaurant retention rate
+- Customer satisfaction scores
 
-System uptime percentage
+- Restaurant retention rate
 
-App store ratings
+- System uptime percentage
+
+- App store ratings
 
 
 
