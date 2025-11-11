@@ -349,17 +349,17 @@ Key Screens:
 
 ## TESTING
 
-Unit tests (backend)
+- Unit tests (backend)
 
-Integration tests
+- Integration tests
 
-Frontend component tests
+- Frontend component tests
 
-Mobile app testing
+- Mobile app testing
 
-Performance testing
+- Performance testing
 
-Security testing
+- Security testing
 
 ## DOCUMENTATION
 
