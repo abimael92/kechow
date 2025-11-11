@@ -333,18 +333,19 @@ Key Screens:
 
 - Regular security audits
 
-DEPLOYMENT & DEVOPS
-AWS infrastructure setup
+## DEPLOYMENT & DEVOPS
 
-CI/CD pipeline
+### AWS infrastructure setup
 
-Database backups
+- CI/CD pipeline
 
-Monitoring & alerting
+- Database backups
 
-SSL certification
+- Monitoring & alerting
 
-Domain configuration
+- SSL certification
+
+- Domain configuration
 
 ## TESTING
 
