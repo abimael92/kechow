@@ -363,15 +363,15 @@ Key Screens:
 
 ## DOCUMENTATION
 
-API documentation
+- API documentation
 
-Database schema docs
+- Database schema docs
 
-Deployment guides
+- Deployment guides
 
-User manuals
+- User manuals
 
-Troubleshooting guides
+- Troubleshooting guides
 
 ## LAUNCH PREPARATION
 
