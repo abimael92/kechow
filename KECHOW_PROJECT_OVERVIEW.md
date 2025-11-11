@@ -321,17 +321,17 @@ Key Screens:
 
 ## SECURITY
 
-Data encryption
+- Data encryption
 
-API rate limiting
+- API rate limiting
 
-SQL injection prevention
+- SQL injection prevention
 
-XSS protection
+- XSS protection
 
-Secure file uploads
+- Secure file uploads
 
-Regular security audits
+- Regular security audits
 
 DEPLOYMENT & DEVOPS
 AWS infrastructure setup
