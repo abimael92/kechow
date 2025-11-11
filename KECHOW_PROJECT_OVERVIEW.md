@@ -375,17 +375,17 @@ Key Screens:
 
 ## LAUNCH PREPARATION
 
-Production deployment
+- Production deployment
 
-Restaurant onboarding materials
+- Restaurant onboarding materials
 
-Driver recruitment process
+- Driver recruitment process
 
-Customer support setup
+- Customer support setup
 
-Marketing materials
+- Marketing materials
 
-Legal documents (ToS, Privacy Policy)
+- Legal documents (ToS, Privacy Policy)
 
 ### SUCCESS METRICS TO TRACK
 
