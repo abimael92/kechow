@@ -309,15 +309,15 @@ Key Screens:
 
 ## REAL-TIME FEATURES
 
-Order status updates
+- Order status updates
 
-Driver location tracking
+- Driver location tracking
 
-Push notifications
+- Push notifications
 
-Live chat support
+- Live chat support
 
-WebSocket implementation
+- WebSocket implementation
 
 ## SECURITY
 
