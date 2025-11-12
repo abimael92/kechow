@@ -432,3 +432,23 @@ abimael@AGS-i6846 kechow-main % find "$(pwd)" -type f \( -name "*.js" -o -name "
 -exec cat {} \; | pbcopy
 
 ```
+```
+find . -type f \( -name "*.js" -o -name "*.ts" -o -name "*.tsx" -o -name "*.vue" -o -name "*.php" -o -name "*.html" -o -name "*.css" -o -name "*.scss" \) \
+! -path "*/node_modules/*" \
+! -path "*/dist/*" \
+! -path "*/build/*" \
+! -path "*/.next/*" \
+! -path "*/vendor/*" \
+! -path "*/storage/*" \
+! -path "*/tests/*" \
+! -path "*/database/*" \
+! -path "*/bootstrap/cache/*" \
+! -name "package.json" \
+! -name "package-lock.json" \
+! -name "composer.json" \
+! -name "composer.lock" \
+! -name "README.md" \
+-exec echo "===== {} =====" \; \
+-exec echo "----- FILE CONTENT BELOW -----" \; \
+-exec cat {} \; | pbcopy
+```
