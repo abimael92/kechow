@@ -1,136 +1,65 @@
 <?php
+// app/Modules/Restaurant/Controllers/MenuItemController.php
+namespace App\Modules\Restaurant\Controllers;  // ← FIX NAMESPACE
 
-namespace App\Http\Controllers;
-
-use App\Models\MenuItem;
+use App\Http\Controllers\Controller;
+use App\Modules\Restaurant\Models\MenuItem;
+use App\Modules\Restaurant\Requests\MenuItemRequest;
+use App\Modules\Restaurant\Resources\MenuItemResource;
+use App\Modules\Restaurant\Services\MenuService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use OpenApi\Annotations as OA;
 
-/**
- * @OA\Tag(
- *     name="Menu Items",
- *     description="Menu Item operations"
- * )
- */
 class MenuItemController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/api/menu-items",
-     *     tags={"Menu Items"},
-     *     summary="Get all menu items",
-     *     @OA\Response(
-     *         response=200,
-     *         description="List of menu items"
-     *     )
-     * )
-     */
-    public function index()
+    public function __construct(private MenuService $menuService)
+    {}
+
+    public function index(Request $request, int $restaurantId): JsonResponse
     {
-        return MenuItem::all();
+        $menuItems = $this->menuService->getMenuItemsByRestaurant($restaurantId, $request->all());
+        return response()->json(MenuItemResource::collection($menuItems));
     }
 
-    /**
-     * @OA\Post(
-     *     path="/api/menu-items",
-     *     tags={"Menu Items"},
-     *     summary="Create a new menu item",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"restaurant_id", "name", "price"},
-     *             @OA\Property(property="restaurant_id", type="integer"),
-     *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="description", type="string"),
-     *             @OA\Property(property="price", type="number"),
-     *             @OA\Property(property="is_available", type="boolean")
-     *         )
-     *     ),
-     *     @OA\Response(response=201, description="Menu item created")
-     * )
-     */
-    public function store(Request $request)
+    public function getCategories(int $restaurantId): JsonResponse
     {
-        $validated = $request->validate([
-            'restaurant_id' => 'required|exists:restaurants,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'is_available' => 'boolean',
-        ]);
-
-        $menuItem = MenuItem::create($validated);
-        return response()->json($menuItem, 201);
+        $categories = $this->menuService->getCategoriesByRestaurant($restaurantId);
+        return response()->json(['categories' => $categories]);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/api/menu-items/{id}",
-     *     tags={"Menu Items"},
-     *     summary="Get a specific menu item",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="Menu item details"),
-     *     @OA\Response(response=404, description="Not found")
-     * )
-     */
-    public function show($id)
+    public function store(MenuItemRequest $request, int $restaurantId): JsonResponse
     {
-        return MenuItem::findOrFail($id);
+        $data = $request->validated();
+        $data['restaurant_id'] = $restaurantId;
+
+        $menuItem = $this->menuService->createMenuItem($data);
+        return response()->json(new MenuItemResource($menuItem), 201);
     }
 
-    /**
-     * @OA\Put(
-     *     path="/api/menu-items/{id}",
-     *     tags={"Menu Items"},
-     *     summary="Update a menu item",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="description", type="string"),
-     *             @OA\Property(property="price", type="number"),
-     *             @OA\Property(property="is_available", type="boolean")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Menu item updated"),
-     *     @OA\Response(response=404, description="Not found")
-     * )
-     */
-    public function update(Request $request, $id)
+    public function show(int $restaurantId, int $id): JsonResponse
     {
-        $menuItem = MenuItem::findOrFail($id);
-        $menuItem->update($request->all());
-        return response()->json($menuItem, 200);
+        $menuItem = $this->menuService->getMenuItemById($id);
+        return response()->json(new MenuItemResource($menuItem));
     }
 
-    /**
-     * @OA\Delete(
-     *     path="/api/menu-items/{id}",
-     *     tags={"Menu Items"},
-     *     summary="Delete a menu item",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=204, description="Deleted successfully"),
-     *     @OA\Response(response=404, description="Not found")
-     * )
-     */
-    public function destroy($id)
+    public function update(MenuItemRequest $request, int $restaurantId, int $id): JsonResponse
     {
-        MenuItem::destroy($id);
+        $menuItem = $this->menuService->getMenuItemById($id);
+        $updatedMenuItem = $this->menuService->updateMenuItem($menuItem, $request->validated());
+        return response()->json(new MenuItemResource($updatedMenuItem));
+    }
+
+    public function destroy(int $restaurantId, int $id): JsonResponse
+    {
+        $menuItem = $this->menuService->getMenuItemById($id);
+        $this->menuService->deleteMenuItem($menuItem);
         return response()->json(null, 204);
+    }
+
+    public function toggleAvailability(int $restaurantId, int $id): JsonResponse
+    {
+        $menuItem = $this->menuService->getMenuItemById($id);
+        $updatedItem = $this->menuService->toggleMenuItemAvailability($menuItem);
+        return response()->json(new MenuItemResource($updatedItem));
     }
 }
