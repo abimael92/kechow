@@ -91,11 +91,42 @@ class OrderController extends Controller
         return response()->json(null, 204);
     }
 
-    public function updateStatus(Request $request, Order $order)
-{
-    $request->validate(['status' => 'required|string|in:received,preparing,ready,out_for_delivery']);
-    // Check ownership
-    // Update order status and save
-}
+    public function restaurantOrders(Request $request)
+    {
+        // Get orders for specific restaurant (for owners)
+        $query = Order::with('items.menuItem')
+                    ->where('restaurant_id', $request->user()->restaurant_id);
+
+        return response()->json($query->get());
+    }
+
+    public function driverOrders(Request $request)
+    {
+        // Get available orders for drivers
+        $query = Order::with('restaurant')
+                    ->where('status', Order::STATUS_READY)
+                    ->whereNull('driver_id');
+
+        return response()->json($query->get());
+    }
+
+    public function acceptOrder(Request $request, $id)
+    {
+        // For drivers to accept orders
+        $order = Order::findOrFail($id);
+        $order->update([
+            'driver_id' => $request->user()->id,
+            'status' => Order::STATUS_OUT_FOR_DELIVERY
+        ]);
+
+        return response()->json($order);
+    }
+
+        public function updateStatus(Request $request, Order $order)
+    {
+        $request->validate(['status' => 'required|string|in:received,preparing,ready,out_for_delivery']);
+        // Check ownership
+        // Update order status and save
+    }
 
 }

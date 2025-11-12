@@ -49,6 +49,8 @@ class Restaurant extends Model
         'closing_time',
         'logo_url',
         'is_active',
+
+        'latitude', 'longitude', 'delivery_radius',
     ];
 
     public function menuItems()
