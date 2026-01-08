@@ -1,13 +1,12 @@
 <?php
-// routes/api.php
+
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan; // Add this line
 
 // Load module routes
-Route::prefix('api')->group(function () {
-    require app_path('Modules/Auth/routes.php');
-    require app_path('Modules/Restaurant/routes.php');
-    require app_path('Modules/Order/routes.php');
-});
+require app_path('Modules/Auth/routes.php');
+require app_path('Modules/Restaurant/routes.php');
+require app_path('Modules/Order/routes.php');
 
 // Migration route
 Route::get('/run-migrations', function () {
