@@ -1,5 +1,6 @@
 <template>
-	<div class="space-y-8">
+	<!-- Change the container to use dim purple background -->
+	<div class="space-y-8 bg-background-dim-purple dark:bg-background-dim-purple-dark min-h-screen p-4 md:p-6">
 		<!-- Restaurant Information Card -->
 		<div class="bg-white dark:bg-neutral-900 rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 p-6 lg:p-8">
 			<div class="flex items-center justify-between mb-8">
@@ -10,21 +11,23 @@
 					<p class="text-neutral-500 dark:text-neutral-400">Manage your restaurant details</p>
 				</div>
 				
+				<!-- Updated button with white text for good contrast on purple -->
 				<button 
 					@click="toggleEditingInfo" 
-					class="px-4 py-2 rounded-lg font-medium bg-primary-500 hover:bg-primary-600 text-white transition-colors"
+					class="px-4 py-2 rounded-lg font-medium bg-primary-600 hover:bg-primary-700 text-white transition-colors shadow-button hover:shadow-button-hover"
 				>
 					{{ editingInfo ? 'Cancel' : 'Edit Details' }}
 				</button>
 			</div>
 
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+				<!-- Your form fields remain the same -->
 				<div>
 					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Restaurant Name</label>
 					<input 
 						v-model="restaurantInfo.name"
 						:readonly="!editingInfo"
-						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white"
+						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 					>
 				</div>
 
@@ -34,7 +37,7 @@
 						v-model="restaurantInfo.phone"
 						:readonly="!editingInfo"
 						type="tel"
-						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white"
+						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 					>
 				</div>
 
@@ -44,7 +47,7 @@
 						v-model="restaurantInfo.email"
 						:readonly="!editingInfo"
 						type="email"
-						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white"
+						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 					>
 				</div>
 
@@ -54,7 +57,7 @@
 						v-model="restaurantInfo.website"
 						:readonly="!editingInfo"
 						type="url"
-						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white"
+						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 					>
 				</div>
 
@@ -63,7 +66,7 @@
 					<input 
 						v-model="restaurantInfo.address"
 						:readonly="!editingInfo"
-						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white"
+						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 					>
 				</div>
 
@@ -73,14 +76,15 @@
 						v-model="restaurantInfo.description"
 						:readonly="!editingInfo"
 						rows="3"
-						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white resize-none"
+						class="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white resize-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 					></textarea>
 				</div>
 
 				<div v-if="editingInfo" class="lg:col-span-2 flex justify-end space-x-4">
+					<!-- Updated save button -->
 					<button 
 						@click="saveRestaurantInfo"
-						class="px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium"
+						class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-button hover:shadow-button-hover transition-all"
 					>
 						Save Changes
 					</button>
@@ -98,9 +102,10 @@
 					<p class="text-neutral-500 dark:text-neutral-400">Set your weekly operating hours</p>
 				</div>
 				
+				<!-- Updated button with white text -->
 				<button 
 					@click="toggleEditingHours" 
-					class="px-4 py-2 rounded-lg font-medium bg-primary-500 hover:bg-primary-600 text-white transition-colors"
+					class="px-4 py-2 rounded-lg font-medium bg-primary-600 hover:bg-primary-700 text-white transition-colors shadow-button hover:shadow-button-hover"
 				>
 					{{ editingHours ? 'Cancel' : 'Edit Hours' }}
 				</button>
@@ -129,7 +134,7 @@
 										@click="toggleDayStatus(day.id)"
 										:class="[
 											'w-10 h-6 rounded-full transition-colors',
-											day.closed ? 'bg-neutral-300 dark:bg-neutral-700' : 'bg-primary-500'
+											day.closed ? 'bg-neutral-300 dark:bg-neutral-700' : 'bg-primary-600'
 										]"
 									>
 										<span :class="[
@@ -137,11 +142,17 @@
 											day.closed ? 'translate-x-1' : 'translate-x-5'
 										]"></span>
 									</button>
-									<span :class="day.closed ? 'text-neutral-500' : 'text-primary-600 dark:text-primary-400'">
+									<span :class="[
+										'font-medium',
+										day.closed ? 'text-neutral-500' : 'text-primary-600 dark:text-primary-400'
+									]">
 										{{ day.closed ? 'Closed' : 'Open' }}
 									</span>
 								</span>
-								<span v-else :class="day.closed ? 'text-neutral-500' : 'text-primary-600 dark:text-primary-400 font-medium'">
+								<span v-else :class="[
+									'font-medium',
+									day.closed ? 'text-neutral-500' : 'text-primary-600 dark:text-primary-400'
+								]">
 									{{ day.closed ? 'Closed' : 'Open' }}
 								</span>
 							</td>
@@ -150,7 +161,7 @@
 									v-if="editingHours && !day.closed"
 									v-model="day.openTime"
 									type="time"
-									class="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 rounded border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white"
+									class="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 rounded border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 								>
 								<span v-else class="text-neutral-700 dark:text-neutral-300">
 									{{ day.closed ? '—' : formatTime(day.openTime) }}
@@ -161,7 +172,7 @@
 									v-if="editingHours && !day.closed"
 									v-model="day.closeTime"
 									type="time"
-									class="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 rounded border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white"
+									class="px-3 py-2 bg-neutral-50 dark:bg-neutral-800 rounded border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 								>
 								<span v-else class="text-neutral-700 dark:text-neutral-300">
 									{{ day.closed ? '—' : formatTime(day.closeTime) }}
@@ -171,7 +182,7 @@
 								<button 
 									v-if="!day.closed"
 									@click="copyToAllDays(day)"
-									class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+									class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
 								>
 									Copy to All
 								</button>
@@ -196,24 +207,24 @@
 							<button 
 								v-if="editingHours"
 								@click="removeSpecialDay(specialDay.id)"
-								class="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+								class="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium"
 							>
 								Remove
 							</button>
 							<button 
 								v-if="editingHours && !specialDay.closed"
 								@click="toggleSpecialDayStatus(specialDay.id)"
-								class="text-sm px-3 py-1 bg-neutral-200 dark:bg-neutral-700 rounded"
+								class="text-sm px-3 py-1 bg-neutral-200 dark:bg-neutral-700 rounded hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors font-medium"
 							>
 								Close Day
 							</button>
 						</div>
 					</div>
-					
+
 					<button 
 						v-if="editingHours"
 						@click="addSpecialDay"
-						class="w-full py-3 border-2 border-dashed border-neutral-300 dark:border-neutral-700 rounded-lg text-neutral-600 dark:text-neutral-400 hover:border-primary-500 hover:text-primary-600 dark:hover:border-primary-400 dark:hover:text-primary-300 transition-colors"
+						class="w-full py-3 border-2 border-dashed border-primary-300 dark:border-primary-700 rounded-lg text-primary-600 dark:text-primary-400 hover:border-primary-500 hover:text-primary-700 dark:hover:border-primary-400 dark:hover:text-primary-300 transition-colors font-medium"
 					>
 						+ Add Special Day or Holiday
 					</button>
@@ -224,7 +235,7 @@
 			<div v-if="editingHours" class="mt-8 flex justify-end">
 				<button 
 					@click="saveOperatingHours"
-					class="px-6 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg font-medium"
+					class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-button hover:shadow-button-hover transition-all"
 				>
 					Save Schedule
 				</button>
