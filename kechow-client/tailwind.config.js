@@ -6,30 +6,45 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    50: '#fff7ed',
-                    100: '#ffedd5',
-                    200: '#fed7aa',
-                    300: '#fdba74',
-                    400: '#fb923c',
-                    500: '#f97316',
-                    600: '#ea580c',
-                    700: '#c2410c',
-                    800: '#9a3412',
-                    900: '#7c2d12',
-                    950: '#431407',
+                    50: '#faf5ff',
+                    100: '#f3e8ff',
+                    200: '#e9d5ff',
+                    300: '#d8b4fe',
+                    400: '#c084fc',
+                    500: '#a855f7',  // Main purple
+                    600: '#8b34e0',
+                    700: '#7e22ce',
+                    800: '#6b21a8',
+                    900: '#581c87',
+                    950: '#3b0764',
                 },
+                // Pink as secondary
                 secondary: {
-                    50: '#f0fdf4',
-                    100: '#dcfce7',
-                    200: '#bbf7d0',
-                    300: '#86efac',
-                    400: '#4ade80',
-                    500: '#22c55e',
-                    600: '#16a34a',
-                    700: '#15803d',
-                    800: '#166534',
-                    900: '#14532d',
-                    950: '#052e16',
+                    50: '#fdf2f8',
+                    100: '#fce7f3',
+                    200: '#fbcfe8',
+                    300: '#f9a8d4',
+                    400: '#f472b6',
+                    500: '#ff5eae',  // Your pink
+                    600: '#db2777',
+                    700: '#be185d',
+                    800: '#9d174d',
+                    900: '#831843',
+                    950: '#500724',
+                },
+                // Blue as tertiary
+                tertiary: {
+                    50: '#eff6ff',
+                    100: '#dbeafe',
+                    200: '#bfdbfe',
+                    300: '#93c5fd',
+                    400: '#60a5fa',
+                    500: '#3b82f6',
+                    600: '#2563eb',
+                    700: '#1d4ed8',
+                    800: '#1e40af',
+                    900: '#1e3a8a',
+                    950: '#172554',
                 },
                 neutral: {
                     50: '#fafafa',
@@ -55,6 +70,10 @@ module.exports = {
                     delivered: '#10b981',
                     cancelled: '#ef4444',
                 }
+            },
+            background: {
+                'dim-purple': '#f9f7ff', // Dim almost white purple
+                'dim-purple-dark': '#1f1b2e', // Dark mode equivalent
             },
             fontFamily: {
                 sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
@@ -96,3 +115,17 @@ module.exports = {
     },
     plugins: [],
 }
+
+/*
+50: '#fff7ed',
+100: '#ffedd5',
+200: '#fed7aa',
+300: '#fdba74',
+400: '#fb923c',
+500: '#f97316',
+600: '#ea580c',
+700: '#c2410c',
+800: '#9a3412',
+900: '#7c2d12',
+950: '#431407',
+*/
