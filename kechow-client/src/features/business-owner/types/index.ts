@@ -304,6 +304,7 @@ export interface SpecialDay {
 	customMessage?: string; // Message to show to customers on this day
 	createdAt: string;
 	updatedAt: string;
+	notes: string;
 }
 
 export interface SpecialDayFormData {

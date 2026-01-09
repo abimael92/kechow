@@ -262,8 +262,8 @@ const operatingHours = reactive<OperatingHours[]>([
 ]);
 
 const specialDays = reactive<SpecialDay[]>([
-	{ id: '1', name: 'Christmas Day', date: '2024-12-25', openTime: '', closeTime: '', closed: true },
-	{ id: '2', name: 'New Year\'s Day', date: '2025-01-01', openTime: '12:00', closeTime: '20:00', closed: false },
+	{ id: '1', name: 'Christmas Day', date: '2024-12-25', openTime: '', closeTime: '', closed: true, isHoliday: true, recurringYearly: true, affectsAllDays: false, overrideType: 'closed', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+	{ id: '2', name: 'New Year\'s Day', date: '2025-01-01', openTime: '12:00', closeTime: '20:00', closed: false, isHoliday: true, recurringYearly: true, affectsAllDays: false, overrideType: 'special_hours', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
 ]);
 
 function toggleEditingInfo() {
@@ -304,7 +304,14 @@ function addSpecialDay() {
 		date: new Date().toISOString().split('T')[0],
 		openTime: '10:00',
 		closeTime: '22:00',
-		closed: false
+		closed: false,
+		isHoliday: false,
+		recurringYearly: false,
+		affectsAllDays: false,
+		overrideType: 'special_hours',
+		notes: '',
+		createdAt: new Date().toISOString(),
+		updatedAt: new Date().toISOString()
 	};
 	specialDays.push(newSpecialDay);
 }
