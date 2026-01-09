@@ -288,3 +288,58 @@ export interface TopSellingItemData {
 	revenue: number;
 	rank: number;
 }
+
+export interface SpecialDay {
+	id: string;
+	name: string;
+	date: string; // ISO format: YYYY-MM-DD
+	openTime: string; // 24h format: "HH:MM"
+	closeTime: string; // 24h format: "HH:MM"
+	closed: boolean;
+	isHoliday: boolean;
+	recurringYearly: boolean;
+	description?: string;
+	affectsAllDays: boolean; // Whether this special schedule overrides all regular days
+	overrideType: 'closed' | 'special_hours' | 'reduced_hours'; // How this day affects operations
+	customMessage?: string; // Message to show to customers on this day
+	createdAt: string;
+	updatedAt: string;
+	notes: string;
+}
+
+export interface SpecialDayFormData {
+	name: string;
+	date: string;
+	openTime?: string;
+	closeTime?: string;
+	closed: boolean;
+	isHoliday: boolean;
+	recurringYearly: boolean;
+	description?: string;
+	affectsAllDays: boolean;
+	overrideType: 'closed' | 'special_hours' | 'reduced_hours';
+	customMessage?: string;
+}
+
+export interface SpecialDayFilters {
+	year?: number;
+	month?: number; // 1-12
+	upcomingOnly?: boolean;
+	holidayOnly?: boolean;
+	recurringOnly?: boolean;
+}
+
+export interface SpecialDayResponse {
+	specialDays: SpecialDay[];
+	upcomingSpecialDays: SpecialDay[];
+	holidaysThisMonth: SpecialDay[];
+	total: number;
+}
+
+export interface SpecialDayStats {
+	totalSpecialDays: number;
+	upcomingSpecialDays: number;
+	holidaysCount: number;
+	closedDaysCount: number;
+	recurringEventsCount: number;
+}
