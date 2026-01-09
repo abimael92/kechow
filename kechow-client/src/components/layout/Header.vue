@@ -249,9 +249,16 @@ const isDark = ref(false);
 
 onMounted(() => {
 	const savedTheme = localStorage.getItem('theme');
-	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-	isDark.value = savedTheme ? savedTheme === 'dark' : prefersDark;
-	document.documentElement.classList.toggle('dark', isDark.value);
+	// const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	
+	// Current: Always light mode
+	isDark.value = false;
+	document.documentElement.classList.remove('dark');
+	localStorage.setItem('theme', 'light');
+	
+	// Uncomment for system preference:
+	// isDark.value = savedTheme ? savedTheme === 'dark' : prefersDark;
+	// document.documentElement.classList.toggle('dark', isDark.value);
 
 	document.addEventListener('click', closeOnClickOutside);
 	document.addEventListener('click', closeDrawerOnClickOutside);
