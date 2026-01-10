@@ -7,31 +7,35 @@
   src: url('/fonts/Dacade.woff2') format('woff2');
   font-display: swap;
 }
+
 /* === Root variables for colors, spacing, radius === */
 :root {
-  /* Gradient colors */
-  --color-gradient-start: #a3a4ff; /* blue-purple */
-  --color-gradient-end: #ff5eae;   /* pink */
+  /* Updated gradient with your pink accent */
+  --color-gradient-start: #e9d5ff; /* light purple */
+  --color-gradient-end: #f9f7ff;   /* dim almost white purple */
 
-  /* Primary colors */
-  --color-primary: #6366F1;
-  --color-primary-light: #8B5CF6;
-  --color-primary-dark: #4F46E5;
+  /* Primary colors - updated to match Tailwind config */
+  --color-primary: #7e22ce;        /* primary-700 (was #a855f7) */
+  --color-primary-light: #a855f7;  /* primary-500 */
+  --color-primary-dark: #6b21a8;   /* primary-800 */
 
-  /* Accent */
-  --color-accent: #EC4899;
+  /* Accent - TEAL */
+  --color-accent: #06b6d4;         /* TEAL accent */
+  
+  /* Pink for secondary/button hover */
+  --color-pink: #ff5eae;           /* PINK for button hover */
 
   /* Neutral text - Light Mode */
-  --color-text-primary: #ffffff;       /* old muted → now primary */
-  --color-text-secondary: #000000;     /* old tertiary → now secondary */
-  --color-text-tertiary: #4B5563;      /* old quaternary → now tertiary */
-  --color-text-quaternary: #e6e6e6;    /* old secondary → now quaternary */
-  --color-text-muted: #1F2937;
+  --color-text-primary: #1f2937;   /* dark gray for text */
+  --color-text-secondary: #4b5563; /* medium gray */
+  --color-text-tertiary: #6b7280;  /* light gray */
+  --color-text-quaternary: #9ca3af; /* very light gray */
+  --color-text-muted: #d1d5db;
 
-  /* Background */
-  --color-bg-light: #FFFFFF;
-  --color-bg-dark: #111827;
-
+  /* Background colors */
+  --color-bg-light: #f9f7ff;       /* dim almost white purple */
+  --color-bg-dark: #1f1b2e;        /* dark purple background */
+  
   /* UI constants */
   --radius-default: 0.5rem; /* 8px */
   --padding-default: 1rem;  /* 16px */
@@ -41,11 +45,17 @@
 
 /* === Dark Mode Variables === */
 .dark {
-  --color-text-primary: #000000;        /* primary flips dark */
-  --color-text-secondary: #ffffff;      /* secondary flips light */
-  --color-text-tertiary: #D1D5DB;       /* lighter tertiary */
-  --color-text-quaternary: #9CA3AF;     /* lighter quaternary */
-  --color-text-muted: #374151;          /* muted darker for contrast */
+  --color-gradient-start: #1f1b2e;      /* dark purple */
+  --color-gradient-end: #2d1b69;        /* darker purple */
+  
+  --color-text-primary: #ffffff;        /* WHITE text for dark mode */
+  --color-text-secondary: #e5e7eb;      /* slightly darker light text */
+  --color-text-tertiary: #d1d5db;       /* lighter gray */
+  --color-text-quaternary: #9ca3af;     /* muted light */
+  --color-text-muted: #6b7280;
+  
+  --color-bg-light: #1f1b2e;            /* dark purple */
+  --color-bg-dark: #111827;             /* even darker */
 }
 
 /* === Global Reset & Box Sizing === */
@@ -60,25 +70,27 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  /* font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
   font-family: 'Dacade', 'Inter', sans-serif;
-  background: linear-gradient(75deg, var(--color-gradient-start), var(--color-gradient-end));
+  background: linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end));
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--transition-fast), color var(--transition-fast);
-  -webkit-transition: background-color var(--transition-fast), color var(--transition-fast);
-  -moz-transition: background-color var(--transition-fast), color var(--transition-fast);
-  -ms-transition: background-color var(--transition-fast), color var(--transition-fast);
-  -o-transition: background-color var(--transition-fast), color var(--transition-fast);
 }
 
 /* === Typography === */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 800;
-  color: var(--color-text-primary);
+  color: var(--color-pink); /* PURPLE for headers */
   margin-bottom: calc(var(--margin-default) / 2);
   line-height: 1.2;
+}
+
+/* Subtitles - Black in light mode, White in dark mode */
+.subtitle, .text-subtitle, .subtitle-class {
+  color: var(--color-text-primary); /* Black/White */
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 h1 { font-size: 2.5rem; }
@@ -88,14 +100,15 @@ h4 { font-size: 1.5rem; }
 h5 { font-size: 1.25rem; }
 
 p {
-  color: var(--color-text-secondary);
+  color: var(--color-text-secondary); /* Keep as medium gray */
   font-size: 1rem;
   line-height: 1.5;
   margin-bottom: var(--margin-default);
 }
 
+/* === Links with TEAL accent on hover === */
 a {
-  color: #90D5FF;
+  color: var(--color-primary);
   text-decoration: underline;
   text-underline-offset: 4px;
   transition: color var(--transition-fast);
@@ -103,55 +116,148 @@ a {
 
 a:hover,
 a:focus {
-  color: var(--color-accent);
+  color: var(--color-accent); /* TEAL on hover */
   outline: none;
 }
 
-/* === Buttons === */
+/* === Primary Buttons - UPDATED FOR PURPLE THEME === */
 button, .btn {
-  background: #4f46e5;
+  background: var(--color-primary); /* PURPLE background */
   border: none;
-  color: #90D5FF;
+  color: white !important; /* White text for maximum contrast on purple */
   border-radius: var(--radius-default);
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 8px rgba(168, 85, 247, 0.25);
 }
 
-button:hover, .btn:hover {
-  background: #7e53e0;
-  color: var(--color-accent);
+/* PINK ON HOVER for all primary buttons */
+button:hover:not(:disabled):not(.btn-secondary):not(.btn-text):not(.btn-outline),
+.btn:hover:not(:disabled):not(.btn-secondary):not(.btn-text):not(.btn-outline) {
+  background: var(--color-pink) !important; /* PINK on hover */
+  color: white !important;
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 6px 12px rgba(255, 94, 174, 0.35);
 }
 
-button:active, .btn:active {
+/* DARK PURPLE ON ACTIVE for all primary buttons */
+button:active:not(:disabled):not(.btn-secondary):not(.btn-text):not(.btn-outline),
+.btn:active:not(:disabled):not(.btn-secondary):not(.btn-text):not(.btn-outline) {
+  background: #6b21a8 !important; /* Dark purple on active (primary-800) */
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(107, 33, 168, 0.3);
 }
 
-button:disabled, .btn:disabled {
-  background-color: var(--color-text-muted);
-  cursor: not-allowed;
-  box-shadow: none;
+/* === Secondary/Outline Buttons - PINK HOVER === */
+.btn-secondary {
+  background: transparent !important;
+  color: var(--color-primary) !important;
+  border: 2px solid var(--color-primary);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-pink) !important; /* PINK border on hover */
+  color: var(--color-pink) !important; /* PINK text on hover */
+  background: transparent !important; /* Keep background transparent */
+    color: var(--color-text-primary); /* WHITE text on hover */
+  
+}
+
+.btn-secondary:active {
+  border-color: #6b21a8 !important; /* Dark purple border on active */
+  color: #6b21a8 !important; /* Dark purple text on active */
+  background: transparent !important; /* Keep background transparent */
+}
+
+/* === GLOBAL BUTTON HOVER/ACTIVE STATES === */
+/* All buttons with primary background */
+button.bg-primary-500:hover:not(:disabled):not(.btn-secondary):not(.btn-outline),
+button.bg-primary-600:hover:not(:disabled):not(.btn-secondary):not(.btn-outline),
+button.bg-primary-700:hover:not(:disabled):not(.btn-secondary):not(.btn-outline) {
+  background-color: var(--color-pink) !important; /* PINK */
+}
+
+button.bg-primary-500:active:not(:disabled):not(.btn-secondary):not(.btn-outline),
+button.bg-primary-600:active:not(:disabled):not(.btn-secondary):not(.btn-outline),
+button.bg-primary-700:active:not(:disabled):not(.btn-secondary):not(.btn-outline) {
+  background-color: #6b21a8 !important; /* Dark purple */
+}
+
+/* Buttons with purple text (text buttons) */
+button.text-primary-600:hover:not(:disabled):not([class*="bg-"]):not(.btn-secondary):not(.btn-outline),
+button.text-primary-500:hover:not(:disabled):not([class*="bg-"]):not(.btn-secondary):not(.btn-outline),
+button.text-primary-400:hover:not(:disabled):not([class*="bg-"]):not(.btn-secondary):not(.btn-outline) {
+  color: var(--color-primary-dark) !important;
+}
+
+button.text-primary-600:active:not(:disabled):not([class*="bg-"]):not(.btn-secondary):not(.btn-outline),
+button.text-primary-500:active:not(:disabled):not([class*="bg-"]):not(.btn-secondary):not(.btn-outline),
+button.text-primary-400:active:not(:disabled):not([class*="bg-"]):not(.btn-secondary):not(.btn-outline) {
+  color: #6b21a8 !important; /* Dark purple text */
+}
+
+/* Outline buttons with purple borders */
+button.border-primary-300:hover:not(:disabled):not(.btn):not(.btn-primary),
+button.border-primary-400:hover:not(:disabled):not(.btn):not(.btn-primary),
+button.border-primary-500:hover:not(:disabled):not(.btn):not(.btn-primary) {
+  border-color: var(--color-pink) !important; /* PINK border */
+  color: var(--color-text-primary) !important;
+}
+
+button.border-primary-300:active:not(:disabled):not(.btn):not(.btn-primary),
+button.border-primary-400:active:not(:disabled):not(.btn):not(.btn-primary),
+button.border-primary-500:active:not(:disabled):not(.btn):not(.btn-primary) {
+  border-color: #6b21a8 !important; /* Dark purple border */
+  color: #6b21a8 !important;
+}
+
+/* === Text-only Buttons (like "Copy to All", "Remove") === */
+.btn-text {
+  background: transparent !important;
+  color: var(--color-primary) !important;
+  border: none !important;
+  padding: 0.5rem !important;
+  box-shadow: none !important;
+}
+
+.btn-text:hover {
+  background: rgba(168, 85, 247, 0.1) !important; /* Light purple bg on hover */
+  color: var(--color-primary-dark) !important;
+  transform: none !important;
+}
+
+/* === Accent Buttons (using TEAL color) === */
+.btn-accent {
+  background: var(--color-accent) !important; /* TEAL */
+  color: white !important;
+}
+
+.btn-accent:hover {
+  background: #0891b2 !important; /* Darker teal on hover */
+  color: white !important;
 }
 
 /* === Inputs, selects, textarea === */
 input, select, textarea {
-  border: 1.5px solid var(--color-primary);
+  border: 1.5px solid var(--color-primary-light);
   border-radius: var(--radius-default);
   padding: 0.75rem 1rem;
   font-size: 1rem;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   color: var(--color-text-primary);
-  background-color: var(--color-bg-light);
+  background-color: white;
+}
+
+.dark input, .dark select, .dark textarea {
+  background-color: var(--color-bg-dark);
+  border-color: var(--color-primary);
 }
 
 input:focus, select:focus, textarea:focus {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 8px var(--color-accent);
+  border-color: var(--color-accent) !important; /* TEAL border on focus */
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.3) !important; /* TEAL glow */
   outline: none;
 }
 
@@ -169,3 +275,34 @@ input:focus, select:focus, textarea:focus {
 .p-default { padding: var(--padding-default); }
 .rounded-default { border-radius: var(--radius-default); }
 
+/* === Custom components for Tailwind === */
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg font-medium bg-primary-600 text-white transition-colors shadow-button hover:shadow-button-hover;
+  }
+  
+  .btn-outline {
+    @apply px-4 py-2 rounded-lg font-medium border border-primary-300 dark:border-primary-700 text-primary-600 dark:text-primary-400 transition-colors;
+  }
+  
+  .btn-text-purple {
+    @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors;
+  }
+  
+  .btn-accent {
+    @apply px-4 py-2 rounded-lg font-medium bg-[#06b6d4] hover:bg-[#0891b2] text-white transition-colors;
+  }
+  
+  .card {
+    @apply bg-white dark:bg-neutral-900 rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 p-6;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+  
+  /* Special purple add button */
+  .btn-add-special {
+    @apply w-full py-3 border-2 border-dashed border-primary-300 dark:border-primary-700 rounded-lg text-primary-600 dark:text-primary-400 hover:border-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/10 hover:text-primary-700 dark:hover:text-primary-300 transition-colors font-medium;
+  }
+}
