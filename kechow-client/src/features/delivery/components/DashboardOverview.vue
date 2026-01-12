@@ -318,6 +318,13 @@ const stats = ref([
         bg: 'bg-orange-100 dark:bg-orange-900/30',
     },
     {
+		label: 'ratingStat',
+		value: 4.9,
+		change: '',
+		icon: 'ri-star-line text-purple-600 w-5 h-5',
+		bg: 'bg-purple-100',
+	},
+    {
         label: 'online',
         value: '8.5h',
         change: t('sinceTime', { time: '9:00 AM' }),  // Dynamic value
