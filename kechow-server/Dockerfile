@@ -1,9 +1,7 @@
 FROM php:8.2-apache
 
-# Update package lists and fix broken repos
-RUN sed -i 's/security.ubuntu.com/mirrors.digitalocean.com/g' /etc/apt/sources.list \
-    && sed -i 's/archive.ubuntu.com/mirrors.digitalocean.com/g' /etc/apt/sources.list \
-    && apt-get update
+# Update package lists
+RUN apt-get update
 
 # Install system dependencies
 RUN apt-get install -y \
