@@ -1,33 +1,22 @@
 FROM php:8.2-apache
 
-# Update package lists first
-RUN apt-get update && apt-get upgrade -y
+ENV PORT=10000
+ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-# Install dependencies
-RUN apt-get install -y \
-    libzip-dev \
-    zip \
-    unzip \
-    git \
-    curl \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-install pdo_mysql zip mbstring exif pcntl bcmath \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
+RUN apt-get update && apt-get install -y \
+    libzip-dev zip unzip git curl libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo_mysql zip mbstring exif pcntl bcmath
 
-# Enable Apache mod_rewrite
-RUN a2enmod rewrite
+RUN a2enmod rewrite \
+    && sed -i 's/80/${PORT}/g' /etc/apache2/ports.conf \
+    && sed -i 's/:80/:${PORT}/g' /etc/apache2/sites-enabled/000-default.conf \
+    && sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+    /etc/apache2/sites-available/*.conf /etc/apache2/apache2.conf
 
-# Copy app files
-COPY . /var/www/html/
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Set working directory
 WORKDIR /var/www/html
+COPY . .
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install --no-dev --optimize-autoloader
+
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
