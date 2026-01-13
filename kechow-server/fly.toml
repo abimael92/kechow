@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for kechow-server-morning-wave-4981 on 2026-01-13T17:39:37-06:00
+# fly.toml app configuration file generated for kechow-server on 2026-01-13T17:35:54-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'kechow-server-morning-wave-4981'
+app = 'kechow-server'
 primary_region = 'dfw'
 console_command = 'php /var/www/html/artisan tinker'
 
