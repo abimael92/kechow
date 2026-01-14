@@ -1,22 +1,50 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan; // Add this line
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Artisan;
 
-// Load module routes
-require app_path('Modules/Auth/routes.php');
-require app_path('Modules/Restaurant/routes.php');
-require app_path('Modules/Order/routes.php');
+// One-time setup route: sessions table + seed users
+Route::get('/setup-backend', function () {
+    // Create sessions table
+    Artisan::call('session:table');
+    Artisan::call('migrate', ['--force' => true]);
 
-// Migration route
-Route::get('/run-migrations', function () {
-    try {
-        Artisan::call('migrate', ['--force' => true]);
-        return response()->json(['message' => 'Migrations completed successfully']);
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'Migration failed',
-            'error' => $e->getMessage()
-        ], 500);
+    // Seed users
+    $users = [
+        [
+            'name' => 'cliente',
+            'email' => 'cliente@cliente.com',
+            'password' => Hash::make('123456'),
+            'role' => 'customer',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'name' => 'negocio',
+            'email' => 'negocio@negocio.com',
+            'password' => Hash::make('123456'),
+            'role' => 'owner',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+        [
+            'name' => 'entrega',
+            'email' => 'entrega@entrega.com',
+            'password' => Hash::make('123456'),
+            'role' => 'delivery',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ],
+    ];
+
+    foreach ($users as $user) {
+        DB::table('users')->updateOrInsert(
+            ['email' => $user['email']],
+            $user
+        );
     }
+
+    return ['message' => '✅ Sessions table created and users seeded'];
 });
