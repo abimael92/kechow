@@ -55,4 +55,6 @@ Route::get('/setup-backend', function () {
     }
 
     return '✅ Sessions table created and users seeded';
-});
+})->middleware([]); // disable all middleware
+
+
