@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 
+// Load Auth module routes
+require app_path('Modules/Auth/routes.php');
+
 // One-time setup route: sessions table + seed users
-Route::get('/setup-backend', function () {
+Route::get('/setup-backend/one-time-setup', function () {
     // Create sessions table
     Artisan::call('session:table');
     Artisan::call('migrate', ['--force' => true]);
