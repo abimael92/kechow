@@ -113,7 +113,23 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        function ({ addUtilities }) {
+            addUtilities({
+                'h1.text-bubble': {
+                    'font-family': "'Chewy', cursive",
+                    'font-weight': 'bold',
+                    'letter-spacing': '0.05em',
+                    'color': '#ff5eae',
+                    'text-shadow': '-2px -2px 0 #4f46e5, 2px -2px 0 #4f46e5, -2px 2px 0 #4f46e5, 2px 2px 0 #4f46e5',
+                },
+                '.dark h1.text-bubble': {
+                    'color': '#f472b6',
+                    'text-shadow': '-2px -2px 0 #3730a3, 2px -2px 0 #3730a3, -2px 2px 0 #3730a3, 2px 2px 0 #3730a3',
+                },
+            })
+        }
+    ]
 }
 
 /*
