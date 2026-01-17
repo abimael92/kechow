@@ -3,25 +3,19 @@
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30">
-                    <i class="ri-settings-3-line text-white text-lg"></i>
+                <div class="w-16 h-16 rounded-3xl bg-gradient-to-r from-secondary-600 to-secondary-500 flex items-center justify-center shadow-md shadow-primary-500/30">
+                    <i class="ri-home-3-line text-white text-3xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-bubble text-6xl">
+                    <h1 class="text-bubble text-6xl shadow-primary-500">
                     {{ t('dashboard') }}
 					</h1>
-                    <!-- FIXED: Use t() function for translations -->
-                    <p class="text-neutral-800 dark:text-neutral-200 font-normal text-lg">
+                    <p class="text-neutral-950 dark:text-neutral-200 font-normal text-xl select-none">
                     {{ t('subtitle') }}
                     </p>
                 </div>
-                </div>
-                <!-- Add Menu Item Button -->
-				<button class="group px-6 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-button hover:shadow-button-hover transition-all duration-200 hover:-translate-y-0.5 cursor-pointer">
-			<i class="ri-add-line"/>
-				{{ t('addMenuItem') }}
-				</button>
             </div>
+        </div>
 
 		<!-- Stats Grid - Enhanced with Gradient Backgrounds -->
 		<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 lg:mb-8">
@@ -209,7 +203,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useI18n } from 'vue-i18n';
-import ThemeLanguageToggle from '@/components/common/ThemeLanguageToggle.vue';
+
 
 const authStore = useAuthStore();
 const { t } = useI18n();
