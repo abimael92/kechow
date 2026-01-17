@@ -7,11 +7,9 @@
 					<i class="ri-dashboard-line text-white text-lg"></i>
 				</div>
 				<div>
-					<!-- FIXED: Use t() instead of $t() -->
 					<h1 class="text-3xl font-bold text-secondary-600 dark:text-secondary-400">
 						{{ t('dashboard') }}
 					</h1>
-					<!-- FIXED: Use t() instead of $t() -->
 					<p class="text-neutral-800 dark:text-neutral-200 font-normal text-lg">
 						{{ t('readyToDeliver') }}
 					</p>
