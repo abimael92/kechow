@@ -22,8 +22,8 @@
 					:class="[
 						'w-8 h-8 rounded-full flex items-center justify-center transition-colors cursor-pointer',
 						item.available
-							? 'bg-green-100 text-green-600'
-							: 'bg-red-100 text-red-600',
+							? 'bg-green-500 text-green-600'
+							: 'bg-red-500 text-red-600',
 					]"
 				>
 					<i
