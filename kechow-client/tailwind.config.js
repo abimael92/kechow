@@ -69,7 +69,7 @@ module.exports = {
                     ontheway: '#06b6d4',
                     delivered: '#10b981',
                     cancelled: '#ef4444',
-                }
+                },
             },
             background: {
                 'dim-purple': '#f9f7ff', // Dim almost white purple
@@ -81,16 +81,16 @@ module.exports = {
                 display: ['Poppins', 'Inter', 'sans-serif'],
             },
             boxShadow: {
-                'soft': '0 2px 12px rgba(0, 0, 0, 0.08)',
-                'medium': '0 4px 20px rgba(0, 0, 0, 0.12)',
-                'strong': '0 8px 32px rgba(0, 0, 0, 0.16)',
-                'button': '0 2px 8px rgba(249, 115, 22, 0.3)',
+                soft: '0 2px 12px rgba(0, 0, 0, 0.08)',
+                medium: '0 4px 20px rgba(0, 0, 0, 0.12)',
+                strong: '0 8px 32px rgba(0, 0, 0, 0.16)',
+                button: '0 2px 8px rgba(249, 115, 22, 0.3)',
                 'button-hover': '0 4px 16px rgba(249, 115, 22, 0.4)',
             },
             borderRadius: {
-                'card': '12px',
-                'button': '8px',
-                'input': '6px',
+                card: '12px',
+                button: '8px',
+                input: '6px',
             },
             animation: {
                 'pulse-soft': 'pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -117,15 +117,37 @@ module.exports = {
         function ({ addUtilities }) {
             addUtilities({
                 'h1.text-bubble': {
+                    'transition': 'transform 0.8s ease-in-out',
                     'font-family': "'Chewy', cursive",
                     'font-weight': 'bold',
                     'letter-spacing': '0.05em',
-                    'color': '#ff5eae',
-                    'text-shadow': '-2px -2px 0 #4f46e5, 2px -2px 0 #4f46e5, -2px 2px 0 #4f46e5, 2px 2px 0 #4f46e5',
+                    'user-select': 'none',
+                    'color': '#db2777',
+                    'text-shadow': `
+                    -1px -1px 0 #d8b4fe,
+                    1px -1px 0 #d8b4fe,
+                    -1px 1px 0 #d8b4fe,
+                    1px 1px 0 #d8b4fe,
+                    -2px -2px 0 #1e40af,
+                    2px -2px 0 #1e40af,
+                    -2px 2px 0 #1e40af,
+                    2px 2px 0 #1e40af
+                `,
                 },
-                '.dark h1.text-bubble': {
-                    'color': '#f472b6',
-                    'text-shadow': '-2px -2px 0 #3730a3, 2px -2px 0 #3730a3, -2px 2px 0 #3730a3, 2px 2px 0 #3730a3',
+                '.text-bubble-h2': {
+                    transition: 'transform 0.8s ease-in-out',
+                    fontFamily: "'Chewy', cursive",
+                    fontWeight: '300',
+                    userSelect: 'none',
+                    color: '#db2777',
+                },
+                'h1.text-bubble:hover': {
+                    'animation': 'bounce-slow 2s infinite alternate',
+                },
+                '@keyframes bounce-slow': {
+                    '0%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-6px)' },
+                    '100%': { transform: 'translateY(0)' },
                 },
             })
         }
