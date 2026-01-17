@@ -61,15 +61,6 @@ export interface OrderStats {
 	};
 }
 
-export interface OrderFilters {
-	status?: string;
-	dateFrom?: string;
-	dateTo?: string;
-	customerName?: string;
-	sortBy?: 'date' | 'status' | 'amount';
-	sortOrder?: 'asc' | 'desc';
-}
-
 export interface OrderStatusUpdate {
 	orderId: string;
 	status: string;
@@ -99,8 +90,11 @@ export interface MenuItem {
 	available: boolean;
 	image: string;
 	ingredients?: string[];
+	tags?: string[];
+	allergens?: string[];
 	preparationTime?: number;
 	calories?: number;
+	isSpecial?: boolean;
 	isVegetarian?: boolean;
 	isVegan?: boolean;
 	isGlutenFree?: boolean;
@@ -251,44 +245,6 @@ export interface ReviewFilters {
 	verifiedOnly?: boolean;
 }
 
-export interface AnalyticsData {
-	totalRevenue: number;
-	totalOrders: number;
-	averageOrderValue: number;
-	customerRating: number;
-	revenueChange: number;
-	ordersChange: number;
-	aovChange: number;
-	ratingChange: number;
-	revenueTrend: RevenueData[];
-	ordersByHour: OrdersByHourData[];
-	salesByCategory: SalesByCategoryData[];
-	topSellingItems: TopSellingItemData[];
-}
-
-export interface RevenueData {
-	month: string;
-	revenue: number;
-}
-
-export interface OrdersByHourData {
-	hour: string;
-	orders: number;
-}
-
-export interface SalesByCategoryData {
-	category: string;
-	sales: number;
-	percentage: number;
-}
-
-export interface TopSellingItemData {
-	name: string;
-	orders: number;
-	revenue: number;
-	rank: number;
-}
-
 export interface SpecialDay {
 	id: string;
 	name: string;
@@ -342,4 +298,402 @@ export interface SpecialDayStats {
 	holidaysCount: number;
 	closedDaysCount: number;
 	recurringEventsCount: number;
+}
+
+// ==================== ANALYTICS TYPES ====================
+export interface AnalyticsData {
+    revenue: {
+        total: number;
+        change: number;
+        trend: RevenueTrendData[];
+        chartData: ChartDataPoint[];
+    };
+    orders: {
+        total: number;
+        change: number;
+        trend: OrderTrendData[];
+        byHour: OrdersByHourData[];
+    };
+    avgOrderValue: {
+        current: number;
+        change: number;
+        history: number[];
+    };
+    customerRating: {
+        current: number;
+        change: number;
+        distribution: RatingDistribution[];
+    };
+    salesByCategory: SalesByCategoryData[];
+    topSellingItems: TopSellingItemData[];
+    customerMetrics: {
+        newCustomers: number;
+        returningCustomers: number;
+        retentionRate: number;
+        lifetimeValue: number;
+    };
+    peakHours: PeakHourData[];
+    lastUpdated: string;
+    period: AnalyticsPeriod;
+}
+
+export interface ChartDataPoint {
+    date: string;
+    value: number;
+    label?: string;
+}
+
+export interface RevenueTrendData {
+    date: string;
+    revenue: number;
+    orders: number;
+    averageOrderValue: number;
+}
+
+export interface OrderTrendData {
+    date: string;
+    count: number;
+    status: Order['status'];
+    revenue: number;
+}
+
+export interface OrdersByHourData {
+    hour: number; // 0-23
+    hourLabel: string;
+    orders: number;
+    averageOrderValue: number;
+    revenue: number;
+    day: 'weekday' | 'weekend';
+}
+
+export interface SalesByCategoryData {
+    id: string;
+    category: string;
+    sales: number;
+    percentage: number;
+    orders: number;
+    averagePrice: number;
+    color: string;
+    trend: number;
+}
+
+export interface TopSellingItemData {
+    id: string;
+    name: string;
+    category: string;
+    orders: number;
+    revenue: number;
+    quantity: number;
+    averageRating: number;
+    trend: number;
+    profitMargin: number;
+    lastOrderDate: string;
+}
+
+export interface RatingDistribution {
+    stars: number;
+    count: number;
+    percentage: number;
+}
+
+export interface PeakHourData {
+    hour: number;
+    hourLabel: string;
+    orders: number;
+    revenue: number;
+    busyLevel: 'low' | 'medium' | 'high' | 'peak';
+}
+
+export type AnalyticsPeriod = '7days' | '30days' | '90days' | 'year' | 'custom';
+
+export interface AnalyticsFilters {
+    period: AnalyticsPeriod;
+    dateFrom?: string;
+    dateTo?: string;
+    category?: string;
+    status?: Order['status'];
+    compareToPrevious?: boolean;
+}
+
+export interface AnalyticsExportOptions {
+    format: 'csv' | 'pdf' | 'excel';
+    includeCharts: boolean;
+    includeRawData: boolean;
+    dateRange: {
+        from: string;
+        to: string;
+    };
+}
+
+// ==================== MENU MANAGEMENT TYPES ====================
+export interface MenuItemFilters {
+    category?: string;
+    availability?: 'all' | 'available' | 'outOfStock';
+    priceRange?: {
+        min: number;
+        max: number;
+    };
+    sortBy?: 'name' | 'price' | 'popularity' | 'dateAdded';
+    sortOrder?: 'asc' | 'desc';
+    searchQuery?: string;
+    tags?: string[];
+}
+
+export interface MenuItemStats {
+    total: {
+        items: number;
+        revenue: number;
+        orders: number;
+    };
+    byCategory: {
+        category: string;
+        count: number;
+        revenue: number;
+        percentage: number;
+    }[];
+    byAvailability: {
+        available: number;
+        outOfStock: number;
+    };
+    priceDistribution: {
+        range: string;
+        count: number;
+    }[];
+    trends: {
+        newItemsThisMonth: number;
+        discontinuedItems: number;
+        priceChanges: number;
+    };
+}
+
+export interface MenuItemVariation {
+    id: string;
+    name: string;
+    price: number;
+    available: boolean;
+    description?: string;
+}
+
+export interface NutritionalInfo {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+    fiber?: number;
+    sugar?: number;
+    sodium?: number;
+}
+
+export interface MenuItemOption {
+    id: string;
+    name: string;
+    required: boolean;
+    multiple: boolean;
+    minSelections?: number;
+    maxSelections?: number;
+    choices: MenuItemOptionChoice[];
+}
+
+export interface MenuItemOptionChoice {
+    id: string;
+    name: string;
+    price: number;
+    available: boolean;
+}
+
+// ==================== ORDERS MANAGEMENT TYPES ====================
+export interface OrderFilters {
+    status?: Order['status'][];
+    dateFrom?: string;
+    dateTo?: string;
+    customerName?: string;
+    searchQuery?: string;
+    sortBy?: 'date' | 'status' | 'amount' | 'customer';
+    sortOrder?: 'asc' | 'desc';
+    minAmount?: number;
+    maxAmount?: number;
+}
+
+export interface OrdersPaginatedResponse {
+    orders: Order[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    stats: {
+        new: number;
+        preparing: number;
+        ready: number;
+        out_for_delivery: number;
+        delivered: number;
+        declined: number;
+        cancelled: number;
+        total: number;
+        totalRevenue: number;
+        averageOrderValue: number;
+    };
+}
+
+export interface OrderTimelineEvent {
+    id: string;
+    orderId: string;
+    status: Order['status'];
+    timestamp: string;
+    notes?: string;
+    performedBy?: string;
+    actorType: 'system' | 'staff' | 'customer' | 'delivery';
+}
+
+// ==================== CHART COMPONENT PROPS ====================
+export interface RevenueChartProps {
+    data: ChartDataPoint[];
+    type: 'line' | 'bar' | 'area';
+    height?: number;
+    showTooltip?: boolean;
+    showGrid?: boolean;
+    showLegend?: boolean;
+}
+
+export interface OrdersByHourChartProps {
+    data: OrdersByHourData[];
+    view: 'day' | 'week';
+    height?: number;
+    showAverage?: boolean;
+    showPeakHours?: boolean;
+}
+
+export interface SalesByCategoryChartProps {
+    data: SalesByCategoryData[];
+    type?: 'pie' | 'donut' | 'bar';
+    height?: number;
+    showLabels?: boolean;
+    showPercentages?: boolean;
+}
+
+// ==================== CARD COMPONENT PROPS ====================
+export interface AnalyticsCardProps {
+    title: string;
+    value: string | number;
+    change?: string;
+    icon?: string;
+    positive?: boolean;
+    loading?: boolean;
+    trendData?: number[];
+    onClick?: () => void;
+}
+
+export interface TopSellingItemProps {
+    rank: number;
+    name: string;
+    orders: number;
+    revenue: string;
+    trend?: number;
+    category?: string;
+    onClick?: () => void;
+}
+
+// ==================== MODAL TYPES ====================
+export interface MenuModalProps {
+    mode: 'add' | 'edit';
+    item?: MenuItem | null;
+    categories: string[];
+}
+
+export interface MenuModalEmits {
+    (e: 'close'): void;
+    (e: 'save', data: MenuItemFormData): void;
+}
+
+// ==================== UTILITY TYPES ====================
+export interface TimePeriod {
+    value: string;
+    label: string;
+    days?: number;
+}
+
+export interface TabItem {
+    id: string;
+    label: string;
+    icon: string;
+    badge?: string | number;
+}
+
+export interface StatItem {
+    label: string;
+    value: string | number;
+    displayValue: string;
+    icon: string;
+    color: string;
+    bgColor: string;
+    trend?: number;
+    trendIcon?: string;
+    highlight?: boolean;
+}
+
+export interface CategoryTab {
+    value: string;
+    translationKey: string;
+    icon: string;
+    color: string;
+}
+
+// ==================== SERVICE TYPES ====================
+export interface GetAnalyticsParams {
+    period: AnalyticsPeriod;
+    dateFrom?: string;
+    dateTo?: string;
+    compare?: boolean;
+}
+
+export interface GetMenuItemsParams {
+    filters?: MenuItemFilters;
+    page?: number;
+    limit?: number;
+    sort?: {
+        field: string;
+        order: 'asc' | 'desc';
+    };
+}
+
+export interface GetOrdersParams {
+    filters?: OrderFilters;
+    page?: number;
+    limit?: number;
+}
+
+// ==================== EVENT TYPES ====================
+export interface QuickEditEvent {
+    item: MenuItem;
+    field: string;
+    value: any;
+}
+
+export interface StatusUpdateEvent {
+    orderId: string;
+    status: Order['status'];
+    notes?: string;
+}
+
+// ==================== FILTER STATE TYPES ====================
+export interface OrdersFilterState {
+    searchQuery: string;
+    selectedStatuses: Order['status'][];
+    sortBy: string;
+    activeTab: string;
+    currentPage: number;
+}
+
+export interface MenuFilterState {
+    searchQuery: string;
+    activeCategory: string;
+    sortBy: string;
+    currentPage: number;
+}
+
+export interface AnalyticsFilterState {
+    selectedPeriod: AnalyticsPeriod;
+    activeTab: string;
+    revenueChartType: 'line' | 'bar' | 'area';
+    orderHourView: 'day' | 'week';
+    topItemsView: 'revenue' | 'orders';
 }
