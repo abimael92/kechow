@@ -1,19 +1,20 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-background-dim-purple to-background-dim-purple/80 dark:from-background-dim-purple-dark dark:to-neutral-900 p-4 lg:p-8 space-y-8">
+	<div class="space-y-6">
         <!-- Header -->
         <div class="space-y-2">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30">
                     <i class="ri-settings-3-line text-white text-lg"></i>
                 </div>
                 <div>
-                    <!-- FIXED: Use t() function for translations -->
-                    <h1 class="text-3xl font-bold text-secondary-600 dark:text-secondary-400">
-                        {{ t('settings') }}
-                    </h1>
-                    <!-- FIXED: Use t() function for translations -->
-                    <p class="text-neutral-800 dark:text-neutral-200 font-normal text-lg">
-                        {{ t('manageRestaurantSettings') }}
+                    <h1 class="text-bubble text-6xl shadow-primary-500">
+                    {{ t('settings') }}
+					</h1>
+                    <p class="text-neutral-950 dark:text-neutral-200 font-normal text-xl select-none">
+					{{ $t('manageTrackOrders') }}
+                    </p>
+                    <p class="ml-2 text-tertiary-800 font-medium">
+					{{ t('manageRestaurantSettings') }}
                     </p>
                 </div>
             </div>
