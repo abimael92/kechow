@@ -372,5 +372,55 @@
             "noUserData": "No se encontraron datos de usuario",
             "profileLoadFailed": "No se pudo cargar el perfil"
         }
+    },
+    "common": {
+        "save": "Guardar cambios",
+        "cancel": "Cancelar",
+        "remove": "Eliminar",
+        "open": "Abierto",
+        "closed": "Cerrado",
+        "saveChanges": "Guardar cambios"
+    },
+    "days": {
+        "monday": "Lunes",
+        "tuesday": "Martes",
+        "wednesday": "Miércoles",
+        "thursday": "Jueves",
+        "friday": "Viernes",
+        "saturday": "Sábado",
+        "sunday": "Domingo"
+    },
+    "restaurant": {
+        "information": {
+            "title": "Información del Restaurante",
+            "subtitle": "Administra los detalles de tu restaurante",
+            "edit": "Editar Detalles",
+            "name": "Nombre del Restaurante",
+            "phone": "Número de Teléfono",
+            "email": "Correo Electrónico",
+            "website": "Sitio Web",
+            "address": "Dirección",
+            "description": "Descripción"
+        },
+        "schedule": {
+            "title": "Horario Semanal",
+            "subtitle": "Establece tus horas de operación semanales",
+            "edit": "Editar Horas",
+            "day": "Día",
+            "status": "Estado",
+            "openingTime": "Hora de Apertura",
+            "closingTime": "Hora de Cierre",
+            "actions": "Acciones",
+            "copyToAll": "Copiar a Todos",
+            "specialDays": "Días Especiales & Festivos",
+            "closeDay": "Cerrar Día",
+            "addSpecialDay": "+ Agregar Día Especial o Festivo",
+            "save": "Guardar Horario",
+            "newSpecialDay": "Nuevo Día Especial",
+            "holidays": {
+                "christmas": "Navidad",
+                "newYear": "Año Nuevo"
+            }
+        }
     }
 }
