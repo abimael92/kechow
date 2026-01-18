@@ -6,9 +6,9 @@
 			<div class="flex items-center justify-between mb-8">
 				<div>
 					<h3 class="text-2xl font-bold text-neutral-900 dark:text-white">
-						Restaurant Information
+						{{ t('restaurant.information.title') }}
 					</h3>
-					<p class="text-neutral-500 dark:text-neutral-400">Manage your restaurant details</p>
+					<p class="text-neutral-500 dark:text-neutral-400">{{ t('restaurant.information.subtitle') }}</p>
 				</div>
 				
 				<!-- Updated button with white text for good contrast on purple -->
@@ -16,14 +16,16 @@
 					@click="toggleEditingInfo" 
 					class="px-4 py-2 rounded-lg font-medium bg-primary-600 hover:bg-primary-700 text-white transition-colors shadow-button hover:shadow-button-hover"
 				>
-					{{ editingInfo ? 'Cancel' : 'Edit Details' }}
+					{{ editingInfo ? t('common.cancel') : t('restaurant.information.edit') }}
 				</button>
 			</div>
 
 			<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 				<!-- Your form fields remain the same -->
 				<div>
-					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Restaurant Name</label>
+					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+						{{ t('restaurant.information.name') }}
+					</label>
 					<input 
 						v-model="restaurantInfo.name"
 						:readonly="!editingInfo"
@@ -32,7 +34,9 @@
 				</div>
 
 				<div>
-					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Phone Number</label>
+					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+						{{ t('restaurant.information.phone') }}
+					</label>
 					<input 
 						v-model="restaurantInfo.phone"
 						:readonly="!editingInfo"
@@ -42,7 +46,9 @@
 				</div>
 
 				<div>
-					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Email</label>
+					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+						{{ t('restaurant.information.email') }}
+					</label>
 					<input 
 						v-model="restaurantInfo.email"
 						:readonly="!editingInfo"
@@ -52,7 +58,9 @@
 				</div>
 
 				<div>
-					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Website</label>
+					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+						{{ t('restaurant.information.website') }}
+					</label>
 					<input 
 						v-model="restaurantInfo.website"
 						:readonly="!editingInfo"
@@ -62,7 +70,9 @@
 				</div>
 
 				<div class="lg:col-span-2">
-					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Address</label>
+					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+						{{ t('restaurant.information.address') }}
+					</label>
 					<input 
 						v-model="restaurantInfo.address"
 						:readonly="!editingInfo"
@@ -71,7 +81,9 @@
 				</div>
 
 				<div class="lg:col-span-2">
-					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">Description</label>
+					<label class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+						{{ t('restaurant.information.description') }}
+					</label>
 					<textarea 
 						v-model="restaurantInfo.description"
 						:readonly="!editingInfo"
@@ -86,7 +98,7 @@
 						@click="saveRestaurantInfo"
 						class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-button hover:shadow-button-hover transition-all"
 					>
-						Save Changes
+						{{ t('common.save') }}
 					</button>
 				</div>
 			</div>
@@ -97,9 +109,9 @@
 			<div class="flex items-center justify-between mb-8">
 				<div>
 					<h3 class="text-2xl font-bold text-neutral-900 dark:text-white">
-						Weekly Schedule
+						{{ t('restaurant.schedule.title') }}
 					</h3>
-					<p class="text-neutral-500 dark:text-neutral-400">Set your weekly operating hours</p>
+					<p class="text-neutral-500 dark:text-neutral-400">{{ t('restaurant.schedule.subtitle') }}</p>
 				</div>
 				
 				<!-- Updated button with white text -->
@@ -107,7 +119,7 @@
 					@click="toggleEditingHours" 
 					class="px-4 py-2 rounded-lg font-medium bg-primary-600 hover:bg-primary-700 text-white transition-colors shadow-button hover:shadow-button-hover"
 				>
-					{{ editingHours ? 'Cancel' : 'Edit Hours' }}
+					{{ editingHours ? t('common.cancel') : t('restaurant.schedule.edit') }}
 				</button>
 			</div>
 
@@ -116,17 +128,29 @@
 				<table class="w-full">
 					<thead>
 						<tr class="border-b border-neutral-200 dark:border-neutral-700">
-							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">Day</th>
-							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">Status</th>
-							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">Opening Time</th>
-							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">Closing Time</th>
-							<th v-if="editingHours" class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">Actions</th>
+							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+								{{ t('restaurant.schedule.day') }}
+							</th>
+							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+								{{ t('restaurant.schedule.status') }}
+							</th>
+							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+								{{ t('restaurant.schedule.openingTime') }}
+							</th>
+							<th class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+								{{ t('restaurant.schedule.closingTime') }}
+							</th>
+							<th v-if="editingHours" class="text-left py-3 px-4 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+								{{ t('restaurant.schedule.actions') }}
+							</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="day in operatingHours" :key="day.id" class="border-b border-neutral-100 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-800">
 							<td class="py-4 px-4">
-								<span class="font-medium text-neutral-900 dark:text-white">{{ day.day }}</span>
+								<span class="font-medium text-neutral-900 dark:text-white">
+									{{ t(`days.${day.id}`) }}
+								</span>
 							</td>
 							<td class="py-4 px-4">
 								<span v-if="editingHours" class="flex items-center gap-2">
@@ -146,14 +170,14 @@
 										'font-medium',
 										day.closed ? 'text-neutral-500' : 'text-primary-600 dark:text-primary-400'
 									]">
-										{{ day.closed ? 'Closed' : 'Open' }}
+										{{ day.closed ? t('common.closed') : t('common.open') }}
 									</span>
 								</span>
 								<span v-else :class="[
 									'font-medium',
 									day.closed ? 'text-neutral-500' : 'text-primary-600 dark:text-primary-400'
 								]">
-									{{ day.closed ? 'Closed' : 'Open' }}
+									{{ day.closed ? t('common.closed') : t('common.open') }}
 								</span>
 							</td>
 							<td class="py-4 px-4">
@@ -184,7 +208,7 @@
 									@click="copyToAllDays(day)"
 									class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
 								>
-									Copy to All
+									{{ t('restaurant.schedule.copyToAll') }}
 								</button>
 							</td>
 						</tr>
@@ -194,13 +218,15 @@
 
 			<!-- Special Days Section -->
 			<div class="mt-8 pt-6 border-t border-neutral-200 dark:border-neutral-700">
-				<h4 class="text-lg font-semibold text-neutral-900 dark:text-white mb-4">Special Days & Holidays</h4>
+				<h4 class="text-lg font-semibold text-neutral-900 dark:text-white mb-4">
+					{{ t('restaurant.schedule.specialDays') }}
+				</h4>
 				<div class="space-y-4">
 					<div v-for="specialDay in specialDays" :key="specialDay.id" class="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
 						<div>
 							<h5 class="font-medium text-neutral-900 dark:text-white">{{ specialDay.date }} - {{ specialDay.name }}</h5>
 							<p class="text-sm text-neutral-500 dark:text-neutral-400">
-								{{ specialDay.closed ? 'Closed' : `${specialDay.openTime} - ${specialDay.closeTime}` }}
+								{{ specialDay.closed ? t('common.closed') : `${specialDay.openTime} - ${specialDay.closeTime}` }}
 							</p>
 						</div>
 						<div class="flex items-center gap-3">
@@ -209,14 +235,14 @@
 								@click="removeSpecialDay(specialDay.id)"
 								class="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium"
 							>
-								Remove
+								{{ t('common.remove') }}
 							</button>
 							<button 
 								v-if="editingHours && !specialDay.closed"
 								@click="toggleSpecialDayStatus(specialDay.id)"
 								class="text-sm px-3 py-1 bg-neutral-200 dark:bg-neutral-700 rounded hover:bg-neutral-300 dark:hover:bg-neutral-600 transition-colors font-medium"
 							>
-								Close Day
+								{{ t('restaurant.schedule.closeDay') }}
 							</button>
 						</div>
 					</div>
@@ -226,7 +252,7 @@
 						@click="addSpecialDay"
 						class="w-full py-3 border-2 border-dashed border-primary-300 dark:border-primary-700 rounded-lg text-primary-600 dark:text-primary-400 hover:border-primary-500 hover:text-primary-700 dark:hover:border-primary-400 dark:hover:text-primary-300 transition-colors font-medium"
 					>
-						+ Add Special Day or Holiday
+						{{ t('restaurant.schedule.addSpecialDay') }}
 					</button>
 				</div>
 			</div>
@@ -237,7 +263,7 @@
 					@click="saveOperatingHours"
 					class="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium shadow-button hover:shadow-button-hover transition-all"
 				>
-					Save Schedule
+					{{ t('restaurant.schedule.save') }}
 				</button>
 			</div>
 		</div>
@@ -247,6 +273,9 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue';
 import type { OperatingHours, SpecialDay } from '../../types';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const editingInfo = ref(false);
 const editingHours = ref(false);
@@ -263,18 +292,18 @@ const restaurantInfo = reactive({
 const originalInfo = reactive({ ...restaurantInfo });
 
 const operatingHours = reactive<OperatingHours[]>([
-	{ id: 'monday', day: 'Monday', openTime: '10:00', closeTime: '22:00', closed: false },
-	{ id: 'tuesday', day: 'Tuesday', openTime: '10:00', closeTime: '22:00', closed: false },
-	{ id: 'wednesday', day: 'Wednesday', openTime: '10:00', closeTime: '22:00', closed: false },
-	{ id: 'thursday', day: 'Thursday', openTime: '10:00', closeTime: '22:00', closed: false },
-	{ id: 'friday', day: 'Friday', openTime: '10:00', closeTime: '22:00', closed: false },
-	{ id: 'saturday', day: 'Saturday', openTime: '10:00', closeTime: '22:00', closed: false },
-	{ id: 'sunday', day: 'Sunday', openTime: '10:00', closeTime: '22:00', closed: false },
+	{ id: 'monday', day: t('days.monday'), openTime: '10:00', closeTime: '22:00', closed: false },
+	{ id: 'tuesday', day: t('days.tuesday'), openTime: '10:00', closeTime: '22:00', closed: false },
+	{ id: 'wednesday', day: t('days.wednesday'), openTime: '10:00', closeTime: '22:00', closed: false },
+	{ id: 'thursday', day: t('days.thursday'), openTime: '10:00', closeTime: '22:00', closed: false },
+	{ id: 'friday', day: t('days.friday'), openTime: '10:00', closeTime: '22:00', closed: false },
+	{ id: 'saturday', day: t('days.saturday'), openTime: '10:00', closeTime: '22:00', closed: false },
+	{ id: 'sunday', day: t('days.sunday'), openTime: '10:00', closeTime: '22:00', closed: false },
 ]);
 
 const specialDays = reactive<SpecialDay[]>([
-	{ id: '1', name: 'Christmas Day', date: '2024-12-25', openTime: '', closeTime: '', closed: true, isHoliday: true, recurringYearly: true, affectsAllDays: false, overrideType: 'closed', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-	{ id: '2', name: 'New Year\'s Day', date: '2025-01-01', openTime: '12:00', closeTime: '20:00', closed: false, isHoliday: true, recurringYearly: true, affectsAllDays: false, overrideType: 'special_hours', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+	{ id: '1', name: t('restaurant.schedule.holidays.christmas'), date: '2024-12-25', openTime: '', closeTime: '', closed: true, isHoliday: true, recurringYearly: true, affectsAllDays: false, overrideType: 'closed', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
+	{ id: '2', name: t('restaurant.schedule.holidays.newYear'), date: '2025-01-01', openTime: '12:00', closeTime: '20:00', closed: false, isHoliday: true, recurringYearly: true, affectsAllDays: false, overrideType: 'special_hours', notes: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
 ]);
 
 function toggleEditingInfo() {
@@ -311,7 +340,7 @@ function copyToAllDays(sourceDay: OperatingHours) {
 function addSpecialDay() {
 	const newSpecialDay: SpecialDay = {
 		id: Date.now().toString(),
-		name: 'New Special Day',
+		name: t('restaurant.schedule.newSpecialDay'),
 		date: new Date().toISOString().split('T')[0],
 		openTime: '10:00',
 		closeTime: '22:00',
