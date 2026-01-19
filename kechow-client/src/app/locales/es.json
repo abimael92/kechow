@@ -375,11 +375,45 @@
     },
     "common": {
         "save": "Guardar cambios",
+        "edit": "Editar",
         "cancel": "Cancelar",
         "remove": "Eliminar",
         "open": "Abierto",
         "closed": "Cerrado",
         "saveChanges": "Guardar cambios"
+    },
+    "businessSettings": {
+        "title": "Configuración del Negocio",
+        "subtitle": "Administra la información de tu negocio, opciones de entrega y promociones.",
+        "saveChangesTitle": "Guarda tus cambios",
+        "saveChangesDescription": "Todas las modificaciones se aplicarán inmediatamente",
+        "saveChangesButton": "Guardar cambios",
+        "category": {
+        "title": "Categoría del Restaurante",
+        "primaryCuisine": "Cocina Principal",
+        "primaryCuisineTooltip": "Selecciona el tipo principal de cocina de tu restaurante",
+        "selectCuisine": "Seleccionar Cocina",
+        "additionalTags": "Etiquetas Adicionales",
+        "tagsPlaceholder": "Ej. Vegano, Sin Gluten, Comida Rápida",
+        "tagsTooltip": "Agrega palabras clave para describir tu restaurante (separadas por comas)",
+        "menuDescription": "Descripción Corta del Menú",
+        "descriptionPlaceholder": "Ej. Pizzas caseras con ingredientes frescos",
+        "descriptionTooltip": "Mostrada en el menú para información rápida"
+        },
+        "delivery": {
+            "title": "Opciones de Entrega y Pedidos Anticipados",
+            "enablePickup": "Habilitar Recogida",
+            "enableDelivery": "Habilitar Entrega"
+        },
+        "promotions": {
+            "title": "Promociones y Entrega Gratuita",
+            "enableFreeDelivery": "Habilitar Promoción de Entrega Gratuita",
+            "minimumOrder": "Monto Mínimo de Pedido",
+            "minOrderPlaceholder": "ej. 500",
+            "minOrderTooltip": "Los clientes deben cumplir con este mínimo para obtener entrega gratuita",
+            "activeSchedule": "Días / Horas Activas",
+            "active": "Activo"
+        }
     },
     "days": {
         "monday": "Lunes",
@@ -422,5 +456,13 @@
                 "newYear": "Año Nuevo"
             }
         }
+    },
+    "cuisine": {
+        "pizza": "Pizza",
+        "burger": "Hamburguesas",
+        "sushi": "Sushi",
+        "mexican": "Mexicana",
+        "dessert": "Postres",
+        "other": "Otro"
     }
 }

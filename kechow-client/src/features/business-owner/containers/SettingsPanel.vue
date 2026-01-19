@@ -8,13 +8,13 @@
                 </div>
                 <div>
                     <h1 class="text-bubble text-6xl shadow-primary-500">
-                    {{ t('settings') }}
-					</h1>
+                        {{ t('settings') }}
+                    </h1>
                     <p class="text-neutral-950 dark:text-neutral-200 font-normal text-xl select-none">
-					{{ $t('manageTrackOrders') }}
+                        {{ t('manageTrackOrders') }}
                     </p>
                     <p class="ml-2 text-tertiary-800 font-medium">
-					{{ t('manageRestaurantSettings') }}
+                        {{ t('manageRestaurantSettings') }}
                     </p>
                 </div>
             </div>
@@ -38,7 +38,6 @@
                             <i :class="[tab.icon, 'mr-3 w-5 h-5 flex items-center justify-center transition-transform group-hover:scale-110', 
                                 activeTab === tab.id ? 'text-primary-600' : 'text-neutral-500 group-hover:text-primary-600 dark:group-hover:text-primary-400']"></i>
                             
-                            <!-- FIXED: Use t() function for translations -->
                             <span class="font-medium">{{ t(tab.label) }}</span>
                             
                             <i v-if="activeTab !== tab.id" class="ri-arrow-right-s-line ml-auto text-neutral-400 dark:text-neutral-600 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors"></i>
@@ -63,19 +62,21 @@
                                     <i class="ri-save-line text-white text-sm"></i>
                                 </div>
                                 <div>
-                                    <p class="text-sm font-medium text-neutral-800 dark:text-neutral-200">Save your changes</p>
-                                    <p class="text-xs text-neutral-600 dark:text-neutral-400">All modifications will be applied immediately</p>
+                                    <p class="text-sm font-medium text-neutral-800 dark:text-neutral-200">
+                                        {{ t('businessSettings.saveChangesTitle') }}
+                                    </p>
+                                    <p class="text-xs text-neutral-600 dark:text-neutral-400">
+                                        {{ t('businessSettings.saveChangesDescription') }}
+                                    </p>
                                 </div>
                             </div>
                             
                             <div class="flex items-center gap-4">
-                                <!-- FIXED: Use t() function for translations -->
                                 <button @click="cancelChanges" 
                                     class="px-6 py-2.5 border border-primary-400 dark:border-primary-600 text-primary-700 dark:text-primary-400 rounded-xl font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-500 dark:hover:border-primary-500 hover:text-primary-800 dark:hover:text-primary-300 transition-all duration-200 hover:shadow-sm cursor-pointer">
                                     {{ t('cancel') }}
                                 </button>
                                 
-                                <!-- FIXED: Use t() function for translations -->
                                 <button @click="saveChanges" 
                                     class="group px-6 py-2.5 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-button hover:shadow-button-hover transition-all duration-200 hover:-translate-y-0.5 cursor-pointer">
                                     <i class="ri-save-line mr-2"></i>
@@ -92,10 +93,9 @@
 
 <script setup lang="ts">
 import { ref, computed, defineAsyncComponent } from 'vue';
-import { useI18n } from 'vue-i18n'; // IMPORTANT: Add this import
+import { useI18n } from 'vue-i18n';
 
-// Get the i18n instance
-const { t } = useI18n(); // IMPORTANT: Add this line
+const { t } = useI18n();
 
 const activeTab = ref('general');
 
