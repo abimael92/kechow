@@ -25,7 +25,7 @@
 					<i class="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"></i>
 					<input
 						v-model="searchQuery"
-						:placeholder="$t('searchPlaceholder')"
+						:placeholder="$t('searchMenuPlaceholder')"
 						class="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
 						@input="handleSearch"
 					/>
@@ -252,11 +252,11 @@ const selectedItem = ref<MenuItem | null>(null);
 
 const categories = [
 	{ value: 'all', translationKey: 'allItems', icon: 'ri-list-check', color: '#8b34e0' },
-	{ value: 'pizza', translationKey: 'pizza', icon: 'ri-pizza-line', color: '#ef4444' },
-	{ value: 'pasta', translationKey: 'pasta', icon: 'ri-noodles-line', color: '#f59e0b' },
-	{ value: 'salads', translationKey: 'salads', icon: 'ri-leaf-line', color: '#10b981' },
-	{ value: 'desserts', translationKey: 'desserts', icon: 'ri-cake-line', color: '#ec4899' },
-	{ value: 'drinks', translationKey: 'drinks', icon: 'ri-drinks-line', color: '#3b82f6' }
+	{ value: 'platos_fuertes', translationKey: 'mainCourses', icon: 'ri-bowl-line', color: '#ef4444' },
+	{ value: 'sopas', translationKey: 'soups', icon: 'ri-fire-line', color: '#f59e0b' },
+	{ value: 'ensaladas', translationKey: 'salads', icon: 'ri-leaf-line', color: '#10b981' },
+	{ value: 'postres', translationKey: 'desserts', icon: 'ri-cake-line', color: '#ec4899' },
+	{ value: 'bebidas', translationKey: 'drinks', icon: 'ri-drinks-line', color: '#3b82f6' }
 ];
 
 const computedStats = computed(() => {
@@ -269,10 +269,10 @@ const computedStats = computed(() => {
 
 	// Calculate trends (mock data - in real app, compare with previous period)
 	const trends = {
-		total: totalItems > 5 ? 12 : 0,
-		available: availableItems > 3 ? 8 : 0,
-		outOfStock: outOfStockItems > 0 ? -5 : 0,
-		averagePrice: averagePrice > 15 ? 3 : 0
+	    total: menuItems.value.length > 0 ? Math.floor(Math.random() * 8) + 4 : 0,
+	    available: availableItems > 0 ? Math.floor(Math.random() * 6) + 2 : 0,
+	    outOfStock: outOfStockItems > 0 ? -(Math.floor(Math.random() * 3) + 1) : 0,
+	    averagePrice: averagePrice > 50 ? Math.floor(Math.random() * 5) + 1 : 0
 	};
 
 	return [
@@ -309,7 +309,7 @@ const computedStats = computed(() => {
 		{
 			label: 'averagePrice',
 			value: averagePrice,
-			displayValue: `$${averagePrice.toFixed(2)}`,
+			displayValue: `$${averagePrice.toFixed(2)} MXN`,
 			icon: 'ri-price-tag-line',
 			color: '#f59e0b',
 			bgColor: 'bg-orange-100 dark:bg-orange-900/30',
