@@ -83,16 +83,10 @@
 				</button>
 			</div>
 			<div class="flex space-x-3">
-				<button
-					v-if="!review.response"
-					@click="emitReply"
-					class="bg-orange-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-700 transition-colors cursor-pointer whitespace-nowrap"
-				>
-					<i
-						class="ri-reply-line mr-2 w-4 h-4 flex items-center justify-center inline"
-					></i
-					>{{ $t('reply') }}
-				</button>
+			<button v-if="!review.response" @click="emitReply" class="bg-orange-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-700 transition-colors cursor-pointer flex items-center justify-center gap-2">
+				<i class="ri-reply-line"></i>
+				<span>{{ $t('reply') }}</span>
+			</button>
 				<button
 					@click="emitFlag"
 					class="text-white hover:text-gray-800 p-2 cursor-pointer"

@@ -13,23 +13,30 @@ type Order = {
 const orders = ref<Order[]>([]);
 
 onMounted(() => {
-	// Replace with backend fetch later
 	orders.value = [
 		{
-			id: 12345,
-			status: 'Delivered',
-			total: 24.98,
-			date: '2025-09-01',
-			items: ['Margherita Pizza', 'Caesar Salad'],
-			restaurant: "Mario's Italian Kitchen",
+			id: 25634,
+			status: 'Entregado',
+			total: 180.00,
+			date: '2024-09-01',
+			items: ['Burrito de Machaca', 'Refresco de Tamarindo'],
+			restaurant: "La Fonda de Doña Chole",
 		},
 		{
-			id: 12346,
-			status: 'On the way',
-			total: 18.5,
-			date: '2025-09-05',
-			items: ['Sushi Roll', 'Miso Soup'],
-			restaurant: 'Sakura Sushi',
+			id: 25635,
+			status: 'En camino',
+			total: 210.00,
+			date: '2024-09-05',
+			items: ['Chile Colorado', 'Sopa de Menudo', 'Coyotas'],
+			restaurant: 'El Ranchito Norteño',
+		},
+		{
+			id: 25636,
+			status: 'Preparando',
+			total: 125.00,
+			date: '2024-09-08',
+			items: ['Tacos de Discada', 'Cebollitas Asadas'],
+			restaurant: 'Tacos El Güero',
 		},
 	];
 });
@@ -67,7 +74,7 @@ const activeTab = ref('My Orders');
 					class="ri-search-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 flex items-center justify-center"
 				></i>
 				<input
-					placeholder="Search restaurants, cuisines, or dishes..."
+					placeholder="Buscar restaurantes, comidas, o platillos..."
 					class="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
 					type="text"
 				/>
