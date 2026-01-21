@@ -17,7 +17,7 @@
 						<span
 							v-if="review.verified"
 							class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium"
-							>Verified</span
+							>{{ $t('verifiedPurchase') }}</span
 						>
 					</div>
 					<div class="flex items-center space-x-2">
@@ -45,7 +45,7 @@
 		<p class="text-gray-700 mb-4">{{ review.comment }}</p>
 
 		<div v-if="review.orderItems && review.orderItems.length > 0" class="mb-4">
-			<p class="text-sm text-white mb-2">Order items:</p>
+			<p class="text-sm text-white mb-2">{{ $t('orderItems') }}:</p>
 			<div class="flex flex-wrap gap-2">
 				<span
 					v-for="item in review.orderItems"
@@ -65,7 +65,7 @@
 				<i
 					class="ri-store-2-line text-orange-600 mr-2 w-4 h-4 flex items-center justify-center"
 				></i>
-				<span class="font-medium text-orange-800">Restaurant Response</span>
+				<span class="font-medium text-orange-800">{{ $t('restaurantResponse') }}</span>
 			</div>
 			<p class="text-orange-700">{{ review.response }}</p>
 		</div>
@@ -79,7 +79,7 @@
 					<i
 						class="ri-thumb-up-line mr-1 w-4 h-4 flex items-center justify-center"
 					></i>
-					<span class="text-sm">{{ review.helpfulCount }} helpful</span>
+					<span class="text-sm">{{ review.helpfulCount }} {{ $t('helpful') }}</span>
 				</button>
 			</div>
 			<div class="flex space-x-3">
@@ -91,7 +91,7 @@
 					<i
 						class="ri-reply-line mr-2 w-4 h-4 flex items-center justify-center inline"
 					></i
-					>Reply
+					>{{ $t('reply') }}
 				</button>
 				<button
 					@click="emitFlag"
@@ -105,7 +105,10 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n';
 import type { Review } from '../../types';
+
+const { t } = useI18n();
 
 const props = defineProps<{
 	review: Review;
@@ -118,7 +121,7 @@ const emit = defineEmits<{
 }>();
 
 const formatDate = (date: string) => {
-	return new Date(date).toLocaleDateString('en-US', {
+	return new Date(date).toLocaleDateString('es-ES', { // Cambiado a español
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
