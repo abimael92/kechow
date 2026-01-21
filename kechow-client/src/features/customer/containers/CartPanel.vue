@@ -20,30 +20,48 @@ type CartItem = {
 const cart = ref<CartItem[]>([
 	{
 		id: 1,
-		name: 'Margherita Pizza',
-		price: 12.99,
-		image: 'https://source.unsplash.com/200x200/?pizza',
+		name: 'Burrito de Machaca',
+		price: 85.00,
+		image: 'https://source.unsplash.com/200x200/?mexican-burrito',
 		quantity: 1,
-		description: 'Fresh tomatoes, mozzarella, basil',
-		category: 'Main Course',
+		description: 'Carne seca de res deshebrada con huevo, pico de gallo',
+		category: 'Plato Principal',
 	},
 	{
 		id: 2,
-		name: 'Caesar Salad',
-		price: 7.5,
-		image: 'https://source.unsplash.com/200x200/?salad',
-		quantity: 2,
-		description: 'Crisp romaine, parmesan, croutons',
-		category: 'Appetizer',
+		name: 'Chile Colorado',
+		price: 95.00,
+		image: 'https://source.unsplash.com/200x200/?mexican-chile',
+		quantity: 1,
+		description: 'Carne de res en salsa de chile colorado',
+		category: 'Plato Principal',
 	},
 	{
 		id: 3,
-		name: 'Chocolate Shake',
-		price: 4.99,
-		image: 'https://source.unsplash.com/200x200/?milkshake',
+		name: 'Sopa de Menudo',
+		price: 75.00,
+		image: 'https://source.unsplash.com/200x200/?menudo',
 		quantity: 1,
-		description: 'Rich chocolate, whipped cream',
-		category: 'Beverage',
+		description: 'Tradicional sopa de panza de res con maíz',
+		category: 'Sopas',
+	},
+	{
+		id: 4,
+		name: 'Refresco de Tamarindo',
+		price: 25.00,
+		image: 'https://source.unsplash.com/200x200/?tamarind-drink',
+		quantity: 2,
+		description: 'Refresco natural de tamarindo casero',
+		category: 'Bebidas',
+	},
+	{
+		id: 5,
+		name: 'Coyotas',
+		price: 40.00,
+		image: 'https://source.unsplash.com/200x200/?mexican-cookies',
+		quantity: 3,
+		description: 'Galletas tradicionales rellenas de piloncillo',
+		category: 'Postres',
 	},
 ]);
 
@@ -59,7 +77,7 @@ const itemCount = computed(() =>
 	cart.value.reduce((sum, item) => sum + item.quantity, 0)
 );
 
-const deliveryFee = computed(() => (total.value > 25 ? 0 : 3.99));
+const deliveryFee = computed(() => (total.value > 250 ? 0 : 50.00));
 const tax = computed(() => total.value * 0.08);
 const finalTotal = computed(() => total.value + deliveryFee.value + tax.value);
 
@@ -386,21 +404,20 @@ onMounted(() => {
 								</div>
 
 								<!-- Free delivery progress -->
-								<div v-if="total < 25" class="bg-gray-50 rounded-lg p-3 mt-4">
+								<div v-if="total < 250" class="bg-gray-50 rounded-lg p-3 mt-4">
 									<div class="flex justify-between text-sm mb-2">
 										<span class="text-white"
-											>Add ${{ (25 - total).toFixed(2) }} for free
-											delivery!</span
+											>Agrega ${{ (250 - total).toFixed(2) }} para entrega gratuita!</span
 										>
 										<span class="font-semibold text-orange-600"
-											>{{ Math.min((total / 25) * 100, 100).toFixed(0) }}%</span
+											>{{ Math.min((total / 250) * 100, 100).toFixed(0) }}%</span
 										>
 									</div>
 									<div class="w-full bg-gray-200 rounded-full h-2">
 										<div
 											class="bg-orange-500 h-2 rounded-full transition-all duration-500"
 											:style="{
-												width: `${Math.min((total / 25) * 100, 100)}%`,
+												width: `${Math.min((total / 250) * 100, 100)}%`,
 											}"
 										></div>
 									</div>
@@ -462,9 +479,9 @@ onMounted(() => {
 									/>
 								</svg>
 								<div>
-									<p class="text-sm font-medium text-blue-900">Need help?</p>
+									<p class="text-sm font-medium text-blue-900">¿Necesitas ayuda?</p>
 									<p class="text-xs text-blue-700 mt-1">
-										Contact support: (555) 123-4567
+										Contacta soporte: (636) 462-1234
 									</p>
 								</div>
 							</div>
