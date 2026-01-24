@@ -1,84 +1,146 @@
+<!-- @/components/RestaurantCard.vue -->
+<template>
+    <div 
+        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 cursor-pointer group"
+        @click="$emit('click', restaurant)"
+    >
+        <!-- Restaurant Image -->
+        <div class="relative h-48 overflow-hidden">
+            <img 
+                :src="restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'" 
+                :alt="restaurant.name"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <button 
+                @click.stop="$emit('favorite', restaurant)"
+                class="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-colors"
+            >
+                <i 
+                    :class="restaurant.isFavorite ? 'ri-heart-fill text-red-500' : 'ri-heart-line text-gray-600 dark:text-gray-300'"
+                    class="text-xl"
+                ></i>
+            </button>
+            <div v-if="!restaurant.isOpen" class="absolute inset-0 bg-black/60 flex items-center justify-center">
+                <span class="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                    {{ $t('closed') }}
+                </span>
+            </div>
+        </div>
+        
+        <!-- Restaurant Info -->
+        <div class="p-4">
+            <div class="flex justify-between items-start mb-2">
+                <h3 class="font-bold text-lg text-gray-900 dark:text-white line-clamp-1">
+                    {{ restaurant.name }}
+                </h3>
+                <span 
+                    :class="[
+                        'px-2 py-1 rounded text-xs font-medium',
+                        restaurant.priceRange === '$' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
+                        restaurant.priceRange === '$$' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+                        'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+                    ]"
+                >
+                    {{ restaurant.priceRange }}
+                </span>
+            </div>
+            
+            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
+                {{ restaurant.description }}
+            </p>
+            
+            <div class="flex items-center justify-between">
+                <!-- Rating -->
+                <div class="flex items-center gap-1" v-if="restaurant.rating !== undefined">
+                    <div class="flex text-yellow-400">
+                        <i v-for="star in 5" :key="star" class="ri-star-fill"></i>
+                    </div>
+                    <span class="text-sm text-gray-700 dark:text-gray-300 ml-1">
+                        {{ restaurant.rating?.toFixed(1) || 'N/A' }}
+                    </span>
+                </div>
+                <div v-else class="text-sm text-gray-500">Sin calificación</div>
+                
+                <!-- Delivery Time -->
+                <span class="text-sm text-gray-600 dark:text-gray-400" v-if="restaurant.deliveryTime">
+                    {{ restaurant.deliveryTime }} min
+                </span>
+            </div>
+            
+            <!-- Cuisine Badge -->
+            <div class="mt-3">
+                <span class="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs">
+                    {{ restaurant.cuisine }}
+                </span>
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup lang="ts">
-import { defineProps } from 'vue';
-import { useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
-const props = defineProps({
-	restaurant: {
-		type: Object as () => {
-			id: number;
-			name: string;
-			description: string;
-			image?: string;
-			menu: {
-				name: string;
-				description: string;
-				image: string;
-				price: number;
-			}[];
-			rating: number;
-		},
-		required: true,
-	},
-});
+const { t } = useI18n();
 
-const router = useRouter();
-
-function goToRestaurant() {
-	router.push({
-		name: 'RestaurantDetail',
-		params: { id: props.restaurant.id },
-	});
+interface MenuItem {
+    id: number;
+    name: string;
+    description: string;
+    image: string;
+    price: number;
+    stock?: number;
 }
+
+interface Restaurant {
+    id: number;
+    name: string;
+    description: string;
+    image?: string;
+    menu: MenuItem[];
+    rating?: number; // Made optional
+    deliveryTime?: number; // Made optional
+    priceRange?: '$' | '$$' | '$$$'; // Made optional
+    cuisine?: string; // Made optional
+    isOpen?: boolean; // Made optional
+    isFavorite?: boolean; // Made optional
+}
+
+const props = defineProps<{
+    restaurant: Restaurant;
+    viewMode?: 'grid' | 'list';
+}>();
+
+defineEmits<{
+    (e: 'favorite', restaurant: Restaurant): void;
+    (e: 'click', restaurant: Restaurant): void;
+}>();
 </script>
 
-<template>
-	<li
-		@click="goToRestaurant"
-		class="rounded-xl overflow-hidden border border-white/10 backdrop-blur-md bg-[#fdf6ff]/50 dark:bg-[#1f152f]/60 to-pink-500/10 dark:from-gray-800/40 dark:via-purple-800/30 dark:to-pink-700/20 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
-	>
-		<div class="overflow-hidden h-48">
-			<img
-				v-if="restaurant.image"
-				:src="restaurant.image"
-				:alt="restaurant.name"
-				class="h-full w-full object-cover transform transition-transform duration-300 group-hover:scale-105"
-				loading="lazy"
-				decoding="async"
-			/>
-			<div
-				v-else
-				class="h-full w-full flex items-center justify-center bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
-			>
-				Imagen no disponible
-			</div>
-		</div>
+<style scoped>
+.line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
 
-		<div class="p-4">
-			<h3
-				class="text-lg font-semibold text-gray-800 dark:text-white/80 group-hover:text-accent transition"
-			>
-				{{ restaurant.name }}
-			</h3>
-			<p class="text-sm text-white dark:text-gray-400 mt-1">
-				{{ restaurant.description }}
-			</p>
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
 
-			<div
-				class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400"
-			>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="w-4 h-4 text-yellow-400"
-					fill="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						d="M12 .587l3.668 7.431L24 9.587l-6 5.847L19.335 24 12 20.201 4.665 24 6 15.434 0 9.587l8.332-1.569z"
-					/>
-				</svg>
-				<span>{{ restaurant.rating }} </span>
-				<!-- <span>• {{ restaurant.category }}</span> -->
-			</div>
-		</div>
-	</li>
-</template>
+/* List view styles */
+:deep(.restaurant-card-list) {
+    @apply flex;
+}
+
+:deep(.restaurant-card-list .image-container) {
+    @apply w-32 h-32 flex-shrink-0;
+}
+
+:deep(.restaurant-card-list .info-container) {
+    @apply flex-1;
+}
+</style>

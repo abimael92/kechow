@@ -1,25 +1,25 @@
 <template>
-	<div class="orders-container space-y-6">
+	<div class="space-y-6 mb-4">
 		<!-- Header Section -->
-		<div class="header-section">
-            <div class="header-content">
-                <div class="header-icon-container">
-                    <i class="ri-shopping-cart-line header-icon"></i>
+            <div class="flex items-center gap-3 space-y-2 ">
+                <div class="w-16 h-16 rounded-3xl bg-gradient-to-r from-secondary-600 to-secondary-500 flex items-center justify-center shadow-md shadow-primary-500/30">
+                    <i class="ri-shopping-cart-line text-white text-3xl"></i>
                 </div>
                 <div>
-                    <h1 class="header-title">
+                    <h1 class="text-bubble text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary-500 leading-tight sm:leading-snug">
 					{{ $t('orders') }}
 					</h1>
-                    <p class="header-subtitle">
+                  	<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none tline-clamp-2">
 					{{ $t('manageTrackOrders') }}
-						<span v-if="orders.length > 0" class="order-count">
+						<span v-if="orders.length > 0" class="ml-1 sm:ml-2 text-tertiary-800 dark:text-tertiary-400 font-medium whitespace-nowrap">
 							({{ orders.length }} {{ $t('orders', orders.length) }})
 						</span>
                     </p>
                 </div>
 			</div>
-		
-			<div class="header-controls">
+
+		<!-- Controls: Search, Filter, Refresh -->
+			<div class="header-controls space-y-2 mb-4 ">
 				<!-- Search Input -->
 				<div class="search-container">
 					<i class="ri-search-line search-icon"></i>
@@ -309,8 +309,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-	
+
 	<!-- Click Outside Listener for Dropdown -->
 	<div 
 		v-if="showFilterDropdown" 
@@ -628,6 +627,13 @@ onUnmounted(() => {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    padding: 1rem;
+    margin-bottom: 2rem;
 }
 
 .header-icon-container {
@@ -1721,6 +1727,8 @@ onUnmounted(() => {
     .header-controls {
         flex-direction: column;
         width: 100%;
+        
+
     }
     
     .search-container,
