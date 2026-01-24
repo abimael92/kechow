@@ -1,3 +1,13 @@
+export type OrderStatus =
+	| 'new'
+	| 'preparing'
+	| 'ready'
+	| 'out_for_delivery'
+	| 'delivered'
+	| 'cancelled';
+export type PaymentMethod = 'card' | 'cash' | 'online' | 'wallet';
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
+
 export interface OrderItem {
 	id: string;
 	name: string;
