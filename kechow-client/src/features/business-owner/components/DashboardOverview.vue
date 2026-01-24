@@ -10,12 +10,8 @@
                     <h1 class="text-bubble text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary-500 leading-tight sm:leading-snug">
                         {{ t('dashboard') }}
                     </h1>
-                    <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none truncate">
+                    <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
                         {{ t('subtitle') }}
-                    </p>
-                    <!-- Mobile welcome message -->
-                    <p class="text-neutral-600 dark:text-neutral-400 text-xs sm:hidden mt-1">
-                        {{ t('welcomeBack') }}, {{ authStore.user?.name || 'User' }}
                     </p>
                 </div>
             </div>
