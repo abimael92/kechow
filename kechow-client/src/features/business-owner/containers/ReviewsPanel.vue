@@ -10,7 +10,7 @@
 					<h1 class="text-bubble text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary-500 leading-tight sm:leading-snug">
 						{{ $t('customerReviews') }}
 					</h1>
-					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none truncate">
+					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
 						{{ $t('manageRespondFeedback') }}
 						<span v-if="reviews.length > 0" class="ml-1 sm:ml-2 text-tertiary-800 dark:text-tertiary-400 font-medium whitespace-nowrap">
 							({{ reviews.length }} {{ $t('reviews', reviews.length) }})
