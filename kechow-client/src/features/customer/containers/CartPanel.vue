@@ -2,9 +2,10 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const toast = useToast();
-
 const router = useRouter();
 
 type CartItem = {
@@ -21,7 +22,7 @@ const cart = ref<CartItem[]>([
 	{
 		id: 1,
 		name: 'Burrito de Machaca',
-		price: 85.00,
+		price: 85.0,
 		image: 'https://source.unsplash.com/200x200/?mexican-burrito',
 		quantity: 1,
 		description: 'Carne seca de res deshebrada con huevo, pico de gallo',
@@ -30,7 +31,7 @@ const cart = ref<CartItem[]>([
 	{
 		id: 2,
 		name: 'Chile Colorado',
-		price: 95.00,
+		price: 95.0,
 		image: 'https://source.unsplash.com/200x200/?mexican-chile',
 		quantity: 1,
 		description: 'Carne de res en salsa de chile colorado',
@@ -39,7 +40,7 @@ const cart = ref<CartItem[]>([
 	{
 		id: 3,
 		name: 'Sopa de Menudo',
-		price: 75.00,
+		price: 75.0,
 		image: 'https://source.unsplash.com/200x200/?menudo',
 		quantity: 1,
 		description: 'Tradicional sopa de panza de res con maíz',
@@ -48,7 +49,7 @@ const cart = ref<CartItem[]>([
 	{
 		id: 4,
 		name: 'Refresco de Tamarindo',
-		price: 25.00,
+		price: 25.0,
 		image: 'https://source.unsplash.com/200x200/?tamarind-drink',
 		quantity: 2,
 		description: 'Refresco natural de tamarindo casero',
@@ -57,7 +58,7 @@ const cart = ref<CartItem[]>([
 	{
 		id: 5,
 		name: 'Coyotas',
-		price: 40.00,
+		price: 40.0,
 		image: 'https://source.unsplash.com/200x200/?mexican-cookies',
 		quantity: 3,
 		description: 'Galletas tradicionales rellenas de piloncillo',
@@ -77,7 +78,7 @@ const itemCount = computed(() =>
 	cart.value.reduce((sum, item) => sum + item.quantity, 0)
 );
 
-const deliveryFee = computed(() => (total.value > 250 ? 0 : 50.00));
+const deliveryFee = computed(() => (total.value > 250 ? 0 : 50.0));
 const tax = computed(() => total.value * 0.08);
 const finalTotal = computed(() => total.value + deliveryFee.value + tax.value);
 
@@ -132,7 +133,7 @@ async function checkout() {
 	await new Promise((resolve) => setTimeout(resolve, 1500));
 
 	toast.success(
-		`Order placed successfully! Total: $${finalTotal.value.toFixed(2)}`
+		t('orderPlacedSuccessfully', { total: finalTotal.value.toFixed(2) })
 	);
 
 	cart.value = [];
@@ -151,64 +152,69 @@ onMounted(() => {
 		}
 	};
 	window.addEventListener('keydown', handleKeyPress);
+	return () => {
+		window.removeEventListener('keydown', handleKeyPress);
+	};
 });
 </script>
 
 <template>
-	<div class="min-h-screen py-6">
-		<div class="max-w-4xl mx-auto px-4 sm:px-6">
+	<div class="min-h-screen py-4 md:py-6">
+		<div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
 			<!-- Header -->
-			<header class="flex items-center justify-between mb-8">
+			<header class="flex flex-col sm:flex-row items-center justify-between mb-6 md:mb-8 gap-4 sm:gap-0">
+				<!-- Back Button -->
 				<button
 					@click="continueShopping"
-					class="flex items-center gap-1 px-3 py-2 text-white-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+					class="flex items-center gap-1 px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 self-start sm:self-auto w-full sm:w-auto"
 				>
 					<div
-						class="w-8 h-8 flex items-center justify-center rounded-full shadow-sm group-hover:shadow-md transition-shadow"
+						class="w-8 h-8 flex items-center justify-center rounded-full shadow-sm group-hover:shadow-md transition-shadow bg-white dark:bg-gray-800"
 					>
 						<span class="text-lg">←</span>
 					</div>
-					<span class="font-medium">Continue Shopping</span>
+					<span class="font-medium ml-1">{{ t('continueShopping') }}</span>
 				</button>
 
-				<div class="flex-1 px-4 text-center">
+				<!-- Title Section -->
+				<div class="flex-1 px-2 sm:px-4 text-center order-first sm:order-none">
 					<h1
-						class="text-3xl sm:text-6xl font-extrabold text-gray-900 leading-snug"
+						class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight sm:leading-snug"
 					>
-						My Cart
+						{{ t('myCart') }}
 					</h1>
 					<p
-						class="text-lg sm:text-2xl text-white mt-2 max-w-2xl mx-auto text-white"
+						class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mt-1 sm:mt-2 max-w-2xl mx-auto"
 					>
-						{{ itemCount }} item{{ itemCount !== 1 ? 's' : '' }} in your cart
+						{{ t('itemsInCart', { count: itemCount }) }}
 					</p>
 				</div>
 
-				<div class="w-20"></div>
 				<!-- Spacer for balance -->
+				<div class="w-16 sm:w-20 hidden sm:block"></div>
 			</header>
 
 			<!-- Main Content -->
-			<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
 				<!-- Cart Items -->
-				<div class="lg:col-span-2 space-y-4">
+				<div class="lg:col-span-2 space-y-3 md:space-y-4">
 					<TransitionGroup name="list">
 						<div
 							v-for="item in cart"
 							:key="item.id"
 							:class="[
-								'bg-white rounded-2xl shadow-sm border border-gray-100 p-6 transition-all duration-300',
+								'bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 md:p-6 transition-all duration-300',
 								removingItemId === item.id
 									? 'opacity-0 scale-95'
 									: 'opacity-100 scale-100',
-								'hover:shadow-md hover:border-gray-200',
+								'hover:shadow-md hover:border-gray-200 dark:hover:border-gray-600',
 							]"
 						>
-							<div class="flex gap-4">
+							<div class="flex flex-col sm:flex-row gap-4">
 								<!-- Product Image -->
-								<div class="flex-shrink-0">
+								<div class="flex-shrink-0 mx-auto sm:mx-0">
 									<img
-										:src="'/images/placeholder-image.png'"
+										:src="item.image || '/images/placeholder-image.png'"
 										:alt="item.name"
 										class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-sm"
 									/>
@@ -216,45 +222,49 @@ onMounted(() => {
 
 								<!-- Product Info -->
 								<div class="flex-1 min-w-0">
-									<div class="flex justify-between items-start gap-4">
+									<div class="flex justify-between items-start gap-2 sm:gap-4">
 										<div class="flex-1 min-w-0">
-											<h3 class="font-semibold text-gray-900 text-lg truncate">
+											<h3 class="font-semibold text-gray-900 dark:text-white text-base sm:text-lg truncate">
 												{{ item.name }}
 											</h3>
-											<p class="text-gray-500 text-sm mt-1">
-												{{ item.category }}
+											<p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mt-1">
+												{{ t(item.category?.toLowerCase() || 'uncategorized') }}
 											</p>
-											<p class="text-white text-sm mt-2 line-clamp-2">
+											<p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mt-2 line-clamp-2">
 												{{ item.description }}
 											</p>
 										</div>
-										<svg
+										<button
 											@click="removeItem(item.id)"
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 16 16"
-											stroke="currentColor"
-											class="w-5 h-5 text-red-400 hover:text-red-600 cursor-pointer transition-colors duration-200"
-											aria-label="Remove item"
+											class="text-red-400 hover:text-red-600 dark:hover:text-red-500 cursor-pointer transition-colors duration-200 flex-shrink-0 ml-2"
+											:aria-label="t('removeItem')"
 										>
-											<path
-												d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
-											/>
-											<path
-												d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
-											/>
-										</svg>
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												fill="none"
+												viewBox="0 0 16 16"
+												stroke="currentColor"
+												class="w-5 h-5"
+											>
+												<path
+													d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"
+												/>
+												<path
+													d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"
+												/>
+											</svg>
+										</button>
 									</div>
 
 									<!-- Quantity Controls & Price -->
-									<div class="flex items-center justify-between mt-4">
+									<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-4 gap-3 sm:gap-0">
 										<!-- Quantity Controls -->
-										<div class="flex items-center gap-3">
+										<div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
 											<button
 												@click="decrease(item.id)"
 												:disabled="item.quantity <= 1"
-												class="w-[60px] h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
-												aria-label="Decrease quantity"
+												class="w-[50px] sm:w-[60px] h-8 flex items-center justify-center rounded-full text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+												:aria-label="t('decreaseQuantity')"
 											>
 												<svg
 													class="w-4 h-4"
@@ -271,7 +281,7 @@ onMounted(() => {
 												</svg>
 											</button>
 
-											<div class="flex items-center gap-2">
+											<div class="flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center">
 												<input
 													:id="`quantity-${item.id}`"
 													type="number"
@@ -290,13 +300,14 @@ onMounted(() => {
 													"
 													min="1"
 													max="99"
-													class="w-18 text-center border border-gray-300 rounded-md text-lg font-medium text-primary focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"
+													class="w-16 sm:w-18 text-center border border-gray-300 dark:border-gray-600 bg-transparent rounded-md text-base sm:text-lg font-medium text-primary-600 dark:text-primary-400 focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-colors duration-200"
 												/>
 											</div>
 
 											<button
 												@click="increase(item.id)"
-												class="w-[60px] h-8 flex items-center justify-center rounded-full bg-primary text-white text-lg font-bold hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+												class="w-[50px] sm:w-[60px] h-8 flex items-center justify-center rounded-full bg-primary-600 dark:bg-primary-500 text-white text-lg font-bold hover:bg-primary-700 dark:hover:bg-primary-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+												:aria-label="t('increaseQuantity')"
 											>
 												<svg
 													class="w-4 h-4"
@@ -315,12 +326,12 @@ onMounted(() => {
 										</div>
 
 										<!-- Price -->
-										<div class="text-right">
-											<p class="text-lg font-bold text-gray-900">
+										<div class="text-right w-full sm:w-auto mt-2 sm:mt-0">
+											<p class="text-lg font-bold text-gray-900 dark:text-white">
 												${{ (item.price * item.quantity).toFixed(2) }}
 											</p>
-											<p class="text-sm text-gray-500">
-												${{ item.price.toFixed(2) }} each
+											<p class="text-sm text-gray-500 dark:text-gray-400">
+												{{ t('each', { price: item.price.toFixed(2) }) }}
 											</p>
 										</div>
 									</div>
@@ -332,13 +343,13 @@ onMounted(() => {
 					<!-- Empty State -->
 					<div
 						v-if="!cart.length"
-						class="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100"
+						class="text-center py-12 sm:py-16 bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700"
 					>
 						<div
-							class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4"
+							class="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4"
 						>
 							<svg
-								class="w-12 h-12 text-gray-400"
+								class="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 dark:text-gray-500"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
@@ -351,71 +362,71 @@ onMounted(() => {
 								/>
 							</svg>
 						</div>
-						<h3 class="text-xl font-semibold text-gray-900 mb-2">
-							Your cart is empty
+						<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+							{{ t('cartEmpty') }}
 						</h3>
-						<p class="text-gray-500 mb-6">
-							Add some delicious items to get started!
+						<p class="text-gray-500 dark:text-gray-400 mb-6 max-w-sm mx-auto px-4">
+							{{ t('addItemsPrompt') }}
 						</p>
 						<button
 							@click="continueShopping"
-							class="bg-orange-500 text-white px-8 py-3 rounded-xl font-semibold hover:bg-orange-600 transition-colors shadow-sm"
+							class="bg-primary-600 dark:bg-primary-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors shadow-sm hover:shadow-md"
 						>
-							Browse Menu
+							{{ t('browseMenu') }}
 						</button>
 					</div>
 				</div>
 
 				<!-- Order Summary -->
 				<div v-if="cart.length" class="lg:col-span-1">
-					<div class="sticky top-6">
+					<div class="sticky top-4 md:top-6">
 						<div
-							class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6"
+							class="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 md:p-6"
 						>
-							<h2 class="text-xl font-bold text-gray-900 mb-6">
-								Order Summary
+							<h2 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
+								{{ t('orderSummary') }}
 							</h2>
 
 							<!-- Pricing Breakdown -->
-							<div class="space-y-3 mb-6">
-								<div class="flex justify-between text-white">
-									<span>Subtotal ({{ itemCount }} items)</span>
+							<div class="space-y-3 mb-4 md:mb-6">
+								<div class="flex justify-between text-gray-600 dark:text-gray-300 text-sm md:text-base">
+									<span>{{ t('subtotal', { count: itemCount }) }}</span>
 									<span>${{ total.toFixed(2) }}</span>
 								</div>
-								<div class="flex justify-between text-white">
-									<span>Delivery Fee</span>
-									<span :class="deliveryFee === 0 ? 'text-green-600' : ''">
+								<div class="flex justify-between text-gray-600 dark:text-gray-300 text-sm md:text-base">
+									<span>{{ t('deliveryFee') }}</span>
+									<span :class="deliveryFee === 0 ? 'text-green-600 dark:text-green-400' : ''">
 										{{
-											deliveryFee === 0 ? 'Free' : `$${deliveryFee.toFixed(2)}`
+											deliveryFee === 0 ? t('free') : `$${deliveryFee.toFixed(2)}`
 										}}
 									</span>
 								</div>
-								<div class="flex justify-between text-white">
-									<span>Tax (8%)</span>
+								<div class="flex justify-between text-gray-600 dark:text-gray-300 text-sm md:text-base">
+									<span>{{ t('tax', { rate: 8 }) }}</span>
 									<span>${{ tax.toFixed(2) }}</span>
 								</div>
-								<div class="border-t border-gray-200 pt-3">
+								<div class="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3">
 									<div
-										class="flex justify-between text-lg font-bold text-gray-900"
+										class="flex justify-between text-base md:text-lg font-bold text-gray-900 dark:text-white"
 									>
-										<span>Total</span>
+										<span>{{ t('total') }}</span>
 										<span>${{ finalTotal.toFixed(2) }}</span>
 									</div>
 								</div>
 
 								<!-- Free delivery progress -->
-								<div v-if="total < 250" class="bg-gray-50 rounded-lg p-3 mt-4">
-									<div class="flex justify-between text-sm mb-2">
-										<span class="text-white"
-											>Agrega ${{ (250 - total).toFixed(2) }} para entrega gratuita!</span
-										>
-										<span class="font-semibold text-orange-600"
-											>{{ Math.min((total / 250) * 100, 100).toFixed(0) }}%</span
-										>
+								<div v-if="total < 250" class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 mt-4">
+									<div class="flex justify-between text-xs md:text-sm mb-2">
+										<span class="text-gray-600 dark:text-gray-300">
+											{{ t('freeDeliveryProgress', { amount: (250 - total).toFixed(2) }) }}
+										</span>
+										<span class="font-semibold text-primary-600 dark:text-primary-400">
+											{{ Math.min((total / 250) * 100, 100).toFixed(0) }}%
+										</span>
 									</div>
-									<div class="w-full bg-gray-200 rounded-full h-2">
+									<div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
 										<div
-											class="bg-orange-500 h-2 rounded-full transition-all duration-500"
+											class="bg-primary-500 dark:bg-primary-400 h-2 rounded-full transition-all duration-500"
 											:style="{
 												width: `${Math.min((total / 250) * 100, 100)}%`,
 											}"
@@ -429,21 +440,35 @@ onMounted(() => {
 								@click="checkout"
 								:disabled="showSuccess"
 								:class="[
-									'relative w-full gap-1 px-3 py-4 rounded-xl font-semibold flex items-center justify-center transition-colors duration-200',
+									'relative w-full gap-1 px-3 py-3 md:py-4 rounded-xl font-semibold flex items-center justify-center transition-colors duration-200',
 									showSuccess
-										? 'bg-gray-400 text-white cursor-not-allowed'
-										: 'bg-primary text-white hover:bg-primary/90 hover:text-white',
+										? 'bg-gray-400 dark:bg-gray-600 text-white cursor-not-allowed'
+										: 'bg-primary-600 dark:bg-primary-500 text-white hover:bg-primary-700 dark:hover:bg-primary-600',
 								]"
 							>
 								<div class="flex items-center justify-center gap-2">
-									<span v-if="showSuccess">Order Placed! </span>
-									<span v-else>Checkout - ${{ finalTotal.toFixed(2) }}</span>
+									<svg
+										v-if="showSuccess"
+										class="w-5 h-5 animate-spin"
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+									>
+										<path
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											stroke-width="2"
+											d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+										/>
+									</svg>
+									<span v-if="showSuccess">{{ t('processing') }}</span>
+									<span v-else>{{ t('checkout', { total: finalTotal.toFixed(2) }) }}</span>
 								</div>
 							</button>
 
 							<!-- Security Badge -->
 							<div
-								class="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-gray-200"
+								class="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
 							>
 								<svg
 									class="w-4 h-4 text-green-500"
@@ -456,17 +481,17 @@ onMounted(() => {
 										clip-rule="evenodd"
 									/>
 								</svg>
-								<span class="text-xs text-gray-500"
-									>Secure checkout · 256-bit SSL encrypted</span
-								>
+								<span class="text-xs text-gray-500 dark:text-gray-400">
+									{{ t('secureCheckout') }}
+								</span>
 							</div>
 						</div>
 
 						<!-- Support Info -->
-						<div class="bg-blue-50 rounded-2xl p-4 mt-4 border border-blue-100">
+						<div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mt-4 border border-blue-100 dark:border-blue-800">
 							<div class="flex items-start gap-3">
 								<svg
-									class="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0"
+									class="w-5 h-5 text-blue-500 dark:text-blue-400 mt-0.5 flex-shrink-0"
 									fill="none"
 									stroke="currentColor"
 									viewBox="0 0 24 24"
@@ -479,9 +504,9 @@ onMounted(() => {
 									/>
 								</svg>
 								<div>
-									<p class="text-sm font-medium text-blue-900">¿Necesitas ayuda?</p>
-									<p class="text-xs text-blue-700 mt-1">
-										Contacta soporte: (636) 462-1234
+									<p class="text-sm font-medium text-blue-900 dark:text-blue-300">{{ t('needHelp') }}</p>
+									<p class="text-xs text-blue-700 dark:text-blue-400 mt-1">
+										{{ t('contactSupport', { phone: '(636) 462-1234' }) }}
 									</p>
 								</div>
 							</div>
@@ -536,10 +561,32 @@ input[type='number'] {
 	-moz-appearance: textfield;
 }
 
-/* Smooth transitions for all interactive elements */
+/* Responsive adjustments */
+@media (max-width: 640px) {
+	.grid-cols-1 > * {
+		width: 100%;
+	}
+}
+
+/* Dark mode transitions */
 * {
 	transition-property: color, background-color, border-color, transform,
 		box-shadow;
 	transition-duration: 200ms;
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+	button, 
+	input[type="number"],
+	[role="button"] {
+		min-height: 44px;
+		min-width: 44px;
+	}
+	
+	/* Adjust spacing for mobile */
+	.space-y-3 > * + * {
+		margin-top: 0.75rem;
+	}
 }
 </style>
