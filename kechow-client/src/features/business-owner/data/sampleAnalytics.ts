@@ -1,4 +1,4 @@
-import type { AnalyticsData } from '../types';
+import type { AnalyticsData } from '@/types';
 
 export const sampleAnalyticsData: AnalyticsData = {
 	totalRevenue: 19247,
