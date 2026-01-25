@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// TODO: Route auth HTTP calls through `@app/lib/axios` to keep a single API entry point.
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
 // Axios instance
