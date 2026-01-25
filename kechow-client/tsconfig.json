@@ -3,7 +3,7 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"moduleResolution": "node",
-		"ignoreDeprecations": "6.0",
+		"ignoreDeprecations": "5.0",
 		"strict": true,
 		"jsx": "preserve",
 		"esModuleInterop": true,
@@ -17,15 +17,18 @@
 		"paths": {
 			"@/*": ["*"],
 			"@app/*": ["app/*"],
+			"@features/*": ["features/*"],
+			"@shared/*": ["shared/*"],
 			"@assets/*": ["assets/*"],
 			"@components/*": ["components/*"],
 			"@layout/*": ["shared/layout/*"],
-			"@features/*": ["features/*"],
-			"@store/*": ["store/*"],
-			"@shared/*": ["shared/*"],
-			"@pages/*": ["pages/*"]
+			"@pages/*": ["pages/*"],
+			"@store/*": ["app/store/*"]
 		},
 		"types": ["vite/client"]
+	},
+	"vueCompilerOptions": {
+		"strictTemplates": false
 	},
 	"include": ["src", "shims-vue.d.ts"],
 	"exclude": ["node_modules", "dist"]
