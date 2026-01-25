@@ -6,15 +6,18 @@ export default defineConfig({
 	plugins: [vue()],
 	resolve: {
 		alias: {
+			// Standardized primary aliases
 			'@': path.resolve(__dirname, './src'),
 			'@app': path.resolve(__dirname, './src/app'),
+			'@features': path.resolve(__dirname, './src/features'),
+			'@shared': path.resolve(__dirname, './src/shared'),
 			'@assets': path.resolve(__dirname, './src/assets'),
+
+			// Backward-compatible aliases (legacy imports)
 			'@components': path.resolve(__dirname, './src/components'),
 			'@layout': path.resolve(__dirname, './src/shared/layout'),
-			'@features': path.resolve(__dirname, './src/features'),
-			'@store': path.resolve(__dirname, './src/store'),
-			'@shared': path.resolve(__dirname, './src/shared'),
 			'@pages': path.resolve(__dirname, './src/pages'),
+			'@store': path.resolve(__dirname, './src/app/store'),
 		},
 	},
 	server: {
