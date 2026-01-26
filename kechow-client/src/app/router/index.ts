@@ -74,9 +74,33 @@ const routes = [
 				meta: { requiresAuth: true, role: 'customer' },
 			},
 			{
+				path: 'checkout',
+				name: 'CheckoutPage',
+				component: () => import('@/pages/customer/CheckoutPage.vue'),
+				meta: { requiresAuth: true, role: 'customer' },
+			},
+			{
 				path: 'orders',
 				name: 'OrdersPage',
 				component: () => import('@/pages/customer/OrdersPage.vue'),
+				meta: { requiresAuth: true, role: 'customer' },
+			},
+			{
+				path: 'orders/:id/track',
+				name: 'OrderTracking',
+				component: () => import('@/pages/customer/OrderTrackingPage.vue'),
+				meta: { requiresAuth: true, role: 'customer' },
+			},
+			{
+				path: 'reviews',
+				name: 'ReviewPage',
+				component: () => import('@/pages/customer/ReviewsPage.vue'),
+				meta: { requiresAuth: true, role: 'customer' },
+			},
+			{
+				path: 'profile',
+				name: 'ProfilePage',
+				component: () => import('@/pages/customer/ProfilePage.vue'),
 				meta: { requiresAuth: true, role: 'customer' },
 			},
 		],
