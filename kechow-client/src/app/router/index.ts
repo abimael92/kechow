@@ -1,6 +1,9 @@
 // kechow-client/src/app/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
 import MainLayout from '@layout/MainLayout.vue';
+import CustomerLayout from '@shared/layout/CustomerLayout.vue';
+import OwnerLayout from '@shared/layout/OwnerLayout.vue';
+import DeliveryLayout from '@shared/layout/DeliveryLayout.vue';
 import { authGuard } from './guards';
 
 // Pages (eager)
@@ -38,8 +41,13 @@ const routes = [
 			{ path: '', name: 'Landing', component: LandingPage },
 			{ path: 'login', name: 'Login', component: LoginView },
 			{ path: 'register', name: 'Register', component: RegisterView },
-
-			// Customer routes
+		],
+	},
+	// Customer routes with CustomerLayout
+	{
+		path: '/',
+		component: CustomerLayout,
+		children: [
 			{
 				path: 'home',
 				name: 'Home',
@@ -60,61 +68,24 @@ const routes = [
 				meta: { requiresAuth: true, role: 'customer' },
 			},
 			{
-				path: '/cart',
+				path: 'cart',
 				name: 'CartPage',
 				component: () => import('@/pages/customer/CartPage.vue'),
 				meta: { requiresAuth: true, role: 'customer' },
 			},
 			{
-				path: '/orders',
+				path: 'orders',
 				name: 'OrdersPage',
 				component: () => import('@/pages/customer/OrdersPage.vue'),
 				meta: { requiresAuth: true, role: 'customer' },
 			},
-			// Delivery routes
-			{
-				path: '/delivery',
-				children: [
-					{
-						path: 'dashboard',
-						name: 'DeliveryDashboard',
-						component: DeliveryDashboard,
-						meta: { requiresAuth: true, role: 'delivery' },
-					},
-					{
-						path: 'order/:id',
-						name: 'DeliveryOrderDetail',
-						component: DeliveryOrderDetail,
-						meta: { requiresAuth: true, role: 'delivery' },
-					},
-					{
-						path: 'live/:id',
-						name: 'LiveDelivery',
-						component: LiveDelivery,
-						meta: { requiresAuth: true, role: 'delivery' },
-					},
-					{
-						path: 'profile',
-						name: 'DeliveryProfile',
-						component: DeliveryProfile,
-						meta: { requiresAuth: true, role: 'delivery' },
-					},
-					{
-						path: 'earnings',
-						name: 'DeliveryEarnings',
-						component: DeliveryEarnings,
-						meta: { requiresAuth: true, role: 'delivery' },
-					},
-					{
-						path: 'orders',
-						name: 'Orders',
-						component: OrderDetailPage,
-						meta: { requiresAuth: true, role: 'delivery' },
-					},
-				], //
-			},
-
-			// Owner routes
+		],
+	},
+	// Owner routes with OwnerLayout
+	{
+		path: '/',
+		component: OwnerLayout,
+		children: [
 			{
 				path: 'owner/dashboard',
 				name: 'OwnerDashboard',
@@ -157,6 +128,49 @@ const routes = [
 				name: 'OwnerSettings',
 				component: OwnerSettingsPage,
 				meta: { requiresAuth: true, role: 'owner' },
+			},
+		],
+	},
+	// Delivery routes with DeliveryLayout
+	{
+		path: '/',
+		component: DeliveryLayout,
+		children: [
+			{
+				path: 'delivery/dashboard',
+				name: 'DeliveryDashboard',
+				component: DeliveryDashboard,
+				meta: { requiresAuth: true, role: 'delivery' },
+			},
+			{
+				path: 'delivery/order/:id',
+				name: 'DeliveryOrderDetail',
+				component: DeliveryOrderDetail,
+				meta: { requiresAuth: true, role: 'delivery' },
+			},
+			{
+				path: 'delivery/live/:id',
+				name: 'LiveDelivery',
+				component: LiveDelivery,
+				meta: { requiresAuth: true, role: 'delivery' },
+			},
+			{
+				path: 'delivery/profile',
+				name: 'DeliveryProfile',
+				component: DeliveryProfile,
+				meta: { requiresAuth: true, role: 'delivery' },
+			},
+			{
+				path: 'delivery/earnings',
+				name: 'DeliveryEarnings',
+				component: DeliveryEarnings,
+				meta: { requiresAuth: true, role: 'delivery' },
+			},
+			{
+				path: 'delivery/orders',
+				name: 'DeliveryOrders',
+				component: OrderDetailPage,
+				meta: { requiresAuth: true, role: 'delivery' },
 			},
 		],
 	},

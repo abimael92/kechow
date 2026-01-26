@@ -5,3 +5,4 @@ kechow-client/.env
 kechow-client/dist/
 node_modules/
 .vscode/
+.cursorrules
