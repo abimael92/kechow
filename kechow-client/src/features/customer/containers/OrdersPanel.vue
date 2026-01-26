@@ -433,8 +433,11 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
+import { getCustomerOrders } from '@/features/customer/services/customer.service';
 
 const { t, locale } = useI18n();
+const router = useRouter();
 
 // Types
 type Order = {
@@ -470,7 +473,7 @@ type Tab = {
 // State
 const orders = ref<Order[]>([]);
 const filteredOrders = ref<Order[]>([]);
-const loading = ref(false);
+const loading = ref(true);
 const searchQuery = ref('');
 const selectedCategory = ref('all');
 const activeTab = ref('orders');
@@ -658,20 +661,32 @@ const selectCategory = (categoryId: string) => {
 
 const refreshOrders = async () => {
 	loading.value = true;
-	// Simulate API call
-	await new Promise(resolve => setTimeout(resolve, 1000));
-	loading.value = false;
+	try {
+		const ordersData = await getCustomerOrders();
+		// Transform service Order type to component Order type
+		orders.value = ordersData.map((o) => ({
+			id: parseInt(o.id),
+			status: o.status === 'out_for_delivery' ? 'on_the_way' : o.status,
+			total: o.totalAmount,
+			date: o.createdAt,
+			items: o.items.map((item) => item.name),
+			restaurant: o.customerName || 'Restaurante',
+			estimatedDelivery: o.status === 'out_for_delivery' ? o.updatedAt : undefined,
+		}));
+		filterOrders();
+	} catch (error) {
+		console.error('Error loading orders:', error);
+	} finally {
+		loading.value = false;
+	}
 };
 
 const viewOrderDetails = (order: Order) => {
-	console.log('View order details:', order);
-	// Navigate to order details page
+	router.push({ name: 'OrderTracking', params: { id: order.id.toString() } });
 };
 
 const trackOrder = (order: Order) => {
-	console.log('Track order:', order);
-	// Open tracking modal or navigate to tracking page
-	alert(t('trackingOrder', { id: order.id }));
+	router.push({ name: 'OrderTracking', params: { id: order.id.toString() } });
 };
 
 const reorder = (order: Order) => {
@@ -802,22 +817,8 @@ const nextPage = () => {
 };
 
 // Lifecycle
-onMounted(() => {
-	// Load orders
-	loading.value = true;
-	setTimeout(() => {
-		orders.value = [
-			{ id: 25634, status: 'delivered', total: 180.00, date: '2024-09-01', items: ['Burrito de Machaca', 'Refresco de Tamarindo'], restaurant: "La Fonda de Doña Chole" },
-			{ id: 25635, status: 'on_the_way', total: 210.00, date: '2024-09-05', items: ['Chile Colorado', 'Sopa de Menudo', 'Coyotas'], restaurant: 'El Ranchito Norteño', estimatedDelivery: '2024-09-05T20:30:00' },
-			{ id: 25636, status: 'preparing', total: 125.00, date: '2024-09-08', items: ['Tacos de Discada', 'Cebollitas Asadas'], restaurant: 'Tacos El Güero' },
-			{ id: 25637, status: 'delivered', total: 95.50, date: '2024-09-10', items: ['Sushi Roll Mix', 'Sopa Miso'], restaurant: 'Sushi Zen' },
-			{ id: 25638, status: 'cancelled', total: 150.00, date: '2024-09-12', items: ['Pizza Margherita', 'Ensalada César'], restaurant: 'Pizzas Napoli' },
-			{ id: 25639, status: 'delivered', total: 85.00, date: '2024-09-14', items: ['Hamburguesa Clásica', 'Papas Fritas'], restaurant: 'Burger House' },
-			{ id: 25640, status: 'on_the_way', total: 120.00, date: '2024-09-15', items: ['Arroz Frito', 'Rollitos de Primavera'], restaurant: 'Comida China Express', estimatedDelivery: '2024-09-15T19:45:00' },
-		];
-		filteredOrders.value = [...orders.value];
-		loading.value = false;
-	}, 800);
+onMounted(async () => {
+	await refreshOrders();
 
 	// Load user preferences
 	const savedLanguage = localStorage.getItem('preferredLanguage');

@@ -127,17 +127,8 @@ function animateQuantityChange(id: number) {
 }
 
 async function checkout() {
-	showSuccess.value = true;
-
-	// Simulate API call
-	await new Promise((resolve) => setTimeout(resolve, 1500));
-
-	toast.success(
-		t('orderPlacedSuccessfully', { total: finalTotal.value.toFixed(2) })
-	);
-
-	cart.value = [];
-	showSuccess.value = false;
+	// Navigate to checkout page
+	router.push({ name: 'CheckoutPage' });
 }
 
 function continueShopping() {

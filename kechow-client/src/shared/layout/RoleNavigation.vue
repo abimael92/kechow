@@ -129,6 +129,8 @@ const customerNavItems: NavigationItem[] = [
 	{ path: '/restaurants', label: 'Restaurantes' },
 	{ path: '/cart', label: 'Mi Carrito' },
 	{ path: '/orders', label: 'Mis Pedidos' },
+	{ path: '/reviews', label: 'Reseñas' },
+	{ path: '/profile', label: 'Perfil' },
 ];
 
 const ownerNavItems: NavigationItem[] = [

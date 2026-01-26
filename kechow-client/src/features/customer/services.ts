@@ -1,3 +1,6 @@
-// Placeholder: customer services live alongside feature views today.
-// Centralize service exports here as they are introduced.
-export {};
+/**
+ * Customer Services - Centralized exports
+ * All customer-related services are exported from here
+ */
+
+export * from './services/customer.service';
