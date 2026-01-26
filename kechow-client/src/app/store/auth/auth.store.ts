@@ -3,6 +3,10 @@ import { defineStore } from 'pinia';
 import { login, register, getUser, api } from './auth.service';
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
+import { getDashboardRouteForRole } from '@shared/utils/role.utils';
+import { useCartStore } from '@features/customer/cart/cart.store';
+import { useUserStore } from '@app/store/user.store';
+import { useMenuStore } from '@features/business-owner/store/menuStore';
 
 interface User {
 	id: number;
@@ -35,12 +39,8 @@ export const useAuthStore = defineStore('auth', () => {
 
 	const redirectByRole = () => {
 		if (!user.value) return;
-		const routes: Record<string, string> = {
-			owner: '/owner/dashboard',
-			delivery: '/delivery/dashboard',
-			customer: '/home',
-		};
-		router.push(routes[user.value.role] || '/home');
+		const dashboardRoute = getDashboardRouteForRole(user.value.role);
+		router.push(dashboardRoute);
 	};
 
 	const loginAction = async (credentials: {
@@ -116,12 +116,68 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	};
 
+	/**
+	 * Comprehensive logout that clears all auth, role, and cached data
+	 * - Clears auth store state
+	 * - Clears all Pinia stores (cart, user, menu)
+	 * - Removes all localStorage items (auth, theme, preferences, settings)
+	 * - Resets axios authorization headers
+	 * - Redirects to login
+	 */
 	const logout = () => {
+		// Clear auth store state
 		user.value = null;
 		token.value = null;
+		error.value = null;
+
+		// Clear all Pinia stores
+		try {
+			// Clear cart store
+			const cartStore = useCartStore();
+			if (cartStore && typeof cartStore.clearCart === 'function') {
+				cartStore.clearCart();
+			}
+		} catch (err) {
+			// Store might not be initialized, continue
+		}
+
+		try {
+			// Clear user store (legacy)
+			const userStore = useUserStore();
+			if (userStore && typeof userStore.logout === 'function') {
+				userStore.logout();
+			}
+		} catch (err) {
+			// Store might not be initialized, continue
+		}
+
+		try {
+			// Clear menu store
+			const menuStore = useMenuStore();
+			if (menuStore && typeof menuStore.$reset === 'function') {
+				menuStore.$reset();
+			}
+		} catch (err) {
+			// Store might not be initialized, continue
+		}
+
+		// Clear all localStorage items
+		// Auth-related
 		localStorage.removeItem('user');
 		localStorage.removeItem('token');
+
+		// UI preferences (clearing for complete logout)
+		localStorage.removeItem('theme');
+		localStorage.removeItem('preferredLanguage');
+		localStorage.removeItem('darkMode');
+
+		// Role-specific settings
+		localStorage.removeItem('deliverySettings');
+
+		// Reset axios authorization header
 		setAuthHeader();
+
+		// Redirect to login
 		router.push('/login');
 	};
 

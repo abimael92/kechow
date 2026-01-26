@@ -63,11 +63,13 @@ const routes = [
 				path: '/cart',
 				name: 'CartPage',
 				component: () => import('@/pages/customer/CartPage.vue'),
+				meta: { requiresAuth: true, role: 'customer' },
 			},
 			{
 				path: '/orders',
 				name: 'OrdersPage',
 				component: () => import('@/pages/customer/OrdersPage.vue'),
+				meta: { requiresAuth: true, role: 'customer' },
 			},
 			// Delivery routes
 			{
