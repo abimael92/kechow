@@ -180,7 +180,7 @@ function goBack() {
 							/>
 							<!-- Stock indicator -->
 							<div
-								v-if="'stock' in item && item.stock < 10"
+								v-if="item.stock !== undefined && item.stock < 10"
 								class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1 rounded"
 							>
 								Low stock
@@ -229,9 +229,17 @@ function goBack() {
 										type="number"
 										:value="cart[item.id] || 0"
 										@input="
-											setQuantity(item.id, parseInt($event.target.value) || 0)
+											setQuantity(
+												item.id,
+												parseInt(($event.target as HTMLInputElement).value) ||
+													0
+											)
 										"
-										@blur="$event.target.value = cart[item.id] || 0"
+										@blur="
+											($event.target as HTMLInputElement).value = String(
+												cart[item.id] || 0
+											)
+										"
 										min="0"
 										:max="Math.min(20, item.stock ?? 20)"
 										class="w-18 text-center border border-gray-300 rounded-md text-lg font-medium text-primary focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"

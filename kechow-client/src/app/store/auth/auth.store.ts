@@ -105,7 +105,7 @@ export const useAuthStore = defineStore('auth', () => {
 		if (token.value && !user.value) {
 			try {
 				isLoading.value = true;
-				const data = await getUser(token.value);
+				const data = await getUser();
 				user.value = data.user;
 				setAuthHeader();
 			} catch {

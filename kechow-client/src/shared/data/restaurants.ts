@@ -15,9 +15,10 @@ export type Restaurant = {
 	description: string;
 	image?: string;
 	menu: MenuItem[];
+	rating?: number;
 };
 
-export const restaurants = [
+export const restaurants: Restaurant[] = [
 	{
 		id: 1,
 		name: 'Porto Chico',
