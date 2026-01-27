@@ -505,6 +505,9 @@ const exportAnalytics = () => {
 const loadAnalyticsData = async () => {
 	try {
 		loading.value = true;
+		analyticsData.value = await getAnalyticsData({
+			period: selectedPeriod.value as any,
+		});
 	} catch (error) {
 		console.error('Failed to load analytics data:', error);
 	} finally {
