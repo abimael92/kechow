@@ -250,7 +250,13 @@ import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import MenuItemCard from '../components/MenuItemCard.vue';
 import MenuModal from '../components/MenuModal.vue';
-import { fetchMenuItems, updateMenuItem } from '../services/businessOwner.service';
+import {
+	fetchMenuItems,
+	createMenuItem,
+	updateMenuItem,
+	deleteMenuItem,
+	toggleMenuItemAvailability,
+} from '../services/businessOwner.service';
 import type { MenuItem } from '../types/';
 
 const { t } = useI18n();
@@ -418,15 +424,18 @@ const closeModal = () => {
 
 const handleSave = async (itemData: Partial<MenuItem>) => {
 	try {
+		loading.value = true;
 		if (modalMode.value === 'add') {
-			console.log('Adding item:', itemData);
-		} else {
-			console.log('Updating item:', itemData);
+			await createMenuItem(itemData as any);
+		} else if (selectedItem.value) {
+			await updateMenuItem(selectedItem.value.id, itemData);
 		}
 		await loadMenuItems();
 		closeModal();
 	} catch (error) {
 		console.error('Failed to save menu item:', error);
+	} finally {
+		loading.value = false;
 	}
 };
 
@@ -434,19 +443,29 @@ const handleQuickEdit = (item: MenuItem, field: string, value: any) => {
 	console.log('Quick edit:', { item, field, value });
 };
 
-const confirmDelete = (item: MenuItem) => {
+const confirmDelete = async (item: MenuItem) => {
 	if (confirm(t('confirmDeleteItem', { name: item.name }))) {
-		console.log('Deleting item:', item);
+		try {
+			loading.value = true;
+			await deleteMenuItem(item.id);
+			await loadMenuItems();
+		} catch (error) {
+			console.error('Failed to delete menu item:', error);
+		} finally {
+			loading.value = false;
+		}
 	}
 };
 
 const toggleAvailability = async (item: MenuItem) => {
 	try {
-		const updatedItem = { ...item, available: !item.available };
-		await updateMenuItem(item.id, updatedItem);
+		loading.value = true;
+		await toggleMenuItemAvailability(item.id);
 		await loadMenuItems();
 	} catch (error) {
 		console.error('Failed to toggle availability:', error);
+	} finally {
+		loading.value = false;
 	}
 };
 
