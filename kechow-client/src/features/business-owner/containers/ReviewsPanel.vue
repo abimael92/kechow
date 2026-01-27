@@ -359,6 +359,43 @@
 	
 	<!-- Click Outside Listener -->
 	<div v-if="showFilterDropdown" class="fixed inset-0 z-40" @click="closeFilterDropdown"></div>
+
+	<!-- Response Modal -->
+	<div
+		v-if="showResponseModal"
+		class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+		@click.self="cancelResponse"
+	>
+		<div
+			class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
+			@click.stop
+		>
+			<h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
+				{{ $t('replyToReview') }}
+			</h3>
+			<textarea
+				v-model="responseText"
+				rows="4"
+				:placeholder="$t('yourResponse')"
+				class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-4"
+			></textarea>
+			<div class="flex gap-3">
+				<button
+					@click="cancelResponse"
+					class="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
+				>
+					{{ $t('cancel') }}
+				</button>
+				<button
+					@click="submitResponse"
+					:disabled="!responseText.trim() || loading"
+					class="flex-1 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+				>
+					{{ loading ? $t('processing') : $t('sendResponse') }}
+				</button>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -602,9 +639,37 @@ const loadReviews = async () => {
   }
 };
 
-const handleReply = async (reviewId: string) => {
-  console.log('Reply handler called for review:', reviewId);
-  await loadReviews();
+const showResponseModal = ref(false);
+const selectedReviewId = ref<string>('');
+const responseText = ref('');
+
+const handleReply = (reviewId: string) => {
+  selectedReviewId.value = reviewId;
+  responseText.value = '';
+  showResponseModal.value = true;
+};
+
+const submitResponse = async () => {
+  if (!responseText.value.trim() || !selectedReviewId.value) return;
+  
+  try {
+    loading.value = true;
+    await addReviewResponse(selectedReviewId.value, responseText.value);
+    await loadReviews();
+    showResponseModal.value = false;
+    responseText.value = '';
+    selectedReviewId.value = '';
+  } catch (error) {
+    console.error('Failed to add response:', error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const cancelResponse = () => {
+  showResponseModal.value = false;
+  responseText.value = '';
+  selectedReviewId.value = '';
 };
 
 const handleFlag = async (reviewId: string) => {
