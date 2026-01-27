@@ -1,2 +1,2 @@
-// Placeholder: delivery services will be exported here when implemented.
-export {};
+// Export delivery services
+export * from './services/delivery.service';
