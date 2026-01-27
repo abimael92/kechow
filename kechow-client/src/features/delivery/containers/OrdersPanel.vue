@@ -53,6 +53,9 @@
 				<p class="font-semibold text-blue-900">
 					{{ ordersSummary.avgDistance }}
 				</p>
+				<p class="text-xs text-blue-700 mt-1">
+					{{ $t('potentialEarnings') }}: ${{ ordersSummary.totalEarnings }}
+				</p>
 			</div>
 		</div>
 
@@ -164,16 +167,27 @@
 					</div>
 
 					<!-- Actions -->
-					<div class="flex flex-col sm:flex-row gap-2 mt-4">
+					<div v-if="order.status === 'available'" class="flex flex-col sm:flex-row gap-2 mt-4">
 						<button
-							class="flex-1 bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-400 transition-colors whitespace-nowrap"
+							@click="handleAcceptOrder(order.id)"
+							:disabled="deliveryStore.hasActiveOrder"
+							class="flex-1 bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-400 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{{ $t('acceptOrder') }}
 						</button>
 						<button
-							class="flex-1 py-3 rounded-lg font-medium bg-red-600 hover:bg-red-800 transition-colors whitespace-nowrap"
+							@click="handleRejectOrder(order.id)"
+							class="flex-1 py-3 rounded-lg font-medium bg-red-600 hover:bg-red-800 transition-colors whitespace-nowrap text-white"
 						>
 							{{ $t('decline') }}
+						</button>
+					</div>
+					<div v-else-if="order.status === 'active'" class="flex flex-col sm:flex-row gap-2 mt-4">
+						<button
+							@click="router.push(`/delivery/live/${order.id}`)"
+							class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-400 transition-colors whitespace-nowrap"
+						>
+							{{ $t('viewDelivery') }}
 						</button>
 					</div>
 				</div>
@@ -184,6 +198,11 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useDeliveryStore } from '../store/delivery.store';
+
+const router = useRouter();
+const deliveryStore = useDeliveryStore();
 
 // Tabs
 const tabs = ref([
@@ -255,6 +274,7 @@ const ordersSummary = ref({
 	title: 'ordersWaitingPickup',
 	subtitle: 'potentialEarnings',
 	avgDistance: '2.4 km',
+	totalEarnings: 56.75,
 });
 const summary = ref({
 	deliveries: 3,
@@ -277,6 +297,19 @@ const getTabIcon = (key: string) => {
 	if (key === 'active') return 'ri-motorbike-line';
 	if (key === 'completed') return 'ri-check-line';
 	return '';
+};
+
+// Order actions
+const handleAcceptOrder = (orderId: number) => {
+	const order = orders.value.find(o => o.id === orderId);
+	if (order) {
+		order.status = 'active';
+		order.statusLabel = 'Picked Up';
+	}
+};
+
+const handleRejectOrder = (orderId: number) => {
+	orders.value = orders.value.filter(o => o.id !== orderId);
 };
 </script>
 

@@ -27,19 +27,19 @@
 					<div class="flex items-center gap-2">
 						<span
 							class="font-semibold text-lg truncate"
-							:class="isOnline ? 'text-green-600 dark:text-green-400' : 'text-neutral-500 dark:text-neutral-400'"
+							:class="deliveryStore.isOnline ? 'text-green-600 dark:text-green-400' : 'text-neutral-500 dark:text-neutral-400'"
 						>
-							{{ isOnline ? t('online') : t('offline') }}
+							{{ deliveryStore.isOnline ? t('online') : t('offline') }}
 						</span>
 						<!-- Pulse Dot -->
 						<span
 							class="h-2 w-2 rounded-full animate-pulseScale"
-							:class="isOnline ? 'bg-green-500' : 'bg-neutral-400'"
+							:class="deliveryStore.isOnline ? 'bg-green-500' : 'bg-neutral-400'"
 						></span>
 					</div>
 					<!-- FIXED: Use t() instead of $t() -->
 					<p class="text-sm text-neutral-600 dark:text-neutral-300 mt-1 truncate">
-						{{ isOnline ? t('receivingOrders') : t('notReceivingOrders') }}
+						{{ deliveryStore.isOnline ? t('receivingOrders') : t('notReceivingOrders') }}
 					</p>
 				</div>
 
@@ -47,17 +47,19 @@
 				<button
 					type="button"
 					role="switch"
-					:aria-checked="isOnline"
-					@click="isOnline = !isOnline"
+					:aria-checked="deliveryStore.isOnline"
+					@click="handleToggleAvailability"
+					:disabled="deliveryStore.hasActiveOrder"
 					:class="[
 						'relative inline-flex h-7 w-16 items-center rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900',
-						isOnline ? 'bg-green-600' : 'bg-neutral-300 dark:bg-neutral-600',
+						deliveryStore.isOnline ? 'bg-green-600' : 'bg-neutral-300 dark:bg-neutral-600',
+						deliveryStore.hasActiveOrder ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
 					]"
 				>
 					<span
 						:class="[
 							'inline-block h-5 w-5 transform rounded-full bg-white shadow transition duration-300',
-							isOnline ? 'translate-x-6' : 'translate-x-1',
+							deliveryStore.isOnline ? 'translate-x-6' : 'translate-x-1',
 						]"
 					></span>
 				</button>
@@ -120,7 +122,7 @@
 
 			<!-- Next Step Button - UPDATED with pink hover -->
 			<div
-				v-if="nextStepIndex < deliverySteps.length"
+				v-if="deliveryStore.hasActiveOrder && nextStepIndex < deliverySteps.length"
 				class="mt-8 flex justify-center"
 			>
 				<button
@@ -142,7 +144,7 @@
 				>
 					<div class="mb-4 md:mb-0">
 						<h4 class="font-semibold text-neutral-900 dark:text-white text-lg">
-							Order {{ currentDelivery.id }}
+							{{ t('order') }} {{ currentDelivery.id }}
 						</h4>
 						<p class="text-sm text-neutral-600 dark:text-neutral-300 mt-2">
 							<i class="ri-map-pin-line mr-2 text-primary-500"></i>
@@ -162,16 +164,22 @@
 
 				<div class="flex flex-col sm:flex-row gap-3">
 					<button
+						@click="markDelivered"
 						class="flex-1 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-button hover:shadow-button-hover transition-all duration-200 hover:-translate-y-0.5 cursor-pointer group flex items-center justify-center"
 					>
 						<i class="ri-checkbox-circle-line mr-2"></i>  {{ t('markDelivered') }}
 					</button>
-					<button
+					<a
+						:href="`tel:${deliveryStore.activeOrder?.customer.phone}`"
 						class="px-6 py-3 border border-primary-400 dark:border-primary-600 text-primary-700 dark:text-primary-400 rounded-xl font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-500 dark:hover:border-primary-500 hover:text-primary-800 dark:hover:text-primary-300 transition-all duration-200 hover:shadow-sm cursor-pointer flex items-center justify-center"
 					>
 						<i class="ri-phone-line mr-2"></i> {{ t('callCustomer') }}
-					</button>
+					</a>
 				</div>
+			</div>
+			<div v-else class="text-center py-8 text-neutral-500 dark:text-neutral-400">
+				<i class="ri-inbox-line text-4xl mb-2"></i>
+				<p>{{ t('noActiveDelivery') }}</p>
 			</div>
 		</div>
 
@@ -226,102 +234,178 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useDeliveryStore } from '../store/delivery.store';
+import type { DeliveryStatus } from '../types';
 
-// Get the translation function
 const { t } = useI18n();
+const deliveryStore = useDeliveryStore();
 
-// Add debug logging to verify translations work
-console.log('🌐 Dashboard Component Loaded');
-// console.log('Current locale:', i18n.global.locale); // If you need to check locale
-console.log('Translation test - "dashboard":', t('dashboard'));
-console.log('Translation test - "readyToDeliver":', t('readyToDeliver'));
+// Initialize store on mount
+onMounted(async () => {
+	await deliveryStore.initialize();
+	await deliveryStore.loadEarningsSummary();
+	if (deliveryStore.activeOrder) {
+		await deliveryStore.loadDeliveryProgress(deliveryStore.activeOrder.id);
+		deliveryStore.startLocationTracking(deliveryStore.activeOrder.id);
+	}
+});
 
-// Keep this for debug if needed:
-console.log('Translation test - "dashboard":', t('dashboard'));
-console.log('Translation test - "readyToDeliver":', t('readyToDeliver'));
+// Cleanup on unmount
+onUnmounted(() => {
+	// Location tracking cleanup handled by store
+});
 
-const isOnline = ref(true);
-const todayDeliveries = ref(12);
-const todayEarnings = ref(145.5);
+// Availability toggle
+const handleToggleAvailability = async () => {
+	await deliveryStore.toggleAvailability();
+	if (deliveryStore.isOnline) {
+		await deliveryStore.loadAvailableJobs();
+	}
+};
 
-const deliverySteps = ref([
-	{ label: 'accepted', icon: 'ri-check-line', completed: false },
-	{ label: 'pickedUp', icon: 'ri-shopping-bag-line', completed: false },
-	{ label: 'onTheWay', icon: 'ri-truck-line', completed: false },
-	{ label: 'delivered', icon: 'ri-map-pin-line', completed: false },
-]);
+// Delivery steps based on active order status
+const deliverySteps = computed(() => {
+	if (!deliveryStore.activeOrder) return [];
 
-const insights = ref([
-    t('insight1'),
-    t('insight2'),
-    t('insight3'),
-]);
+	const statusMap: Record<DeliveryStatus, number> = {
+		accepted: 0,
+		picked_up: 1,
+		on_the_way: 2,
+		delivered: 3,
+		cancelled: -1,
+		available: -1,
+	};
+
+	const currentStep = statusMap[deliveryStore.activeOrder.status] || 0;
+
+	return [
+		{ label: 'accepted', icon: 'ri-check-line', completed: currentStep >= 0 },
+		{ label: 'pickedUp', icon: 'ri-shopping-bag-line', completed: currentStep >= 1 },
+		{ label: 'onTheWay', icon: 'ri-truck-line', completed: currentStep >= 2 },
+		{ label: 'delivered', icon: 'ri-map-pin-line', completed: currentStep >= 3 },
+	];
+});
 
 const nextStepIndex = computed(() =>
 	deliverySteps.value.findIndex((step) => !step.completed)
 );
 
-const markNextStep = () => {
+const markNextStep = async () => {
+	if (!deliveryStore.activeOrder) return;
+
 	const index = nextStepIndex.value;
-	if (index !== -1) deliverySteps.value[index].completed = true;
+	const statusMap: DeliveryStatus[] = ['accepted', 'picked_up', 'on_the_way', 'delivered'];
+
+	if (index >= 0 && index < statusMap.length) {
+		await deliveryStore.updateStatus(deliveryStore.activeOrder.id, statusMap[index]);
+	}
 };
 
-// Calculate progress percentage
+// Progress percentage
 const progressPercentage = computed(() => {
+	if (!deliveryStore.activeOrder) return 0;
+
 	const totalSteps = deliverySteps.value.length;
-	const completedSteps = deliverySteps.value.filter(
-		(step) => step.completed
-	).length;
+	const completedSteps = deliverySteps.value.filter((step) => step.completed).length;
 
-	const currStep = completedSteps + 1;
-	// If all steps completed
 	if (completedSteps === totalSteps) return 100;
-
-	const percentage = (currStep / totalSteps) * 100 - 12.5;
-
-	return percentage;
+	return ((completedSteps + 1) / totalSteps) * 100 - 12.5;
 });
 
-const currentDelivery = ref({
-	id: '#12348',
-	pickupLocation: 'Spice Garden',
-	dropoffName: 'Sarah Wilson',
-	dropoffAddress: '222 Flavor Ave',
-	price: 19.25,
-	paymentMethod: 'Card',
+// Current delivery info
+const currentDelivery = computed(() => {
+	if (!deliveryStore.activeOrder) return null;
+
+	return {
+		id: deliveryStore.activeOrder.orderNumber,
+		pickupLocation: deliveryStore.activeOrder.restaurant.name,
+		dropoffName: deliveryStore.activeOrder.customer.name,
+		dropoffAddress: deliveryStore.activeOrder.customer.address,
+		price: deliveryStore.activeOrder.amount + deliveryStore.activeOrder.fee,
+		paymentMethod: deliveryStore.activeOrder.paymentMethod,
+	};
 });
 
-const stats = ref([
-    {
-        label: 'today',
-        value: 12,
-        change: t('changeFromYesterday', { value: 3 }),  // Dynamic value
-        icon: 'ri-truck-line text-blue-600 dark:text-blue-400 w-5 h-5',
-        bg: 'bg-blue-100 dark:bg-blue-900/30',
-    },
-    {
-        label: 'earnings',
-        value: '$145.5',
-        change: t('changeEarnings', { amount: '12.50' }),  // Dynamic value
-        icon: 'ri-money-dollar-circle-line text-green-600 dark:text-green-400 w-5 h-5',
-        bg: 'bg-green-100 dark:bg-green-900/30',
-    },
-    {
-        label: 'distanceStat',
-        value: '45.2km',
-        change: t('avgDistance', { distance: 3.8 }),  // Dynamic value
-        icon: 'ri-map-pin-line text-orange-600 dark:text-orange-400 w-5 h-5',
-        bg: 'bg-orange-100 dark:bg-orange-900/30',
-    },
-    {
-        label: 'online',
-        value: '8.5h',
-        change: t('sinceTime', { time: '9:00 AM' }),  // Dynamic value
-        icon: 'ri-time-line text-indigo-600 dark:text-indigo-400 w-5 h-5',
-        bg: 'bg-indigo-100 dark:bg-indigo-900/30',
-    },
+// Mark delivered
+const markDelivered = async () => {
+	if (!deliveryStore.activeOrder) return;
+	await deliveryStore.updateStatus(deliveryStore.activeOrder.id, 'delivered');
+};
+
+// Stats from earnings summary
+const stats = computed(() => {
+	const earnings = deliveryStore.earningsSummary;
+	if (!earnings) {
+		return [
+			{
+				label: 'today',
+				value: 0,
+				change: t('noData'),
+				icon: 'ri-truck-line text-blue-600 dark:text-blue-400 w-5 h-5',
+				bg: 'bg-blue-100 dark:bg-blue-900/30',
+			},
+			{
+				label: 'earnings',
+				value: '$0',
+				change: t('noData'),
+				icon: 'ri-money-dollar-circle-line text-green-600 dark:text-green-400 w-5 h-5',
+				bg: 'bg-green-100 dark:bg-green-900/30',
+			},
+			{
+				label: 'distanceStat',
+				value: '0km',
+				change: t('noData'),
+				icon: 'ri-map-pin-line text-orange-600 dark:text-orange-400 w-5 h-5',
+				bg: 'bg-orange-100 dark:bg-orange-900/30',
+			},
+			{
+				label: 'online',
+				value: '0h',
+				change: t('noData'),
+				icon: 'ri-time-line text-indigo-600 dark:text-indigo-400 w-5 h-5',
+				bg: 'bg-indigo-100 dark:bg-indigo-900/30',
+			},
+		];
+	}
+
+	return [
+		{
+			label: 'today',
+			value: earnings.today.deliveries,
+			change: t('changeFromYesterday', { value: earnings.today.deliveries }),
+			icon: 'ri-truck-line text-blue-600 dark:text-blue-400 w-5 h-5',
+			bg: 'bg-blue-100 dark:bg-blue-900/30',
+		},
+		{
+			label: 'earnings',
+			value: `$${earnings.today.earnings.toFixed(2)}`,
+			change: t('changeEarnings', { amount: earnings.today.earnings.toFixed(2) }),
+			icon: 'ri-money-dollar-circle-line text-green-600 dark:text-green-400 w-5 h-5',
+			bg: 'bg-green-100 dark:bg-green-900/30',
+		},
+		{
+			label: 'distanceStat',
+			value: `${earnings.today.distance.toFixed(1)}km`,
+			change: t('avgDistance', { distance: earnings.today.distance.toFixed(1) }),
+			icon: 'ri-map-pin-line text-orange-600 dark:text-orange-400 w-5 h-5',
+			bg: 'bg-orange-100 dark:bg-orange-900/30',
+		},
+		{
+			label: 'online',
+			value: `${earnings.today.hours.toFixed(1)}h`,
+			change: t('sinceTime', { time: new Date().toLocaleTimeString() }),
+			icon: 'ri-time-line text-indigo-600 dark:text-indigo-400 w-5 h-5',
+			bg: 'bg-indigo-100 dark:bg-indigo-900/30',
+		},
+	];
+});
+
+const insights = ref([
+	t('insight1'),
+	t('insight2'),
+	t('insight3'),
 ]);
 
 </script>
