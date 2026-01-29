@@ -10,20 +10,18 @@ export const api = axios.create({
 	headers: { 'Content-Type': 'application/json' },
 });
 
-// Auth API calls
+// Auth API calls (no logging of response/token to prevent sensitive data exposure)
 export const login = async (payload: { email: string; password: string }) => {
 	try {
-		// First, get the CSRF cookie
 		await api.get('/sanctum/csrf-cookie');
-		console.log('CSRF cookie obtained');
-
-		// Then, attempt login
 		const response = await api.post('/api/login', payload);
-		console.log('Login response:', response);
 		return response.data;
 	} catch (error) {
-		console.error('Login error:', error);
-		throw error; // Re-throw the error after logging it
+		if (import.meta.env.DEV) {
+			// Log only in development; never log response/credentials
+			console.error('Login failed');
+		}
+		throw error;
 	}
 };
 
