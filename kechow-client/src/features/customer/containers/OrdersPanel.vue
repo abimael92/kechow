@@ -111,10 +111,10 @@
 			</div>
 			
 			<div v-if="loading" class="space-y-4">
-				<div v-for="i in 3" :key="i" class="bg-white dark:bg-gray-800 p-4 lg:p-6 rounded-xl border border-gray-100 dark:border-gray-700 animate-pulse">
-					<div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-4"></div>
-					<div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
-					<div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+				<div v-for="i in 3" :key="i" class="bg-white dark:bg-neutral-900 p-4 lg:p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
+					<Skeleton variant="text" class="mb-4 w-1/4" />
+					<Skeleton variant="text" class="mb-2 w-3/4" />
+					<Skeleton variant="text" class="w-1/2" />
 				</div>
 			</div>
 			
@@ -435,6 +435,7 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { getCustomerOrders } from '@/features/customer/services/customer.service';
+import Skeleton from '@/shared/ui/Skeleton.vue';
 
 const { t, locale } = useI18n();
 const router = useRouter();

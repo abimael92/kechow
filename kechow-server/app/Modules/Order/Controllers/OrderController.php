@@ -39,7 +39,8 @@ class OrderController extends Controller
 
     public function updateStatus(UpdateOrderStatusRequest $request, Order $order): JsonResponse
     {
-        $updatedOrder = $this->orderService->updateOrderStatus($order, $request->status);
+        $role = $request->user()->role ?? null;
+        $updatedOrder = $this->orderService->updateOrderStatus($order, $request->status, $role);
         return response()->json(new OrderResource($updatedOrder));
     }
 

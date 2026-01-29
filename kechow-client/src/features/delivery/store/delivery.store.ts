@@ -25,6 +25,8 @@ import {
 	updateDeliverySettings,
 } from '../services/delivery.service';
 
+const COMPLETED_ORDERS_KEY = 'delivery_completed_orders';
+
 export const useDeliveryStore = defineStore('delivery', () => {
 	// State
 	const availability = ref<DeliveryAvailability>({
@@ -43,6 +45,9 @@ export const useDeliveryStore = defineStore('delivery', () => {
 	});
 	const currentLocation = ref<GPSLocation | null>(null);
 	const isOnline = ref(false);
+
+	// Completed orders (offline-safe from localStorage)
+	const completedOrders = ref<DeliveryOrder[]>([]);
 
 	// Offline queue for actions
 	const offlineQueue = ref<Array<{ type: string; payload: any; timestamp: string }>>([]);
@@ -71,9 +76,15 @@ export const useDeliveryStore = defineStore('delivery', () => {
 				settings.value = JSON.parse(storedSettings);
 			}
 
-			// Try to sync with server if online
+			loadCompletedOrdersFromStorage();
+
+			// Try to sync with server if online (skip in simulation / when API unavailable)
 			if (navigator.onLine) {
-				await syncWithServer();
+				try {
+					await syncWithServer();
+				} catch {
+					// Offline or simulation: keep localStorage state
+				}
 			}
 		} catch (error) {
 			console.error('Failed to initialize delivery store:', error);
@@ -134,23 +145,34 @@ export const useDeliveryStore = defineStore('delivery', () => {
 		}
 	};
 
-	// Toggle availability
+	// Load completed orders from localStorage (offline-safe)
+	const loadCompletedOrdersFromStorage = () => {
+		try {
+			const raw = localStorage.getItem(COMPLETED_ORDERS_KEY);
+			completedOrders.value = raw ? JSON.parse(raw) : [];
+		} catch {
+			completedOrders.value = [];
+		}
+	};
+
+	// Toggle availability (offline-safe: persist to localStorage first)
 	const toggleAvailability = async () => {
 		const newStatus = !availability.value.isOnline;
+		const previous = { ...availability.value };
+		availability.value = { ...availability.value, isOnline: newStatus };
+		isOnline.value = newStatus;
+		localStorage.setItem('delivery_availability', JSON.stringify(availability.value));
 		try {
 			availability.value = await updateAvailability(newStatus);
-			isOnline.value = newStatus;
+			isOnline.value = availability.value.isOnline;
 			localStorage.setItem('delivery_availability', JSON.stringify(availability.value));
-
-			// If going online, refresh jobs
-			if (newStatus) {
-				await loadAvailableJobs();
-			}
+			if (newStatus) await loadAvailableJobs();
 		} catch (error) {
 			console.error('Failed to update availability:', error);
-			// Revert on error
-			availability.value.isOnline = !newStatus;
-			isOnline.value = !newStatus;
+			availability.value = previous;
+			isOnline.value = previous.isOnline;
+			localStorage.setItem('delivery_availability', JSON.stringify(availability.value));
+			if (newStatus) await loadAvailableJobs(); // Still load jobs from sample data
 		}
 	};
 
@@ -165,18 +187,14 @@ export const useDeliveryStore = defineStore('delivery', () => {
 		}
 	};
 
-	// Accept order
+	// Accept order (offline-safe: service writes to localStorage in simulation)
 	const acceptDeliveryOrder = async (orderId: string) => {
 		try {
 			activeOrder.value = await acceptOrder(orderId);
 			localStorage.setItem('delivery_active_order', JSON.stringify(activeOrder.value));
-
-			// Remove from available jobs
 			availableJobs.value = availableJobs.value.filter(
 				(job) => job.order.id !== orderId
 			);
-
-			// Load progress
 			await loadDeliveryProgress(orderId);
 		} catch (error) {
 			console.error('Failed to accept order:', error);
@@ -218,6 +236,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
 			localStorage.setItem('delivery_active_order', JSON.stringify(activeOrder.value));
 
 			if (status === 'delivered') {
+				loadCompletedOrdersFromStorage();
 				activeOrder.value = null;
 				localStorage.removeItem('delivery_active_order');
 				await loadEarningsSummary();
@@ -239,10 +258,26 @@ export const useDeliveryStore = defineStore('delivery', () => {
 		}
 	};
 
-	// Update location
+	// Current step index for simulated GPS (0=accepted, 1=picked_up, 2=on_the_way, 3=delivered)
+	const currentStepForGPS = computed(() => {
+		if (!activeOrder.value) return 0;
+		const m: Record<string, number> = {
+			accepted: 0,
+			picked_up: 1,
+			on_the_way: 2,
+			delivered: 3,
+			cancelled: 0,
+			available: 0,
+		};
+		return m[activeOrder.value.status] ?? 0;
+	});
+
+	// Update location (uses simulated GPS along route when order + step available)
 	const updateCurrentLocation = async (orderId?: string) => {
 		try {
-			const location = getCurrentLocation();
+			const order = activeOrder.value;
+			const step = currentStepForGPS.value;
+			const location = getCurrentLocation(order, step);
 			currentLocation.value = location;
 
 			if (orderId && activeOrder.value) {
@@ -306,16 +341,19 @@ export const useDeliveryStore = defineStore('delivery', () => {
 		currentLocation,
 		isOnline,
 		offlineQueue,
+		completedOrders,
 
 		// Computed
 		hasActiveOrder,
 		isAvailable,
+		currentStepForGPS,
 
 		// Actions
 		initialize,
 		syncWithServer,
 		toggleAvailability,
 		loadAvailableJobs,
+		loadCompletedOrdersFromStorage,
 		acceptDeliveryOrder,
 		rejectDeliveryOrder,
 		updateStatus,
