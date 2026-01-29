@@ -161,13 +161,14 @@
 							</div>
 						</div>
 
-						<!-- Place Order Button -->
+						<!-- Place Order Button (disabled offline) -->
 						<button
 							@click="placeOrder"
-							:disabled="!canPlaceOrder || processing"
+							:disabled="!canPlaceOrder || processing || !isOnline"
 							class="w-full mt-6 py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+							:title="!isOnline ? $t('offline') : ''"
 						>
-							{{ processing ? 'Procesando...' : `Confirmar Pedido - $${total.toFixed(2)}` }}
+							{{ !isOnline ? $t('offline') : processing ? $t('processing') || 'Procesando...' : `Confirmar Pedido - $${total.toFixed(2)}` }}
 						</button>
 					</div>
 				</div>
@@ -275,6 +276,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useCartStore } from '@/features/customer/cart/cart.store';
+import { useOnline } from '@/shared/composables/useOnline';
 import {
 	getCustomerProfile,
 	addAddress,
@@ -310,11 +312,14 @@ const deliveryFee = computed(() => (subtotal.value > 250 ? 0 : 50));
 const tax = computed(() => subtotal.value * 0.08);
 const total = computed(() => subtotal.value + deliveryFee.value + tax.value);
 
+const { isOnline } = useOnline();
+
 const canPlaceOrder = computed(() => {
 	return (
 		selectedAddressId.value !== '' &&
 		cartItems.value.length > 0 &&
-		!processing.value
+		!processing.value &&
+		isOnline.value
 	);
 });
 
