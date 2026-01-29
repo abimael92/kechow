@@ -4,6 +4,7 @@ namespace App\Modules\Order\Services;
 
 use App\Modules\Order\Models\Order;
 use App\Modules\Order\Models\OrderItem;
+use App\Modules\Order\OrderStateMachine;
 use App\Modules\Restaurant\Models\MenuItem;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -70,14 +71,29 @@ class OrderService
         });
     }
 
-    public function updateOrderStatus(Order $order, string $status): Order
+    /**
+     * Update order status only if the transition is valid for the given role.
+     * @throws \InvalidArgumentException when transition is not allowed
+     */
+    public function updateOrderStatus(Order $order, string $status, ?string $role = null): Order
     {
+        if (! OrderStateMachine::canTransition($order->status, $status, $role)) {
+            throw new \InvalidArgumentException(
+                "Invalid order state transition: {$order->status} → {$status}" .
+                ($role ? " for role {$role}" : '')
+            );
+        }
         $order->update(['status' => $status]);
         return $order->fresh(['items.menuItem', 'restaurant', 'user', 'driver']);
     }
 
     public function assignDriver(Order $order, int $driverId): Order
     {
+        if (! OrderStateMachine::canTransition($order->status, Order::STATUS_OUT_FOR_DELIVERY, 'owner')) {
+            throw new \InvalidArgumentException(
+                "Cannot assign driver: order status must be ready, current status is {$order->status}"
+            );
+        }
         $order->update([
             'driver_id' => $driverId,
             'status' => Order::STATUS_OUT_FOR_DELIVERY
