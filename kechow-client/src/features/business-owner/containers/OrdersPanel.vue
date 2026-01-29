@@ -181,9 +181,9 @@
 				<!-- Refresh Button with Loading State -->
 				<button
 					@click="loadOrders"
-					:disabled="loading"
+					:disabled="loading || !isOnline"
 					class="refresh-button"
-					:aria-label="$t('refresh')"
+					:aria-label="!isOnline ? $t('offline') : $t('refresh')"
 				>
 					<i 
 						class="ri-refresh-line refresh-icon" 
@@ -329,8 +329,10 @@ import {
 } from '../services/businessOwner.service';
 import type { Order } from '../types/';
 import { canTransition, normalizeOwnerStatus } from '@shared/order-state-machine';
+import { useOnline } from '@shared/composables/useOnline';
 
 const { t } = useI18n();
+const { isOnline } = useOnline();
 
 const orders = ref<Order[]>([]);
 const loading = ref(false);

@@ -11,6 +11,11 @@ import 'vue-toastification/dist/index.css';
 
 const app = createApp(App);
 
+app.config.errorHandler = (err, instance, info) => {
+	console.error('Global error:', err, info);
+	// ErrorBoundary catches render errors; this handles async/unhandled errors
+};
+
 const toastOptions = {
 	position: 'top-center',
 	timeout: 3000,

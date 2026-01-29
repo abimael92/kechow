@@ -94,9 +94,9 @@
 				<div class="flex items-center gap-2">
 					<button
 						@click="refreshOrders"
-						class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-						:title="t('refresh')"
-						:disabled="loading"
+						class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+						:title="!isOnline ? t('offline') : t('refresh')"
+						:disabled="loading || !isOnline"
 					>
 						<i class="ri-refresh-line" :class="{ 'animate-spin': loading }"></i>
 					</button>
@@ -117,8 +117,43 @@
 					<Skeleton variant="text" class="w-1/2" />
 				</div>
 			</div>
+
+			<div v-else-if="loadError" class="py-8">
+				<EmptyState
+					:title="t('errorLoadingOrders')"
+					:description="t('errorLoadingOrdersDescription')"
+					icon="ri-error-warning-line"
+				>
+					<template #action>
+						<button
+							@click="refreshOrders"
+							:disabled="!isOnline"
+							class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+						>
+							{{ t('retry') }}
+						</button>
+					</template>
+				</EmptyState>
+			</div>
 			
 			<div v-else class="space-y-4">
+				<template v-if="filteredOrders.length === 0">
+					<EmptyState
+						:title="t('noOrdersFound')"
+						:description="searchQuery ? t('tryDifferentSearch') : t('placeFirstOrder')"
+						icon="ri-shopping-bag-line"
+					>
+						<template #action>
+							<button
+								@click="browseRestaurants"
+								class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium cursor-pointer"
+							>
+								{{ t('browseRestaurants') }}
+							</button>
+						</template>
+					</EmptyState>
+				</template>
+				<template v-else>
 				<div
 					v-for="order in filteredOrders"
 					:key="order.id"
@@ -177,24 +212,6 @@
 					</div>
 				</div>
 				
-				<div v-if="filteredOrders.length === 0" class="text-center py-12">
-					<div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-						<i class="ri-shopping-bag-line text-2xl text-gray-400 dark:text-gray-500"></i>
-					</div>
-					<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-						{{ t('noOrdersFound') }}
-					</h3>
-					<p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-						{{ searchQuery ? t('tryDifferentSearch') : t('placeFirstOrder') }}
-					</p>
-					<button
-						@click="browseRestaurants"
-						class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium cursor-pointer"
-					>
-						{{ t('browseRestaurants') }}
-					</button>
-				</div>
-				
 				<!-- Pagination -->
 				<div v-if="filteredOrders.length > itemsPerPage" class="flex justify-center mt-8">
 					<div class="flex items-center gap-2">
@@ -227,6 +244,7 @@
 						</button>
 					</div>
 				</div>
+				</template>
 			</div>
 		</div>
 
@@ -234,23 +252,21 @@
 		<div v-if="activeTab === 'favorites'" class="space-y-6">
 			<h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">{{ t('favorites') }}</h2>
 			
-			<div v-if="favorites.length === 0" class="text-center py-12">
-				<div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-					<i class="ri-heart-line text-2xl text-gray-400 dark:text-gray-500"></i>
-				</div>
-				<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-					{{ t('noFavoritesYet') }}
-				</h3>
-				<p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-					{{ t('saveFavoritesDescription') }}
-				</p>
-				<button
-					@click="browseRestaurants"
-					class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium cursor-pointer"
-				>
-					{{ t('browseRestaurants') }}
-				</button>
-			</div>
+			<EmptyState
+				v-if="favorites.length === 0"
+				:title="t('noFavoritesYet')"
+				:description="t('saveFavoritesDescription')"
+				icon="ri-heart-line"
+			>
+				<template #action>
+					<button
+						@click="browseRestaurants"
+						class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium cursor-pointer"
+					>
+						{{ t('browseRestaurants') }}
+					</button>
+				</template>
+			</EmptyState>
 			
 			<div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
 				<div
@@ -436,6 +452,8 @@ import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { getCustomerOrders } from '@/features/customer/services/customer.service';
 import Skeleton from '@/shared/ui/Skeleton.vue';
+import EmptyState from '@/shared/ui/EmptyState.vue';
+import { useOnline } from '@/shared/composables/useOnline';
 
 const { t, locale } = useI18n();
 const router = useRouter();
@@ -471,10 +489,13 @@ type Tab = {
 	count?: number;
 };
 
+const { isOnline } = useOnline();
+
 // State
 const orders = ref<Order[]>([]);
 const filteredOrders = ref<Order[]>([]);
 const loading = ref(true);
+const loadError = ref<Error | null>(null);
 const searchQuery = ref('');
 const selectedCategory = ref('all');
 const activeTab = ref('orders');
@@ -661,10 +682,10 @@ const selectCategory = (categoryId: string) => {
 };
 
 const refreshOrders = async () => {
+	loadError.value = null;
 	loading.value = true;
 	try {
 		const ordersData = await getCustomerOrders();
-		// Transform service Order type to component Order type
 		orders.value = ordersData.map((o) => ({
 			id: parseInt(o.id),
 			status: o.status === 'out_for_delivery' ? 'on_the_way' : o.status,
@@ -676,6 +697,7 @@ const refreshOrders = async () => {
 		}));
 		filterOrders();
 	} catch (error) {
+		loadError.value = error instanceof Error ? error : new Error(String(error));
 		console.error('Error loading orders:', error);
 	} finally {
 		loading.value = false;
