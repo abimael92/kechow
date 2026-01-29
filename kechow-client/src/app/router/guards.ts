@@ -13,8 +13,10 @@ import {
 const PUBLIC_PAGES = ['Login', 'Register', 'Landing'] as const;
 
 /**
- * Strict route guard that enforces role isolation
- * Prevents cross-role access and URL manipulation
+ * Route guard: UX only. Do not trust for security.
+ * - Backend must enforce authentication and role on every API request.
+ * - This guard prevents accidental navigation and improves UX; it does not replace server-side checks.
+ * Strict role isolation to prevent cross-role access via URL manipulation.
  */
 export const authGuard = async (
 	to: RouteLocationNormalized,

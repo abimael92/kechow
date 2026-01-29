@@ -1,4 +1,6 @@
 // kechow-client/src/app/store/auth/auth.store.ts
+// Security: Route guards that use this store are UX only. Backend must enforce
+// auth and role on every request. Do not trust client-held user/role for authorization.
 import { defineStore } from 'pinia';
 import { login, register, getUser, api } from './auth.service';
 import { useRouter } from 'vue-router';
@@ -161,18 +163,19 @@ export const useAuthStore = defineStore('auth', () => {
 			// Store might not be initialized, continue
 		}
 
-		// Clear all localStorage items
-		// Auth-related
+		// Clear all localStorage items (prevent sensitive data exposure after logout)
 		localStorage.removeItem('user');
 		localStorage.removeItem('token');
-
-		// UI preferences (clearing for complete logout)
 		localStorage.removeItem('theme');
 		localStorage.removeItem('preferredLanguage');
 		localStorage.removeItem('darkMode');
-
-		// Role-specific settings
 		localStorage.removeItem('deliverySettings');
+		// Delivery simulation / role-specific (clear so next user has clean state)
+		localStorage.removeItem('delivery_availability');
+		localStorage.removeItem('delivery_active_order');
+		localStorage.removeItem('delivery_settings');
+		localStorage.removeItem('delivery_completed_orders');
+		localStorage.removeItem('delivery_location_updates');
 
 		// Reset axios authorization header
 		setAuthHeader();
