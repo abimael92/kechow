@@ -10,23 +10,42 @@ import type {
 	DeliverySettings,
 } from '../types';
 
-// For development - use sample data
+// For development - use sample data (offline-safe simulation)
 const useSampleData = import.meta.env.MODE === 'development';
 
-// Simulated GPS location (mock)
+// Simulated GPS: random position (fallback)
 const getSimulatedGPS = (): GPSLocation => {
-	// Simulate location in a city area (e.g., Mexico City center)
 	const baseLat = 19.4326;
 	const baseLng = -99.1332;
-	// Add small random variations
 	const lat = baseLat + (Math.random() - 0.5) * 0.1;
 	const lng = baseLng + (Math.random() - 0.5) * 0.1;
-
 	return {
 		latitude: lat,
 		longitude: lng,
 		timestamp: new Date().toISOString(),
-		accuracy: 10 + Math.random() * 20, // 10-30 meters
+		accuracy: 10 + Math.random() * 20,
+	};
+};
+
+// Simulated GPS along delivery route: 0=restaurant, 1=mid, 2=customer (step 0–1 pickup, 1–2 en route)
+export const getSimulatedGPSForOrder = (
+	order: DeliveryOrder | null,
+	currentStep: number
+): GPSLocation => {
+	if (!order) return getSimulatedGPS();
+	const from = order.restaurant.location;
+	const to = order.customer.location;
+	// currentStep: 0 accepted, 1 picked_up, 2 on_the_way, 3 delivered → progress 0, 0.33, 0.66, 1
+	const progress = Math.min(1, Math.max(0, currentStep / 3));
+	const lat = from.latitude + (to.latitude - from.latitude) * progress;
+	const lng = from.longitude + (to.longitude - from.longitude) * progress;
+	// Slight jitter for realism
+	const jitter = 0.0001;
+	return {
+		latitude: lat + (Math.random() - 0.5) * jitter,
+		longitude: lng + (Math.random() - 0.5) * jitter,
+		timestamp: new Date().toISOString(),
+		accuracy: 8 + Math.random() * 12,
 	};
 };
 
@@ -287,7 +306,7 @@ export const getDeliveryProgress = async (
 			orderId,
 			currentStep,
 			steps,
-			currentLocation: getSimulatedGPS(),
+			currentLocation: getSimulatedGPSForOrder(order, currentStep),
 			estimatedArrival: new Date(Date.now() + order.estimatedTime * 60000).toISOString(),
 		};
 	}
@@ -315,7 +334,13 @@ export const updateLocation = async (
 	await api.post(`/delivery/orders/${orderId}/location`, { location });
 };
 
-export const getCurrentLocation = (): GPSLocation => {
+export const getCurrentLocation = (
+	order?: DeliveryOrder | null,
+	currentStep?: number
+): GPSLocation => {
+	if (order != null && typeof currentStep === 'number') {
+		return getSimulatedGPSForOrder(order, currentStep);
+	}
 	return getSimulatedGPS();
 };
 

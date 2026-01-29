@@ -4,16 +4,20 @@
 		role="application"
 		aria-label="Kechow - Repartidor"
 	>
+		<a href="#main-content" class="skip-link">{{ $t('skipToContent') || 'Skip to main content' }}</a>
 		<Header />
 		<RoleNavigation :role="'delivery'" />
 
 		<!-- Main Content -->
 		<main
-			class="flex-grow px-4 py-6 sm:px-6 sm:py-8 md:px-12 lg:px-20 animate-fadeInUp focus:outline-none"
+			id="main-content"
+			class="flex-grow px-4 py-6 sm:px-6 sm:py-8 md:px-12 lg:px-20 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
 			tabindex="-1"
 			role="main"
 		>
-			<router-view />
+			<Transition name="page" mode="out-in">
+				<router-view />
+			</Transition>
 		</main>
 
 		<Footer />

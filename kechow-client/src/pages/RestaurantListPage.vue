@@ -229,12 +229,12 @@
 							</div>
 						</div>
 						
-						<!-- Loading State -->
+						<!-- Loading State (skeleton loaders) -->
 						<div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-							<div v-for="i in 6" :key="i" class="bg-white dark:bg-gray-800 rounded-xl p-6 animate-pulse">
-								<div class="h-48 bg-gray-200 dark:bg-gray-700 rounded-xl mb-4"></div>
-								<div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-3"></div>
-								<div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+							<div v-for="i in 6" :key="i" class="bg-white dark:bg-neutral-900 rounded-xl p-6 border border-neutral-200 dark:border-neutral-800">
+								<Skeleton variant="card" class="mb-4 w-full rounded-xl" />
+								<Skeleton variant="text" class="mb-3 w-3/4" />
+								<Skeleton variant="text" class="w-1/2" />
 							</div>
 						</div>
 						
@@ -392,6 +392,7 @@ import type { Restaurant } from '@/shared/data/restaurants';
 import SearchBar from '@/components/SearchBar.vue';
 import CategoryChips from '@/components/CategoryChips.vue';
 import RestaurantCard from '@/components/RestaurantCard.vue';
+import Skeleton from '@/shared/ui/Skeleton.vue';
 
 import { restaurants as restaurantData } from '@/shared/data/restaurants';
 import { categoryIcons } from '@/assets/svg/food';

@@ -35,28 +35,28 @@
 			</div>
 		</div>
 
-		<!-- Orders Summary -->
+		<!-- Orders Summary (when online) -->
 		<div
-			class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center"
+			v-if="deliveryStore.isOnline"
+			class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4 flex flex-col md:flex-row justify-between items-center"
 		>
 			<div class="flex items-center space-x-3 mb-3 md:mb-0">
-				<i
-					class="ri-notification-line text-blue-600 w-5 h-5 flex items-center justify-center"
-				></i>
+				<i class="ri-notification-line text-blue-600 dark:text-blue-400 w-5 h-5 flex items-center justify-center"></i>
 				<div>
-					<p class="font-medium text-blue-900">{{ $t(ordersSummary.title) }}</p>
-					<p class="text-sm text-blue-700">{{ $t(ordersSummary.subtitle) }}</p>
+					<p class="font-medium text-blue-900 dark:text-blue-200">{{ $t(ordersSummary.title) }}</p>
+					<p class="text-sm text-blue-700 dark:text-blue-300">{{ $t(ordersSummary.subtitle) }}</p>
 				</div>
 			</div>
 			<div class="text-right">
-				<p class="text-sm text-blue-600">{{ $t('avgDistance') }}</p>
-				<p class="font-semibold text-blue-900">
-					{{ ordersSummary.avgDistance }}
-				</p>
-				<p class="text-xs text-blue-700 mt-1">
+				<p class="text-sm text-blue-600 dark:text-blue-400">{{ $t('avgDistance') }}</p>
+				<p class="font-semibold text-blue-900 dark:text-blue-200">{{ ordersSummary.avgDistance }}</p>
+				<p class="text-xs text-blue-700 dark:text-blue-300 mt-1">
 					{{ $t('potentialEarnings') }}: ${{ ordersSummary.totalEarnings }}
 				</p>
 			</div>
+		</div>
+		<div v-else class="bg-neutral-100 dark:bg-neutral-800 rounded-xl p-4 text-center text-neutral-600 dark:text-neutral-400 text-sm">
+			Turn on availability on the dashboard to see job queue.
 		</div>
 
 		<!-- Orders List -->
@@ -192,12 +192,16 @@
 					</div>
 				</div>
 			</div>
+			<div v-if="filteredOrders.length === 0" class="text-center py-12 text-gray-500 dark:text-gray-400">
+				<i class="ri-inbox-line text-4xl mb-2"></i>
+				<p>{{ emptyMessage }}</p>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDeliveryStore } from '../store/delivery.store';
 
@@ -212,84 +216,101 @@ const tabs = ref([
 ]);
 const activeTab = ref(0);
 
-// Orders
-const orders = ref([
-	{
-		id: 1,
-		number: '#12348',
-		restaurant: 'Spice Garden',
-		customer: 'Sarah Wilson',
-		amount: 19.25,
-		items: 2,
-		paymentMethod: 'Card',
-		distance: '2.5 km',
-		eta: '28 min',
-		pickup: '111 Spice St',
-		dropoff: '222 Flavor Ave',
-		status: 'available',
-		statusLabel: 'Available',
-	},
-	{
-		id: 2,
-		number: '#12349',
-		restaurant: 'Mario’s Pizza',
-		customer: 'John Doe',
-		amount: 15.5,
-		items: 3,
-		paymentMethod: 'Cash',
-		distance: '3 km',
-		eta: '35 min',
-		pickup: '456 Pizza St',
-		dropoff: '789 Home Ave',
-		status: 'active',
-		statusLabel: 'Picked Up',
-	},
-	{
-		id: 3,
-		number: '#12350',
-		restaurant: 'Burger Hub',
-		customer: 'Jane Smith',
-		amount: 22.0,
-		items: 2,
-		paymentMethod: 'Card',
-		distance: '4 km',
-		eta: '40 min',
-		pickup: '321 Burger St',
-		dropoff: '654 Customer Ave',
-		status: 'completed',
-		statusLabel: 'Delivered',
-	},
-]);
+// (orders come from store: availableOrders, activeOrders, completedOrdersList)
 
-// Tab counts & filtered orders
+// Data from store
+const availableOrders = computed(() =>
+	deliveryStore.availableJobs.map((job) => ({
+		id: job.order.id,
+		number: job.order.orderNumber,
+		restaurant: job.order.restaurant.name,
+		customer: job.order.customer.name,
+		amount: (job.order.amount + job.order.fee).toFixed(2),
+		items: job.order.items.reduce((s, i) => s + i.quantity, 0),
+		paymentMethod: job.order.paymentMethod,
+		distance: `${job.order.distance} km`,
+		eta: `${job.order.estimatedTime} min`,
+		pickup: job.order.restaurant.address,
+		dropoff: job.order.customer.address,
+		status: 'available' as const,
+		statusLabel: 'Available',
+	}))
+);
+const activeOrders = computed(() => {
+	const o = deliveryStore.activeOrder;
+	if (!o) return [];
+	return [{
+		id: o.id,
+		number: o.orderNumber,
+		restaurant: o.restaurant.name,
+		customer: o.customer.name,
+		amount: (o.amount + o.fee).toFixed(2),
+		items: o.items.reduce((s, i) => s + i.quantity, 0),
+		paymentMethod: o.paymentMethod,
+		distance: `${o.distance} km`,
+		eta: `${o.estimatedTime} min`,
+		pickup: o.restaurant.address,
+		dropoff: o.customer.address,
+		status: 'active' as const,
+		statusLabel: 'Accepted',
+	}];
+});
+const completedOrdersList = computed(() =>
+	deliveryStore.completedOrders.map((o) => ({
+		id: o.id,
+		number: o.orderNumber,
+		restaurant: o.restaurant.name,
+		customer: o.customer.name,
+		amount: (o.amount + o.fee).toFixed(2),
+		items: o.items.reduce((s, i) => s + i.quantity, 0),
+		paymentMethod: o.paymentMethod,
+		distance: `${o.distance} km`,
+		eta: `${o.estimatedTime} min`,
+		pickup: o.restaurant.address,
+		dropoff: o.customer.address,
+		status: 'completed' as const,
+		statusLabel: 'Delivered',
+	}))
+);
 const filteredOrders = computed(() => {
 	const key = tabs.value[activeTab.value].key;
-	return orders.value.filter((order) => order.status === key);
+	if (key === 'available') return availableOrders.value;
+	if (key === 'active') return activeOrders.value;
+	return completedOrdersList.value;
 });
-const tabCount = (key: string) =>
-	orders.value.filter((o) => o.status === key).length;
+const tabCount = (key: string) => {
+	if (key === 'available') return availableOrders.value.length;
+	if (key === 'active') return activeOrders.value.length;
+	return completedOrdersList.value.length;
+};
 
-// Orders summary
-const ordersSummary = ref({
-	title: 'ordersWaitingPickup',
-	subtitle: 'potentialEarnings',
-	avgDistance: '2.4 km',
-	totalEarnings: 56.75,
+const emptyMessage = computed(() => {
+	const key = tabs.value[activeTab.value].key;
+	if (key === 'available') return 'No available jobs. Go online on the dashboard to see orders.';
+	if (key === 'active') return 'No active delivery.';
+	return 'No completed deliveries yet.';
 });
-const summary = ref({
-	deliveries: 3,
-	earnings: 56.75,
-	distance: '9.5 km',
-	avgRating: 4.9,
+
+// Orders summary (computed from store)
+const ordersSummary = computed(() => {
+	const available = deliveryStore.availableJobs.map((j) => j.order);
+	const totalEarnings = available.reduce((sum, o) => sum + o.amount + o.fee, 0);
+	const avgDist = available.length ? (available.reduce((s, o) => s + o.distance, 0) / available.length).toFixed(1) : '0';
+	return {
+		title: 'ordersWaitingPickup',
+		subtitle: 'potentialEarnings',
+		avgDistance: `${avgDist} km`,
+		totalEarnings: totalEarnings.toFixed(2),
+	};
 });
 
 // Show more / less
-const expandedOrders = ref(new Set<number>());
-const toggleExpand = (orderId: number) => {
+const expandedOrders = ref(new Set<string>());
+const toggleExpand = (orderId: string) => {
 	if (expandedOrders.value.has(orderId)) expandedOrders.value.delete(orderId);
 	else expandedOrders.value.add(orderId);
 };
-const isExpanded = (orderId: number) => expandedOrders.value.has(orderId);
+const isExpanded = (orderId: string) => expandedOrders.value.has(orderId);
 
 // Tab icons
 const getTabIcon = (key: string) => {
@@ -300,17 +321,24 @@ const getTabIcon = (key: string) => {
 };
 
 // Order actions
-const handleAcceptOrder = (orderId: number) => {
-	const order = orders.value.find(o => o.id === orderId);
-	if (order) {
-		order.status = 'active';
-		order.statusLabel = 'Picked Up';
+const handleAcceptOrder = async (orderId: string) => {
+	try {
+		await deliveryStore.acceptDeliveryOrder(orderId);
+		router.push(`/delivery/live/${orderId}`);
+	} catch (e) {
+		console.error('Accept order failed', e);
 	}
 };
 
-const handleRejectOrder = (orderId: number) => {
-	orders.value = orders.value.filter(o => o.id !== orderId);
+const handleRejectOrder = async (orderId: string) => {
+	await deliveryStore.rejectDeliveryOrder(orderId);
 };
+
+onMounted(async () => {
+	await deliveryStore.initialize();
+	deliveryStore.loadCompletedOrdersFromStorage();
+	if (deliveryStore.isOnline) await deliveryStore.loadAvailableJobs();
+});
 </script>
 
 <style>

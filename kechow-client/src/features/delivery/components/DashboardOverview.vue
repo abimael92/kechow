@@ -17,6 +17,20 @@
 			</div>
 		</div>
 
+		<!-- Simulation complete banner (delivery lifecycle validated) -->
+		<div
+			v-if="showSimulationComplete"
+			class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-4 shadow-soft flex items-center gap-3"
+		>
+			<div class="w-10 h-10 rounded-full bg-green-600 dark:bg-green-500 flex items-center justify-center flex-shrink-0">
+				<i class="ri-checkbox-circle-line text-white text-xl"></i>
+			</div>
+			<div>
+				<p class="font-semibold text-green-800 dark:text-green-200">Delivery lifecycle validated</p>
+				<p class="text-sm text-green-700 dark:text-green-300">Simulation complete. Stop after completion.</p>
+			</div>
+		</div>
+
 		<!-- Status Card - UPDATED for better contrast -->
 		<div
 			class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-soft"
@@ -407,6 +421,14 @@ const insights = ref([
 	t('insight2'),
 	t('insight3'),
 ]);
+
+// Show "Delivery lifecycle validated" when at least one delivery completed today and no active order
+const showSimulationComplete = computed(
+	() =>
+		!deliveryStore.hasActiveOrder &&
+		deliveryStore.earningsSummary != null &&
+		deliveryStore.earningsSummary.today.deliveries >= 1
+);
 
 </script>
 

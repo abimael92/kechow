@@ -328,6 +328,7 @@ import {
 	updateOrderStatus,
 } from '../services/businessOwner.service';
 import type { Order } from '../types/';
+import { canTransition, normalizeOwnerStatus } from '@shared/order-state-machine';
 
 const { t } = useI18n();
 
@@ -566,6 +567,15 @@ const loadOrders = async () => {
 };
 
 const handleStatusUpdate = async (orderId: string, newStatus: string) => {
+	const order = orders.value.find((o) => o.id === orderId);
+	if (!order) return;
+	const fromStatus = normalizeOwnerStatus(order.status);
+	const toStatus = normalizeOwnerStatus(newStatus);
+	if (!canTransition(fromStatus, toStatus, 'owner')) {
+		console.error('Invalid order state transition:', fromStatus, '→', toStatus);
+		// Show error toast: t('invalidStatusTransition')
+		return;
+	}
 	try {
 		await updateOrderStatus(orderId, newStatus);
 		await loadOrders();
