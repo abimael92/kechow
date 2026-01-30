@@ -1,18 +1,21 @@
-import { computed, ref } from 'vue';
+import { computed, type MaybeRefOrGetter, toValue } from 'vue';
 
 export function useFilteredRestaurants(
-	restaurants: any[],
-	search: string,
-	selectedCategory: string
+	restaurants: MaybeRefOrGetter<any[]>,
+	search: MaybeRefOrGetter<string>,
+	selectedCategory: MaybeRefOrGetter<string>
 ) {
 	const filtered = computed(() => {
-		return restaurants.filter((r) => {
-			const searchLower = search.toLowerCase();
+		const list = toValue(restaurants);
+		const searchVal = toValue(search);
+		const categoryVal = toValue(selectedCategory);
+		const searchLower = (searchVal ?? '').toLowerCase();
+		return (list ?? []).filter((r) => {
 			const matchesSearch =
-				r.name.toLowerCase().includes(searchLower) ||
-				r.description.toLowerCase().includes(searchLower);
+				(r.name ?? '').toLowerCase().includes(searchLower) ||
+				(r.description ?? '').toLowerCase().includes(searchLower);
 			const matchesCategory =
-				!selectedCategory || r.categoryId === selectedCategory; // or adjust logic to category name matching
+				!categoryVal || r.categoryId === categoryVal;
 			return matchesSearch && matchesCategory;
 		});
 	});
