@@ -4,6 +4,31 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [vue()],
+  build: {
+    target: 'esnext',
+    minify: 'esbuild',
+    cssCodeSplit: true,
+    assetsInlineLimit: 4096,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('vue') && !id.includes('vue-router') && !id.includes('pinia')) return 'vue';
+            if (id.includes('vue-router')) return 'vue-router';
+            if (id.includes('pinia')) return 'pinia';
+            if (id.includes('axios')) return 'axios';
+            if (id.includes('chart.js') || id.includes('vue-chartjs')) return 'charts';
+            if (id.includes('vue-i18n') || id.includes('@intlify')) return 'i18n';
+            return 'vendor';
+          }
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash][extname]',
+      },
+    },
+  },
   resolve: {
     alias: {
       // Standardized primary aliases

@@ -1,18 +1,20 @@
 // kechow-client/src/app/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
-import MainLayout from '@layout/MainLayout.vue';
-import CustomerLayout from '@shared/layout/CustomerLayout.vue';
-import OwnerLayout from '@shared/layout/OwnerLayout.vue';
-import DeliveryLayout from '@shared/layout/DeliveryLayout.vue';
 import { authGuard } from './guards';
 
-// Pages (eager)
-import LandingPage from '@pages/LandingPage.vue';
-import LoginView from '@features/auth/components/LoginForm.vue';
-import RegisterView from '@features/auth/components/RegisterView.vue';
-import HomePage from '@pages/HomePage.vue';
-import RestaurantListPage from '@pages/RestaurantListPage.vue';
-import RestaurantDetailView from '@pages/RestaurantDetailView.vue';
+// Layouts (lazy) — loaded only when a route using them is visited
+const MainLayout = () => import('@layout/MainLayout.vue');
+const CustomerLayout = () => import('@shared/layout/CustomerLayout.vue');
+const OwnerLayout = () => import('@shared/layout/OwnerLayout.vue');
+const DeliveryLayout = () => import('@shared/layout/DeliveryLayout.vue');
+
+// Public + customer pages (lazy) — smaller initial bundle
+const LandingPage = () => import('@pages/LandingPage.vue');
+const LoginView = () => import('@features/auth/components/LoginForm.vue');
+const RegisterView = () => import('@features/auth/components/RegisterView.vue');
+const HomePage = () => import('@pages/HomePage.vue');
+const RestaurantListPage = () => import('@pages/RestaurantListPage.vue');
+const RestaurantDetailView = () => import('@pages/RestaurantDetailView.vue');
 
 // Owner pages (lazy)
 const OwnerDashboardPage = () => import('@pages/owner/OwnerDashboardPage.vue');
