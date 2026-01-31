@@ -1,7 +1,7 @@
 <!-- @/components/RestaurantCard.vue -->
 <template>
     <div 
-        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 cursor-pointer group min-w-0"
+        class="bg-card dark:bg-secondary-800 rounded-card overflow-hidden border border-secondary-200 dark:border-secondary-700 shadow-soft hover:shadow-medium transition-all duration-300 cursor-pointer group min-w-0"
         @click="$emit('click', restaurant)"
     >
         <!-- Restaurant Image -->
@@ -14,7 +14,7 @@
             />
             <button 
                 @click.stop="$emit('favorite', restaurant)"
-                class="absolute top-2 right-2 sm:top-3 sm:right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                class="absolute top-2 right-2 sm:top-3 sm:right-3 p-2 bg-card/90 dark:bg-secondary-800/90 rounded-full hover:bg-card dark:hover:bg-secondary-800 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="Añadir o quitar de favoritos"
             >
                 <i 
@@ -23,7 +23,7 @@
                 ></i>
             </button>
             <div v-if="!restaurant.isOpen" class="absolute inset-0 bg-black/60 flex items-center justify-center">
-                <span class="bg-red-500 text-white px-3 py-1.5 sm:px-4 rounded-full text-xs sm:text-sm font-medium">
+                <span class="bg-error text-white px-3 py-1.5 sm:px-4 rounded-full text-xs sm:text-sm font-medium">
                     Cerrado
                 </span>
             </div>
@@ -32,7 +32,7 @@
         <!-- Restaurant Info -->
         <div class="p-3 sm:p-4 min-w-0">
             <div class="flex justify-between items-start gap-2 mb-2">
-                <h3 class="font-bold text-base sm:text-lg text-gray-900 dark:text-white line-clamp-1 min-w-0 break-words">
+                <h3 class="font-bold text-base sm:text-lg text-secondary-900 dark:text-white line-clamp-1 min-w-0 break-words font-chewy">
                     {{ restaurant.name }}
                 </h3>
                 <span 
@@ -57,14 +57,14 @@
                     <div class="flex text-yellow-400 flex-shrink-0">
                         <i v-for="star in 5" :key="star" class="ri-star-fill text-sm sm:text-base"></i>
                     </div>
-                    <span class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 truncate">
+                    <span class="text-xs sm:text-sm text-secondary-700 dark:text-secondary-300 truncate">
                         {{ restaurant.rating?.toFixed(1) || 'N/A' }}
                     </span>
                 </div>
-                <div v-else class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Sin calificación</div>
+                <div v-else class="text-xs sm:text-sm text-secondary-500 dark:text-secondary-400">Sin calificación</div>
                 
                 <!-- Delivery Time -->
-                <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex-shrink-0" v-if="restaurant.deliveryTime">
+                <span class="text-xs sm:text-sm text-secondary-500 dark:text-secondary-400 flex-shrink-0" v-if="restaurant.deliveryTime">
                     {{ restaurant.deliveryTime }} min
                 </span>
             </div>

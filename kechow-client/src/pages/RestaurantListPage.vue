@@ -1,9 +1,9 @@
 <template>
 	<div
-		class="min-w-0 overflow-x-hidden bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans transition-colors duration-300"
+		class="min-w-0 overflow-x-hidden bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300"
 	>
 		<!-- Mobile Header with Hamburger Menu - STICKY BUT NOT OVERLAPPING -->
-		<div class="sticky top-0 z-50 w-full lg:hidden bg-white dark:bg-gray-800 shadow-sm min-w-0">
+		<div class="sticky top-0 z-50 w-full lg:hidden bg-gradient-to-r from-primary-50 via-white to-primary-50 dark:bg-secondary-800 shadow-soft border-b border-primary-200/60 dark:border-secondary-700 min-w-0">
 			<div class="w-full px-4 py-3 min-w-0">
 				<div class="flex items-center justify-between max-w-7xl mx-auto min-w-0 gap-2">
 					<div class="flex items-center gap-3">
@@ -14,7 +14,7 @@
 						>
 							<i class="ri-menu-line text-xl"></i>
 						</button>
-						<h1 class="text-xl font-bold text-primary-gradient">
+						<h1 class="text-xl font-chewy font-bold text-primary-500">
 								Restaurantes
 							</h1>
 						</div>

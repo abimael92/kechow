@@ -1,7 +1,7 @@
 <template>
 	<!-- Top Nav: grid layout (no fixed widths; Flexbox/Grid only) -->
-	<nav
-		class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
+<nav
+  class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-primary-200/80 shadow-soft backdrop-blur-sm bg-gradient-to-r from-primary-50 via-white to-primary-50 text-secondary-900 dark:bg-gray-900 dark:[background-image:none] dark:backdrop-blur-md dark:border-gray-700 dark:shadow-soft dark:text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
 		role="navigation"
 		aria-label="Navegación principal"
 	>
@@ -34,7 +34,7 @@
 			<!-- Burger menu button - visible only on mobile/tablet -->
 			<button
 				@click="toggleDrawer"
-				class="lg:hidden flex items-center justify-center min-h-[44px] min-w-[44px] text-primary hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
+				class="lg:hidden flex items-center justify-center min-h-[44px] min-w-[44px] text-primary-500 dark:text-primary-400 hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg"
 				aria-label="Abrir menú"
 			>
 				<svg
@@ -99,7 +99,7 @@
 			>
 				<button
 					@click="toggleUserMenu"
-					class="flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded relative bg-gradient-to-r from-primary-light to-primary-dark p-1 user-menu-button"
+					class="flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg bg-secondary-200 dark:bg-gradient-to-r dark:from-primary-light dark:to-primary-dark p-1 user-menu-button text-secondary-800 dark:text-white"
 					aria-haspopup="true"
 					:aria-expanded="userMenuOpen ? 'true' : 'false'"
 					aria-label="Menú de usuario"
@@ -110,7 +110,7 @@
 					/>
 					<span
 						v-if="notifications > 0"
-						class="absolute -top-1 -right-1 bg-accent rounded-full w-4 h-4 text-xs flex items-center justify-center font-bold text-white"
+						class="absolute -top-1 -right-1 bg-primary-500 dark:bg-accent rounded-full w-4 h-4 text-xs flex items-center justify-center font-bold text-white"
 						>{{ notifications }}</span
 					>
 				</button>
@@ -130,7 +130,7 @@
 					>
 						<li>
 							<button
-								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-blue-600 rounded-lg transition-colors"
+								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-primary-500 rounded-lg transition-colors"
 								role="menuitem"
 								@click="goProfile"
 							>
@@ -139,7 +139,7 @@
 						</li>
 						<li>
 							<button
-								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-blue-600 rounded-lg transition-colors"
+								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-primary-500 rounded-lg transition-colors"
 								role="menuitem"
 								@click="logout"
 							>
@@ -162,12 +162,12 @@
 		>
 			<div
 				v-if="isDrawerOpen"
-				class="absolute top-full left-0 right-0 bg-[#2a1a40] border-b border-white/10 shadow-soft lg:hidden overflow-auto max-h-[70vh]"
+				class="absolute top-full left-0 right-0 bg-gradient-to-b from-primary-50 via-white to-primary-100/50 dark:bg-[#2a1a40] dark:border-white border-b border-primary-200/80 shadow-soft lg:hidden overflow-auto max-h-[70vh]"
 			>
 				<div class="px-4 py-3 flex flex-col gap-0.5">
 					<!-- Role-based nav links (solo para el rol del layout, nunca authStore) -->
 					<template v-if="drawerNavItems.length">
-						<div class="text-white/60 text-xs font-medium px-3 py-2 uppercase tracking-wide">
+						<div class="text-secondary-500 dark:text-gray-400 text-xs font-medium px-3 py-2 uppercase tracking-wide">
 							Navegación
 						</div>
 						<router-link
@@ -175,16 +175,16 @@
 							:key="item.path"
 							:to="item.path"
 							@click="closeDrawer"
-							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-colors break-words"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg text-secondary-800 dark:text-gray-200 hover:bg-secondary-100 dark:hover:bg-gray-700 hover:text-secondary-900 dark:hover:text-white transition-colors break-words"
 						>
 							{{ item.label }}
 						</router-link>
-						<div class="border-t border-white/10 my-1" />
+						<div class="border-t border-secondary-200 dark:border-white/10 my-1" />
 					</template>
 
 					<button
 						@click="toggleDarkMode"
-						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors text-white/90"
+						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-secondary-100 dark:hover:bg-gray-700 transition-colors text-secondary-800 dark:text-gray-200"
 						aria-label="Cambiar tema"
 					>
 						<svg
@@ -213,13 +213,13 @@
 					<template v-if="authStore.isAuthenticated">
 						<button
 							@click="goProfile"
-							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors text-white/90"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-secondary-100 dark:hover:bg-gray-700 transition-colors text-secondary-800 dark:text-gray-200"
 						>
 							Perfil
 						</button>
 						<button
 							@click="logout"
-							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors text-white/90"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-secondary-100 dark:hover:bg-gray-700 transition-colors text-secondary-800 dark:text-gray-200"
 						>
 							Cerrar sesión
 						</button>
@@ -256,16 +256,11 @@ const isDark = ref(false);
 
 onMounted(() => {
 	const savedTheme = localStorage.getItem('theme');
-	// const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 	
-	// Current: Always light mode
-	isDark.value = false;
-	document.documentElement.classList.remove('dark');
-	localStorage.setItem('theme', 'light');
-	
-	// Uncomment for system preference:
-	// isDark.value = savedTheme ? savedTheme === 'dark' : prefersDark;
-	// document.documentElement.classList.toggle('dark', isDark.value);
+	// Use saved theme or system preference
+	isDark.value = savedTheme ? savedTheme === 'dark' : prefersDark;
+	document.documentElement.classList.toggle('dark', isDark.value);
 
 	document.addEventListener('click', closeOnClickOutside);
 	document.addEventListener('click', closeDrawerOnClickOutside);

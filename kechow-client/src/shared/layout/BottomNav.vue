@@ -2,7 +2,7 @@
 	<!-- Mobile only: fixed bottom nav. Role from layout — no role leaks. -->
 	<nav
 		v-if="items.length > 0"
-		class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#2a1a40]/95 backdrop-blur-md border-t border-white/10 min-w-0"
+		class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-primary-100/70 via-white to-white dark:from-transparent dark:via-transparent dark:to-transparent dark:bg-gray-900 dark:border-gray-700 border-t border-primary-200/80 shadow-soft min-w-0 dark:[background-image:none]"
 		role="navigation"
 		:aria-label="`Navegación rápida ${roleLabel}`"
 	>
@@ -11,8 +11,8 @@
 				v-for="item in items"
 				:key="item.path"
 				:to="item.path"
-				class="flex flex-col items-center justify-center min-h-[44px] min-w-[56px] py-2 px-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors flex-1 max-w-[120px]"
-				:class="{ 'text-white bg-white/15 font-semibold': isActive(item.path) }"
+				class="flex flex-col items-center justify-center min-h-[44px] min-w-[56px] py-2 px-2 rounded-lg text-secondary-500 dark:text-gray-400 hover:text-secondary-900 dark:hover:text-white transition-colors flex-1 max-w-[120px]"
+				:class="{ 'text-primary-500 dark:text-primary-400 font-semibold': isActive(item.path) }"
 			>
 				<span class="text-xs sm:text-sm truncate w-full text-center break-words line-clamp-1">{{ item.label }}</span>
 			</router-link>

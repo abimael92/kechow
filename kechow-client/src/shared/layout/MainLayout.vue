@@ -6,7 +6,7 @@
 	>
 		<a href="#main-content" class="skip-link">Saltar al contenido principal</a>
 		<Header />
-		<!-- <RoleNavbar /> -->
+		<RoleNavbar />
 
 		<!-- Main Content: min-h-0 + overflow-auto so content scrolls inside flex child -->
 		<main
@@ -15,7 +15,11 @@
 			tabindex="-1"
 			role="main"
 		>
-			<router-view />
+			<router-view v-slot="{ Component }">
+				<Transition name="page" mode="out-in">
+					<component :is="Component" />
+				</Transition>
+			</router-view>
 		</main>
 
 		<Footer />
@@ -25,4 +29,5 @@
 <script setup lang="ts">
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
+import RoleNavbar from '@/components/layout/RoleNavbar.vue';
 </script>
