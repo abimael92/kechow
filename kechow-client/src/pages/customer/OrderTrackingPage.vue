@@ -205,7 +205,8 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
-import { getOrder, trackOrder, type Order } from '@/features/customer/services/customer.service';
+import { getOrder, trackOrder } from '@/features/customer/services/customer.service';
+import type { Order } from '@/features/customer/types';
 
 const route = useRoute();
 const router = useRouter();
@@ -241,7 +242,7 @@ const paymentMethodLabels: Record<string, string> = {
 	online: 'Pago en línea',
 };
 
-const orderStatuses = [
+const orderStatuses: { value: string; label: string; timestamp?: string }[] = [
 	{ value: 'new', label: 'Pedido Recibido' },
 	{ value: 'preparing', label: 'En Preparación' },
 	{ value: 'ready', label: 'Listo para Entrega' },

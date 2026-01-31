@@ -1,11 +1,11 @@
 <template>
-	<div class="empty-state" role="status" aria-label="Estado vacío">
-		<div class="empty-state__icon" aria-hidden="true">
-			<i :class="icon"></i>
+	<div class="empty-state p-4 sm:p-6 md:p-8 text-center min-w-0" role="status" aria-label="Estado vacío">
+		<div class="empty-state__icon flex justify-center mb-3 sm:mb-4" aria-hidden="true">
+			<i :class="[icon, 'text-3xl sm:text-4xl text-gray-400 dark:text-gray-500 flex-shrink-0']"></i>
 		</div>
-		<h3 class="empty-state__title">{{ title }}</h3>
-		<p v-if="description" class="empty-state__description">{{ description }}</p>
-		<div v-if="$slots.action" class="empty-state__action">
+		<h3 class="empty-state__title text-base sm:text-lg font-semibold text-gray-900 dark:text-white break-words mb-1 sm:mb-2">{{ title }}</h3>
+		<p v-if="description" class="empty-state__description text-sm sm:text-base text-gray-600 dark:text-gray-400 break-words max-w-sm mx-auto mb-4 sm:mb-5 leading-relaxed">{{ description }}</p>
+		<div v-if="$slots.action" class="empty-state__action flex justify-center flex-wrap gap-2 sm:gap-3">
 			<slot name="action" />
 		</div>
 	</div>
@@ -23,40 +23,5 @@ withDefaults(
 </script>
 
 <style scoped>
-.empty-state {
-	text-align: center;
-	padding: 2rem 1rem;
-}
-.empty-state__icon {
-	font-size: 3rem;
-	color: var(--color-text-quaternary, #9ca3af);
-	margin-bottom: 1rem;
-}
-.dark .empty-state__icon {
-	color: #6b7280;
-}
-.empty-state__title {
-	font-size: 1.125rem;
-	font-weight: 600;
-	color: var(--color-text-primary, #111827);
-	margin-bottom: 0.5rem;
-}
-.dark .empty-state__title {
-	color: #f9fafb;
-}
-.empty-state__description {
-	font-size: 0.875rem;
-	color: var(--color-text-secondary, #6b7280);
-	margin-bottom: 1.25rem;
-	max-width: 20rem;
-	margin-left: auto;
-	margin-right: auto;
-	line-height: 1.5;
-}
-.empty-state__action {
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	gap: 0.5rem;
-}
+/* Responsive padding and text handled by Tailwind in template */
 </style>

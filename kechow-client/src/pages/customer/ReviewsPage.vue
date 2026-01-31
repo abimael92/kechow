@@ -187,9 +187,9 @@ import {
 	getRestaurantReviews,
 	createReview,
 	getRestaurants,
-	type Review,
 	type Restaurant,
 } from '@/features/customer/services/customer.service';
+import type { Review } from '@/features/customer/types';
 
 const route = useRoute();
 const router = useRouter();
@@ -270,7 +270,7 @@ const submitReview = async () => {
 };
 
 const toggleHelpful = (reviewId: string) => {
-	const review = reviews.value.find((r) => r.id === reviewId);
+	const review = reviews.value.find((r: Review) => r.id === reviewId);
 	if (review) {
 		review.helpfulCount += 1;
 		toast.info('Gracias por tu feedback');

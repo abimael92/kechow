@@ -3,7 +3,7 @@
 	<nav
 		class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
 		role="navigation"
-		aria-label="Primary Navigation"
+		aria-label="Navegación principal"
 	>
 		<!-- Left: logo -->
 		<div class="flex items-center justify-start min-w-0">
@@ -151,7 +151,7 @@
 			</div>
 		</div>
 
-		<!-- Mobile drawer menu (absolute required for overlay) -->
+		<!-- Mobile drawer: nav links (by role from layout) + Perfil + Cerrar sesión + tema. Sin role leaks. -->
 		<transition
 			enter-active-class="transition ease-out duration-200"
 			enter-from-class="opacity-0 transform -translate-y-4"
@@ -162,12 +162,29 @@
 		>
 			<div
 				v-if="isDrawerOpen"
-				class="absolute top-full left-0 right-0 bg-[#2a1a40] border-b border-white/10 shadow-soft lg:hidden overflow-auto"
+				class="absolute top-full left-0 right-0 bg-[#2a1a40] border-b border-white/10 shadow-soft lg:hidden overflow-auto max-h-[70vh]"
 			>
-				<div class="px-4 py-3 flex flex-col gap-1">
+				<div class="px-4 py-3 flex flex-col gap-0.5">
+					<!-- Role-based nav links (solo para el rol del layout, nunca authStore) -->
+					<template v-if="drawerNavItems.length">
+						<div class="text-white/60 text-xs font-medium px-3 py-2 uppercase tracking-wide">
+							Navegación
+						</div>
+						<router-link
+							v-for="item in drawerNavItems"
+							:key="item.path"
+							:to="item.path"
+							@click="closeDrawer"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-colors break-words"
+						>
+							{{ item.label }}
+						</router-link>
+						<div class="border-t border-white/10 my-1" />
+					</template>
+
 					<button
 						@click="toggleDarkMode"
-						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors"
+						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors text-white/90"
 						aria-label="Cambiar tema"
 					>
 						<svg
@@ -178,12 +195,7 @@
 							stroke="currentColor"
 							class="w-5 h-5 mr-3 flex-shrink-0"
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M12 3a9 9 0 009 9 9 9 0 11-9-9z"
-							/>
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3a9 9 0 009 9 9 9 0 11-9-9z" />
 						</svg>
 						<svg
 							v-else
@@ -193,54 +205,42 @@
 							stroke="currentColor"
 							class="w-5 h-5 mr-3 flex-shrink-0"
 						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="1.5"
-								d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-							/>
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
 						</svg>
 						{{ isDark ? 'Modo claro' : 'Modo oscuro' }}
 					</button>
 
-					<!-- i18n preparado para múltiples idiomas. Por ahora la app usa solo español. -->
-					<!-- <div class="min-h-[44px] flex items-center">
-						<LanguageToggle class="w-full" />
-					</div> -->
-
-					<button
-						@click="goProfile"
-						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors"
-					>
-						Perfil
-					</button>
-					<button
-						@click="logout"
-						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors"
-					>
-						Cerrar sesión
-					</button>
+					<template v-if="authStore.isAuthenticated">
+						<button
+							@click="goProfile"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors text-white/90"
+						>
+							Perfil
+						</button>
+						<button
+							@click="logout"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors text-white/90"
+						>
+							Cerrar sesión
+						</button>
+					</template>
 				</div>
 			</div>
 		</transition>
 	</nav>
-
-	<!-- Role Navbar fixed below TopNav -->
-	<RoleNavbar
-		v-if="authStore.isAuthenticated"
-		class="sticky top-[68px] sm:top-[80px] z-40"
-	/>
 </template>
 
 <script setup lang="ts">
-// i18n preparado para múltiples idiomas.
-// Por ahora la app usa solo español.
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { UserCircle } from 'lucide-vue-next';
-// import LanguageToggle from '@layout/LanguageToggle.vue';
-import RoleNavbar from '@/components/layout/RoleNavbar.vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
+import { getNavItemsForRole, type NavRole } from '@/shared/data/nav.config';
+
+const props = withDefaults(
+	defineProps<{ role?: NavRole | null }>(),
+	{ role: null }
+);
 
 const isDrawerOpen = ref(false);
 const userMenuOpen = ref(false);
@@ -248,6 +248,9 @@ const notifications = ref(3);
 
 const authStore = useAuthStore();
 const router = useRouter();
+
+/** Nav items for mobile drawer. Role comes from layout (route), not auth — no role leaks. */
+const drawerNavItems = computed(() => getNavItemsForRole(props.role ?? undefined));
 
 const isDark = ref(false);
 

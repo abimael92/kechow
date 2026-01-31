@@ -5,7 +5,7 @@
         @click="$emit('click', restaurant)"
     >
         <!-- Restaurant Image -->
-        <div class="relative h-40 sm:h-48 overflow-hidden">
+        <div class="relative h-36 sm:h-40 md:h-48 overflow-hidden">
             <img 
                 :src="restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'" 
                 :alt="restaurant.name"
@@ -14,29 +14,30 @@
             />
             <button 
                 @click.stop="$emit('favorite', restaurant)"
-                class="absolute top-3 right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-colors"
+                class="absolute top-2 right-2 sm:top-3 sm:right-3 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+                aria-label="Añadir o quitar de favoritos"
             >
                 <i 
                     :class="restaurant.isFavorite ? 'ri-heart-fill text-red-500' : 'ri-heart-line text-gray-600 dark:text-gray-300'"
-                    class="text-xl"
+                    class="text-lg sm:text-xl flex-shrink-0"
                 ></i>
             </button>
             <div v-if="!restaurant.isOpen" class="absolute inset-0 bg-black/60 flex items-center justify-center">
-                <span class="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                <span class="bg-red-500 text-white px-3 py-1.5 sm:px-4 rounded-full text-xs sm:text-sm font-medium">
                     Cerrado
                 </span>
             </div>
         </div>
         
         <!-- Restaurant Info -->
-        <div class="p-4">
-            <div class="flex justify-between items-start mb-2">
-                <h3 class="font-bold text-lg text-gray-900 dark:text-white line-clamp-1">
+        <div class="p-3 sm:p-4 min-w-0">
+            <div class="flex justify-between items-start gap-2 mb-2">
+                <h3 class="font-bold text-base sm:text-lg text-gray-900 dark:text-white line-clamp-1 min-w-0 break-words">
                     {{ restaurant.name }}
                 </h3>
                 <span 
                     :class="[
-                        'px-2 py-1 rounded text-xs font-medium',
+                        'px-2 py-1 rounded text-xs font-medium flex-shrink-0',
                         restaurant.priceRange === '$' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
                         restaurant.priceRange === '$$' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
                         'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
@@ -46,31 +47,31 @@
                 </span>
             </div>
             
-            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 line-clamp-2 break-words">
+            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 line-clamp-2 break-words min-w-0">
                 {{ restaurant.description }}
             </p>
             
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-2 min-w-0">
                 <!-- Rating -->
-                <div class="flex items-center gap-1" v-if="restaurant.rating !== undefined">
-                    <div class="flex text-yellow-400">
-                        <i v-for="star in 5" :key="star" class="ri-star-fill"></i>
+                <div class="flex items-center gap-1 min-w-0" v-if="restaurant.rating !== undefined">
+                    <div class="flex text-yellow-400 flex-shrink-0">
+                        <i v-for="star in 5" :key="star" class="ri-star-fill text-sm sm:text-base"></i>
                     </div>
-                    <span class="text-sm text-gray-700 dark:text-gray-300 ml-1">
+                    <span class="text-xs sm:text-sm text-gray-700 dark:text-gray-300 truncate">
                         {{ restaurant.rating?.toFixed(1) || 'N/A' }}
                     </span>
                 </div>
-                <div v-else class="text-sm text-gray-500">Sin calificación</div>
+                <div v-else class="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Sin calificación</div>
                 
                 <!-- Delivery Time -->
-                <span class="text-sm text-gray-600 dark:text-gray-400" v-if="restaurant.deliveryTime">
+                <span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex-shrink-0" v-if="restaurant.deliveryTime">
                     {{ restaurant.deliveryTime }} min
                 </span>
             </div>
             
             <!-- Cuisine Badge -->
             <div class="mt-3">
-                <span class="inline-block px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs">
+                <span class="inline-block px-2.5 py-1 sm:px-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs break-words max-w-full">
                     {{ restaurant.cuisine }}
                 </span>
             </div>
@@ -79,9 +80,6 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 
 interface MenuItem {
     id: number;

@@ -161,7 +161,7 @@ onMounted(() => {
 					>
 						<span class="text-lg">←</span>
 					</div>
-					<span class="font-medium ml-1">{{ t('continueShopping') }}</span>
+					<span class="font-medium ml-1">Seguir comprando</span>
 				</button>
 
 				<!-- Title Section -->
@@ -174,7 +174,7 @@ onMounted(() => {
 					<p
 						class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mt-1 sm:mt-2 max-w-2xl mx-auto"
 					>
-						{{ t('itemsInCart', { count: itemCount }) }}
+						{{ itemCount === 1 ? '1 artículo en el carrito' : `${itemCount} artículos en el carrito` }}
 					</p>
 				</div>
 
@@ -216,7 +216,7 @@ onMounted(() => {
 												{{ item.name }}
 											</h3>
 											<p class="text-gray-500 dark:text-gray-400 text-xs sm:text-sm mt-1">
-												{{ t(item.category?.toLowerCase() || 'uncategorized') }}
+												{{ item.category || 'Sin categoría' }}
 											</p>
 											<p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mt-2 line-clamp-2">
 												{{ item.description }}
@@ -319,7 +319,7 @@ onMounted(() => {
 												${{ (item.price * item.quantity).toFixed(2) }}
 											</p>
 											<p class="text-sm text-gray-500 dark:text-gray-400">
-												{{ t('each', { price: item.price.toFixed(2) }) }}
+												${{ item.price.toFixed(2) }} c/u
 											</p>
 										</div>
 									</div>
@@ -360,7 +360,7 @@ onMounted(() => {
 							@click="continueShopping"
 							class="bg-primary-600 dark:bg-primary-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors shadow-sm hover:shadow-md"
 						>
-							{{ t('browseMenu') }}
+							Ver menú
 						</button>
 					</div>
 				</div>
@@ -378,14 +378,14 @@ onMounted(() => {
 							<!-- Pricing Breakdown -->
 							<div class="space-y-3 mb-4 md:mb-6">
 								<div class="flex justify-between text-gray-600 dark:text-gray-300 text-sm md:text-base">
-									<span>{{ t('subtotal', { count: itemCount }) }}</span>
+									<span>Subtotal ({{ itemCount }} {{ itemCount === 1 ? 'artículo' : 'artículos' }})</span>
 									<span>${{ total.toFixed(2) }}</span>
 								</div>
 								<div class="flex justify-between text-gray-600 dark:text-gray-300 text-sm md:text-base">
 									<span>Envío</span>
 									<span :class="deliveryFee === 0 ? 'text-green-600 dark:text-green-400' : ''">
 										{{
-											deliveryFee === 0 ? t('free') : `$${deliveryFee.toFixed(2)}`
+											deliveryFee === 0 ? 'Gratis' : `$${deliveryFee.toFixed(2)}`
 										}}
 									</span>
 								</div>
@@ -406,7 +406,7 @@ onMounted(() => {
 								<div v-if="total < 250" class="bg-gray-50 dark:bg-gray-700/50 rounded-lg p-3 mt-4">
 									<div class="flex justify-between text-xs md:text-sm mb-2">
 										<span class="text-gray-600 dark:text-gray-300">
-											{{ t('freeDeliveryProgress', { amount: (250 - total).toFixed(2) }) }}
+											Agrega ${{ (250 - total).toFixed(2) }} más para envío gratis
 										</span>
 										<span class="font-semibold text-primary-600 dark:text-primary-400">
 											{{ Math.min((total / 250) * 100, 100).toFixed(0) }}%

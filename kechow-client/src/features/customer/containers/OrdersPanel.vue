@@ -130,7 +130,7 @@
 							:disabled="!isOnline"
 							class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
 						>
-							{{ t('retry') }}
+							Reintentar
 						</button>
 					</template>
 				</EmptyState>
@@ -250,7 +250,7 @@
 
 		<!-- Favorites Tab -->
 		<div v-if="activeTab === 'favorites'" class="space-y-6">
-			<h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">{{ t('favorites') }}</h2>
+			<h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">Favoritos</h2>
 			
 			<EmptyState
 				v-if="favorites.length === 0"
@@ -349,7 +349,7 @@
 				<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 p-6 border-b border-gray-100 dark:border-gray-700">
 					<div class="text-center">
 						<p class="text-2xl font-bold text-gray-900 dark:text-white">{{ totalOrders }}</p>
-						<p class="text-sm text-gray-500 dark:text-gray-400">{{ t('totalOrders') }}</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400">Total de pedidos</p>
 					</div>
 					<div class="text-center">
 						<p class="text-2xl font-bold text-gray-900 dark:text-white">{{ favoriteRestaurants }}</p>

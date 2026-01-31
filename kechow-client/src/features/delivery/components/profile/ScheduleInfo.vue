@@ -5,11 +5,11 @@
 			class="bg-white rounded-xl border p-4 flex justify-between items-center shadow-sm"
 		>
 			<div>
-				<h3 class="font-bold text-gray-900">Availability</h3>
-				<p class="text-sm text-white">
-					You are currently
+				<h3 class="font-bold text-gray-900">Disponibilidad</h3>
+				<p class="text-sm text-gray-600 dark:text-gray-300">
+					Actualmente estás
 					<span :class="isOnline ? 'text-green-600' : 'text-red-600'">
-						{{ isOnline ? 'Online' : 'Offline' }}
+						{{ isOnline ? 'en línea' : 'desconectado' }}
 					</span>
 				</p>
 			</div>
@@ -22,7 +22,7 @@
 				"
 				class="px-4 py-2 text-white rounded-lg font-medium transition-colors"
 			>
-				{{ isOnline ? 'Go Offline' : 'Go Online' }}
+				{{ isOnline ? 'Desconectarse' : 'Conectarse' }}
 			</button>
 		</div>
 
@@ -30,38 +30,38 @@
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 			<!-- Work Summary -->
 			<div class="bg-white rounded-xl border p-4 shadow-sm">
-				<h4 class="font-semibold text-gray-800">Today's Summary</h4>
+				<h4 class="font-semibold text-gray-800">Resumen de hoy</h4>
 				<div class="grid grid-cols-3 text-center mt-4">
 					<div>
 						<p class="text-lg font-bold">{{ hoursWorked }}</p>
-						<p class="text-xs text-gray-500">Hours Online</p>
+						<p class="text-xs text-gray-500">Horas en línea</p>
 					</div>
 					<div>
 						<p class="text-lg font-bold">{{ deliveries }}</p>
-						<p class="text-xs text-gray-500">Deliveries</p>
+						<p class="text-xs text-gray-500">Entregas</p>
 					</div>
 					<div>
 						<p class="text-lg font-bold">${{ earnings }}</p>
-						<p class="text-xs text-gray-500">Earnings</p>
+						<p class="text-xs text-gray-500">Ganancias</p>
 					</div>
 				</div>
 			</div>
 
 			<!-- Weekly Summary -->
 			<div class="bg-white rounded-xl border p-4 shadow-sm">
-				<h4 class="font-semibold text-gray-800">This Week</h4>
+				<h4 class="font-semibold text-gray-800">Esta semana</h4>
 				<div class="grid grid-cols-3 text-center mt-4">
 					<div>
 						<p class="text-lg font-bold">{{ weekly.hours }}</p>
-						<p class="text-xs text-gray-500">Hours</p>
+						<p class="text-xs text-gray-500">Horas</p>
 					</div>
 					<div>
 						<p class="text-lg font-bold">{{ weekly.deliveries }}</p>
-						<p class="text-xs text-gray-500">Deliveries</p>
+						<p class="text-xs text-gray-500">Entregas</p>
 					</div>
 					<div>
 						<p class="text-lg font-bold">${{ weekly.earnings }}</p>
-						<p class="text-xs text-gray-500">Earnings</p>
+						<p class="text-xs text-gray-500">Ganancias</p>
 					</div>
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 		<!-- Insights -->
 		<div class="bg-white rounded-xl border p-4 shadow-sm">
 			<h4 class="font-semibold text-gray-800 mb-2">Mejores horarios para trabajar</h4>
-			<p class="text-sm text-white mb-3">{{ $t('basedOnLast7Days') }}</p>
+			<p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Según los últimos 7 días</p>
 			<!-- chart placeholder -->
 			<div
 				class="h-32 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400"
