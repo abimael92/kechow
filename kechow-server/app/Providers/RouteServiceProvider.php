@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
-        logger('RouteServiceProvider booted');
+        // Resolve route parameter 'owner' to User with role owner (for /api/owners/{owner}).
+        Route::bind('owner', fn (string $value) => User::where('role', 'owner')->findOrFail($value));
 
         $this->routes(function () {
             Route::middleware('api')
