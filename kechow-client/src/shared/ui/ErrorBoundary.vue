@@ -9,14 +9,14 @@
 			<div class="error-boundary__actions">
 				<button
 					type="button"
-					class="error-boundary__btn error-boundary__btn--primary"
+					class="error-boundary__btn error-boundary__btn--primary min-h-[44px] px-4"
 					@click="handleRetry"
 				>
 					{{ retryLabel }}
 				</button>
 				<button
 					type="button"
-					class="error-boundary__btn error-boundary__btn--secondary"
+					class="error-boundary__btn error-boundary__btn--secondary min-h-[44px] px-4"
 					@click="handleReload"
 				>
 					{{ reloadLabel }}
@@ -38,10 +38,10 @@ const props = withDefaults(
 		reloadLabel?: string;
 	}>(),
 	{
-		title: 'Something went wrong',
-		message: 'An unexpected error occurred. You can try again or reload the page.',
-		retryLabel: 'Try again',
-		reloadLabel: 'Reload page',
+		title: 'Algo salió mal',
+		message: 'Ocurrió un error inesperado. Puedes intentar de nuevo o recargar la página.',
+		retryLabel: 'Reintentar',
+		reloadLabel: 'Recargar página',
 	}
 );
 
@@ -67,11 +67,13 @@ function handleReload() {
 	align-items: center;
 	justify-content: center;
 	min-height: 280px;
-	padding: 1.5rem;
+	padding: 1rem;
+	overflow: auto;
 }
 .error-boundary__card {
 	text-align: center;
 	max-width: 24rem;
+	min-width: 0;
 	padding: 1.5rem;
 	background: var(--color-bg-light, #f9fafb);
 	border: 1px solid var(--color-text-muted, #e5e7eb);

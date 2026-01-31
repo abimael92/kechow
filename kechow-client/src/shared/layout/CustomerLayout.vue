@@ -1,23 +1,25 @@
 <template>
 	<div
-		class="min-h-screen bg-gradient-to-br from-[#734ce8] via-[#a98dd4] via-50% to-[#6b4476] dark:from-gray-900 dark:to-gray-800 text-skin-base dark:text-skin-dark flex flex-col font-sans"
+		class="min-h-screen min-w-0 bg-gradient-to-br from-[#734ce8] via-[#a98dd4] via-50% to-[#6b4476] dark:from-gray-900 dark:to-gray-800 text-skin-base dark:text-skin-dark flex flex-col font-sans"
 		role="application"
 		aria-label="Kechow - Cliente"
 	>
-		<a href="#main-content" class="skip-link">{{ $t('skipToContent') || 'Skip to main content' }}</a>
+		<a href="#main-content" class="skip-link">Saltar al contenido principal</a>
 		<Header />
 		<RoleNavigation :role="'customer'" />
 
-		<!-- Main Content -->
+		<!-- Main Content: min-h-0 + overflow-auto so content scrolls inside flex child -->
 		<main
 			id="main-content"
-			class="flex-grow px-4 py-6 sm:px-6 sm:py-8 md:px-12 lg:px-20 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+			class="flex-grow min-h-0 overflow-auto px-4 py-6 sm:px-6 sm:py-8 md:px-12 lg:px-20 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
 			tabindex="-1"
 			role="main"
 		>
-			<Transition name="page" mode="out-in">
-				<router-view />
-			</Transition>
+			<router-view v-slot="{ Component }">
+				<Transition name="page" mode="out-in">
+					<component :is="Component" />
+				</Transition>
+			</router-view>
 		</main>
 
 		<Footer />

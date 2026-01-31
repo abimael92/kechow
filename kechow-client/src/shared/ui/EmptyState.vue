@@ -1,5 +1,5 @@
 <template>
-	<div class="empty-state" role="status" aria-label="Empty state">
+	<div class="empty-state" role="status" aria-label="Estado vacío">
 		<div class="empty-state__icon" aria-hidden="true">
 			<i :class="icon"></i>
 		</div>
