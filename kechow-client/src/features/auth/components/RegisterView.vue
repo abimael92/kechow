@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
@@ -38,7 +35,7 @@ async function handleRegister() {
 			role: registerForm.role,
 		});
 	} catch (error) {
-		alert(t('registrationFailed'));
+		alert('Registro fallido.');
 	}
 }
 </script>
@@ -57,7 +54,7 @@ async function handleRegister() {
 					:class="{ 'change-customer': setRole }"
 					@click="joinUsClicked"
 				>
-					{{ setRole ? t('orderNow') : t('joinUs') }}
+					{{ setRole ? 'Ordenar Ahora' : 'Únete a Nosotros' }}
 					<div class="tab-tongue" :class="{ 'bg-changed': setRole }"></div>
 				</div>
 			</div>
@@ -66,13 +63,13 @@ async function handleRegister() {
 				<h2
 					class="text-2xl font-bold mb-2 text-center text-gradient-pulse text-primary"
 				>
-					{{ t('createAccount') }}
+					Crea tu cuenta de Kechow
 				</h2>
 			</div>
 
 			<p class="text-sm text-center text-gray-500 mb-6">
-				{{ t('joinKechow') }} <br />
-				{{ setRole ? t('registerAsOwnerDelivery') : t('getFoodFast') }}
+				Únete a Kechow <br />
+				{{ setRole ? 'Regístrate como Propietario o Repartidor para comenzar.' : 'Recibe comida rápida, fresca y directamente en tu puerta.' }}
 			</p>
 
 			<form
@@ -91,7 +88,7 @@ async function handleRegister() {
 						<input
 							v-model="registerForm.name"
 							type="text"
-							:placeholder="t('namePlaceholder')"
+							placeholder="Tu nombre"
 							class="w-full text-gray-800 p-2 outline-none"
 							required
 						/>
@@ -111,7 +108,7 @@ async function handleRegister() {
 						<input
 							v-model="registerForm.email"
 							type="email"
-							:placeholder="t('emailPlaceholder')"
+							placeholder="tu@ejemplo.com"
 							class="w-full text-gray-800 p-2 outline-none"
 							required
 						/>
@@ -130,7 +127,7 @@ async function handleRegister() {
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							v-model="registerForm.password"
-							:placeholder="t('passwordPlaceholder')"
+							placeholder="••••••••"
 							class="w-full p-2 text-gray-800 outline-none"
 							required
 						/>
@@ -156,7 +153,7 @@ async function handleRegister() {
 						<input
 							:type="showConfirmPassword ? 'text' : 'password'"
 							v-model="registerForm.password_confirmation"
-							:placeholder="t('passwordPlaceholder')"
+							placeholder="••••••••"
 							class="w-full text-gray-800 p-2 outline-none"
 							required
 						/>
@@ -177,7 +174,7 @@ async function handleRegister() {
 				<!-- Role Select -->
 				<div v-if="setRole">
 					<label class="block mb-1 text-sm font-medium text-gray-700"
-						>{{ t('registerAs') }} <span class="text-red-600">*</span></label
+						>Registrarse como <span class="text-red-600">*</span></label
 					>
 					<select
 						v-model="registerForm.role"
@@ -193,7 +190,7 @@ async function handleRegister() {
 					type="submit"
 					class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition hover:scale-105 transition-transform active:scale-95 shadow-md"
 				>
-					{{ t('register') }}
+					Registrarse
 				</button>
 			</form>
 
