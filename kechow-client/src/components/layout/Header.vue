@@ -297,7 +297,14 @@ function closeUserMenu() {
 function goProfile() {
 	closeUserMenu();
 	closeDrawer();
-	router.push('/profile');
+	// Role-aware profile/settings so navigation works for each role
+	if (authStore.isOwner) {
+		router.push('/owner/settings');
+	} else if (authStore.isDelivery) {
+		router.push('/delivery/profile');
+	} else {
+		router.push('/profile');
+	}
 }
 
 function logout() {

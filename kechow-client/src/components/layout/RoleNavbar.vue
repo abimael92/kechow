@@ -58,7 +58,7 @@
 					>Pedidos</router-link
 				>
 				<router-link
-					to="/delivery/Earnings"
+					to="/delivery/earnings"
 					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
 					>Ganancias</router-link
