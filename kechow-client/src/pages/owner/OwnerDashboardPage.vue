@@ -1,5 +1,7 @@
 <template>
-	<DashboardOverview />
+	<div class="min-w-0 overflow-x-hidden">
+		<DashboardOverview />
+	</div>
 </template>
 
 <script setup lang="ts">

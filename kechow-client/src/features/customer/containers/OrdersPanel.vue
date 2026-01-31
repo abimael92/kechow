@@ -10,7 +10,7 @@
 						{{ getGreeting() }} {{ userName.split(' ')[0] }}!
 					</h1>
 					<p class="text-white/90">
-						{{ t('discoverDeliciousFood') }}
+						Descubre comida deliciosa cerca de ti
 					</p>
 				</div>
 				<div class="flex items-center gap-4 mt-4 lg:mt-0">
@@ -19,7 +19,7 @@
 						class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg transition-colors flex items-center gap-2"
 					>
 						<i class="ri-translate-2"></i>
-						<span>{{ currentLanguage === 'en' ? 'Español' : 'English' }}</span>
+						<span>Idioma</span>
 					</button>
 					<button 
 						@click="viewCart"
@@ -38,7 +38,7 @@
 				{{ getGreeting() }} {{ userName.split(' ')[0] }}!
 			</h1>
 			<p class="text-gray-600 dark:text-gray-400">
-				{{ t('discoverDeliciousFood') }}
+				Descubre comida deliciosa cerca de ti
 			</p>
 		</div>
 
@@ -49,7 +49,7 @@
 					class="ri-search-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 flex items-center justify-center"
 				></i>
 				<input
-					:placeholder="t('searchPlaceholder')"
+					placeholder="Buscar pedidos..."
 					class="w-full pl-12 pr-10 py-3 lg:py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm lg:text-base placeholder-gray-500 dark:placeholder-gray-400"
 					type="text"
 					v-model="searchQuery"
@@ -79,7 +79,7 @@
 							: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
 					]"
 				>
-					{{ cat.name[currentLanguage as 'en' | 'es'] }}
+					{{ cat.name.es }}
 				</button>
 			</div>
 		</div>
@@ -89,13 +89,13 @@
 		<div v-if="activeTab === 'orders'">
 			<div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6">
 				<h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-0">
-					{{ t('myOrders') }}
+					Mis pedidos
 				</h2>
 				<div class="flex items-center gap-2">
 					<button
 						@click="refreshOrders"
 						class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-						:title="!isOnline ? t('offline') : t('refresh')"
+						:title="!isOnline ? 'Sin conexión' : 'Actualizar'"
 						:disabled="loading || !isOnline"
 					>
 						<i class="ri-refresh-line" :class="{ 'animate-spin': loading }"></i>
@@ -103,7 +103,7 @@
 					<button
 						@click="filterOrders"
 						class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-						:title="t('filter')"
+						title="Filtrar"
 					>
 						<i class="ri-filter-line"></i>
 					</button>
@@ -120,8 +120,8 @@
 
 			<div v-else-if="loadError" class="py-8">
 				<EmptyState
-					:title="t('errorLoadingOrders')"
-					:description="t('errorLoadingOrdersDescription')"
+					title="Error al cargar pedidos"
+					description="No se pudieron cargar los pedidos. Revisa tu conexión e inténtalo de nuevo."
 					icon="ri-error-warning-line"
 				>
 					<template #action>
@@ -139,8 +139,8 @@
 			<div v-else class="space-y-4">
 				<template v-if="filteredOrders.length === 0">
 					<EmptyState
-						:title="t('noOrdersFound')"
-						:description="searchQuery ? t('tryDifferentSearch') : t('placeFirstOrder')"
+						title="No hay pedidos"
+						:description="searchQuery ? 'Prueba con otra búsqueda' : 'Realiza tu primer pedido'"
 						icon="ri-shopping-bag-line"
 					>
 						<template #action>
@@ -148,7 +148,7 @@
 								@click="browseRestaurants"
 								class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium cursor-pointer"
 							>
-								{{ t('browseRestaurants') }}
+								Ver restaurantes
 							</button>
 						</template>
 					</EmptyState>
@@ -168,11 +168,11 @@
 									:class="getStatusClass(order.status)"
 									class="px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap"
 								>
-									{{ t(`status.${order.status}`) }}
+									{{ statusText(order.status) }}
 								</span>
 							</div>
 							<p class="text-gray-500 dark:text-gray-400 text-sm mb-2">
-								{{ t('orderNumber') }} #{{ order.id }} • {{ order.items.length }} {{ order.items.length === 1 ? t('item') : t('items') }}
+								Pedido #{{ order.id }} • {{ order.items.length }} {{ order.items.length === 1 ? 'artículo' : 'artículos' }}
 							</p>
 							<div class="text-sm text-gray-600 dark:text-gray-300 line-clamp-1 mb-2">
 								{{ order.items.join(', ') }}
@@ -199,14 +199,14 @@
 								class="px-3 py-2 bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors text-sm font-medium cursor-pointer flex items-center gap-2"
 							>
 								<i class="ri-map-pin-line"></i>
-								<span class="hidden xs:inline">{{ t('track') }}</span>
+								<span class="hidden xs:inline">Rastrear</span>
 							</button>
 							<button
 								@click.stop="reorder(order)"
 								class="px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm font-medium cursor-pointer flex items-center gap-2"
 							>
 								<i class="ri-repeat-line"></i>
-								<span class="hidden xs:inline">{{ t('reorder') }}</span>
+								<span class="hidden xs:inline">Volver a pedir</span>
 							</button>
 						</div>
 					</div>
@@ -228,7 +228,7 @@
 							<i class="ri-arrow-left-s-line"></i>
 						</button>
 						<span class="text-sm text-gray-600 dark:text-gray-400">
-							{{ t('page') }} {{ currentPage }} {{ t('of') }} {{ totalPages }}
+							Página {{ currentPage }} de {{ totalPages }}
 						</span>
 						<button
 							@click="nextPage"
@@ -254,8 +254,8 @@
 			
 			<EmptyState
 				v-if="favorites.length === 0"
-				:title="t('noFavoritesYet')"
-				:description="t('saveFavoritesDescription')"
+				title="Aún no tienes favoritos"
+				description="Guarda tus restaurantes favoritos para encontrarlos rápido"
 				icon="ri-heart-line"
 			>
 				<template #action>
@@ -263,7 +263,7 @@
 						@click="browseRestaurants"
 						class="px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium cursor-pointer"
 					>
-						{{ t('browseRestaurants') }}
+						Ver restaurantes
 					</button>
 				</template>
 			</EmptyState>
@@ -300,7 +300,7 @@
 							@click="viewRestaurant(fav)"
 							class="w-full py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium cursor-pointer"
 						>
-							{{ t('viewMenu') }}
+							Ver menú
 						</button>
 					</div>
 				</div>
@@ -312,14 +312,14 @@
 					@click="showAllFavorites"
 					class="px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors font-medium cursor-pointer"
 				>
-					{{ t('loadMore') }}
+					Cargar más
 				</button>
 			</div>
 		</div>
 
 		<!-- Profile Tab -->
 		<div v-if="activeTab === 'profile'" class="space-y-6">
-			<h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">{{ t('profile') }}</h2>
+			<h2 class="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">Perfil</h2>
 			
 			<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
 				<!-- Profile Header -->
@@ -340,7 +340,7 @@
 							@click="editProfile"
 							class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors font-medium cursor-pointer"
 						>
-							{{ t('editProfile') }}
+							Editar perfil
 						</button>
 					</div>
 				</div>
@@ -353,15 +353,15 @@
 					</div>
 					<div class="text-center">
 						<p class="text-2xl font-bold text-gray-900 dark:text-white">{{ favoriteRestaurants }}</p>
-						<p class="text-sm text-gray-500 dark:text-gray-400">{{ t('favorites') }}</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400">Favoritos</p>
 					</div>
 					<div class="text-center">
 						<p class="text-2xl font-bold text-gray-900 dark:text-white">{{ userSince }}</p>
-						<p class="text-sm text-gray-500 dark:text-gray-400">{{ t('memberSince') }}</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400">Miembro desde</p>
 					</div>
 					<div class="text-center">
 						<p class="text-2xl font-bold text-gray-900 dark:text-white">4.8</p>
-						<p class="text-sm text-gray-500 dark:text-gray-400">{{ t('rating') }}</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400">Calificación</p>
 					</div>
 				</div>
 				
@@ -378,8 +378,8 @@
 								<i :class="[item.icon, item.iconColor]" class="text-lg"></i>
 							</div>
 							<div class="text-left">
-								<p class="font-medium text-gray-900 dark:text-white">{{ t(item.label) }}</p>
-								<p class="text-sm text-gray-500 dark:text-gray-400">{{ t(item.description) }}</p>
+								<p class="font-medium text-gray-900 dark:text-white">{{ profileLabel(item.label) }}</p>
+								<p class="text-sm text-gray-500 dark:text-gray-400">{{ profileDesc(item.description) }}</p>
 							</div>
 						</div>
 						<i class="ri-arrow-right-s-line text-gray-400"></i>
@@ -389,12 +389,12 @@
 			
 			<!-- Settings Card -->
 			<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-6">
-				<h3 class="font-semibold text-gray-900 dark:text-white text-lg mb-4">{{ t('settings') }}</h3>
+				<h3 class="font-semibold text-gray-900 dark:text-white text-lg mb-4">Configuración</h3>
 				<div class="space-y-4">
 					<div class="flex items-center justify-between">
 						<div>
-							<p class="font-medium text-gray-900 dark:text-white">{{ t('notifications') }}</p>
-							<p class="text-sm text-gray-500 dark:text-gray-400">{{ t('notificationsDescription') }}</p>
+							<p class="font-medium text-gray-900 dark:text-white">Notificaciones</p>
+							<p class="text-sm text-gray-500 dark:text-gray-400">Recibe alertas de tus pedidos y ofertas</p>
 						</div>
 						<label class="relative inline-flex items-center cursor-pointer">
 							<input type="checkbox" v-model="notificationsEnabled" class="sr-only peer">
@@ -403,8 +403,8 @@
 					</div>
 					<div class="flex items-center justify-between">
 						<div>
-							<p class="font-medium text-gray-900 dark:text-white">{{ t('darkMode') }}</p>
-							<p class="text-sm text-gray-500 dark:text-gray-400">{{ t('darkModeDescription') }}</p>
+							<p class="font-medium text-gray-900 dark:text-white">Modo oscuro</p>
+							<p class="text-sm text-gray-500 dark:text-gray-400">Usar tema oscuro en la interfaz</p>
 						</div>
 						<label class="relative inline-flex items-center cursor-pointer">
 							<input type="checkbox" v-model="darkModeEnabled" @change="toggleDarkMode" class="sr-only peer">
@@ -413,15 +413,15 @@
 					</div>
 					<div class="flex items-center justify-between">
 						<div>
-							<p class="font-medium text-gray-900 dark:text-white">{{ t('language') }}</p>
-							<p class="text-sm text-gray-500 dark:text-gray-400">{{ t('languageDescription') }}</p>
+							<p class="font-medium text-gray-900 dark:text-white">Idioma</p>
+							<p class="text-sm text-gray-500 dark:text-gray-400">Idioma de la aplicación</p>
 						</div>
 						<button
 							@click="toggleLanguage"
 							class="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg transition-colors font-medium cursor-pointer flex items-center gap-2"
 						>
 							<i class="ri-translate-2"></i>
-							<span>{{ currentLanguage === 'en' ? 'Español' : 'English' }}</span>
+							<span>Idioma</span>
 						</button>
 					</div>
 				</div>
@@ -433,7 +433,7 @@
 		<button
 			@click="viewCart"
 			class="hidden lg:fixed lg:flex bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-orange-700 transition-all duration-300 cursor-pointer z-40 group items-center justify-center"
-			aria-label="Cart"
+			aria-label="Carrito"
 		>
 			<i class="ri-shopping-cart-line text-xl"></i>
 			<span
@@ -447,16 +447,53 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getCustomerOrders } from '@/features/customer/services/customer.service';
 import Skeleton from '@/shared/ui/Skeleton.vue';
 import EmptyState from '@/shared/ui/EmptyState.vue';
 import { useOnline } from '@/shared/composables/useOnline';
 
-const { t, locale } = useI18n();
 const router = useRouter();
+
+// Spanish-only UI labels
+const statusTextMap: Record<string, string> = {
+	delivered: 'Entregado',
+	Entregado: 'Entregado',
+	on_the_way: 'En camino',
+	'En camino': 'En camino',
+	preparing: 'Preparando',
+	Preparando: 'Preparando',
+	cancelled: 'Cancelado',
+	Cancelado: 'Cancelado',
+	new: 'Nuevo',
+	ready: 'Listo',
+	out_for_delivery: 'En camino',
+	declined: 'Rechazado',
+};
+const profileLabels: Record<string, string> = {
+	addresses: 'Direcciones',
+	paymentMethods: 'Métodos de pago',
+	orderHistory: 'Historial de pedidos',
+	helpSupport: 'Ayuda y soporte',
+	logout: 'Cerrar sesión',
+};
+const profileDescs: Record<string, string> = {
+	addressesDescription: 'Gestiona tus direcciones de entrega',
+	paymentMethodsDescription: 'Tarjetas y métodos de pago',
+	orderHistoryDescription: 'Ver todos tus pedidos',
+	helpSupportDescription: 'Preguntas frecuentes y contacto',
+	logoutDescription: 'Cerrar sesión de tu cuenta',
+};
+function statusText(status: string): string {
+	return statusTextMap[status] ?? status;
+}
+function profileLabel(key: string): string {
+	return profileLabels[key] ?? key;
+}
+function profileDesc(key: string): string {
+	return profileDescs[key] ?? key;
+}
 
 // Types
 type Order = {
@@ -568,8 +605,6 @@ const mobileNavItems = ref([
 ]);
 
 // Computed Properties
-const currentLanguage = computed(() => locale.value);
-
 const userInitials = computed(() => {
 	return userName.value
 		.split(' ')
@@ -599,9 +634,9 @@ const totalPages = computed(() => {
 // Methods
 const getGreeting = () => {
 	const hour = new Date().getHours();
-	if (hour < 12) return t('goodMorning');
-	if (hour < 18) return t('goodAfternoon');
-	return t('goodEvening');
+	if (hour < 12) return 'Buenos días';
+	if (hour < 18) return 'Buenas tardes';
+	return 'Buenas noches';
 };
 
 const getStatusClass = (status: string) => {
@@ -629,21 +664,21 @@ const formatDate = (dateString: string) => {
 	const diffTime = Math.abs(now.getTime() - date.getTime());
 	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 	
-	if (diffDays === 0) return t('today');
-	if (diffDays === 1) return t('yesterday');
-	if (diffDays < 7) return t('daysAgo', { days: diffDays });
+	if (diffDays === 0) return 'Hoy';
+	if (diffDays === 1) return 'Ayer';
+	if (diffDays < 7) return `Hace ${diffDays} días`;
 	
-	return date.toLocaleDateString(currentLanguage.value, {
+	return date.toLocaleDateString('es', {
 		day: 'numeric',
 		month: 'short',
-		year: currentLanguage.value === 'es' ? 'numeric' : undefined
+		year: 'numeric'
 	});
 };
 
 const formatCurrency = (amount: number) => {
-	return new Intl.NumberFormat(currentLanguage.value === 'es' ? 'es-MX' : 'en-US', {
+	return new Intl.NumberFormat('es-MX', {
 		style: 'currency',
-		currency: currentLanguage.value === 'es' ? 'MXN' : 'USD',
+		currency: 'MXN',
 		minimumFractionDigits: 2
 	}).format(amount);
 };
@@ -651,9 +686,9 @@ const formatCurrency = (amount: number) => {
 const getDeliveryTime = (order: Order) => {
 	if (order.estimatedDelivery) {
 		const date = new Date(order.estimatedDelivery);
-		return t('estimatedDeliveryTime', { time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) });
+		return `Entrega estimada: ${date.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' })}`;
 	}
-	return t('deliveryTimeNotAvailable');
+	return 'Hora de entrega no disponible';
 };
 
 const filterOrders = () => {
@@ -715,7 +750,7 @@ const trackOrder = (order: Order) => {
 const reorder = (order: Order) => {
 	console.log('Reorder:', order);
 	cartItemCount.value += order.items.length;
-	alert(t('itemsAddedToCart', { count: order.items.length }));
+	alert(`${order.items.length} artículo(s) agregado(s) al carrito`);
 };
 
 const browseRestaurants = () => {
@@ -732,10 +767,10 @@ const toggleFavorite = (restaurant: Favorite) => {
 	const index = favorites.value.findIndex(fav => fav.id === restaurant.id);
 	if (index > -1) {
 		favorites.value.splice(index, 1);
-		alert(t('removedFromFavorites', { name: restaurant.name }));
+		alert(`"${restaurant.name}" eliminado de favoritos`);
 	} else {
 		favorites.value.push(restaurant);
-		alert(t('addedToFavorites', { name: restaurant.name }));
+		alert(`"${restaurant.name}" agregado a favoritos`);
 	}
 };
 
@@ -753,9 +788,8 @@ const toggleMobileMenu = () => {
 };
 
 const toggleLanguage = () => {
-	locale.value = currentLanguage.value === 'en' ? 'es' : 'en';
-	// Save preference to localStorage
-	localStorage.setItem('preferredLanguage', locale.value);
+	// App is Spanish-only; kept for future i18n.
+	localStorage.setItem('preferredLanguage', 'es');
 };
 
 const toggleDarkMode = () => {
@@ -822,7 +856,7 @@ const contactSupport = () => {
 const logout = () => {
 	console.log('Logout');
 	// Handle logout
-	alert(t('logoutConfirmation'));
+	alert('¿Cerrar sesión?');
 };
 
 const previousPage = () => {
@@ -844,11 +878,6 @@ onMounted(async () => {
 	await refreshOrders();
 
 	// Load user preferences
-	const savedLanguage = localStorage.getItem('preferredLanguage');
-	if (savedLanguage) {
-		locale.value = savedLanguage as 'en' | 'es';
-	}
-	
 	const savedDarkMode = localStorage.getItem('darkMode');
 	if (savedDarkMode === 'true') {
 		darkModeEnabled.value = true;
@@ -856,11 +885,6 @@ onMounted(async () => {
 	}
 });
 
-// Watch for language changes
-watch(locale, (newLang) => {
-	// Update any language-dependent data
-	console.log('Language changed to:', newLang);
-});
 </script>
 
 <style scoped>

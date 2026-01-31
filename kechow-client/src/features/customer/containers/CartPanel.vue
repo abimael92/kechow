@@ -2,9 +2,6 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
-import { useI18n } from 'vue-i18n';
-
-const { t } = useI18n();
 const toast = useToast();
 const router = useRouter();
 
@@ -150,8 +147,8 @@ onMounted(() => {
 </script>
 
 <template>
-	<div class="min-h-screen py-4 md:py-6">
-		<div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6">
+	<div class="min-h-screen py-4 md:py-6 min-w-0 overflow-x-hidden">
+		<div class="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 w-full min-w-0">
 			<!-- Header -->
 			<header class="flex flex-col sm:flex-row items-center justify-between mb-6 md:mb-8 gap-4 sm:gap-0">
 				<!-- Back Button -->
@@ -172,7 +169,7 @@ onMounted(() => {
 					<h1
 						class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight sm:leading-snug"
 					>
-						{{ t('myCart') }}
+						Mi carrito
 					</h1>
 					<p
 						class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 mt-1 sm:mt-2 max-w-2xl mx-auto"
@@ -207,7 +204,7 @@ onMounted(() => {
 									<img
 										:src="item.image || '/images/placeholder-image.png'"
 										:alt="item.name"
-										class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-sm"
+										class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-xl shadow-sm max-w-full"
 									/>
 								</div>
 
@@ -228,7 +225,7 @@ onMounted(() => {
 										<button
 											@click="removeItem(item.id)"
 											class="text-red-400 hover:text-red-600 dark:hover:text-red-500 cursor-pointer transition-colors duration-200 flex-shrink-0 ml-2"
-											:aria-label="t('removeItem')"
+											aria-label="Quitar del carrito"
 										>
 											<svg
 												xmlns="http://www.w3.org/2000/svg"
@@ -255,7 +252,7 @@ onMounted(() => {
 												@click="decrease(item.id)"
 												:disabled="item.quantity <= 1"
 												class="w-[50px] sm:w-[60px] h-8 flex items-center justify-center rounded-full text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
-												:aria-label="t('decreaseQuantity')"
+												aria-label="Disminuir cantidad"
 											>
 												<svg
 													class="w-4 h-4"
@@ -298,7 +295,7 @@ onMounted(() => {
 											<button
 												@click="increase(item.id)"
 												class="w-[50px] sm:w-[60px] h-8 flex items-center justify-center rounded-full bg-primary-600 dark:bg-primary-500 text-white text-lg font-bold hover:bg-primary-700 dark:hover:bg-primary-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
-												:aria-label="t('increaseQuantity')"
+												aria-label="Aumentar cantidad"
 											>
 												<svg
 													class="w-4 h-4"
@@ -354,10 +351,10 @@ onMounted(() => {
 							</svg>
 						</div>
 						<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-							{{ t('cartEmpty') }}
+							Tu carrito está vacío
 						</h3>
 						<p class="text-gray-500 dark:text-gray-400 mb-6 max-w-sm mx-auto px-4">
-							{{ t('addItemsPrompt') }}
+							Agrega platillos desde un restaurante para continuar
 						</p>
 						<button
 							@click="continueShopping"
@@ -375,7 +372,7 @@ onMounted(() => {
 							class="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-4 md:p-6"
 						>
 							<h2 class="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">
-								{{ t('orderSummary') }}
+								Resumen del pedido
 							</h2>
 
 							<!-- Pricing Breakdown -->
@@ -385,7 +382,7 @@ onMounted(() => {
 									<span>${{ total.toFixed(2) }}</span>
 								</div>
 								<div class="flex justify-between text-gray-600 dark:text-gray-300 text-sm md:text-base">
-									<span>{{ t('deliveryFee') }}</span>
+									<span>Envío</span>
 									<span :class="deliveryFee === 0 ? 'text-green-600 dark:text-green-400' : ''">
 										{{
 											deliveryFee === 0 ? t('free') : `$${deliveryFee.toFixed(2)}`
@@ -393,14 +390,14 @@ onMounted(() => {
 									</span>
 								</div>
 								<div class="flex justify-between text-gray-600 dark:text-gray-300 text-sm md:text-base">
-									<span>{{ t('tax', { rate: 8 }) }}</span>
+									<span>IVA (8%)</span>
 									<span>${{ tax.toFixed(2) }}</span>
 								</div>
 								<div class="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3">
 									<div
 										class="flex justify-between text-base md:text-lg font-bold text-gray-900 dark:text-white"
 									>
-										<span>{{ t('total') }}</span>
+										<span>Total</span>
 										<span>${{ finalTotal.toFixed(2) }}</span>
 									</div>
 								</div>
@@ -452,8 +449,8 @@ onMounted(() => {
 											d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
 										/>
 									</svg>
-									<span v-if="showSuccess">{{ t('processing') }}</span>
-									<span v-else>{{ t('checkout', { total: finalTotal.toFixed(2) }) }}</span>
+									<span v-if="showSuccess">Procesando…</span>
+									<span v-else>Pagar ${{ finalTotal.toFixed(2) }}</span>
 								</div>
 							</button>
 
@@ -473,7 +470,7 @@ onMounted(() => {
 									/>
 								</svg>
 								<span class="text-xs text-gray-500 dark:text-gray-400">
-									{{ t('secureCheckout') }}
+									Pago seguro
 								</span>
 							</div>
 						</div>
@@ -495,9 +492,9 @@ onMounted(() => {
 									/>
 								</svg>
 								<div>
-									<p class="text-sm font-medium text-blue-900 dark:text-blue-300">{{ t('needHelp') }}</p>
+									<p class="text-sm font-medium text-blue-900 dark:text-blue-300">¿Necesitas ayuda?</p>
 									<p class="text-xs text-blue-700 dark:text-blue-400 mt-1">
-										{{ t('contactSupport', { phone: '(636) 462-1234' }) }}
+										Contacto: (636) 462-1234
 									</p>
 								</div>
 							</div>

@@ -1,45 +1,45 @@
 <template>
 	<nav
-		class="sticky top-16 z-40 px-4 sm:px-6 py-2 bg-[#2a1a40]/90 backdrop-blur-md border-b border-white/10"
+		class="sticky top-16 sm:top-20 z-40 px-2 sm:px-4 md:px-6 py-2 bg-[#2a1a40]/90 backdrop-blur-md border-b border-white/10 overflow-auto dark:bg-gray-900/90"
 	>
-		<div class="mx-auto flex flex-wrap justify-center gap-2 sm:gap-4 md:gap-6">
-			<!-- Owner Navigation -->
+		<div class="flex flex-wrap justify-center items-center gap-1 sm:gap-2 md:gap-4 min-h-0">
+			<!-- Owner Navigation: 44px tap targets -->
 			<template v-if="authStore.isOwner">
 				<router-link
 					to="/owner/dashboard"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('dashboard') }}</router-link
+					>Tablero</router-link
 				>
 				<router-link
 					to="/owner/orders"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('orders') }}</router-link
+					>Pedidos</router-link
 				>
 				<router-link
 					to="/owner/menu"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('menuItems') }}</router-link
+					>Elementos del Menú</router-link
 				>
 				<router-link
 					to="/owner/analytics"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('analytics') }}</router-link
+					>Analíticas</router-link
 				>
 				<router-link
 					to="/owner/reviews"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('reviews') }}</router-link
+					>Reseñas</router-link
 				>
 				<router-link
 					to="/owner/settings"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('settings') }}</router-link
+					>Configuración</router-link
 				>
 			</template>
 
@@ -47,27 +47,27 @@
 			<template v-else-if="authStore.isDelivery">
 				<router-link
 					to="/delivery/dashboard"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('dashboard') }}</router-link
+					>Tablero</router-link
 				>
 				<router-link
 					to="/delivery/orders"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('orders') }}</router-link
+					>Pedidos</router-link
 				>
 				<router-link
-					to="/delivery/Earnings"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					to="/delivery/earnings"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('earnings') }}</router-link
+					>Ganancias</router-link
 				>
 				<router-link
 					to="/delivery/profile"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('profile') }}</router-link
+					>Perfil</router-link
 				>
 			</template>
 
@@ -75,21 +75,21 @@
 			<template v-else-if="authStore.isAuthenticated">
 				<router-link
 					to="/restaurants"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('restaurants') }}</router-link
+					>Restaurantes</router-link
 				>
 				<router-link
 					to="/cart"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('cartNav') }}</router-link
+					>Mi Carrito</router-link
 				>
 				<router-link
 					to="/orders"
-					class="text-white hover:text-purple-300 px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors no-underline"
+					class="flex items-center min-h-[44px] px-2 py-1 text-sm sm:px-3 sm:text-base rounded transition-colors text-white hover:text-purple-300 no-underline"
 					active-class="font-bold border-b-2 border-purple-400"
-					>{{ $t('myOrders') }}</router-link
+					>Mis Pedidos</router-link
 				>
 			</template>
 		</div>
@@ -98,8 +98,6 @@
 
 <script setup>
 import { useAuthStore } from '@/app/store/auth/auth.store';
-import { useI18n } from 'vue-i18n';
 
 const authStore = useAuthStore();
-const { t } = useI18n();
 </script>

@@ -1,5 +1,5 @@
 <template>
-	<div class="p-6">
+	<div class="min-w-0 overflow-x-hidden p-4 sm:p-6">
 		<DashboardOverview />
 	</div>
 </template>

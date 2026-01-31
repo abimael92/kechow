@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen p-3 sm:p-4 md:p-6 lg:p-8 space-y-4 sm:space-y-6 md:space-y-8">
+    <div class="min-h-screen min-w-0 overflow-x-hidden p-3 sm:p-4 md:p-6 lg:p-8 space-y-4 sm:space-y-6 md:space-y-8">
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div class="flex items-center gap-3">
@@ -274,36 +274,38 @@ const setRevenuePeriod = (period: string) => {
     console.log(`Revenue period changed to ${period}`);
 };
 
-// Handle stat card click
+// Handle stat card click - use owner routes so navigation stays in owner layout
 const handleStatClick = (statLabel: string) => {
     console.log(`Clicked on ${statLabel}`);
-    // Navigate to relevant page based on stat
     switch(statLabel) {
         case t('todaysOrders'):
-            router.push('/orders');
+            router.push('/owner/orders');
             break;
         case t('revenue'):
-            router.push('/analytics');
+            router.push('/owner/analytics');
             break;
-        // Add more cases as needed
+        default:
+            break;
     }
 };
 
-// Handle quick action click
+// Handle quick action click - use owner routes
 const handleQuickAction = (actionId: number) => {
     console.log(`Quick action ${actionId} clicked`);
     switch(actionId) {
         case 1: // Add Item
-            router.push('/menu/add');
+            router.push('/owner/menu-items/edit');
             break;
         case 2: // Manage Menu
-            router.push('/menu');
+            router.push('/owner/menu');
             break;
         case 3: // View Reports
-            router.push('/reports');
+            router.push('/owner/analytics');
             break;
         case 4: // Staff Management
-            router.push('/staff');
+            router.push('/owner/orders');
+            break;
+        default:
             break;
     }
 };

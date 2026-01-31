@@ -88,19 +88,19 @@
 
 		<!-- Insights -->
 		<div class="bg-white rounded-xl border p-4 shadow-sm">
-			<h4 class="font-semibold text-gray-800 mb-2">Best Times to Work</h4>
-			<p class="text-sm text-white mb-3">Based on last 7 days</p>
+			<h4 class="font-semibold text-gray-800 mb-2">Mejores horarios para trabajar</h4>
+			<p class="text-sm text-white mb-3">{{ $t('basedOnLast7Days') }}</p>
 			<!-- chart placeholder -->
 			<div
 				class="h-32 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400"
 			>
-				[Chart: busiest hours]
+				[Gráfico: horas más concurridas]
 			</div>
 		</div>
 
 		<!-- Schedule & Days Off -->
 		<div class="bg-white rounded-xl border p-4 shadow-sm">
-			<h4 class="font-semibold text-gray-800 mb-3">Schedule & Days Off</h4>
+			<h4 class="font-semibold text-gray-800 mb-3">Horario y días libres</h4>
 			<ul class="space-y-2">
 				<li
 					v-for="(day, i) in daysOff"
@@ -112,7 +112,7 @@
 						@click="removeDayOff(i)"
 						class="text-red-600 text-xs hover:text-red-800 transition-colors"
 					>
-						Remove
+						Eliminar
 					</button>
 				</li>
 			</ul>
@@ -120,7 +120,7 @@
 				@click="addDayOff"
 				class="mt-2 text-blue-600 text-sm hover:text-blue-800 transition-colors"
 			>
-				+ Add Day Off
+				+ Agregar día libre
 			</button>
 		</div>
 	</div>

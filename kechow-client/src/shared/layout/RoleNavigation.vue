@@ -5,12 +5,12 @@
 		:aria-label="`Navegación ${roleLabel}`"
 	>
 		<!-- Desktop Navigation -->
-		<div class="hidden md:flex items-center justify-center gap-1 px-4 py-3">
+		<div class="hidden md:flex items-center justify-center gap-1 px-2 sm:px-4 py-2 sm:py-3 flex-wrap">
 			<router-link
 				v-for="item in navigationItems"
 				:key="item.path"
 				:to="item.path"
-				class="px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 relative"
+				class="flex items-center min-h-[44px] px-3 sm:px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 relative"
 				:class="{
 					'text-white bg-white/15 font-semibold': isActive(item.path),
 					'text-white/70': !isActive(item.path),
@@ -25,19 +25,19 @@
 		</div>
 
 		<!-- Mobile Navigation -->
-		<div class="md:hidden">
-			<!-- Mobile Menu Button -->
+		<div class="md:hidden overflow-auto">
+			<!-- Mobile Menu Button: 44px tap target -->
 			<button
 				@click="toggleMobileMenu"
-				class="w-full px-4 py-3 flex items-center justify-between text-white hover:bg-white/10 transition-colors"
+				class="w-full min-h-[44px] px-4 py-3 flex items-center justify-between text-white hover:bg-white/10 transition-colors"
 				:aria-expanded="mobileMenuOpen"
-				aria-label="Toggle navigation menu"
+				aria-label="Abrir menú de navegación"
 			>
 				<span class="font-medium">
 					{{ currentActiveLabel || 'Menú' }}
 				</span>
 				<svg
-					class="w-5 h-5 transition-transform"
+					class="w-5 h-5 flex-shrink-0 transition-transform"
 					:class="{ 'rotate-180': mobileMenuOpen }"
 					fill="none"
 					stroke="currentColor"
@@ -70,27 +70,25 @@
 						:key="item.path"
 						:to="item.path"
 						@click="closeMobileMenu"
-						class="block px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5 last:border-b-0"
+						class="flex items-center justify-between min-h-[44px] px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5 last:border-b-0"
 						:class="{
 							'text-white bg-white/15 font-semibold': isActive(item.path),
 							'text-white/70': !isActive(item.path),
 						}"
 					>
-						<div class="flex items-center justify-between">
-							<span>{{ item.label }}</span>
-							<svg
-								v-if="isActive(item.path)"
-								class="w-5 h-5 text-purple-400"
-								fill="currentColor"
-								viewBox="0 0 20 20"
-							>
-								<path
-									fill-rule="evenodd"
-									d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-									clip-rule="evenodd"
-								/>
-							</svg>
-						</div>
+						<span>{{ item.label }}</span>
+						<svg
+							v-if="isActive(item.path)"
+							class="w-5 h-5 flex-shrink-0 text-purple-400"
+							fill="currentColor"
+							viewBox="0 0 20 20"
+						>
+							<path
+								fill-rule="evenodd"
+								d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+								clip-rule="evenodd"
+							/>
+						</svg>
 					</router-link>
 				</div>
 			</transition>

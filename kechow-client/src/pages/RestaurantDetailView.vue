@@ -76,34 +76,35 @@ function goBack() {
 </script>
 
 <template>
-	<div v-if="restaurant" class="min-h-screen py-6">
-		<div class="max-w-4xl mx-auto px-4 sm:px-6">
-			<header class="sticky top-0 z-30 shadow-sm">
-				<div class="flex items-center justify-between px-4 py-3">
+	<div class="restaurant-detail-root min-w-0 overflow-x-hidden">
+	<div v-if="restaurant" class="min-h-screen py-4 sm:py-6">
+		<div class="max-w-4xl mx-auto px-4 sm:px-6 min-w-0">
+			<header class="sticky top-0 z-30 shadow-sm bg-white/95 dark:bg-gray-900/95 backdrop-blur">
+				<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-2 sm:px-4 py-3 min-w-0">
 					<button
 						@click="goBack"
-						class="flex items-center gap-1 px-3 py-2 text-white-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-						aria-label="Go back"
+						class="flex items-center gap-1 px-3 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 flex-shrink-0 order-first sm:order-none"
+						aria-label="Volver"
 					>
 						<span class="text-lg">←</span>
-						<span class="font-medium">Back</span>
+						<span class="font-medium">Volver</span>
 					</button>
 
-					<div class="flex-1 px-4 text-center">
+					<div class="flex-1 min-w-0 px-2 sm:px-4 text-center order-2 sm:order-none">
 						<h1
-							class="text-3xl sm:text-6xl font-extrabold text-gray-900 leading-snug"
+							class="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight truncate sm:truncate-none"
 						>
 							{{ restaurant.name }}
 						</h1>
 						<p
-							class="text-lg sm:text-2xl text-gray-600 mt-2 max-w-2xl mx-auto text-white"
+							class="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mt-1 sm:mt-2 max-w-2xl mx-auto line-clamp-2 sm:line-clamp-none"
 						>
 							{{ restaurant.description }}
 						</p>
 					</div>
 
 					<!-- Cart indicator in header -->
-					<div class="relative">
+					<div class="relative flex-shrink-0 order-first sm:order-none self-end sm:self-auto">
 						<button
 							@click="router.push({ name: 'CartPage' })"
 							class="relative p-2 rounded-lg transition-colors duration-200"
@@ -112,7 +113,7 @@ function goBack() {
 									? 'text-primary hover:bg-primary/10'
 									: 'text-gray-400'
 							"
-							aria-label="View cart"
+							aria-label="Ver carrito"
 						>
 							<!-- Cart Icon -->
 							<svg
@@ -144,38 +145,37 @@ function goBack() {
 				</div>
 			</header>
 
-			<!-- BANNER - Improved loading and aspect ratio -->
-			<div class="relative w-full h-48 sm:h-56 bg-gray-200 overflow-hidden">
+			<!-- BANNER - Mobile-first: fixed height, images scale -->
+			<div class="relative w-full max-w-full h-40 sm:h-48 md:h-56 bg-gray-200 dark:bg-gray-700 overflow-hidden rounded-lg">
 				<img
 					:src="restaurant.image"
 					:alt="restaurant.name"
-					class="absolute inset-0 w-full h-full object-cover blur-sm scale-110"
+					class="absolute inset-0 w-full h-full max-w-full object-cover blur-sm scale-105"
 					loading="eager"
 				/>
 				<img
 					:src="restaurant.image"
 					:alt="restaurant.name"
-					class="relative z-10 mx-auto h-full object-contain"
+					class="relative z-10 mx-auto h-full w-auto max-w-full object-contain"
 				/>
 				<div class="absolute inset-0 bg-black/20"></div>
 			</div>
 
-			<!-- MENU ITEMS - Enhanced interaction feedback -->
-			<main class="space-y-4 p-4">
+			<!-- MENU ITEMS - Stack on mobile, row on sm+ -->
+			<main class="space-y-4 p-3 sm:p-4 min-w-0">
 				<div
 					v-for="(item, index) in restaurant.menu"
 					:key="item.id"
-					class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-all duration-300 group"
+					class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-3 sm:p-4 hover:shadow-md transition-all duration-300 group min-w-0"
 					:class="{ 'ring-2 ring-primary/20': showAddedFeedback === item.id }"
 				>
-					<div class="flex gap-4 items-start">
+					<div class="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-start min-w-0">
 						<!-- IMAGE -->
-						<!-- :src="item.image || '/images/placeholder-image.png'" -->
-						<div class="flex-shrink-0 relative">
+						<div class="flex-shrink-0 relative w-full sm:w-auto flex justify-center sm:block">
 							<img
 								:src="'/images/placeholder-image.png'"
 								:alt="item.name"
-								class="w-24 h-24 sm:w-32 sm:h-32 rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow duration-300"
+								class="w-full max-w-[140px] sm:w-24 sm:max-w-none md:w-32 h-32 sm:h-24 md:h-32 rounded-lg object-cover shadow-sm group-hover:shadow-md transition-shadow duration-300 mx-auto sm:mx-0"
 								loading="lazy"
 							/>
 							<!-- Stock indicator -->
@@ -183,7 +183,7 @@ function goBack() {
 								v-if="item.stock !== undefined && item.stock < 10"
 								class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1 rounded"
 							>
-								Low stock
+								Pocas unidades
 							</div>
 						</div>
 
@@ -195,7 +195,7 @@ function goBack() {
 										{{ item.name }}
 									</h3>
 									<p class="text-sm text-gray-600 mt-1 line-clamp-2">
-										{{ item.description || 'Freshly made and tasty.' }}
+										{{ item.description || 'Hecho al momento y delicioso.' }}
 									</p>
 								</div>
 								<p class="text-lg font-bold text-primary whitespace-nowrap">
@@ -208,9 +208,9 @@ function goBack() {
 								<!-- Stock info -->
 								<div class="text-xs text-gray-500">
 									<span v-if="'stock' in item">
-										{{ item.stock }} available
+										{{ item.stock }} disponibles
 									</span>
-									<span v-else>In stock</span>
+									<span v-else>En existencia</span>
 								</div>
 
 								<!-- Controls -->
@@ -218,7 +218,7 @@ function goBack() {
 									<button
 										@click="remove(item.id)"
 										:disabled="(cart[item.id] ?? 0) <= 0"
-										:aria-label="`Remove one ${item.name}`"
+										:aria-label="`Quitar uno: ${item.name}`"
 										class="w-[60px] h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 									>
 										−
@@ -253,7 +253,7 @@ function goBack() {
 											(item.stock !== undefined &&
 												(cart[item.id] ?? 0) >= item.stock)
 										"
-										:aria-label="`Add one ${item.name}`"
+										:aria-label="`Agregar uno: ${item.name}`"
 										class="w-[60px] h-8 flex items-center justify-center rounded-full bg-primary text-white text-lg font-bold hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 									>
 										+
@@ -276,7 +276,7 @@ function goBack() {
 			>
 				<div
 					v-if="totalItems"
-					class="fixed bottom-4 left-4 right-4 bg-white text-gray-900 rounded-xl shadow-lg border border-gray-200 p-4 z-40"
+					class="fixed bottom-4 left-4 right-4 max-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-40 min-w-0"
 				>
 					<div class="flex items-center justify-between">
 						<div class="flex-1">
@@ -288,11 +288,11 @@ function goBack() {
 							</p>
 						</div>
 						<button
-							@click="router.push({ name: 'Cart' })"
-							class="bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-200 shadow-sm flex items-center gap-2"
+							@click="router.push({ name: 'CartPage' })"
+							class="bg-primary text-white font-semibold px-4 sm:px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-200 shadow-sm flex items-center gap-2 min-w-0"
 						>
 							<svg
-								class="w-4 h-4"
+								class="w-4 h-4 flex-shrink-0"
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
@@ -304,7 +304,7 @@ function goBack() {
 									d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5.5M7 13l2.5 5.5m0 0L17 21"
 								/>
 							</svg>
-							View Cart
+							<span class="truncate">Ver carrito</span>
 						</button>
 					</div>
 				</div>
@@ -323,17 +323,18 @@ function goBack() {
 			<span class="text-4xl">🍕</span>
 		</div>
 		<h2 class="text-xl font-semibold text-gray-900 mb-2">
-			Restaurant Not Found
+			Restaurante no encontrado
 		</h2>
 		<p class="text-gray-500 mb-6">
-			The restaurant you're looking for doesn't exist or has been removed.
+			El restaurante que buscas no existe o ha sido eliminado.
 		</p>
 		<button
 			@click="router.push({ name: 'Home' })"
 			class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
 		>
-			Browse Restaurants
+			Ver restaurantes
 		</button>
+	</div>
 	</div>
 </template>
 

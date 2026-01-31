@@ -1,15 +1,16 @@
 <!-- @/components/RestaurantCard.vue -->
 <template>
     <div 
-        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 cursor-pointer group"
+        class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-all duration-300 cursor-pointer group min-w-0"
         @click="$emit('click', restaurant)"
     >
         <!-- Restaurant Image -->
-        <div class="relative h-48 overflow-hidden">
+        <div class="relative h-40 sm:h-48 overflow-hidden">
             <img 
                 :src="restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'" 
                 :alt="restaurant.name"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                class="w-full h-full max-w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
             />
             <button 
                 @click.stop="$emit('favorite', restaurant)"
@@ -22,7 +23,7 @@
             </button>
             <div v-if="!restaurant.isOpen" class="absolute inset-0 bg-black/60 flex items-center justify-center">
                 <span class="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    {{ $t('closed') }}
+                    Cerrado
                 </span>
             </div>
         </div>
@@ -45,7 +46,7 @@
                 </span>
             </div>
             
-            <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
+            <p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mb-3 line-clamp-2 break-words">
                 {{ restaurant.description }}
             </p>
             

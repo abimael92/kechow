@@ -63,7 +63,7 @@
 									class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm"
 									@click="closeModal"
 								>
-									Cancel
+									{{ cancelButtonText }}
 								</button>
 							</div>
 						</DialogPanel>
@@ -91,20 +91,20 @@ const props = defineProps({
 	},
 	title: {
 		type: String,
-		default: 'Confirm action',
+		default: 'Confirmar acción',
 	},
 	message: {
 		type: String,
 		default:
-			'Are you sure you want to perform this action? This cannot be undone.',
+			'¿Estás seguro de que quieres realizar esta acción? No se puede deshacer.',
 	},
 	confirmButtonText: {
 		type: String,
-		default: 'Confirm',
+		default: 'Confirmar',
 	},
 	cancelButtonText: {
 		type: String,
-		default: 'Cancel',
+		default: 'Cancelar',
 	},
 });
 

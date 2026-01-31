@@ -12,7 +12,7 @@
                 ]"></div>
                 <div>
                     <h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
-                        Order #{{ order.id }}
+                        Pedido #{{ order.id }}
                     </h3>
                     <p class="text-xs text-gray-500 dark:text-gray-400">
                         {{ formatDate(order.createdAt) }}
@@ -41,7 +41,7 @@
                 </span>
                 <span v-if="order.items.length > 3" 
                       class="text-sm text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 px-3 py-1.5 rounded-lg">
-                    +{{ order.items.length - 3 }} more
+                    +{{ order.items.length - 3 }} más
                 </span>
             </div>
             
@@ -61,7 +61,7 @@
                     'px-3 py-1 rounded-full text-xs font-medium',
                     statusBadgeColor[order.status]
                 ]">
-                    {{ $t(order.status) }}
+                    {{ statusLabel(order.status) }}
                 </span>
                 
                 <!-- Payment Status -->
@@ -70,7 +70,7 @@
                           'px-2 py-1 rounded text-xs font-medium',
                           paymentStatusColor[order.paymentStatus]
                       ]">
-                    {{ $t(order.paymentStatus) }}
+                    {{ paymentStatusLabel(order.paymentStatus) }}
                 </span>
             </div>
 
@@ -88,13 +88,13 @@
                 <button @click.stop="$emit('reorder', order)"
                         class="px-3 py-1.5 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center gap-1.5">
                     <i class="ri-repeat-line"></i>
-                    {{ $t('reorder') }}
+                    Volver a pedir
                 </button>
                 
                 <!-- View Details Button -->
                 <button @click.stop="$emit('view', order)"
                         class="px-3 py-1.5 text-primary-600 dark:text-primary-400 text-sm hover:bg-primary-50 dark:hover:bg-primary-900/20 rounded-lg transition-colors">
-                    {{ $t('viewDetails') }}
+                    Ver detalles
                 </button>
             </div>
         </div>
@@ -141,6 +141,28 @@ const paymentStatusColor = {
     refunded: 'bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-300',
 };
 
+const statusLabels: Record<string, string> = {
+    new: 'Nuevo',
+    preparing: 'Preparando',
+    ready: 'Listo',
+    out_for_delivery: 'En camino',
+    delivered: 'Entregado',
+    declined: 'Rechazado',
+    cancelled: 'Cancelado',
+};
+const paymentStatusLabels: Record<string, string> = {
+    pending: 'Pendiente',
+    paid: 'Pagado',
+    failed: 'Fallido',
+    refunded: 'Reembolsado',
+};
+function statusLabel(status: string): string {
+    return statusLabels[status] ?? status;
+}
+function paymentStatusLabel(paymentStatus: string): string {
+    return paymentStatusLabels[paymentStatus] ?? paymentStatus;
+}
+
 const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -148,13 +170,13 @@ const formatDate = (dateString: string) => {
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
     
     if (diffDays === 0) {
-        return 'Today, ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return 'Hoy, ' + date.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
     } else if (diffDays === 1) {
-        return 'Yesterday, ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return 'Ayer, ' + date.toLocaleTimeString('es', { hour: '2-digit', minute: '2-digit' });
     } else if (diffDays < 7) {
-        return date.toLocaleDateString([], { weekday: 'long', hour: '2-digit', minute: '2-digit' });
+        return date.toLocaleDateString('es', { weekday: 'long', hour: '2-digit', minute: '2-digit' });
     } else {
-        return date.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' });
+        return date.toLocaleDateString('es', { month: 'short', day: 'numeric', year: 'numeric' });
     }
 };
 </script>

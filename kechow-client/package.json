@@ -10,7 +10,10 @@
     "start": "vite preview --host 0.0.0.0 --port $PORT",
     "lint": "eslint . --ext .ts,.vue --max-warnings=0",
     "typecheck": "vue-tsc --noEmit",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "i18n:find": "node scripts/find-translation-usage.mjs",
+    "i18n:find:json": "node scripts/find-translation-usage.mjs --json",
+    "i18n:find:report": "node scripts/find-translation-usage.mjs --out docs/translation-usage-report.md"
   },
   "engines": {
     "node": ">=20 <21",

@@ -1,25 +1,23 @@
 <template>
-	<!-- Top Nav -->
+	<!-- Top Nav: grid layout (no fixed widths; Flexbox/Grid only) -->
 	<nav
-		class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white flex items-center justify-between relative"
+		class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 backdrop-blur-md border-b border-white/10 shadow-soft bg-[#2a1a40] text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
 		role="navigation"
 		aria-label="Primary Navigation"
 	>
-		<!-- Left logo -->
-		<div class="flex items-center gap-3 z-10">
+		<!-- Left: logo -->
+		<div class="flex items-center justify-start min-w-0">
 			<img
 				src="/images/kechow_logo.png"
 				alt="Kechow Logo"
-				class="w-12 h-12 sm:w-16 sm:h-16 object-contain animate-rushIn animate-wiggle"
+				class="w-12 h-12 sm:w-16 sm:h-16 object-contain animate-rushIn animate-wiggle flex-shrink-0"
 			/>
 		</div>
 
-		<!-- Center title -->
-		<div
-			class="absolute inset-0 flex justify-center items-center pointer-events-none"
-		>
+		<!-- Center: title -->
+		<div class="flex justify-center items-center min-w-0 pointer-events-none">
 			<h1
-				class="text-3xl sm:text-8xl font-bold tracking-wide select-text font-chewy text-gradient-pulse"
+				class="text-2xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-wide select-text font-chewy text-gradient-pulse truncate"
 				aria-label="Kechow"
 				style="
 					color: #ec4899;
@@ -31,16 +29,16 @@
 			</h1>
 		</div>
 
-		<!-- Right buttons -->
-		<div class="flex items-center gap-4 sm:gap-6 z-10">
-			<!-- Burger menu button - visible only on mobile -->
+		<!-- Right: buttons -->
+		<div class="flex items-center justify-end gap-2 sm:gap-4 min-w-0">
+			<!-- Burger menu button - visible only on mobile/tablet -->
 			<button
 				@click="toggleDrawer"
-				class="lg:hidden text-primary hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
-				aria-label="Toggle menu"
+				class="lg:hidden flex items-center justify-center min-h-[44px] min-w-[44px] text-primary hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
+				aria-label="Abrir menú"
 			>
 				<svg
-					class="w-6 h-6 sm:w-7 sm:h-7"
+					class="w-6 h-6 sm:w-7 sm:h-7 flex-shrink-0"
 					fill="none"
 					stroke="currentColor"
 					stroke-width="2"
@@ -55,11 +53,12 @@
 			</button>
 
 			<!-- Desktop items - hidden on mobile -->
-			<LanguageToggle class="hidden lg:block" />
+			<!-- i18n preparado para múltiples idiomas. Por ahora la app usa solo español. -->
+			<!-- <LanguageToggle class="hidden lg:block" /> -->
 			<button
-				class="icon-button hidden lg:block"
+				class="hidden lg:flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
 				@click="toggleDarkMode"
-				aria-label="Toggle dark mode"
+				aria-label="Cambiar tema"
 			>
 				<svg
 					v-if="!isDark"
@@ -100,14 +99,14 @@
 			>
 				<button
 					@click="toggleUserMenu"
-					class="hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded relative bg-gradient-to-r from-primary-light to-primary-dark p-1 user-menu-button"
+					class="flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded relative bg-gradient-to-r from-primary-light to-primary-dark p-1 user-menu-button"
 					aria-haspopup="true"
 					:aria-expanded="userMenuOpen ? 'true' : 'false'"
-					aria-label="User menu"
-					title="User menu"
+					aria-label="Menú de usuario"
+					title="Menú de usuario"
 				>
 					<UserCircle
-						class="w-6 h-6 sm:w-7 sm:h-7 text-white bg-transparent rounded"
+						class="w-6 h-6 sm:w-7 sm:h-7 text-white bg-transparent rounded flex-shrink-0"
 					/>
 					<span
 						v-if="notifications > 0"
@@ -126,12 +125,12 @@
 				>
 					<ul
 						v-if="userMenuOpen"
-						class="absolute right-0 mt-2 w-40 bg-gradient-to-br from-primary-light to-primary-dark rounded-xl shadow-strong text-white text-sm py-2"
+						class="absolute right-0 mt-2 min-w-[10rem] bg-gradient-to-br from-primary-light to-primary-dark rounded-xl shadow-strong text-white text-sm py-2"
 						role="menu"
 					>
 						<li>
 							<button
-								class="w-full text-left px-4 py-2 hover:bg-blue-600 rounded-lg transition-colors"
+								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-blue-600 rounded-lg transition-colors"
 								role="menuitem"
 								@click="goProfile"
 							>
@@ -140,7 +139,7 @@
 						</li>
 						<li>
 							<button
-								class="w-full text-left px-4 py-2 hover:bg-blue-600 rounded-lg transition-colors"
+								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-blue-600 rounded-lg transition-colors"
 								role="menuitem"
 								@click="logout"
 							>
@@ -152,7 +151,7 @@
 			</div>
 		</div>
 
-		<!-- Mobile drawer menu -->
+		<!-- Mobile drawer menu (absolute required for overlay) -->
 		<transition
 			enter-active-class="transition ease-out duration-200"
 			enter-from-class="opacity-0 transform -translate-y-4"
@@ -163,13 +162,13 @@
 		>
 			<div
 				v-if="isDrawerOpen"
-				class="absolute top-full left-0 right-0 bg-[#2a1a40] border-b border-white/10 shadow-soft lg:hidden"
+				class="absolute top-full left-0 right-0 bg-[#2a1a40] border-b border-white/10 shadow-soft lg:hidden overflow-auto"
 			>
-				<div class="px-4 py-3 space-y-3">
+				<div class="px-4 py-3 flex flex-col gap-1">
 					<button
 						@click="toggleDarkMode"
-						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
-						aria-label="Toggle dark mode"
+						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors"
+						aria-label="Cambiar tema"
 					>
 						<svg
 							v-if="isDark"
@@ -177,7 +176,7 @@
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
-							class="w-5 h-5 mr-3"
+							class="w-5 h-5 mr-3 flex-shrink-0"
 						>
 							<path
 								stroke-linecap="round"
@@ -192,7 +191,7 @@
 							fill="none"
 							viewBox="0 0 24 24"
 							stroke="currentColor"
-							class="w-5 h-5 mr-3"
+							class="w-5 h-5 mr-3 flex-shrink-0"
 						>
 							<path
 								stroke-linecap="round"
@@ -201,22 +200,25 @@
 								d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
 							/>
 						</svg>
-						{{ isDark ? 'Light Mode' : 'Dark Mode' }}
+						{{ isDark ? 'Modo claro' : 'Modo oscuro' }}
 					</button>
 
-					<LanguageToggle class="w-full px-2 py-1" />
+					<!-- i18n preparado para múltiples idiomas. Por ahora la app usa solo español. -->
+					<!-- <div class="min-h-[44px] flex items-center">
+						<LanguageToggle class="w-full" />
+					</div> -->
 
 					<button
 						@click="goProfile"
-						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
+						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors"
 					>
-						Profile
+						Perfil
 					</button>
 					<button
 						@click="logout"
-						class="flex items-center w-full px-3 py-2 text-left rounded-lg hover:bg-white/10 transition-colors"
+						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-white/10 transition-colors"
 					>
-						Logout
+						Cerrar sesión
 					</button>
 				</div>
 			</div>
@@ -231,9 +233,11 @@
 </template>
 
 <script setup lang="ts">
+// i18n preparado para múltiples idiomas.
+// Por ahora la app usa solo español.
 import { ref, onMounted, onUnmounted } from 'vue';
 import { UserCircle } from 'lucide-vue-next';
-import LanguageToggle from '@layout/LanguageToggle.vue';
+// import LanguageToggle from '@layout/LanguageToggle.vue';
 import RoleNavbar from '@/components/layout/RoleNavbar.vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
@@ -293,7 +297,14 @@ function closeUserMenu() {
 function goProfile() {
 	closeUserMenu();
 	closeDrawer();
-	router.push('/profile');
+	// Role-aware profile/settings so navigation works for each role
+	if (authStore.isOwner) {
+		router.push('/owner/settings');
+	} else if (authStore.isDelivery) {
+		router.push('/delivery/profile');
+	} else {
+		router.push('/profile');
+	}
 }
 
 function logout() {
@@ -383,13 +394,4 @@ const closeDrawerOnClickOutside = (event: MouseEvent) => {
 	animation: pulseScaleMinimal 2.5s ease-in-out infinite;
 }
 
-@media (max-width: 640px) {
-	nav {
-		padding: 0.75rem 1rem;
-	}
-	button {
-		min-height: 44px;
-		min-width: 44px;
-	}
-}
 </style>

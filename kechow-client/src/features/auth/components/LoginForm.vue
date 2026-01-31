@@ -1,7 +1,7 @@
 <template>
-	<div class="min-h-screen flex items-center justify-center">
+	<div class="min-h-screen flex items-center justify-center min-w-0 overflow-x-hidden px-4 py-6">
 		<div
-			class="bg-white rounded-2xl shadow-lg p-10 w-full max-w-md animate-fade-in"
+			class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-10 w-full max-w-md animate-fade-in min-w-0"
 		>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<img
@@ -15,22 +15,20 @@
 				<h2
 					class="text-3xl font-bold mb-2 text-center text-gradient-pulse text-primary"
 				>
-					{{ t('welcomeBack') }}
+					¡Bienvenido de nuevo!
 				</h2>
 			</div>
 
 			<p class="text-sm text-center text-gray-500 mb-6">
-				{{ t('loginToAccount') }}
+				Inicia sesión en tu cuenta de Kechow
 			</p>
 
 			<form
 				@submit.prevent="handleLogin"
-				class="space-y-6 animate-slide-up p-6 rounded-2xl max-w-md mx-auto"
+				class="space-y-6 animate-slide-up p-0 sm:p-6 rounded-2xl max-w-md mx-auto w-full min-w-0"
 			>
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">{{
-						t('email')
-					}}</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700">Correo electrónico</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
 					>
@@ -40,7 +38,7 @@
 						<input
 							v-model="loginForm.email"
 							type="email"
-							:placeholder="t('emailPlaceholder')"
+							placeholder="tu@ejemplo.com"
 							class="w-full p-2 outline-none text-gray-900"
 							required
 						/>
@@ -48,9 +46,7 @@
 				</div>
 
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">{{
-						t('password')
-					}}</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700">Contraseña</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
 					>
@@ -58,7 +54,7 @@
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							v-model="loginForm.password"
-							:placeholder="t('passwordPlaceholder')"
+							placeholder="••••••••"
 							class="w-full p-2 outline-none text-gray-900"
 							required
 						/>
@@ -76,17 +72,17 @@
 					type="submit"
 					class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition hover:scale-105 transition-transform"
 				>
-					{{ t('login') }}
+					Iniciar sesión
 				</button>
 			</form>
 
-			<p class="mt-6 text-sm text-center text-white">
-				{{ t('noAccount') }}
+			<p class="mt-6 text-sm text-center text-gray-600 dark:text-gray-400">
+				¿No tienes una cuenta?
 				<router-link
 					to="/register"
 					class="text-indigo-600 hover:underline font-semibold"
 				>
-					{{ t('registerHere') }}
+					Regístrate aquí
 				</router-link>
 			</p>
 		</div>
@@ -98,14 +94,11 @@ import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
-import { useI18n } from 'vue-i18n';
-
 // Get the toast instance
 const toast = useToast();
 const showPassword = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
-const { t } = useI18n();
 
 const loginForm = reactive({
 	email: '',
@@ -115,7 +108,7 @@ const loginForm = reactive({
 async function handleLogin() {
 	try {
 		const response = await authStore.login({ ...loginForm });
-		toast.success(t('loginSuccessful'));
+		toast.success('Inicio de sesión exitoso');
 
 		if (authStore.isOwner) {
 			await router.push({ name: 'OwnerDashboard' });
@@ -124,9 +117,7 @@ async function handleLogin() {
 		}
 	} catch (error: unknown) {
 		console.error('Login error details:', error);
-		const errorMessage =
-			error instanceof Error ? error.message : t('invalidCredentials');
-		toast.error(`${errorMessage}`);
+		toast.error('Credenciales inválidas. Verifica tu correo y contraseña.');
 	}
 }
 </script>

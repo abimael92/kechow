@@ -66,7 +66,7 @@ export const useAuthStore = defineStore('auth', () => {
 			return response;
 		} catch (err: any) {
 			logout();
-			error.value = err.message || 'Login failed';
+			error.value = err.message || 'Error al iniciar sesión';
 			throw err;
 		} finally {
 			isLoading.value = false;
@@ -96,7 +96,7 @@ export const useAuthStore = defineStore('auth', () => {
 
 			return response;
 		} catch (err: any) {
-			error.value = err.message || 'Registration failed';
+			error.value = err.message || 'Error al registrarse';
 			throw err;
 		} finally {
 			isLoading.value = false;

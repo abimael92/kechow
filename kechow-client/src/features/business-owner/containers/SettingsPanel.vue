@@ -74,7 +74,7 @@
 							<button
 								@click="openZoneManager"
 								class="add-button-mobile"
-								aria-label="Add zone"
+								:aria-label="$t('addZone')"
 							>
 								<i class="ri-add-line"></i>
 							</button>

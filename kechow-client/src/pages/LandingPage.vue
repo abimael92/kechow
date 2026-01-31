@@ -1,4 +1,5 @@
 <template>
+	<div class="landing-root">
 	<section
 		class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-12 fade-in-up text-black dark:text-white px-6 py-24 min-h-[90vh] relative overflow-hidden"
 	>
@@ -238,55 +239,57 @@
 			<h1
 				class="text-5xl sm:text-6xl mt-16 font-extrabold drop-shadow-lg text-black dark:text-white"
 			>
-				{{ $t('kechowFoodDelivery') }}
+				Comida Deliciosa, Entrega Rápida
 			</h1>
 
 			<p class="text-xl max-w-lg opacity-90 leading-relaxed mx-auto">
-				{{ $t('yourLocalFoodDeliveryIsCooking') }}
+				Pide a tus restaurantes favoritos y recibe comida fresca y caliente en la puerta de tu casa en minutos.
 			</p>
 
 			<p
 				class="text-lg max-w-md opacity-80 underline underline-offset- decoration-accent decoration-4 cursor-pointer hover:decoration-secondary transition mx-auto"
 				@click="alertComingSoon"
 			>
-				{{ $t('comingSoonDescription') }}
+				La app favorita de tu ciudad — ¡próximamente!
 			</p>
 
 			<BaseButton
 				@click="goHome"
 				class="btn px-8 py-3 text-lg font-semibold rounded-md shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition"
-				aria-label="Get started"
+				aria-label="Comenzar"
 			>
-				{{ $t('getStarted') }}
+				Comenzar
 			</BaseButton>
 		</div>
 	</section>
 
 	<!-- Separate Testimonials section -->
 	<section
-		aria-label="Customer testimonials"
+		aria-label="Testimonios de clientes"
 		class="max-w-4xl mx-auto mt-32 w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg p-10 shadow-lg text-center min-h-[40vh]"
 	>
 		<h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-			{{ $t('customerTestimonialsTitle') }}
+			Lo que dicen nuestros clientes
 		</h2>
 		<ul class="space-y-6 text-lg">
 			<li class="italic text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
-				"{{ $t('testimonial1') }}"
+				"¡Comida increíble y entrega rápida! La interfaz es muy limpia y fácil de usar."
 				<br />
 				<span class="font-semibold">- Jamie L.</span>
 			</li>
 			<li class="italic text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
-				"{{ $t('testimonial2') }}"
+				"Me encantan las animaciones y la experiencia fluida. ¡No puedo esperar al lanzamiento!"
 				<br />
 				<span class="font-semibold">- Maria G.</span>
 			</li>
 		</ul>
 	</section>
+	</div>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
+import BaseButton from '@/shared/ui/BaseButton.vue';
 const router = useRouter();
 
 function goHome() {
@@ -294,7 +297,7 @@ function goHome() {
 }
 
 function alertComingSoon() {
-	alert('Stay tuned! We are launching soon 🚀');
+	alert('¡Estén atentos! Lanzamos muy pronto 🚀');
 }
 </script>
 
