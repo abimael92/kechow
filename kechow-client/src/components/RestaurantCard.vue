@@ -22,7 +22,7 @@
             </button>
             <div v-if="!restaurant.isOpen" class="absolute inset-0 bg-black/60 flex items-center justify-center">
                 <span class="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                    {{ $t('closed') }}
+                    Cerrado
                 </span>
             </div>
         </div>
