@@ -10,12 +10,12 @@
 						<button 
 							@click="toggleMobileMenu"
 							class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-							aria-label="Menu"
+							aria-label="Abrir menú"
 						>
 							<i class="ri-menu-line text-xl"></i>
 						</button>
 						<h1 class="text-xl font-bold text-primary-gradient">
-								{{ t('restaurants') }}
+								Restaurantes
 							</h1>
 						</div>
 						
@@ -24,17 +24,17 @@
 							<button 
 								@click="toggleLanguage"
 								class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-sm font-medium flex items-center gap-1"
-								:title="currentLanguage === 'en' ? 'Switch to Spanish' : 'Cambiar a Inglés'"
+								title="Idioma"
 							>
 								<i class="ri-translate-2"></i>
-								<span class="hidden sm:inline">{{ currentLanguage === 'en' ? 'ES' : 'EN' }}</span>
+								<span class="hidden sm:inline">Idioma</span>
 							</button>
 							
 							<!-- Cart Button -->
 							<button 
 								@click="openCart"
 								class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors relative"
-								aria-label="Cart"
+								aria-label="Carrito"
 							>
 								<i class="ri-shopping-cart-line text-xl"></i>
 								<span 
@@ -61,25 +61,25 @@
 				<aside class="hidden lg:block space-y-6">
 					<!-- Filters Section -->
 					<div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-						<h3 class="font-semibold text-lg mb-4">{{ t('filters') }}</h3>
+						<h3 class="font-semibold text-lg mb-4">Filtros</h3>
 						
 						<!-- Sort Options -->
 						<div class="space-y-4">
 							<div>
-								<label class="block text-sm font-medium mb-2">{{ t('sortBy') }}</label>
+								<label class="block text-sm font-medium mb-2">Ordenar por</label>
 								<select 
 									v-model="sortOption"
 									class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
 								>
-									<option value="name">{{ t('name') }}</option>
-									<option value="rating">{{ t('rating') }}</option>
-									<option value="deliveryTime">{{ t('deliveryTime') }}</option>
+									<option value="name">Nombre</option>
+									<option value="rating">Calificación</option>
+									<option value="deliveryTime">Tiempo de entrega</option>
 								</select>
 							</div>
 							
 							<!-- Price Range -->
 							<div>
-								<label class="block text-sm font-medium mb-2">{{ t('priceRange') }}</label>
+								<label class="block text-sm font-medium mb-2">Rango de precios</label>
 								<div class="space-y-2">
 									<label class="flex items-center gap-2">
 										<input 
@@ -88,7 +88,7 @@
 											value="all"
 											class="text-primary-500 focus:ring-primary-500"
 										>
-										<span class="text-sm">{{ t('allPrices') }}</span>
+										<span class="text-sm">Todos los precios</span>
 									</label>
 									<label class="flex items-center gap-2">
 										<input 
@@ -97,7 +97,7 @@
 											value="$"
 											class="text-primary-500 focus:ring-primary-500"
 										>
-										<span class="text-sm">$ {{ t('inexpensive') }}</span>
+										<span class="text-sm">$ Económico</span>
 									</label>
 									<label class="flex items-center gap-2">
 										<input 
@@ -106,7 +106,7 @@
 											value="$$"
 											class="text-primary-500 focus:ring-primary-500"
 										>
-										<span class="text-sm">$$ {{ t('moderate') }}</span>
+										<span class="text-sm">$$ Moderado</span>
 									</label>
 									<label class="flex items-center gap-2">
 										<input 
@@ -115,7 +115,7 @@
 											value="$$$"
 											class="text-primary-500 focus:ring-primary-500"
 										>
-										<span class="text-sm">$$$ {{ t('expensive') }}</span>
+										<span class="text-sm">$$$ Caro</span>
 									</label>
 								</div>
 							</div>
@@ -125,20 +125,20 @@
 							@click="resetFilters"
 							class="w-full mt-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors font-medium"
 						>
-							{{ t('clearFilters') }}
+							Limpiar filtros
 						</button>
 					</div>
 					
 					<!-- Quick Stats -->
 					<div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-						<h3 class="font-semibold text-lg mb-4">{{ t('quickStats') }}</h3>
+						<h3 class="font-semibold text-lg mb-4">Estadísticas rápidas</h3>
 						<div class="space-y-3">
 							<div class="flex justify-between">
-								<span class="text-gray-600 dark:text-gray-400">{{ t('totalRestaurants') }}</span>
+								<span class="text-gray-600 dark:text-gray-400">Total de restaurantes</span>
 								<span class="font-semibold">{{ restaurants.length }}</span>
 							</div>
 							<div class="flex justify-between">
-								<span class="text-gray-600 dark:text-gray-400">{{ t('showing') }}</span>
+								<span class="text-gray-600 dark:text-gray-400">Mostrando</span>
 								<span class="font-semibold">{{ filteredRestaurants.length }}</span>
 							</div>
 						</div>
@@ -150,13 +150,13 @@
 					<!-- Categories Section -->
 					<section>
 						<div class="flex justify-between items-center mb-4">
-							<h2 class="section-heading">{{ t('featuredCategories') }}</h2>
+							<h2 class="section-heading">Categorías destacadas</h2>
 							<div class="flex items-center gap-2">
 								<button class="link-button" @click="resetFilters">
-									{{ t('clear') }}
+									Limpiar
 								</button>
 								<span v-if="selectedCategory" class="text-sm text-gray-600 dark:text-gray-400">
-									{{ t('selected') }}: {{ selectedCategory }}
+									Seleccionado: {{ selectedCategory }}
 								</span>
 							</div>
 						</div>
@@ -192,7 +192,7 @@
 								v-if="priceRange !== 'all'"
 								class="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-full text-sm"
 							>
-								{{ t('price') }}: {{ priceRange }}
+								Precio: {{ priceRange }}
 								<button @click="priceRange = 'all'" class="ml-1 hover:text-blue-900 dark:hover:text-blue-100">
 									<i class="ri-close-line"></i>
 								</button>
@@ -203,28 +203,28 @@
 					<!-- Restaurants Section -->
 					<section>
 						<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-							<h2 class="section-heading">{{ t('featuredRestaurants') }}</h2>
+							<h2 class="section-heading">Restaurantes destacados</h2>
 							<div class="flex items-center gap-3">
 								<!-- Mobile Sort Dropdown -->
 								<select 
 									v-model="sortOption"
 									class="lg:hidden px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm"
 								>
-									<option value="name">{{ t('name') }}</option>
-									<option value="rating">{{ t('rating') }}</option>
-									<option value="deliveryTime">{{ t('deliveryTime') }}</option>
+									<option value="name">Nombre</option>
+									<option value="rating">Calificación</option>
+									<option value="deliveryTime">Tiempo de entrega</option>
 								</select>
 								
 								<button 
 									@click="toggleViewMode"
 									class="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-									:title="viewMode === 'grid' ? t('switchToList') : t('switchToGrid')"
+									:title="viewMode === 'grid' ? 'Cambiar a lista' : 'Cambiar a cuadrícula'"
 								>
 									<i :class="viewMode === 'grid' ? 'ri-list-check' : 'ri-grid-fill'"></i>
 								</button>
 								
 								<button class="link-button" @click="resetFilters">
-									{{ t('resetAll') }}
+									Restablecer todo
 								</button>
 							</div>
 						</div>
@@ -243,21 +243,21 @@
 							<div class="w-24 h-24 mx-auto mb-6 text-gray-400 dark:text-gray-600">
 								<i class="ri-restaurant-line text-6xl"></i>
 							</div>
-							<h3 class="text-xl font-semibold mb-2">{{ t('noRestaurantsFound') }}</h3>
+							<h3 class="text-xl font-semibold mb-2">No se encontraron restaurantes</h3>
 							<p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
 								{{
 									search 
-										? t('noResultsForSearch', { search })
+										? `No hay resultados para "${search}"`
 										: selectedCategory
-											? t('noResultsForCategory', { category: selectedCategory })
-											: t('tryDifferentFilters')
+											? `No hay resultados para la categoría "${selectedCategory}"`
+											: 'Prueba con otros filtros'
 								}}
 							</p>
 							<button
 								@click="resetFilters"
 								class="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors font-medium"
 							>
-								{{ t('clearFilters') }}
+								Limpiar filtros
 							</button>
 						</div>
 						
@@ -342,7 +342,7 @@
 			<div class="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-xl animate-slide-in">
 				<div class="p-4 border-b border-gray-200 dark:border-gray-700">
 					<div class="flex items-center justify-between mb-4">
-						<h2 class="text-xl font-bold">{{ t('menu') }}</h2>
+						<h2 class="text-xl font-bold">Menú</h2>
 						<button @click="mobileMenuOpen = false" class="p-2">
 							<i class="ri-close-line text-xl"></i>
 						</button>
@@ -353,8 +353,8 @@
 						@click="toggleLanguage"
 						class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center justify-between mb-4"
 					>
-						<span>{{ t('language') }}</span>
-						<span class="font-medium">{{ currentLanguage === 'en' ? 'Español' : 'English' }}</span>
+						<span>Idioma</span>
+						<span class="font-medium">Idioma</span>
 					</button>
 				</div>
 				
@@ -366,7 +366,7 @@
 						class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-3"
 					>
 						<i :class="item.icon" class="text-lg"></i>
-						<span>{{ t(item.label) }}</span>
+						<span>{{ menuLabel(item.label) }}</span>
 					</button>
 				</div>
 			</div>
@@ -386,7 +386,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import type { Restaurant } from '@/shared/data/restaurants';
 
 import SearchBar from '@/components/SearchBar.vue';
@@ -397,7 +396,18 @@ import Skeleton from '@/shared/ui/Skeleton.vue';
 import { restaurants as restaurantData } from '@/shared/data/restaurants';
 import { categoryIcons } from '@/assets/svg/food';
 
-const { t, locale } = useI18n();
+// Spanish-only UI labels for mobile menu
+const menuLabels: Record<string, string> = {
+	home: 'Inicio',
+	orders: 'Pedidos',
+	favorites: 'Favoritos',
+	profile: 'Perfil',
+	settings: 'Configuración',
+	help: 'Ayuda',
+};
+function menuLabel(key: string): string {
+	return menuLabels[key] ?? key;
+}
 
 // State
 const restaurants = ref<any[]>(restaurantData.map(restaurant => ({
@@ -426,9 +436,6 @@ const itemsPerPage = 12;
 const cartItemCount = ref(3);
 const showLeftScroll = ref(false);
 const showRightScroll = ref(false);
-
-// Computed Properties
-const currentLanguage = computed(() => locale.value);
 
 // Add this computed property to your script section
 const sortedRestaurants = computed(() => {
@@ -530,7 +537,7 @@ function toggleViewMode() {
 }
 
 function toggleLanguage() {
-	locale.value = currentLanguage.value === 'en' ? 'es' : 'en';
+	// App is Spanish-only; kept for future i18n.
 }
 
 function toggleMobileMenu() {

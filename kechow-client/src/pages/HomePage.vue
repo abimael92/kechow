@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { restaurants as restaurantData } from '@/shared/data/restaurants';
 import { categoryIcons } from '../assets/svg/food';
 import { useRouter } from 'vue-router';
 
-const { t } = useI18n();
 const router = useRouter();
 
 const restaurants = ref(restaurantData);
@@ -46,7 +44,7 @@ const filteredRestaurants = computed(() =>
 				<h1
 					class="text-3xl sm:text-4xl font-bold text-primary-gradient drop-shadow-md"
 				>
-					{{ t('restaurants') }}
+					Restaurantes
 				</h1>
 			</header>
 
@@ -56,7 +54,7 @@ const filteredRestaurants = computed(() =>
 					<input
 						v-model="search"
 						type="search"
-						:placeholder="t('searchPlaceholder')"
+						placeholder="Buscar comida, restaurantes, categorías…"
 						class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base text-black"
 					/>
 					<svg
@@ -75,7 +73,7 @@ const filteredRestaurants = computed(() =>
 			<!-- Categories -->
 			<section>
 				<div class="flex justify-between items-center mb-3">
-					<h2 class="text-lg font-semibold">{{ t('featuredCategories') }}</h2>
+					<h2 class="text-lg font-semibold">Categorías destacadas</h2>
 					<button
 						class="text-sm text-white font-medium hover:bg-purple-200 hover:text-primary transition"
 						@click="
@@ -83,7 +81,7 @@ const filteredRestaurants = computed(() =>
 							selectedCategory = '';
 						"
 					>
-						{{ t('viewAll') }}
+						Ver todo
 					</button>
 				</div>
 				<div class="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
@@ -106,7 +104,7 @@ const filteredRestaurants = computed(() =>
 			<!-- Restaurants -->
 			<section>
 				<div class="flex justify-between items-center mb-3">
-					<h2 class="text-lg font-semibold">{{ t('featuredRestaurants') }}</h2>
+					<h2 class="text-lg font-semibold">Restaurantes destacados</h2>
 					<button
 						class="text-sm text-white font-medium hover:bg-purple-200 hover:text-primary transition"
 						@click="
@@ -114,7 +112,7 @@ const filteredRestaurants = computed(() =>
 							selectedCategory = '';
 						"
 					>
-						{{ t('viewAll') }}
+						Ver todo
 					</button>
 				</div>
 				<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -136,7 +134,7 @@ const filteredRestaurants = computed(() =>
 								v-else
 								class="h-full w-full flex items-center justify-center bg-gray-100 dark:bg-gray-700 text-gray-500 text-sm"
 							>
-								{{ t('imageUnavailable') }}
+								Imagen no disponible
 							</div>
 						</div>
 

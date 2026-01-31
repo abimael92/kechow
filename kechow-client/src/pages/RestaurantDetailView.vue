@@ -76,6 +76,7 @@ function goBack() {
 </script>
 
 <template>
+	<div class="restaurant-detail-root">
 	<div v-if="restaurant" class="min-h-screen py-6">
 		<div class="max-w-4xl mx-auto px-4 sm:px-6">
 			<header class="sticky top-0 z-30 shadow-sm">
@@ -83,10 +84,10 @@ function goBack() {
 					<button
 						@click="goBack"
 						class="flex items-center gap-1 px-3 py-2 text-white-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
-						aria-label="Go back"
+						aria-label="Volver"
 					>
 						<span class="text-lg">←</span>
-						<span class="font-medium">Back</span>
+						<span class="font-medium">Volver</span>
 					</button>
 
 					<div class="flex-1 px-4 text-center">
@@ -112,7 +113,7 @@ function goBack() {
 									? 'text-primary hover:bg-primary/10'
 									: 'text-gray-400'
 							"
-							aria-label="View cart"
+							aria-label="Ver carrito"
 						>
 							<!-- Cart Icon -->
 							<svg
@@ -183,7 +184,7 @@ function goBack() {
 								v-if="item.stock !== undefined && item.stock < 10"
 								class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1 rounded"
 							>
-								Low stock
+								Pocas unidades
 							</div>
 						</div>
 
@@ -195,7 +196,7 @@ function goBack() {
 										{{ item.name }}
 									</h3>
 									<p class="text-sm text-gray-600 mt-1 line-clamp-2">
-										{{ item.description || 'Freshly made and tasty.' }}
+										{{ item.description || 'Hecho al momento y delicioso.' }}
 									</p>
 								</div>
 								<p class="text-lg font-bold text-primary whitespace-nowrap">
@@ -208,9 +209,9 @@ function goBack() {
 								<!-- Stock info -->
 								<div class="text-xs text-gray-500">
 									<span v-if="'stock' in item">
-										{{ item.stock }} available
+										{{ item.stock }} disponibles
 									</span>
-									<span v-else>In stock</span>
+									<span v-else>En existencia</span>
 								</div>
 
 								<!-- Controls -->
@@ -218,7 +219,7 @@ function goBack() {
 									<button
 										@click="remove(item.id)"
 										:disabled="(cart[item.id] ?? 0) <= 0"
-										:aria-label="`Remove one ${item.name}`"
+										:aria-label="`Quitar uno: ${item.name}`"
 										class="w-[60px] h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 									>
 										−
@@ -253,7 +254,7 @@ function goBack() {
 											(item.stock !== undefined &&
 												(cart[item.id] ?? 0) >= item.stock)
 										"
-										:aria-label="`Add one ${item.name}`"
+										:aria-label="`Agregar uno: ${item.name}`"
 										class="w-[60px] h-8 flex items-center justify-center rounded-full bg-primary text-white text-lg font-bold hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 									>
 										+
@@ -323,17 +324,18 @@ function goBack() {
 			<span class="text-4xl">🍕</span>
 		</div>
 		<h2 class="text-xl font-semibold text-gray-900 mb-2">
-			Restaurant Not Found
+			Restaurante no encontrado
 		</h2>
 		<p class="text-gray-500 mb-6">
-			The restaurant you're looking for doesn't exist or has been removed.
+			El restaurante que buscas no existe o ha sido eliminado.
 		</p>
 		<button
 			@click="router.push({ name: 'Home' })"
 			class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors duration-200"
 		>
-			Browse Restaurants
+			Ver restaurantes
 		</button>
+	</div>
 	</div>
 </template>
 

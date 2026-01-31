@@ -166,9 +166,9 @@
 							@click="placeOrder"
 							:disabled="!canPlaceOrder || processing || !isOnline"
 							class="w-full mt-6 py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-							:title="!isOnline ? $t('offline') : ''"
+							:title="!isOnline ? 'Sin conexión' : ''"
 						>
-							{{ !isOnline ? $t('offline') : processing ? $t('processing') || 'Procesando...' : `Confirmar Pedido - $${total.toFixed(2)}` }}
+							{{ !isOnline ? 'Sin conexión' : processing ? 'Procesando...' : `Confirmar Pedido - $${total.toFixed(2)}` }}
 						</button>
 					</div>
 				</div>
