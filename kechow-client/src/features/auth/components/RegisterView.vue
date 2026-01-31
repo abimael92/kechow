@@ -41,14 +41,13 @@ async function handleRegister() {
 </script>
 
 <template>
-	<div class="min-h-screen flex items-center justify-center">
+	<div class="min-h-screen flex items-center justify-center min-w-0 overflow-x-hidden px-4 py-6 sm:py-8">
 		<div
-			class="bg-white shadow-lg p-10 w-full max-w-lg animate-fade-in relative"
+			class="bg-white dark:bg-gray-800 shadow-lg p-6 sm:p-10 w-full max-w-lg animate-fade-in relative min-w-0 rounded-xl sm:rounded-2xl"
 			:class="{ 'customer-view': setRole }"
-			style="border-radius: 12px 0 12px 12px"
 		>
-			<!-- Role Tabs -->
-			<div class="absolute top-0 right-0 -translate-y-full">
+			<!-- Role Tabs - visible on sm+ to avoid overflow on mobile -->
+			<div class="absolute top-0 right-0 -translate-y-full hidden sm:block">
 				<div
 					class="join-us-tab cursor-pointer"
 					:class="{ 'change-customer': setRole }"
@@ -59,9 +58,20 @@ async function handleRegister() {
 				</div>
 			</div>
 
+			<!-- Mobile role toggle (replaces absolute tab on small screens) -->
+			<div class="sm:hidden flex justify-center mb-4">
+				<button
+					type="button"
+					@click="joinUsClicked"
+					class="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+					:class="setRole ? 'bg-amber-500 text-white' : 'bg-primary text-white'"
+				>
+					{{ setRole ? 'Ordenar Ahora' : 'Únete a Nosotros' }}
+				</button>
+			</div>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<h2
-					class="text-2xl font-bold mb-2 text-center text-gradient-pulse text-primary"
+					class="text-xl sm:text-2xl font-bold mb-2 text-center text-gradient-pulse text-primary break-words"
 				>
 					Crea tu cuenta de Kechow
 				</h2>
@@ -74,13 +84,11 @@ async function handleRegister() {
 
 			<form
 				@submit.prevent="handleRegister"
-				class="space-y-6 animate-slide-up p-6 rounded-2xl max-w-md mx-auto"
+				class="space-y-6 animate-slide-up p-0 sm:p-6 rounded-2xl max-w-md mx-auto w-full min-w-0"
 			>
 				<!-- Name -->
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">{{
-						t('name')
-					}}</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
 					>
@@ -117,9 +125,7 @@ async function handleRegister() {
 
 				<!-- Password -->
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">{{
-						t('password')
-					}}</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
 					>
@@ -194,13 +200,13 @@ async function handleRegister() {
 				</button>
 			</form>
 
-			<p class="mt-6 text-sm text-center text-white">
-				{{ t('alreadyHaveAccount') }}
+			<p class="mt-6 text-sm text-center text-gray-600 dark:text-gray-400">
+				¿Ya tienes cuenta?
 				<router-link
 					to="/login"
-					class="text-indigo-600 hover:underline font-semibold"
+					class="text-indigo-600 dark:text-indigo-400 hover:underline font-semibold"
 				>
-					{{ t('loginHere') }}
+					Inicia sesión aquí
 				</router-link>
 			</p>
 		</div>
