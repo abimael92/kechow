@@ -104,9 +104,7 @@ async function handleRegister() {
 				</div>
 
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">{{
-						t('email')
-					}}</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Correo electrónico</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
 					>
@@ -149,9 +147,7 @@ async function handleRegister() {
 
 				<!-- Confirm Password -->
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">{{
-						t('confirmPassword')
-					}}</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Confirmar contraseña</label>
 					<div
 						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
 					>
@@ -187,8 +183,8 @@ async function handleRegister() {
 						required
 						class="w-full p-2 text-white"
 					>
-						<option value="owner">{{ t('owner') }}</option>
-						<option value="delivery">{{ t('delivery') }}</option>
+						<option value="owner">Propietario</option>
+						<option value="delivery">Repartidor</option>
 					</select>
 				</div>
 

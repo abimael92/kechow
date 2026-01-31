@@ -5,7 +5,7 @@
 		aria-label="Kechow - Propietario"
 	>
 		<a href="#main-content" class="skip-link">Saltar al contenido principal</a>
-		<Header />
+		<Header :role="'owner'" />
 		<RoleNavigation :role="'owner'" />
 
 		<!-- Main Content: min-h-0 + overflow-auto so content scrolls inside flex child -->
@@ -15,33 +15,17 @@
 			tabindex="-1"
 			role="main"
 		>
-			<router-view v-slot="{ Component }">
-				<Transition name="page" mode="out-in">
-					<component
-						v-if="Component"
-						:is="Component"
-						:key="route.path"
-					/>
-					<div
-						v-else
-						key="loading"
-						class="flex items-center justify-center min-h-[200px] text-gray-500 dark:text-gray-400"
-					>
-						Cargando...
-					</div>
-				</Transition>
-			</router-view>
+			<router-view />
 		</main>
 
 		<Footer />
+		<BottomNav :role="'owner'" />
 	</div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
 import RoleNavigation from '@shared/layout/RoleNavigation.vue';
-
-const route = useRoute();
+import BottomNav from '@shared/layout/BottomNav.vue';
 </script>

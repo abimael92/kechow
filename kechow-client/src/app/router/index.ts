@@ -198,6 +198,12 @@ const routes = [
 			},
 		],
 	},
+	// 404 fallback: show something instead of blank
+	{
+		path: '/:pathMatch(.*)*',
+		name: 'NotFound',
+		component: () => import('@/shared/ui/NotFoundPage.vue'),
+	},
 ];
 
 const router = createRouter({

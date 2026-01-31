@@ -301,7 +301,7 @@
 											<span>to</span>
 											<input v-model="day.endTime" type="time" />
 										</div>
-										<span v-else class="closed-label">Closed</span>
+										<span v-else class="closed-label">Cerrado</span>
 									</div>
 								</div>
 							</div>

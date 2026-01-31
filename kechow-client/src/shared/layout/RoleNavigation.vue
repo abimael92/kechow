@@ -1,184 +1,48 @@
 <template>
+	<!-- Desktop only: top nav. Mobile uses Header drawer (no role leaks; role from layout). -->
 	<nav
-		class="sticky top-16 sm:top-20 z-40 bg-[#2a1a40]/90 backdrop-blur-md border-b border-white/10 shadow-sm"
+		class="hidden md:block sticky top-16 sm:top-20 z-40 bg-[#2a1a40]/90 backdrop-blur-md border-b border-white/10 shadow-sm min-w-0 overflow-x-hidden"
 		role="navigation"
 		:aria-label="`Navegación ${roleLabel}`"
 	>
-		<!-- Desktop Navigation -->
-		<div class="hidden md:flex items-center justify-center gap-1 px-2 sm:px-4 py-2 sm:py-3 flex-wrap">
+		<div class="flex items-center justify-center gap-1 px-3 sm:px-4 md:px-6 py-2 sm:py-3 flex-wrap">
 			<router-link
 				v-for="item in navigationItems"
 				:key="item.path"
 				:to="item.path"
-				class="flex items-center min-h-[44px] px-3 sm:px-4 py-2 text-sm font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 relative"
+				class="flex items-center min-h-[44px] min-w-0 px-3 sm:px-4 py-2 text-sm sm:text-base font-medium text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 relative break-words"
 				:class="{
 					'text-white bg-white/15 font-semibold': isActive(item.path),
 					'text-white/70': !isActive(item.path),
 				}"
 			>
-				{{ item.label }}
+				<span class="truncate">{{ item.label }}</span>
 				<span
 					v-if="isActive(item.path)"
 					class="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-400 rounded-full"
 				></span>
 			</router-link>
 		</div>
-
-		<!-- Mobile Navigation -->
-		<div class="md:hidden overflow-auto">
-			<!-- Mobile Menu Button: 44px tap target -->
-			<button
-				@click="toggleMobileMenu"
-				class="w-full min-h-[44px] px-4 py-3 flex items-center justify-between text-white hover:bg-white/10 transition-colors"
-				:aria-expanded="mobileMenuOpen"
-				aria-label="Abrir menú de navegación"
-			>
-				<span class="font-medium">
-					{{ currentActiveLabel || 'Menú' }}
-				</span>
-				<svg
-					class="w-5 h-5 flex-shrink-0 transition-transform"
-					:class="{ 'rotate-180': mobileMenuOpen }"
-					fill="none"
-					stroke="currentColor"
-					viewBox="0 0 24 24"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M19 9l-7 7-7-7"
-					/>
-				</svg>
-			</button>
-
-			<!-- Mobile Menu Dropdown -->
-			<transition
-				enter-active-class="transition ease-out duration-200"
-				enter-from-class="opacity-0 -translate-y-2"
-				enter-to-class="opacity-100 translate-y-0"
-				leave-active-class="transition ease-in duration-150"
-				leave-from-class="opacity-100 translate-y-0"
-				leave-to-class="opacity-0 -translate-y-2"
-			>
-				<div
-					v-if="mobileMenuOpen"
-					class="border-t border-white/10 bg-[#2a1a40]/95 backdrop-blur-md"
-				>
-					<router-link
-						v-for="item in navigationItems"
-						:key="item.path"
-						:to="item.path"
-						@click="closeMobileMenu"
-						class="flex items-center justify-between min-h-[44px] px-4 py-3 text-white/90 hover:text-white hover:bg-white/10 transition-colors border-b border-white/5 last:border-b-0"
-						:class="{
-							'text-white bg-white/15 font-semibold': isActive(item.path),
-							'text-white/70': !isActive(item.path),
-						}"
-					>
-						<span>{{ item.label }}</span>
-						<svg
-							v-if="isActive(item.path)"
-							class="w-5 h-5 flex-shrink-0 text-purple-400"
-							fill="currentColor"
-							viewBox="0 0 20 20"
-						>
-							<path
-								fill-rule="evenodd"
-								d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-								clip-rule="evenodd"
-							/>
-						</svg>
-					</router-link>
-				</div>
-			</transition>
-		</div>
 	</nav>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { getNavItemsForRole, roleLabels, type NavRole } from '@/shared/data/nav.config';
 
-interface NavigationItem {
-	path: string;
-	label: string;
-}
-
-interface Props {
-	role: 'customer' | 'owner' | 'delivery';
-}
-
-const props = defineProps<Props>();
+const props = defineProps<{
+	role: NavRole;
+}>();
 
 const route = useRoute();
-const mobileMenuOpen = ref(false);
 
-const roleLabels: Record<string, string> = {
-	customer: 'Cliente',
-	owner: 'Propietario',
-	delivery: 'Repartidor',
-};
+const roleLabel = computed(() => roleLabels[props.role] ?? '');
+const navigationItems = computed(() => getNavItemsForRole(props.role));
 
-const roleLabel = computed(() => roleLabels[props.role] || '');
-
-const customerNavItems: NavigationItem[] = [
-	{ path: '/home', label: 'Inicio' },
-	{ path: '/restaurants', label: 'Restaurantes' },
-	{ path: '/cart', label: 'Mi Carrito' },
-	{ path: '/orders', label: 'Mis Pedidos' },
-	{ path: '/reviews', label: 'Reseñas' },
-	{ path: '/profile', label: 'Perfil' },
-];
-
-const ownerNavItems: NavigationItem[] = [
-	{ path: '/owner/dashboard', label: 'Panel de Control' },
-	{ path: '/owner/orders', label: 'Pedidos' },
-	{ path: '/owner/menu', label: 'Menú' },
-	{ path: '/owner/analytics', label: 'Analíticas' },
-	{ path: '/owner/reviews', label: 'Reseñas' },
-	{ path: '/owner/settings', label: 'Configuración' },
-];
-
-const deliveryNavItems: NavigationItem[] = [
-	{ path: '/delivery/dashboard', label: 'Panel de Control' },
-	{ path: '/delivery/orders', label: 'Pedidos' },
-	{ path: '/delivery/earnings', label: 'Ganancias' },
-	{ path: '/delivery/profile', label: 'Perfil' },
-];
-
-const navigationItems = computed<NavigationItem[]>(() => {
-	switch (props.role) {
-		case 'customer':
-			return customerNavItems;
-		case 'owner':
-			return ownerNavItems;
-		case 'delivery':
-			return deliveryNavItems;
-		default:
-			return [];
-	}
-});
-
-const isActive = (path: string): boolean => {
+function isActive(path: string): boolean {
 	if (path === route.path) return true;
-	// Handle nested routes
-	if (route.path.startsWith(path) && path !== '/') {
-		return true;
-	}
+	if (route.path.startsWith(path) && path !== '/') return true;
 	return false;
-};
-
-const currentActiveLabel = computed(() => {
-	const activeItem = navigationItems.value.find((item) => isActive(item.path));
-	return activeItem?.label || '';
-});
-
-const toggleMobileMenu = () => {
-	mobileMenuOpen.value = !mobileMenuOpen.value;
-};
-
-const closeMobileMenu = () => {
-	mobileMenuOpen.value = false;
-};
+}
 </script>
