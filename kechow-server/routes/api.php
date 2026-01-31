@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Artisan;
 // Load Auth module routes
 require app_path('Modules/Auth/routes.php');
 
+// Load Owner module routes (admin-only owner management)
+require app_path('Modules/Owner/routes.php');
+
 // One-time setup route: sessions table + seed users
 Route::get('/setup-backend/one-time-setup', function () {
     // Create sessions table
