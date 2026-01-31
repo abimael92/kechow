@@ -1,5 +1,7 @@
 <template>
-	<DeliveryDashboard />
+	<div class="min-w-0 overflow-x-hidden">
+		<DeliveryDashboard />
+	</div>
 </template>
 
 <script setup lang="ts">

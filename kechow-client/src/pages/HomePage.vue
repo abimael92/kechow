@@ -36,26 +36,26 @@ const filteredRestaurants = computed(() =>
 
 <template>
 	<div
-		class="min-h-screen bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans"
+		class="min-h-screen min-w-0 overflow-x-hidden bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans"
 	>
-		<div class="container px-4 py-6 space-y-8">
+		<div class="w-full max-w-7xl mx-auto px-4 py-4 sm:py-6 space-y-6 sm:space-y-8">
 			<!-- Header -->
-			<header class="text-center">
+			<header class="text-center px-1">
 				<h1
-					class="text-3xl sm:text-4xl font-bold text-primary-gradient drop-shadow-md"
+					class="text-2xl sm:text-3xl md:text-4xl font-bold text-primary-gradient drop-shadow-md break-words"
 				>
 					Restaurantes
 				</h1>
 			</header>
 
 			<!-- Search Bar -->
-			<div class="sticky top-0 bg-bg-light dark:bg-bg-dark z-20 pb-2">
-				<div class="relative">
+			<div class="sticky top-0 bg-bg-light dark:bg-bg-dark z-20 pb-2 -mx-1 px-1">
+				<div class="relative min-w-0">
 					<input
 						v-model="search"
 						type="search"
 						placeholder="Buscar comida, restaurantes, categorías…"
-						class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base text-black"
+						class="w-full min-w-0 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary text-sm sm:text-base text-black"
 					/>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -71,11 +71,11 @@ const filteredRestaurants = computed(() =>
 			</div>
 
 			<!-- Categories -->
-			<section>
-				<div class="flex justify-between items-center mb-3">
-					<h2 class="text-lg font-semibold">Categorías destacadas</h2>
+			<section class="min-w-0">
+				<div class="flex justify-between items-center gap-2 mb-3">
+					<h2 class="text-base sm:text-lg font-semibold truncate">Categorías destacadas</h2>
 					<button
-						class="text-sm text-white font-medium hover:bg-purple-200 hover:text-primary transition"
+						class="flex-shrink-0 text-sm font-medium hover:bg-purple-200 hover:text-primary transition py-1 px-2"
 						@click="
 							search = '';
 							selectedCategory = '';
@@ -84,7 +84,7 @@ const filteredRestaurants = computed(() =>
 						Ver todo
 					</button>
 				</div>
-				<div class="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+				<div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2 -mx-1 px-1">
 					<button
 						v-for="category in categories"
 						:key="category.id"
@@ -102,11 +102,11 @@ const filteredRestaurants = computed(() =>
 			</section>
 
 			<!-- Restaurants -->
-			<section>
-				<div class="flex justify-between items-center mb-3">
-					<h2 class="text-lg font-semibold">Restaurantes destacados</h2>
+			<section class="min-w-0">
+				<div class="flex justify-between items-center gap-2 mb-3">
+					<h2 class="text-base sm:text-lg font-semibold truncate">Restaurantes destacados</h2>
 					<button
-						class="text-sm text-white font-medium hover:bg-purple-200 hover:text-primary transition"
+						class="flex-shrink-0 text-sm font-medium hover:bg-purple-200 hover:text-primary transition py-1 px-2"
 						@click="
 							search = '';
 							selectedCategory = '';
@@ -115,19 +115,19 @@ const filteredRestaurants = computed(() =>
 						Ver todo
 					</button>
 				</div>
-				<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+				<ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
 					<li
 						v-for="restaurant in filteredRestaurants"
 						:key="restaurant.id"
 						@click="goToRestaurant(restaurant.id)"
-						class="cursor-pointer rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition hover:-translate-y-1"
+						class="cursor-pointer rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition hover:-translate-y-1 min-w-0"
 					>
-						<div class="overflow-hidden h-40 sm:h-48">
+						<div class="overflow-hidden h-36 sm:h-40 md:h-48">
 							<img
 								v-if="restaurant.image"
 								:src="restaurant.image"
 								:alt="restaurant.name"
-								class="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+								class="h-full w-full max-w-full object-cover transition-transform duration-300 hover:scale-105"
 								loading="lazy"
 							/>
 							<div
@@ -138,13 +138,13 @@ const filteredRestaurants = computed(() =>
 							</div>
 						</div>
 
-						<div class="p-4 space-y-2">
+						<div class="p-3 sm:p-4 space-y-2 min-w-0">
 							<h3
-								class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100"
+								class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 dark:text-gray-100 truncate"
 							>
 								{{ restaurant.name }}
 							</h3>
-							<p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+							<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-2 break-words">
 								{{ restaurant.description }}
 							</p>
 

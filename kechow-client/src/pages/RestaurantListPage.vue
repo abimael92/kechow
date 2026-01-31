@@ -1,11 +1,11 @@
 <template>
 	<div
-		class=" bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans transition-colors duration-300"
+		class="min-w-0 overflow-x-hidden bg-bg-light dark:bg-bg-dark text-text-light dark:text-text-dark font-sans transition-colors duration-300"
 	>
 		<!-- Mobile Header with Hamburger Menu - STICKY BUT NOT OVERLAPPING -->
-		<div class="sticky top-0 z-50 w-full lg:hidden bg-white dark:bg-gray-800 shadow-sm">
-			<div class="w-full px-4 py-3">
-				<div class="flex items-center justify-between max-w-7xl mx-auto">
+		<div class="sticky top-0 z-50 w-full lg:hidden bg-white dark:bg-gray-800 shadow-sm min-w-0">
+			<div class="w-full px-4 py-3 min-w-0">
+				<div class="flex items-center justify-between max-w-7xl mx-auto min-w-0 gap-2">
 					<div class="flex items-center gap-3">
 						<button 
 							@click="toggleMobileMenu"
@@ -146,7 +146,7 @@
 				</aside>
 
 				<!-- Main Content Area -->
-				<main class="lg:col-span-3 space-y-8">
+				<main class="min-w-0 lg:col-span-3 space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-0">
 					<!-- Categories Section -->
 					<section>
 						<div class="flex justify-between items-center mb-4">
@@ -262,9 +262,9 @@
 						</div>
 						
 						<!-- Restaurants Grid/List -->
-						<div v-else>
-							<!-- Grid View -->
-							<ul v-if="viewMode === 'grid'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+						<div v-else class="min-w-0">
+							<!-- Grid View: 1 col mobile, 2 sm, 3 xl -->
+							<ul v-if="viewMode === 'grid'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
 								<RestaurantCard
 									v-for="restaurant in sortedRestaurants"
 									:key="restaurant.id"
@@ -544,10 +544,18 @@ function toggleMobileMenu() {
 	mobileMenuOpen.value = !mobileMenuOpen.value;
 }
 
+const actionToRoute: Record<string, string> = {
+	home: '/home',
+	orders: '/orders',
+	profile: '/profile',
+	favorites: '/home', // no favorites route yet
+	settings: '/profile',
+	help: '/home',
+};
 function handleMobileMenuClick(item: any) {
 	mobileMenuOpen.value = false;
-	console.log('Navigate to:', item.action);
-	// Add your navigation logic here
+	const path = actionToRoute[item.action];
+	if (path) router.push(path);
 }
 
 function toggleFavorite(restaurant: Restaurant) {
@@ -559,13 +567,11 @@ function toggleFavorite(restaurant: Restaurant) {
 }
 
 function viewRestaurantDetails(restaurant: Restaurant) {
-	console.log('View restaurant:', restaurant);
-	// Add navigation logic here
+	router.push({ name: 'RestaurantDetail', params: { id: String(restaurant.id) } });
 }
 
 function openCart() {
-	console.log('Open cart');
-	// Add cart logic here
+	router.push({ name: 'CartPage' });
 }
 
 function scrollToTop() {

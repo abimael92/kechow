@@ -1,5 +1,5 @@
 <template>
-	<div class="p-6">
+	<div class="min-w-0 overflow-x-hidden">
 		<OrdersView />
 	</div>
 </template>
