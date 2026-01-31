@@ -179,7 +179,7 @@ const props = withDefaults(defineProps<{
 	cardSize: 'medium',
 	locale: 'en-US',
 	isPercentage: false,
-	iconDescription: 'Metric icon'
+	iconDescription: 'Icono de métrica'
 });
 
 const emit = defineEmits<{

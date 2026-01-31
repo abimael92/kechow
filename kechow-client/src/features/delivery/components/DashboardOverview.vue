@@ -26,8 +26,8 @@
 				<i class="ri-checkbox-circle-line text-white text-xl"></i>
 			</div>
 			<div>
-				<p class="font-semibold text-green-800 dark:text-green-200">Delivery lifecycle validated</p>
-				<p class="text-sm text-green-700 dark:text-green-300">Simulation complete. Stop after completion.</p>
+				<p class="font-semibold text-green-800 dark:text-green-200">Ciclo de entrega validado</p>
+				<p class="text-sm text-green-700 dark:text-green-300">Simulación completada.</p>
 			</div>
 		</div>
 
