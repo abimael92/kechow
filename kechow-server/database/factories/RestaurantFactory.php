@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Restaurant;
+use App\Modules\Restaurant\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class RestaurantFactory extends Factory
