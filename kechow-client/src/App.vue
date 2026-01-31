@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="min-h-screen bg-bg-light text-text-light dark:bg-bg-dark dark:text-text-dark font-sans"
+		class="min-h-screen min-w-0 overflow-x-hidden font-sans bg-bg-light text-text-light dark:bg-bg-dark dark:text-text-dark"
 	>
 		<NetworkBanner />
 		<ErrorBoundary>
