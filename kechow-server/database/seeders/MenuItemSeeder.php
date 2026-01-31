@@ -2,16 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\MenuItem;
-use App\Models\Restaurant;
+use App\Modules\Restaurant\Models\MenuItem;
+use App\Modules\Restaurant\Models\Restaurant;
 use Illuminate\Database\Seeder;
 
 class MenuItemSeeder extends Seeder
 {
     public function run(): void
     {
-        // For each restaurant, create some menu items
-        Restaurant::all()->each(function ($restaurant) {
+        Restaurant::all()->each(function (Restaurant $restaurant) {
             MenuItem::factory()->count(5)->create([
                 'restaurant_id' => $restaurant->id,
             ]);
