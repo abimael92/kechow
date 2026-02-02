@@ -25,6 +25,20 @@ export const login = async (payload: { email: string; password: string }) => {
 	}
 };
 
+function getApiErrorMessage(error: unknown): string {
+	if (error && typeof error === 'object' && 'response' in error) {
+		const err = error as { response?: { data?: { message?: string; errors?: Record<string, string[]> }; status?: number } };
+		const data = err.response?.data;
+		if (data?.errors && typeof data.errors === 'object') {
+			const first = Object.values(data.errors).flat()[0];
+			if (typeof first === 'string') return first;
+		}
+		if (typeof data?.message === 'string') return data.message;
+	}
+	if (error instanceof Error) return error.message;
+	return 'Error de conexión. Intenta de nuevo.';
+}
+
 export const register = async (payload: {
 	name: string;
 	email: string;
@@ -32,9 +46,14 @@ export const register = async (payload: {
 	password_confirmation: string;
 	role: string;
 }) => {
-	await api.get('/sanctum/csrf-cookie');
-	const response = await api.post('/api/register', payload);
-	return response.data;
+	try {
+		await api.get('/sanctum/csrf-cookie');
+		const response = await api.post('/api/register', payload);
+		return response.data;
+	} catch (error) {
+		if (import.meta.env.DEV) console.error('Register failed');
+		throw new Error(getApiErrorMessage(error));
+	}
 };
 
 export const getUser = async (token?: string) => {

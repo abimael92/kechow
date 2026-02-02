@@ -52,7 +52,11 @@ class OrderController extends Controller
 
     public function restaurantOrders(Request $request): JsonResponse
     {
-        $orders = $this->orderService->getRestaurantOrders($request->user()->restaurant_id);
+        $restaurantIds = $request->user()->restaurants()->pluck('id')->toArray();
+        if (empty($restaurantIds)) {
+            return response()->json([]);
+        }
+        $orders = $this->orderService->getOrdersByRestaurantIds($restaurantIds);
         return response()->json(OrderResource::collection($orders));
     }
 

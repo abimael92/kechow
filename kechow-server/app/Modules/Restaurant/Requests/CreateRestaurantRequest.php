@@ -29,7 +29,6 @@ class CreateRestaurantRequest extends FormRequest
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
             'delivery_radius' => 'nullable|numeric|min:0',
-            'owner_id' => 'required|exists:users,id',
         ];
     }
 

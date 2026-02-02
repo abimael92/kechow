@@ -207,7 +207,6 @@
 							? 'status-tab-active'
 							: 'status-tab-inactive'
 					]"
-					:style="activeTab === tab.status ? tabStyle(tab.color) : {}"
 					:aria-label="`${$t(tab.translationKey)} orders`"
 					:aria-selected="activeTab === tab.status"
 				>
@@ -235,8 +234,15 @@
 							<p class="stat-label">{{ $t(stat.label) }}</p>
 							<p class="stat-value">{{ stat.value }}</p>
 						</div>
-						<div class="stat-icon-container" :style="{ backgroundColor: stat.bgColor }">
-							<i :class="stat.icon" class="stat-icon" :style="{ color: stat.color }"></i>
+						<div
+							class="stat-icon-container"
+							:class="{ 'stat-icon-container-highlighted': stat.highlight }"
+							:style="!stat.highlight ? { backgroundColor: stat.bgColor } : {}"
+						>
+							<i
+								:class="[stat.icon, 'stat-icon', { 'stat-icon-highlighted': stat.highlight }]"
+								:style="!stat.highlight ? { color: stat.color } : {}"
+							></i>
 						</div>
 					</div>
 				</div>
@@ -393,14 +399,14 @@ const orderStatuses = computed(() => [
 	{ value: 'cancelled', label: t('statuscancelled') }
 ]);
 
-// Statistics
+// Statistics - highlighted card uses primary in light, overridden to purple in .dark
 const stats = computed(() => [
 	{
 		label: 'totalOrders',
 		value: orders.value.length,
 		icon: 'ri-shopping-cart-line',
-		color: '#8b5cf6', // Purple-500
-		bgColor: 'rgba(139, 92, 246, 0.1)',
+		color: '#CC5500', // primary for light
+		bgColor: 'rgba(255, 107, 0, 0.12)',
 		highlight: true
 	},
 	{
@@ -503,11 +509,6 @@ const calculateAverageOrderValue = () => {
 	const total = orders.value.reduce((sum, order) => sum + order.totalAmount, 0);
 	return total / orders.value.length;
 };
-
-const tabStyle = (color: string) => ({
-	background: `linear-gradient(135deg, ${color}, ${color}80)`,
-	color: 'white'
-});
 
 const setActiveTab = (status: string) => {
 	activeTab.value = status;
@@ -1559,8 +1560,24 @@ onUnmounted(() => {
     justify-content: center;
 }
 
+.stat-icon-container-highlighted {
+    background-color: rgba(255, 107, 0, 0.12);
+}
+
 .stat-icon {
     font-size: 1.25rem;
+}
+
+.stat-icon-highlighted {
+    color: #CC5500;
+}
+
+.dark .stat-icon-container-highlighted {
+    background-color: rgba(139, 92, 246, 0.2);
+}
+
+.dark .stat-icon-highlighted {
+    color: #8b5cf6;
 }
 
 /* Loading Skeleton */

@@ -110,6 +110,15 @@ class OrderService
             ->get();
     }
 
+    /** Get orders for multiple restaurants (e.g. owner's restaurants). */
+    public function getOrdersByRestaurantIds(array $restaurantIds): Collection
+    {
+        return Order::with('items.menuItem', 'user')
+            ->whereIn('restaurant_id', $restaurantIds)
+            ->latest()
+            ->get();
+    }
+
     public function getAvailableDriverOrders(): Collection
     {
         return Order::with('restaurant')

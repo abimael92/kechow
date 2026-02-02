@@ -24,7 +24,8 @@ class RestaurantController extends Controller
 
     public function store(CreateRestaurantRequest $request): JsonResponse
     {
-        $restaurant = $this->restaurantService->createRestaurant($request->validated());
+        $data = array_merge($request->validated(), ['owner_id' => $request->user()->id]);
+        $restaurant = $this->restaurantService->createRestaurant($data);
         return response()->json(new RestaurantResource($restaurant), 201);
     }
 
