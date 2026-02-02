@@ -615,10 +615,8 @@ onUnmounted(() => {
     padding: 1.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-    .orders-container {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    }
+.dark .orders-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
 /* Header Section */
@@ -696,10 +694,8 @@ onUnmounted(() => {
     font-weight: 500;
 }
 
-@media (prefers-color-scheme: dark) {
-    .order-count {
-        color: #a855f7;
-    }
+.dark .order-count {
+    color: #a855f7;
 }
 
 /* Header Controls */
@@ -1093,37 +1089,34 @@ onUnmounted(() => {
     color: #475569;
 }
 
-@media (prefers-color-scheme: dark) {
-    .badge-blue {
-        background: rgba(59, 130, 246, 0.2);
-        color: #60a5fa;
-    }
-    
-    .badge-purple {
-        background: rgba(139, 92, 246, 0.2);
-        color: #a855f7;
-    }
-    
-    .badge-cyan {
-        background: rgba(6, 182, 212, 0.2);
-        color: #22d3ee;
-    }
-    
-    .badge-green {
-        background: rgba(16, 185, 129, 0.2);
-        color: #34d399;
-    }
-    
-    .badge-red {
-        background: rgba(239, 68, 68, 0.2);
-        color: #f87171;
-    }
-    
-    .badge-gray {
-        background: rgba(148, 163, 184, 0.2);
-        color: #cbd5e1;
-    }
-    
+.dark .badge-blue {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+}
+
+.dark .badge-purple {
+    background: rgba(139, 92, 246, 0.2);
+    color: #a855f7;
+}
+
+.dark .badge-cyan {
+    background: rgba(6, 182, 212, 0.2);
+    color: #22d3ee;
+}
+
+.dark .badge-green {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+}
+
+.dark .badge-red {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+.dark .badge-gray {
+    background: rgba(148, 163, 184, 0.2);
+    color: #cbd5e1;
 }
 
 .dark .status-filter-label {
@@ -1211,10 +1204,8 @@ onUnmounted(() => {
     gap: 0.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-    .sort-indicators {
-        color: #94a3b8;
-    }
+.dark .sort-indicators {
+    color: #94a3b8;
 }
 
 /* Filter Actions - light: primary button, secondary text */
@@ -1297,16 +1288,6 @@ onUnmounted(() => {
     cursor: not-allowed;
 }
 
-@media (prefers-color-scheme: dark) {
-    .refresh-button {
-        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-        box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);
-    }
-    .refresh-button:hover:not(:disabled) {
-        box-shadow: 0 8px 12px rgba(139, 92, 246, 0.4);
-    }
-}
-
 .dark .refresh-button {
     background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
     box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);
@@ -1337,14 +1318,7 @@ onUnmounted(() => {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
     border: 1px solid #FDBA74;
     padding: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    .status-tabs-container {
-        background: #1e293b;
-        border-color: #334155;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
-    }
+    margin-bottom: 2rem;
 }
 
 .dark .status-tabs-container {
@@ -1361,10 +1335,8 @@ onUnmounted(() => {
     border-bottom: 1px solid #FDBA74;
 }
 
-@media (prefers-color-scheme: dark) {
-    .status-tabs {
-        border-bottom-color: #334155;
-    }
+.dark .status-tabs {
+    border-bottom-color: #334155;
 }
 
 .status-tab-button {
@@ -1424,28 +1396,6 @@ onUnmounted(() => {
     color: #1e293b;
 }
 
-@media (prefers-color-scheme: dark) {
-    .status-tab-active {
-        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-        border-color: #8b5cf6;
-        color: white;
-    }
-    
-    .status-tab-inactive {
-        color: #cbd5e1;
-    }
-    
-    .status-tab-inactive:hover {
-        border-color: #475569;
-        background: #1e293b;
-    }
-    
-    .status-tab-count-inactive {
-        background: #475569;
-        color: white;
-    }
-}
-
 .dark .status-tab-active {
     background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
     border-color: #8b5cf6;
@@ -1498,18 +1448,6 @@ onUnmounted(() => {
     border-color: #FF6B00;
 }
 
-@media (prefers-color-scheme: dark) {
-    .stat-card {
-        border-color: #334155;
-        background: #1e293b;
-    }
-    
-    .stat-card.highlighted {
-        background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
-        border-color: #8b5cf6;
-    }
-}
-
 .dark .stat-card {
     border-color: #334155;
     background: #1e293b;
@@ -1532,10 +1470,8 @@ onUnmounted(() => {
     margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-    .stat-label {
-        color: #94a3b8;
-    }
+.dark .stat-label {
+    color: #94a3b8;
 }
 
 .stat-value {
@@ -1545,10 +1481,8 @@ onUnmounted(() => {
     margin: 0.25rem 0 0 0;
 }
 
-@media (prefers-color-scheme: dark) {
-    .stat-value {
-        color: #f1f5f9;
-    }
+.dark .stat-value {
+    color: #f1f5f9;
 }
 
 .stat-icon-container {
@@ -1595,13 +1529,6 @@ onUnmounted(() => {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-    .skeleton-card {
-        background: #1e293b;
-        border-color: #334155;
-    }
-}
-
 .skeleton-content {
     display: flex;
     align-items: center;
@@ -1629,12 +1556,10 @@ onUnmounted(() => {
     width: 6rem;
 }
 
-@media (prefers-color-scheme: dark) {
-    .skeleton-line,
-    .skeleton-title,
-    .skeleton-badge {
-        background: #334155;
-    }
+.dark .skeleton-line,
+.dark .skeleton-title,
+.dark .skeleton-badge {
+    background: #334155;
 }
 
 @keyframes pulse {
@@ -1700,27 +1625,25 @@ onUnmounted(() => {
     transform: translateY(-2px);
 }
 
-@media (prefers-color-scheme: dark) {
-    .empty-state-icon {
-        color: #475569;
-    }
-    
-    .empty-state-title {
-        color: #cbd5e1;
-    }
-    
-    .empty-state-description {
-        color: #94a3b8;
-    }
-    
-    .empty-state-action-button {
-        background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
-        box-shadow: 0 4px 6px rgba(168, 85, 247, 0.3);
-    }
-    
-    .empty-state-action-button:hover {
-        box-shadow: 0 8px 12px rgba(168, 85, 247, 0.4);
-    }
+.dark .empty-state-icon {
+    color: #475569;
+}
+
+.dark .empty-state-title {
+    color: #cbd5e1;
+}
+
+.dark .empty-state-description {
+    color: #94a3b8;
+}
+
+.dark .empty-state-action-button {
+    background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 100%);
+    box-shadow: 0 4px 6px rgba(168, 85, 247, 0.3);
+}
+
+.dark .empty-state-action-button:hover {
+    box-shadow: 0 8px 12px rgba(168, 85, 247, 0.4);
 }
 
 /* Orders List */
@@ -1779,25 +1702,23 @@ onUnmounted(() => {
     cursor: not-allowed;
 }
 
-@media (prefers-color-scheme: dark) {
-    .pagination {
-        border-top-color: #334155;
-    }
-    
-    .pagination-info {
-        color: #94a3b8;
-    }
-    
-    .pagination-button {
-        background: #1e293b;
-        border-color: #475569;
-        color: #cbd5e1;
-    }
-    
-    .pagination-button:hover:not(.disabled) {
-        background: #334155;
-        border-color: #64748b;
-    }
+.dark .pagination {
+    border-top-color: #334155;
+}
+
+.dark .pagination-info {
+    color: #94a3b8;
+}
+
+.dark .pagination-button {
+    background: #1e293b;
+    border-color: #475569;
+    color: #cbd5e1;
+}
+
+.dark .pagination-button:hover:not(.disabled) {
+    background: #334155;
+    border-color: #64748b;
 }
 
 /* Dropdown Overlay */
