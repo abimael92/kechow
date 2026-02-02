@@ -5,28 +5,28 @@
 			<div class="header-content">
 				<h1 class="page-title">
 					<i class="ri-truck-line"></i>
-					{{ t('deliverySettings') }}
+					Configuración de entrega
 				</h1>
 				<p class="page-description">
-					{{ t('deliverySettingsDescription') }}
+					Configura zonas, tarifas y horarios de entrega
 				</p>
 			</div>
 			<div class="header-actions">
 				<button
 					@click="resetToDefaults"
 					class="action-button secondary"
-					:aria-label="t('resetToDefaults')"
+					aria-label="Restablecer valores por defecto"
 				>
 					<i class="ri-restart-line"></i>
-					{{ t('reset') }}
+					Restablecer
 				</button>
 				<button
 					@click="saveAsTemplate"
 					class="action-button secondary"
-					:aria-label="t('saveAsTemplate')"
+					aria-label="Guardar como plantilla"
 				>
 					<i class="ri-save-line"></i>
-					{{ t('saveTemplate') }}
+					Guardar plantilla
 				</button>
 			</div>
 		</div>
@@ -40,14 +40,14 @@
 						<li class="breadcrumb-item">
 							<router-link to="/settings" class="breadcrumb-link">
 								<i class="ri-settings-line"></i>
-								{{ t('settings') }}
+								Configuración
 							</router-link>
 						</li>
 						<li class="breadcrumb-item">
 							<i class="ri-arrow-right-s-line"></i>
 						</li>
 						<li class="breadcrumb-item active">
-							{{ t('delivery') }}
+							Entrega
 						</li>
 					</ol>
 				</nav>
@@ -59,15 +59,15 @@
 						<div class="section-header">
 							<h2 class="section-title">
 								<i class="ri-map-pin-2-line"></i>
-								{{ t('deliveryZones') }}
+								Zonas de entrega
 							</h2>
 							<button
 								@click="openZoneManager"
 								class="section-action-button"
-								:aria-label="t('manageDeliveryZones')"
+								aria-label="Gestionar zonas de entrega"
 							>
 								<i class="ri-add-line"></i>
-								{{ t('addZone') }}
+								Agregar zona
 							</button>
 						</div>
 						<div class="section-content">
@@ -75,21 +75,21 @@
 							<div v-if="showZoneMap" class="zone-map-preview">
 								<div class="map-placeholder">
 									<i class="ri-map-2-line"></i>
-									<p>{{ t('zoneMapPreview') }}</p>
+									<p>Vista previa del mapa</p>
 								</div>
 								<div class="zone-summary">
 									<div class="zone-stat">
 										<i class="ri-pin-distance-line"></i>
 										<div>
 											<span class="stat-value">{{ deliveryRadius }} km</span>
-											<span class="stat-label">{{ t('deliveryRadius') }}</span>
+											<span class="stat-label">Radio de entrega</span>
 										</div>
 									</div>
 									<div class="zone-stat">
 										<i class="ri-money-dollar-circle-line"></i>
 										<div>
 											<span class="stat-value">${{ deliveryFee }}</span>
-											<span class="stat-label">{{ t('deliveryFee') }}</span>
+											<span class="stat-label">Tarifa de entrega</span>
 										</div>
 									</div>
 								</div>
@@ -98,26 +98,26 @@
 							<!-- Zone Radius Control -->
 							<div class="form-group">
 								<label class="form-label">
-									{{ t('deliveryRadius') }}
+									Radio de entrega
 									<span class="required-indicator">*</span>
 								</label>
 								<div class="input-with-unit">
 									<input
-										v-model="deliveryRadius"
+										v-model.number="deliveryRadius"
 										class="form-input"
 										type="number"
 										min="1"
-										max="100"
+										max="10"
 										step="1"
 										required
-										:aria-label="t('deliveryRadiusInput')"
+										aria-label="Radio de entrega en km"
 										@input="validateDeliveryRadius"
 									/>
 									<span class="input-unit">km</span>
 								</div>
 								<div class="input-info">
 									<span class="info-text">
-										{{ t('deliveryRadiusDescription') }}
+										Radio máximo de entrega en kilómetros (1-10 km).
 									</span>
 								</div>
 							</div>
@@ -129,10 +129,10 @@
 						<div class="section-header">
 							<h2 class="section-title">
 								<i class="ri-money-dollar-circle-line"></i>
-								{{ t('pricingAndFees') }}
+								Precios y tarifas
 							</h2>
 							<div class="currency-selector">
-								<label class="currency-label">{{ t('currency') }}:</label>
+								<label class="currency-label">Moneda:</label>
 								<select v-model="selectedCurrency" class="currency-select">
 									<option value="USD">USD ($)</option>
 									<option value="EUR">EUR (€)</option>
@@ -146,7 +146,7 @@
 								<!-- Delivery Fee -->
 								<div class="form-group">
 									<label class="form-label">
-										{{ t('deliveryFee') }}
+										Tarifa de entrega
 										<span class="required-indicator">*</span>
 									</label>
 									<div class="input-with-unit">
@@ -158,13 +158,13 @@
 											min="0"
 											step="0.01"
 											required
-											:aria-label="t('deliveryFeeInput')"
+											aria-label="Tarifa de entrega"
 											@input="validateDeliveryFee"
 										/>
 									</div>
 									<div class="input-info">
 										<span class="info-text">
-											{{ t('deliveryFeeDescription') }}
+											Coste fijo por entrega.
 										</span>
 									</div>
 								</div>
@@ -172,7 +172,7 @@
 								<!-- Minimum Order -->
 								<div class="form-group">
 									<label class="form-label">
-										{{ t('minimumOrder') }}
+										Pedido mínimo
 										<span class="required-indicator">*</span>
 									</label>
 									<div class="input-with-unit">
@@ -184,13 +184,13 @@
 											min="0"
 											step="0.01"
 											required
-											:aria-label="t('minimumOrderInput')"
+											aria-label="Pedido mínimo"
 											@input="validateMinimumOrder"
 										/>
 									</div>
 									<div class="input-info">
 										<span class="info-text">
-											{{ t('minimumOrderDescription') }}
+											Importe mínimo del pedido para solicitar entrega.
 										</span>
 									</div>
 								</div>
@@ -198,7 +198,7 @@
 								<!-- Service Fee -->
 								<div class="form-group">
 									<label class="form-label">
-										{{ t('serviceFee') }}
+										Tarifa de servicio
 									</label>
 									<div class="input-with-unit">
 										<span class="currency-symbol">{{ currencySymbol }}</span>
@@ -208,12 +208,12 @@
 											type="number"
 											min="0"
 											step="0.01"
-											:aria-label="t('serviceFeeInput')"
+											aria-label="Tarifa de servicio"
 										/>
 									</div>
 									<div class="input-info">
 										<span class="info-text">
-											{{ t('serviceFeeDescription') }}
+											Porcentaje o fijo por pedido.
 										</span>
 									</div>
 								</div>
@@ -221,7 +221,7 @@
 								<!-- Tax Rate -->
 								<div class="form-group">
 									<label class="form-label">
-										{{ t('taxRate') }}
+										IVA / Tipo impositivo
 									</label>
 									<div class="input-with-unit">
 										<input
@@ -231,13 +231,13 @@
 											min="0"
 											max="100"
 											step="0.1"
-											:aria-label="t('taxRateInput')"
+											aria-label="Tipo impositivo"
 										/>
 										<span class="input-unit">%</span>
 									</div>
 									<div class="input-info">
 										<span class="info-text">
-											{{ t('taxRateDescription') }}
+											Porcentaje de impuestos aplicado.
 										</span>
 									</div>
 								</div>
@@ -245,26 +245,26 @@
 
 							<!-- Fee Calculator Preview -->
 							<div v-if="showFeeCalculator" class="fee-calculator">
-								<h4 class="calculator-title">{{ t('feeCalculator') }}</h4>
+								<h4 class="calculator-title">Calculadora de total</h4>
 								<div class="calculator-grid">
 									<div class="calculator-item">
-										<span class="calculator-label">{{ t('orderSubtotal') }}</span>
+										<span class="calculator-label">Subtotal del pedido</span>
 										<span class="calculator-value">{{ currencySymbol }}{{ orderSubtotal }}</span>
 									</div>
 									<div class="calculator-item">
-										<span class="calculator-label">{{ t('deliveryFee') }}</span>
+										<span class="calculator-label">Tarifa de entrega</span>
 										<span class="calculator-value">{{ currencySymbol }}{{ deliveryFee }}</span>
 									</div>
 									<div class="calculator-item">
-										<span class="calculator-label">{{ t('serviceFee') }}</span>
+										<span class="calculator-label">Tarifa de servicio</span>
 										<span class="calculator-value">{{ currencySymbol }}{{ serviceFee }}</span>
 									</div>
 									<div class="calculator-item">
-										<span class="calculator-label">{{ t('taxes') }}</span>
+										<span class="calculator-label">Impuestos</span>
 										<span class="calculator-value">{{ currencySymbol }}{{ calculatedTax }}</span>
 									</div>
 									<div class="calculator-item total">
-										<span class="calculator-label">{{ t('total') }}</span>
+										<span class="calculator-label">Total</span>
 										<span class="calculator-value">{{ currencySymbol }}{{ calculatedTotal }}</span>
 									</div>
 								</div>
@@ -277,7 +277,7 @@
 						<div class="section-header">
 							<h2 class="section-title">
 								<i class="ri-list-settings-line"></i>
-								{{ t('deliveryOptions') }}
+								Opciones de entrega
 							</h2>
 						</div>
 						<div class="section-content">
@@ -339,7 +339,7 @@
 						<div class="section-header">
 							<h2 class="section-title">
 								<i class="ri-time-line"></i>
-								{{ t('deliveryTimes') }}
+								Horarios de entrega
 							</h2>
 							<div class="time-presets">
 								<button
@@ -356,7 +356,7 @@
 						<div class="section-content">
 							<div class="form-group">
 								<label class="form-label">
-									{{ t('averageDeliveryTime') }}
+									Tiempo medio de entrega
 									<span class="required-indicator">*</span>
 								</label>
 								<div class="input-with-unit">
@@ -368,21 +368,21 @@
 										max="180"
 										step="5"
 										required
-										:aria-label="t('averageDeliveryTimeInput')"
+										aria-label="Tiempo medio de entrega"
 										@input="validateDeliveryTime"
 									/>
-									<span class="input-unit">{{ t('minutes') }}</span>
+									<span class="input-unit">minutos</span>
 								</div>
 								<div class="input-info">
 									<span class="info-text">
-										{{ t('averageDeliveryTimeDescription') }}
+										Tiempo estimado en minutos.
 									</span>
 								</div>
 							</div>
 
 							<!-- Delivery Hours -->
 							<div class="delivery-hours">
-								<h4 class="hours-title">{{ t('deliveryHours') }}</h4>
+								<h4 class="hours-title">Horario de entrega</h4>
 								<div class="hours-grid">
 									<div
 										v-for="day in deliveryDays"
@@ -394,7 +394,7 @@
 												v-model="day.enabled"
 												type="checkbox"
 												class="day-checkbox"
-												:aria-label="t('enableDeliveryFor', { day: day.name })"
+												:aria-label="'Activar entrega para ' + day.name"
 											/>
 											<span class="day-name">{{ day.name }}</span>
 										</label>
@@ -404,26 +404,26 @@
 													v-model="day.startTime"
 													class="time-input"
 													type="time"
-													:aria-label="t('startTimeFor', { day: day.name })"
+													:aria-label="'Hora de inicio ' + day.name"
 												/>
-												<span class="time-separator">{{ t('to') }}</span>
+												<span class="time-separator">a</span>
 												<input
 													v-model="day.endTime"
 													class="time-input"
 													type="time"
-													:aria-label="t('endTimeFor', { day: day.name })"
+													:aria-label="'Hora de cierre ' + day.name"
 												/>
 											</div>
 											<button
 												@click="copyToAllDays(day)"
 												class="copy-button"
-												:aria-label="t('copyScheduleToAllDays')"
+												aria-label="Copiar horario a todos los días"
 											>
 												<i class="ri-file-copy-line"></i>
 											</button>
 										</div>
 										<div v-else class="day-closed">
-											{{ t('closed') }}
+											Cerrado
 										</div>
 									</div>
 								</div>
@@ -433,27 +433,27 @@
 							<div v-if="showPeakHours" class="peak-hours">
 								<h4 class="peak-title">
 									<i class="ri-flashlight-line"></i>
-									{{ t('peakHours') }}
+									Horas punta
 								</h4>
 								<div class="peak-settings">
 									<div class="peak-time">
-										<label class="peak-label">{{ t('peakTime') }}</label>
+										<label class="peak-label">Hora punta</label>
 										<input
 											v-model="peakStartTime"
 											class="time-input"
 											type="time"
-											:aria-label="t('peakStartTime')"
+											aria-label="Inicio hora punta"
 										/>
-										<span class="time-separator">{{ t('to') }}</span>
+										<span class="time-separator">a</span>
 										<input
 											v-model="peakEndTime"
 											class="time-input"
 											type="time"
-											:aria-label="t('peakEndTime')"
+											aria-label="Fin hora punta"
 										/>
 									</div>
 									<div class="peak-fee">
-										<label class="peak-label">{{ t('peakHourFee') }}</label>
+										<label class="peak-label">Tarifa hora punta</label>
 										<div class="input-with-unit">
 											<span class="currency-symbol">{{ currencySymbol }}</span>
 											<input
@@ -462,7 +462,7 @@
 												type="number"
 												min="0"
 												step="0.01"
-												:aria-label="t('peakHourFeeInput')"
+												aria-label="Tarifa hora punta"
 											/>
 										</div>
 									</div>
@@ -476,7 +476,7 @@
 						<div class="section-header">
 							<h2 class="section-title">
 								<i class="ri-settings-3-line"></i>
-								{{ t('advancedSettings') }}
+								Configuración avanzada
 							</h2>
 							<button
 								@click="toggleAdvancedSettings"
@@ -484,7 +484,7 @@
 								:aria-expanded="showAdvancedSettings"
 							>
 								<i :class="showAdvancedSettings ? 'ri-arrow-up-s-line' : 'ri-arrow-down-s-line'"></i>
-								{{ showAdvancedSettings ? t('hideAdvanced') : t('showAdvanced') }}
+								{{ showAdvancedSettings ? 'Ocultar avanzado' : 'Mostrar avanzado' }}
 							</button>
 						</div>
 						<Transition name="slide-down">
@@ -492,20 +492,20 @@
 								<div class="grid-layout">
 									<!-- Max Deliveries Per Hour -->
 									<div class="form-group">
-										<label class="form-label">{{ t('maxDeliveriesPerHour') }}</label>
+										<label class="form-label">Máximo de entregas por hora</label>
 										<input
 											v-model="maxDeliveriesPerHour"
 											class="form-input"
 											type="number"
 											min="1"
 											max="50"
-											:aria-label="t('maxDeliveriesPerHourInput')"
+											aria-label="Máximo de entregas por hora"
 										/>
 									</div>
 
 									<!-- Preparation Time -->
 									<div class="form-group">
-										<label class="form-label">{{ t('preparationTime') }}</label>
+										<label class="form-label">Tiempo de preparación</label>
 										<div class="input-with-unit">
 											<input
 												v-model="preparationTime"
@@ -514,15 +514,15 @@
 												min="5"
 												max="120"
 												step="5"
-												:aria-label="t('preparationTimeInput')"
+												aria-label="Tiempo de preparación"
 											/>
-											<span class="input-unit">{{ t('minutes') }}</span>
+											<span class="input-unit">minutos</span>
 										</div>
 									</div>
 
 									<!-- Driver Commission -->
 									<div class="form-group">
-										<label class="form-label">{{ t('driverCommission') }}</label>
+										<label class="form-label">Comisión del repartidor</label>
 										<div class="input-with-unit">
 											<input
 												v-model="driverCommission"
@@ -531,7 +531,7 @@
 												min="0"
 												max="100"
 												step="0.1"
-												:aria-label="t('driverCommissionInput')"
+												aria-label="Comisión del repartidor"
 											/>
 											<span class="input-unit">%</span>
 										</div>
@@ -539,16 +539,16 @@
 
 									<!-- Auto-assign Drivers -->
 									<div class="form-group">
-										<label class="form-label">{{ t('autoAssignDrivers') }}</label>
+										<label class="form-label">Asignación automática de repartidores</label>
 										<label class="checkbox-label">
 											<input
 												v-model="autoAssignDrivers"
 												type="checkbox"
 												class="checkbox-input"
-												:aria-label="t('autoAssignDriversInput')"
+												aria-label="Asignación automática"
 											/>
 											<span class="checkbox-custom"></span>
-											<span class="checkbox-text">{{ t('enableAutoAssign') }}</span>
+											<span class="checkbox-text">Activar asignación automática</span>
 										</label>
 									</div>
 								</div>
@@ -562,26 +562,26 @@
 					<button
 						@click="cancelChanges"
 						class="action-button secondary large"
-						:aria-label="t('cancelChanges')"
+						aria-label="Descartar cambios"
 						:disabled="saving"
 					>
 						<i class="ri-close-line"></i>
-						{{ t('cancel') }}
+						Cancelar
 					</button>
 					<button
 						@click="saveChanges"
 						class="action-button primary large"
-						:aria-label="t('saveDeliverySettings')"
+						aria-label="Guardar configuración de entrega"
 						:disabled="saving || !hasChanges"
 						:class="{ 'loading': saving }"
 					>
 						<span v-if="saving" class="button-loading">
 							<i class="ri-loader-4-line spin"></i>
-							{{ t('saving') }}
+							Guardando…
 						</span>
 						<span v-else class="button-content">
 							<i class="ri-check-line"></i>
-							{{ t('saveChanges') }}
+							Guardar cambios
 						</span>
 					</button>
 				</div>
@@ -591,34 +591,34 @@
 			<aside class="sidebar">
 				<!-- Settings Summary -->
 				<div class="sidebar-section summary-section">
-					<h3 class="sidebar-title">{{ t('settingsSummary') }}</h3>
+					<h3 class="sidebar-title">Resumen de configuración</h3>
 					<div class="summary-items">
 						<div class="summary-item">
 							<i class="ri-pin-distance-line"></i>
 							<div>
-								<span class="summary-label">{{ t('deliveryRadius') }}</span>
+								<span class="summary-label">Radio de entrega</span>
 								<span class="summary-value">{{ deliveryRadius }} km</span>
 							</div>
 						</div>
 						<div class="summary-item">
 							<i class="ri-money-dollar-circle-line"></i>
 							<div>
-								<span class="summary-label">{{ t('deliveryFee') }}</span>
+								<span class="summary-label">Tarifa de entrega</span>
 								<span class="summary-value">{{ currencySymbol }}{{ deliveryFee }}</span>
 							</div>
 						</div>
 						<div class="summary-item">
 							<i class="ri-shopping-bag-line"></i>
 							<div>
-								<span class="summary-label">{{ t('minimumOrder') }}</span>
+								<span class="summary-label">Pedido mínimo</span>
 								<span class="summary-value">{{ currencySymbol }}{{ minimumOrder }}</span>
 							</div>
 						</div>
 						<div class="summary-item">
 							<i class="ri-time-line"></i>
 							<div>
-								<span class="summary-label">{{ t('deliveryTime') }}</span>
-								<span class="summary-value">{{ averageDeliveryTime }} {{ t('minutes') }}</span>
+								<span class="summary-label">Tiempo de entrega</span>
+								<span class="summary-value">{{ averageDeliveryTime }} minutos</span>
 							</div>
 						</div>
 					</div>
@@ -626,7 +626,7 @@
 
 				<!-- Status Indicators -->
 				<div class="sidebar-section status-section">
-					<h3 class="sidebar-title">{{ t('serviceStatus') }}</h3>
+					<h3 class="sidebar-title">Estado del servicio</h3>
 					<div class="status-indicators">
 						<div
 							v-for="status in serviceStatuses"
@@ -651,46 +651,46 @@
 
 				<!-- Quick Actions -->
 				<div class="sidebar-section actions-section">
-					<h3 class="sidebar-title">{{ t('quickActions') }}</h3>
+					<h3 class="sidebar-title">Acciones rápidas</h3>
 					<div class="quick-actions">
 						<button
 							@click="testDeliveryCalculator"
 							class="quick-action-button"
-							:aria-label="t('testDeliveryCalculator')"
+							aria-label="Probar calculadora de entrega"
 						>
 							<i class="ri-calculator-line"></i>
-							{{ t('testCalculator') }}
+							Probar calculadora
 						</button>
 						<button
 							@click="viewDeliveryAnalytics"
 							class="quick-action-button"
-							:aria-label="t('viewDeliveryAnalytics')"
+							aria-label="Ver analíticas de entrega"
 						>
 							<i class="ri-bar-chart-2-line"></i>
-							{{ t('viewAnalytics') }}
+							Ver analíticas
 						</button>
 						<button
 							@click="exportSettings"
 							class="quick-action-button"
-							:aria-label="t('exportDeliverySettings')"
+							aria-label="Exportar configuración de entrega"
 						>
 							<i class="ri-download-line"></i>
-							{{ t('exportSettings') }}
+							Exportar configuración
 						</button>
 						<button
 							@click="copySettingsLink"
 							class="quick-action-button"
-							:aria-label="t('copySettingsLink')"
+							aria-label="Copiar enlace de configuración"
 						>
 							<i class="ri-link-m"></i>
-							{{ t('copyLink') }}
+							Copiar enlace
 						</button>
 					</div>
 				</div>
 
 				<!-- Recent Changes -->
 				<div v-if="recentChanges.length > 0" class="sidebar-section changes-section">
-					<h3 class="sidebar-title">{{ t('recentChanges') }}</h3>
+					<h3 class="sidebar-title">Cambios recientes</h3>
 					<div class="changes-list">
 						<div
 							v-for="change in recentChanges"
@@ -714,9 +714,6 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, watch, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-
-const { t, locale } = useI18n();
 
 // State
 const deliveryRadius = ref(10);
@@ -746,107 +743,107 @@ const peakHourFee = ref(2.99);
 
 // Delivery days
 const deliveryDays = ref([
-	{ id: 0, name: t('monday'), enabled: true, startTime: '10:00', endTime: '22:00' },
-	{ id: 1, name: t('tuesday'), enabled: true, startTime: '10:00', endTime: '22:00' },
-	{ id: 2, name: t('wednesday'), enabled: true, startTime: '10:00', endTime: '22:00' },
-	{ id: 3, name: t('thursday'), enabled: true, startTime: '10:00', endTime: '22:00' },
-	{ id: 4, name: t('friday'), enabled: true, startTime: '10:00', endTime: '23:00' },
-	{ id: 5, name: t('saturday'), enabled: true, startTime: '11:00', endTime: '23:00' },
-	{ id: 6, name: t('sunday'), enabled: true, startTime: '12:00', endTime: '21:00' },
+	{ id: 0, name: 'Lunes', enabled: true, startTime: '10:00', endTime: '22:00' },
+	{ id: 1, name: 'Martes', enabled: true, startTime: '10:00', endTime: '22:00' },
+	{ id: 2, name: 'Miércoles', enabled: true, startTime: '10:00', endTime: '22:00' },
+	{ id: 3, name: 'Jueves', enabled: true, startTime: '10:00', endTime: '22:00' },
+	{ id: 4, name: 'Viernes', enabled: true, startTime: '10:00', endTime: '23:00' },
+	{ id: 5, name: 'Sábado', enabled: true, startTime: '11:00', endTime: '23:00' },
+	{ id: 6, name: 'Domingo', enabled: true, startTime: '12:00', endTime: '21:00' },
 ]);
 
 // Delivery options
 const deliveryOptions = ref([
 	{
 		id: 'pickup',
-		title: t('enablePickup'),
-		description: t('allowCustomersPickup'),
+		title: 'Recoger en local',
+		description: 'Permitir que los clientes recojan su pedido',
 		icon: 'ri-store-2-line',
 		enabled: true,
 		disabled: false,
-		ariaLabel: t('togglePickupService'),
+		ariaLabel: 'Activar/desactivar recogida',
 		settings: [
 			{
 				id: 'pickup-preparation',
-				label: t('pickupPreparationTime'),
+				label: 'Tiempo de preparación para recogida',
 				type: 'number',
 				value: 15,
 				min: 5,
 				max: 120,
 				step: 5,
-				ariaLabel: t('pickupPreparationTimeInput')
+				ariaLabel: 'Tiempo de preparación (minutos)'
 			}
 		]
 	},
 	{
 		id: 'delivery',
-		title: t('enableDelivery'),
-		description: t('offerDeliveryService'),
+		title: 'Entrega a domicilio',
+		description: 'Ofrecer servicio de entrega',
 		icon: 'ri-truck-line',
 		enabled: true,
 		disabled: false,
-		ariaLabel: t('toggleDeliveryService'),
+		ariaLabel: 'Activar/desactivar entrega',
 		settings: [
 			{
 				id: 'delivery-buffer',
-				label: t('deliveryBufferTime'),
+				label: 'Tiempo de margen para entrega',
 				type: 'number',
 				value: 10,
 				min: 0,
 				max: 60,
 				step: 5,
-				ariaLabel: t('deliveryBufferTimeInput')
+				ariaLabel: 'Tiempo de margen (minutos)'
 			}
 		]
 	},
 	{
 		id: 'express',
-		title: t('expressDelivery'),
-		description: t('offerExpressDelivery'),
+		title: 'Entrega express',
+		description: 'Ofrecer entrega express',
 		icon: 'ri-flashlight-line',
 		enabled: false,
 		disabled: false,
-		ariaLabel: t('toggleExpressDelivery'),
+		ariaLabel: 'Activar/desactivar entrega express',
 		settings: [
 			{
 				id: 'express-fee',
-				label: t('expressFee'),
+				label: 'Tarifa express',
 				type: 'number',
 				value: 5.99,
 				min: 0,
 				step: 0.01,
-				ariaLabel: t('expressFeeInput')
+				ariaLabel: 'Tarifa express'
 			},
 			{
 				id: 'express-time',
-				label: t('expressTime'),
+				label: 'Tiempo express',
 				type: 'number',
 				value: 15,
 				min: 5,
 				max: 30,
 				step: 5,
-				ariaLabel: t('expressTimeInput')
+				ariaLabel: 'Tiempo express (minutos)'
 			}
 		]
 	},
 	{
 		id: 'scheduled',
-		title: t('scheduledDelivery'),
-		description: t('allowScheduledDelivery'),
+		title: 'Entrega programada',
+		description: 'Permitir entrega programada',
 		icon: 'ri-calendar-line',
 		enabled: true,
 		disabled: false,
-		ariaLabel: t('toggleScheduledDelivery'),
+		ariaLabel: 'Activar/desactivar entrega programada',
 		settings: [
 			{
 				id: 'advance-hours',
-				label: t('advanceBookingHours'),
+				label: 'Horas de antelación para reserva',
 				type: 'number',
 				value: 48,
 				min: 1,
 				max: 168,
 				step: 1,
-				ariaLabel: t('advanceBookingHoursInput')
+				ariaLabel: 'Horas de antelación'
 			}
 		]
 	}
@@ -854,23 +851,23 @@ const deliveryOptions = ref([
 
 // Time presets
 const timePresets = ref([
-	{ id: 'fast', label: t('fastDelivery'), value: 15, active: false },
-	{ id: 'standard', label: t('standardDelivery'), value: 30, active: true },
-	{ id: 'relaxed', label: t('relaxedDelivery'), value: 45, active: false }
+	{ id: 'fast', label: 'Entrega rápida', value: 15, active: false },
+	{ id: 'standard', label: 'Entrega estándar', value: 30, active: true },
+	{ id: 'relaxed', label: 'Entrega relajada', value: 45, active: false }
 ]);
 
 // Service statuses
 const serviceStatuses = ref([
-	{ id: 'pickup', label: t('pickupService'), active: true, color: 'green' },
-	{ id: 'delivery', label: t('deliveryService'), active: true, color: 'blue' },
-	{ id: 'express', label: t('expressService'), active: false, color: 'orange' }
+	{ id: 'pickup', label: 'Recogida', active: true, color: 'green' },
+	{ id: 'delivery', label: 'Entrega', active: true, color: 'blue' },
+	{ id: 'express', label: 'Express', active: false, color: 'orange' }
 ]);
 
 // Recent changes
 const recentChanges = ref([
-	{ id: 1, description: t('deliveryFeeUpdated'), time: '2 hours ago', type: 'update', icon: 'ri-money-dollar-circle-line' },
-	{ id: 2, description: t('deliveryHoursExtended'), time: '1 day ago', type: 'add', icon: 'ri-time-line' },
-	{ id: 3, description: t('pickupEnabled'), time: '3 days ago', type: 'enable', icon: 'ri-store-2-line' }
+	{ id: 1, description: 'Tarifa de entrega actualizada', time: 'Hace 2 horas', type: 'update', icon: 'ri-money-dollar-circle-line' },
+	{ id: 2, description: 'Horario de entrega ampliado', time: 'Hace 1 día', type: 'add', icon: 'ri-time-line' },
+	{ id: 3, description: 'Recogida activada', time: 'Hace 3 días', type: 'enable', icon: 'ri-store-2-line' }
 ]);
 
 // Computed properties
@@ -902,8 +899,10 @@ const orderSubtotal = computed(() => {
 
 // Methods
 const validateDeliveryRadius = () => {
-	if (deliveryRadius.value < 1) deliveryRadius.value = 1;
-	if (deliveryRadius.value > 100) deliveryRadius.value = 100;
+	const num = Number(deliveryRadius.value);
+	if (num < 1) deliveryRadius.value = 1;
+	else if (num > 10) deliveryRadius.value = 10;
+	else deliveryRadius.value = num;
 	hasChanges.value = true;
 };
 
@@ -957,8 +956,8 @@ const openZoneManager = () => {
 };
 
 const resetToDefaults = () => {
-	if (confirm(t('confirmReset'))) {
-		deliveryRadius.value = 10;
+	if (confirm('¿Restablecer la configuración a los valores por defecto?')) {
+		deliveryRadius.value = 5;
 		deliveryFee.value = 3.99;
 		minimumOrder.value = 15.00;
 		averageDeliveryTime.value = 30;
@@ -973,7 +972,7 @@ const saveAsTemplate = () => {
 
 const cancelChanges = () => {
 	if (hasChanges.value) {
-		if (confirm(t('confirmCancel'))) {
+		if (confirm('¿Descartar los cambios sin guardar?')) {
 			// Reset to original values
 			hasChanges.value = false;
 			window.history.back();
@@ -999,10 +998,10 @@ const saveChanges = async () => {
 		});
 		
 		hasChanges.value = false;
-		alert(t('settingsSaved'));
+		alert('Configuración guardada correctamente.');
 	} catch (error) {
 		console.error('Error saving settings:', error);
-		alert(t('saveError'));
+		alert('Error al guardar. Inténtalo de nuevo.');
 	} finally {
 		saving.value = false;
 	}
@@ -1017,7 +1016,7 @@ const updateServiceStatus = (serviceId: string, active: boolean) => {
 };
 
 const testDeliveryCalculator = () => {
-	alert(t('calculatorTestMessage'));
+	alert('Calculadora de prueba: usa los valores actuales para ver el total.');
 };
 
 const viewDeliveryAnalytics = () => {
@@ -1033,7 +1032,7 @@ const exportSettings = () => {
 const copySettingsLink = () => {
 	// Copy link to current settings
 	navigator.clipboard.writeText(window.location.href);
-	alert(t('linkCopied'));
+	alert('Enlace copiado al portapapeles.');
 };
 
 // Watch for changes
@@ -1088,13 +1087,22 @@ onMounted(() => {
 	gap: 0.75rem;
 	font-size: 1.875rem;
 	font-weight: 700;
-	color: #111827;
+	font-family: 'Chewy', cursive;
+	color: #FF6B00;
 	margin: 0 0 0.5rem 0;
 }
 
+.dark .page-title {
+	color: #FB923C;
+}
+
 .page-title i {
-	color: #f59e0b;
+	color: #FF6B00;
 	font-size: 2rem;
+}
+
+.dark .page-title i {
+	color: #FB923C;
 }
 
 .page-description {
@@ -1124,13 +1132,13 @@ onMounted(() => {
 }
 
 .action-button.secondary {
-	background: white;
+	background: var(--color-card);
 	border-color: #d1d5db;
 	color: #374151;
 }
 
 .action-button.secondary:hover {
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-color: #9ca3af;
 }
 
@@ -1219,7 +1227,7 @@ onMounted(() => {
 }
 
 .settings-section {
-	background: white;
+	background: var(--color-card);
 	border-radius: 1rem;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	border: 1px solid #e5e7eb;
@@ -1231,7 +1239,7 @@ onMounted(() => {
 	justify-content: space-between;
 	align-items: center;
 	padding: 1.5rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-bottom: 1px solid #e5e7eb;
 	flex-wrap: wrap;
 	gap: 1rem;
@@ -1241,15 +1249,24 @@ onMounted(() => {
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
-	font-size: 1.125rem;
+	font-size: 1.25rem;
 	font-weight: 600;
-	color: #111827;
+	font-family: 'Chewy', cursive;
+	color: #FF6B00;
 	margin: 0;
 }
 
+.dark .section-title {
+	color: #FB923C;
+}
+
 .section-title i {
-	color: #f59e0b;
+	color: #FF6B00;
 	font-size: 1.25rem;
+}
+
+.dark .section-title i {
+	color: #FB923C;
 }
 
 .section-action-button {
@@ -1292,7 +1309,7 @@ onMounted(() => {
 
 .map-placeholder {
 	flex: 1;
-	background: #f3f4f6;
+	background: #FFEDD5;
 	border-radius: 0.75rem;
 	display: flex;
 	flex-direction: column;
@@ -1327,7 +1344,7 @@ onMounted(() => {
 	align-items: center;
 	gap: 1rem;
 	padding: 1rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 	border: 1px solid #e5e7eb;
 }
@@ -1371,7 +1388,7 @@ onMounted(() => {
 .input-with-unit {
 	display: flex;
 	align-items: center;
-	background: white;
+	background: var(--color-card);
 	border: 1px solid #d1d5db;
 	border-radius: 0.75rem;
 	overflow: hidden;
@@ -1385,7 +1402,7 @@ onMounted(() => {
 
 .currency-symbol {
 	padding: 0.75rem 0.75rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	color: #6b7280;
 	font-weight: 500;
 	border-right: 1px solid #e5e7eb;
@@ -1408,7 +1425,7 @@ onMounted(() => {
 
 .input-unit {
 	padding: 0.75rem 1rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	color: #6b7280;
 	font-weight: 500;
 	border-left: 1px solid #e5e7eb;
@@ -1438,7 +1455,7 @@ onMounted(() => {
 }
 
 .toggle-item {
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border: 1px solid #e5e7eb;
 	border-radius: 0.75rem;
 	padding: 1rem;
@@ -1452,7 +1469,7 @@ onMounted(() => {
 
 .toggle-item:not(.disabled):hover {
 	border-color: #d1d5db;
-	background: white;
+	background: var(--color-card);
 }
 
 .toggle-content {
@@ -1564,7 +1581,7 @@ onMounted(() => {
 	border: 1px solid #d1d5db;
 	border-radius: 0.5rem;
 	font-size: 0.875rem;
-	background: white;
+	background: var(--color-card);
 }
 
 .setting-input:focus {
@@ -1590,7 +1607,7 @@ onMounted(() => {
 	padding: 0.375rem 0.75rem;
 	border: 1px solid #d1d5db;
 	border-radius: 0.5rem;
-	background: white;
+	background: var(--color-card);
 	color: #374151;
 	font-size: 0.875rem;
 	cursor: pointer;
@@ -1604,7 +1621,7 @@ onMounted(() => {
 
 /* Fee Calculator */
 .fee-calculator {
-	background: #f0f9ff;
+	background: var(--color-app-bg);
 	border: 1px solid #dbeafe;
 	border-radius: 0.75rem;
 	padding: 1.5rem;
@@ -1663,7 +1680,7 @@ onMounted(() => {
 .preset-button {
 	padding: 0.5rem 1rem;
 	border: 1px solid #d1d5db;
-	background: white;
+	background: var(--color-card);
 	color: #6b7280;
 	border-radius: 0.5rem;
 	font-size: 0.875rem;
@@ -1702,7 +1719,7 @@ onMounted(() => {
 }
 
 .day-schedule {
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border: 1px solid #e5e7eb;
 	border-radius: 0.75rem;
 	padding: 1rem;
@@ -1747,7 +1764,7 @@ onMounted(() => {
 	padding: 0.5rem 0.75rem;
 	border: 1px solid #d1d5db;
 	border-radius: 0.5rem;
-	background: white;
+	background: var(--color-card);
 	color: #374151;
 	font-size: 0.875rem;
 }
@@ -1767,7 +1784,7 @@ onMounted(() => {
 	width: 2rem;
 	height: 2rem;
 	border: 1px solid #d1d5db;
-	background: white;
+	background: var(--color-card);
 	color: #6b7280;
 	border-radius: 0.5rem;
 	display: flex;
@@ -1778,7 +1795,7 @@ onMounted(() => {
 }
 
 .copy-button:hover {
-	background: #f3f4f6;
+	background: #FFEDD5;
 	color: #374151;
 }
 
@@ -1844,7 +1861,7 @@ onMounted(() => {
 	align-items: center;
 	gap: 0.5rem;
 	padding: 0.5rem 1rem;
-	background: #f3f4f6;
+	background: #FFEDD5;
 	border: 1px solid #d1d5db;
 	border-radius: 0.75rem;
 	color: #6b7280;
@@ -1885,7 +1902,7 @@ onMounted(() => {
 	height: 1.25rem;
 	border: 1px solid #d1d5db;
 	border-radius: 0.375rem;
-	background: white;
+	background: var(--color-card);
 	position: relative;
 	transition: all 0.2s;
 }
@@ -1987,7 +2004,7 @@ onMounted(() => {
 
 /* Sidebar */
 .sidebar-section {
-	background: white;
+	background: var(--color-card);
 	border-radius: 1rem;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	border: 1px solid #e5e7eb;
@@ -2016,7 +2033,7 @@ onMounted(() => {
 	align-items: center;
 	gap: 1rem;
 	padding: 0.75rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 }
 
@@ -2050,7 +2067,7 @@ onMounted(() => {
 	align-items: center;
 	gap: 0.75rem;
 	padding: 0.75rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 	border: 1px solid #e5e7eb;
 }
@@ -2137,7 +2154,7 @@ onMounted(() => {
 	align-items: center;
 	gap: 0.5rem;
 	padding: 1rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border: 1px solid #e5e7eb;
 	border-radius: 0.75rem;
 	color: #374151;
@@ -2147,7 +2164,7 @@ onMounted(() => {
 }
 
 .quick-action-button:hover {
-	background: white;
+	background: var(--color-card);
 	border-color: #d1d5db;
 	transform: translateY(-2px);
 }
@@ -2169,7 +2186,7 @@ onMounted(() => {
 	align-items: center;
 	gap: 0.75rem;
 	padding: 0.75rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 }
 

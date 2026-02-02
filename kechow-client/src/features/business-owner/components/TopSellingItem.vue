@@ -298,7 +298,7 @@ const handleAction = (actionId: string) => {
 <style scoped>
 /* Base container */
 .top-item-container {
-	background: white;
+	background: var(--color-card);
 	border-radius: 1rem;
 	padding: 1rem;
 	transition: all 0.3s ease;
@@ -338,7 +338,7 @@ const handleAction = (actionId: string) => {
 .top-item-container.interactive:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-	background: #f9fafb;
+	background: var(--color-app-bg);
 }
 
 .top-item-container.interactive:focus-visible {
@@ -408,7 +408,7 @@ const handleAction = (actionId: string) => {
 }
 
 .rank-other {
-	background: #f3f4f6;
+	background: #FFEDD5;
 	color: #6b7280;
 }
 
@@ -523,7 +523,7 @@ const handleAction = (actionId: string) => {
 	gap: 0.25rem;
 	font-size: 0.75rem;
 	color: #6b7280;
-	background: #f3f4f6;
+	background: #FFEDD5;
 	padding: 0.25rem 0.5rem;
 	border-radius: 0.5rem;
 }
@@ -620,7 +620,7 @@ const handleAction = (actionId: string) => {
 
 .progress-bar {
 	height: 0.5rem;
-	background: #f3f4f6;
+	background: #FFEDD5;
 	border-radius: 0.25rem;
 	overflow: hidden;
 }
@@ -742,7 +742,7 @@ const handleAction = (actionId: string) => {
 	height: 2rem;
 	border-radius: 0.5rem;
 	border: 1px solid #e5e7eb;
-	background: white;
+	background: var(--color-card);
 	color: #6b7280;
 	cursor: pointer;
 	display: flex;
@@ -759,7 +759,7 @@ const handleAction = (actionId: string) => {
 }
 
 .action-button:hover {
-	background: #f3f4f6;
+	background: #FFEDD5;
 	color: #374151;
 	border-color: #d1d5db;
 }

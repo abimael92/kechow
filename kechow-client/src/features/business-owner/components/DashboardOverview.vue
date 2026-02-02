@@ -7,7 +7,7 @@
                     <i class="ri-home-3-line text-white text-xl sm:text-2xl md:text-3xl"></i>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h1 class="text-bubble text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary-500 leading-tight sm:leading-snug">
+                    <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
                         {{ t('dashboard') }}
                     </h1>
                     <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
@@ -32,7 +32,7 @@
             <div
                 v-for="(stat, i) in stats"
                 :key="i"
-                class="group relative bg-white dark:bg-neutral-900 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 hover:shadow-medium transition-all duration-300 cursor-pointer overflow-hidden"
+                class="group relative bg-card dark:bg-neutral-900 p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 hover:shadow-medium transition-all duration-300 cursor-pointer overflow-hidden"
                 @click="handleStatClick(stat.label)"
             >
                 <!-- Animated Background Gradient -->
@@ -99,7 +99,7 @@
         <!-- Content Grid - Enhanced Cards -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             <!-- Recent Orders Card -->
-            <div class="group bg-white dark:bg-neutral-900 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 hover:shadow-medium transition-all duration-300 overflow-hidden">
+            <div class="group bg-card dark:bg-neutral-900 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 hover:shadow-medium transition-all duration-300 overflow-hidden">
                 <div class="p-3 sm:p-4 md:p-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-4 md:mb-6 gap-2">
                         <h3 class="text-base sm:text-lg md:text-xl font-bold text-neutral-900 dark:text-white">
@@ -149,7 +149,7 @@
             </div>
 
             <!-- Weekly Revenue Card -->
-            <div class="group bg-white dark:bg-neutral-900 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 hover:shadow-medium transition-all duration-300 overflow-hidden">
+            <div class="group bg-card dark:bg-neutral-900 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 hover:shadow-medium transition-all duration-300 overflow-hidden">
                 <div class="p-3 sm:p-4 md:p-6">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-4 md:mb-6 gap-2">
                         <h3 class="text-base sm:text-lg md:text-xl font-bold text-neutral-900 dark:text-white">
@@ -201,7 +201,7 @@
 
         <!-- Quick Actions Bar - Responsive -->
         <div class="mt-4 sm:mt-6 md:mt-8">
-            <div class="bg-white dark:bg-neutral-900 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 p-3 sm:p-4 md:p-6">
+            <div class="bg-card dark:bg-neutral-900 rounded-xl sm:rounded-2xl shadow-soft border border-neutral-200 dark:border-neutral-800 p-3 sm:p-4 md:p-6">
                 <div class="flex items-center justify-between mb-3 sm:mb-4">
                     <h3 class="text-base sm:text-lg md:text-xl font-bold text-neutral-900 dark:text-white">
                         {{ t('quickActions') }}
@@ -227,7 +227,7 @@
         </div>
 
         <!-- Mobile Bottom Navigation -->
-        <div class="sm:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 p-2 flex justify-around items-center z-50">
+        <div class="sm:hidden fixed bottom-0 left-0 right-0 bg-card dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 p-2 flex justify-around items-center z-50">
             <button v-for="tab in mobileTabs" :key="tab.id"
                     @click="setActiveTab(tab.id)"
                     :class="[

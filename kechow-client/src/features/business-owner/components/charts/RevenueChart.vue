@@ -30,7 +30,7 @@
     <!-- Chart Container -->
     <div ref="chartContainer" class="chart-container relative" :style="{ height: `${chartHeight}px` }">
       <!-- Loading State -->
-      <div v-if="loading" class="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-800/80 z-10">
+      <div v-if="loading" class="absolute inset-0 flex items-center justify-center bg-card/80 dark:bg-gray-800/80 z-10">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
       </div>
 
@@ -55,7 +55,7 @@
       <div
         v-if="showTooltip && tooltipVisible"
         ref="tooltip"
-        class="tooltip absolute bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 z-50 min-w-[180px]"
+        class="tooltip absolute bg-card dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 z-50 min-w-[180px]"
         :style="tooltipStyle"
       >
         <div class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
@@ -669,7 +669,7 @@ export default defineComponent({
 
 <style scoped>
 .revenue-chart {
-  @apply bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6;
+  @apply bg-card dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6;
 }
 
 .chart-container {

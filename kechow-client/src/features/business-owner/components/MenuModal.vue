@@ -552,7 +552,7 @@ onUnmounted(() => {
 /* Modal Content */
 .modal-content {
 	position: relative;
-	background: white;
+	background: var(--color-card);
 	border-radius: 1.5rem;
 	box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 	overflow: hidden;
@@ -647,7 +647,7 @@ onUnmounted(() => {
 
 .close-button:hover {
 	color: #374151;
-	background: #f3f4f6;
+	background: #FFEDD5;
 }
 
 .close-button i {
@@ -722,7 +722,7 @@ onUnmounted(() => {
 .allergens-select {
 	width: 100%;
 	padding: 0.625rem 1rem;
-	background: white;
+	background: var(--color-card);
 	border: 1px solid #d1d5db;
 	border-radius: 0.75rem;
 	color: #111827;
@@ -944,7 +944,7 @@ onUnmounted(() => {
 	width: 3rem;
 	height: 3rem;
 	border-radius: 50%;
-	background: #f3f4f6;
+	background: #FFEDD5;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1086,7 +1086,7 @@ onUnmounted(() => {
 	left: 0.125rem;
 	width: 1.25rem;
 	height: 1.25rem;
-	background: white;
+	background: var(--color-card);
 	border-radius: 50%;
 	transition: transform 0.2s ease;
 }
@@ -1134,7 +1134,7 @@ onUnmounted(() => {
 /* Footer */
 .modal-footer {
 	padding: 1.5rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-top: 1px solid #e5e7eb;
 }
 
@@ -1153,7 +1153,7 @@ onUnmounted(() => {
 
 .cancel-button {
 	padding: 0.625rem 1.5rem;
-	background: white;
+	background: var(--color-card);
 	border: 1px solid #d1d5db;
 	color: #374151;
 	border-radius: 0.75rem;
@@ -1164,7 +1164,7 @@ onUnmounted(() => {
 }
 
 .cancel-button:hover {
-	background: #f3f4f6;
+	background: #FFEDD5;
 	border-color: #9ca3af;
 }
 

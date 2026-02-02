@@ -90,13 +90,14 @@ function handleReload() {
 	margin-bottom: 0.75rem;
 }
 .error-boundary__title {
-	font-size: 1.25rem;
+	font-size: 1.5rem;
 	font-weight: 700;
-	color: var(--color-text-primary, #111827);
+	font-family: 'Chewy', cursive;
+	color: #FF6B00;
 	margin-bottom: 0.5rem;
 }
 .dark .error-boundary__title {
-	color: #f9fafb;
+	color: #FB923C;
 }
 .error-boundary__message {
 	font-size: 0.875rem;

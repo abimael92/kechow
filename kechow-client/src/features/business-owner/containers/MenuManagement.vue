@@ -7,7 +7,7 @@
                     <i class="ri-restaurant-line text-white text-xl sm:text-2xl md:text-3xl"></i>
                 </div>
                 <div class="flex-1 min-w-0">
-                    <h1 class="text-bubble text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary-500 leading-tight sm:leading-snug">
+                    <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
                         {{ $t('menuManagement') }}
                     </h1>
                     <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none truncate">
@@ -26,7 +26,7 @@
 					<input
 						v-model="searchQuery"
 						:placeholder="$t('searchMenuPlaceholder')"
-						class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
+						class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-2.5 bg-card dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
 						@input="handleSearch"
 					/>
 					<button
@@ -54,7 +54,7 @@
 			<div 
 				v-for="stat in computedStats" 
 				:key="stat.label"
-				class="bg-white dark:bg-gray-800 p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300"
+				class="bg-card dark:bg-gray-800 p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300"
 			>
 				<div class="flex items-center justify-between">
 					<div class="min-w-0 flex-1">
@@ -82,7 +82,7 @@
 		</div>
 
 		<!-- Category Filter Tabs - Responsive -->
-		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
 			<!-- Tabs with horizontal scroll on mobile -->
 			<div class="relative">
 				<div class="overflow-x-auto pb-2 -mx-1 sm:mx-0">
@@ -148,7 +148,7 @@
 
 		<!-- Loading State -->
 		<div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-			<div v-for="n in 6" :key="n" class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
+			<div v-for="n in 6" :key="n" class="bg-card dark:bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
 				<div class="space-y-3 sm:space-y-4">
 					<div class="h-32 sm:h-40 md:h-48 bg-gray-200 dark:bg-gray-700 rounded-lg sm:rounded-xl"></div>
 					<div class="space-y-2 sm:space-y-3">

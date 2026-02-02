@@ -5,7 +5,7 @@
 		</h4>
 		<p class="text-gray-500">{{ t('weeklyPreferencesDescription') }}</p>
 
-		<div class="bg-white rounded-xl space-y-4">
+		<div class="bg-card rounded-xl space-y-4">
 			<div
 				v-for="day in days"
 				:key="day.id"
@@ -47,7 +47,7 @@
 			</div>
 		</div>
 
-		<div class="bg-white rounded-xl border p-4 shadow-sm space-y-4">
+		<div class="bg-card rounded-xl border p-4 shadow-sm space-y-4">
 			<h4 class="font-semibold text-gray-800">{{ t('specialOverrides') }}</h4>
 			<div
 				v-for="(override, index) in specialOverrides"
@@ -87,7 +87,7 @@
 			</button>
 		</div>
 
-		<div class="bg-white rounded-xl border p-4 shadow-sm">
+		<div class="bg-card rounded-xl border p-4 shadow-sm">
 			<h4 class="font-semibold text-gray-800">{{ t('yearlyView') }}</h4>
 			<p class="text-gray-500 text-sm">{{ t('yearlyViewDescription') }}</p>
 		</div>

@@ -38,7 +38,7 @@
 								<div class="mt-3 text-center sm:ml-0 sm:mt-0 sm:text-left min-w-0 flex-1">
 									<DialogTitle
 										as="h3"
-										class="text-base sm:text-lg font-medium leading-snug text-secondary-900 dark:text-white break-words"
+										class="text-base sm:text-lg font-chewy font-medium leading-snug text-primary-500 dark:text-primary-400 break-words"
 									>
 										{{ title }}
 									</DialogTitle>

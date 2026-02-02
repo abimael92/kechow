@@ -614,7 +614,7 @@ watch(locale, () => {
 <style scoped>
 /* Base card styles */
 .review-card {
-	background: white;
+	background: var(--color-card);
 	border-radius: 1rem;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	border: 1px solid #e5e7eb;
@@ -873,7 +873,7 @@ watch(locale, () => {
 	position: absolute;
 	top: 100%;
 	right: 0;
-	background: white;
+	background: var(--color-card);
 	border-radius: 0.75rem;
 	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 	border: 1px solid #e5e7eb;
@@ -1252,7 +1252,7 @@ watch(locale, () => {
 	padding: 0.5rem 0.75rem;
 	border-radius: 0.75rem;
 	border: 1px solid #e5e7eb;
-	background: white;
+	background: var(--color-card);
 	color: #6b7280;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -1330,7 +1330,7 @@ watch(locale, () => {
 	padding: 0.375rem 0.75rem;
 	border: 1px solid #d1d5db;
 	border-radius: 0.5rem;
-	background: white;
+	background: var(--color-card);
 	color: #374151;
 	font-size: 0.875rem;
 	cursor: pointer;
