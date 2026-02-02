@@ -13,7 +13,7 @@
 					tabindex="-1"
 				/>
 				<h2
-					class="text-3xl font-bold mb-2 text-center text-gradient-pulse text-primary"
+					class="text-3xl sm:text-4xl font-bold mb-2 text-center font-chewy text-primary-500 dark:text-primary-400"
 				>
 					¡Bienvenido de nuevo!
 				</h2>

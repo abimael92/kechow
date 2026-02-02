@@ -7,7 +7,7 @@
 					<i class="ri-star-line text-white text-lg sm:text-xl md:text-2xl"></i>
 				</div>
 				<div class="flex-1 min-w-0">
-					<h1 class="text-bubble text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary-500 leading-tight sm:leading-snug">
+					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
 						{{ $t('customerReviews') }}
 					</h1>
 					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
@@ -26,7 +26,7 @@
 					<input
 						v-model="searchQuery"
 						:placeholder="$t('searchReviews')"
-						class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-2.5 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
+						class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-2.5 bg-card dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
 						@input="handleSearch"
 					/>
 					<button
@@ -55,7 +55,7 @@
 						<transition name="fade">
 							<div 
 								v-if="showFilterDropdown" 
-								class="absolute top-full left-0 right-0 xs:right-auto xs:left-0 mt-2 w-full xs:w-64 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
+								class="absolute top-full left-0 right-0 xs:right-auto xs:left-0 mt-2 w-full xs:w-64 bg-card dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
 							>
 								<div class="p-3 sm:p-4 space-y-3 sm:space-y-4">
 									<div>
@@ -204,7 +204,7 @@
 		</div>
 
 		<!-- Rating Distribution -->
-		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 			<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 sm:gap-3 mb-4 sm:mb-6">
 				<h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 					{{ $t('ratingDistribution') }}
@@ -224,7 +224,7 @@
 		</div>
 
 		<!-- Filter Tabs -->
-		<div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
 			<!-- Tabs with horizontal scroll on mobile -->
 			<div class="relative">
 				<div class="overflow-x-auto pb-2 -mx-1 sm:mx-0">
@@ -274,7 +274,7 @@
 					<div class="flex flex-wrap gap-1.5 sm:gap-2">
 						<button
 							@click="markSelectedAsRead"
-							class="px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 sm:gap-2 whitespace-nowrap"
+							class="px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm bg-card dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 sm:gap-2 whitespace-nowrap"
 						>
 							<i class="ri-check-line text-xs sm:text-sm"></i>
 							{{ $t('markAsRead') }}
@@ -293,7 +293,7 @@
 
 		<!-- Reviews List -->
 		<div v-if="loading" class="space-y-3 sm:space-y-4 md:space-y-6">
-			<div v-for="n in 3" :key="n" class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
+			<div v-for="n in 3" :key="n" class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
 				<div class="flex items-start gap-2 sm:gap-3 md:gap-4">
 					<div class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
 					<div class="flex-1 space-y-2 sm:space-y-3">
@@ -367,7 +367,7 @@
 		@click.self="cancelResponse"
 	>
 		<div
-			class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
+			class="bg-card dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
 			@click.stop
 		>
 			<h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
@@ -377,7 +377,7 @@
 				v-model="responseText"
 				rows="4"
 				:placeholder="$t('yourResponse')"
-				class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-4"
+				class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-4"
 			></textarea>
 			<div class="flex gap-3">
 				<button

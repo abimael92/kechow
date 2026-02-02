@@ -14,7 +14,7 @@
 						>
 							<i class="ri-menu-line text-xl"></i>
 						</button>
-						<h1 class="text-xl font-chewy font-bold text-primary-500">
+						<h1 class="text-xl sm:text-2xl font-chewy font-bold text-primary-500 dark:text-primary-400">
 								Restaurantes
 							</h1>
 						</div>

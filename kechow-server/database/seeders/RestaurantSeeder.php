@@ -2,13 +2,18 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use App\Modules\Restaurant\Models\Restaurant;
 use Illuminate\Database\Seeder;
-use App\Models\Restaurant;
 
 class RestaurantSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        Restaurant::factory()->count(5)->create();
+        $owner = User::where('role', 'owner')->first();
+        if (!$owner) {
+            return;
+        }
+        Restaurant::factory()->count(5)->create(['owner_id' => $owner->id]);
     }
 }

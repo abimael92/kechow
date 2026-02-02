@@ -1,17 +1,28 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 class CheckRole
 {
-    public function handle($request, Closure $next, ...$roles)
+    /**
+     * Restrict access by role. Usage: ->middleware('role:admin') or ->middleware('role:admin,owner').
+     */
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (!in_array(auth()->user()->role, $roles)) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
         }
+
+        if (!in_array($user->role, $roles, true)) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
         return $next($request);
     }
-}
-
-// Apply in controllers
-public function __construct()
-{
-    $this->middleware('auth:sanctum');
-    $this->middleware('role:owner')->only(['store', 'update', 'destroy']);
 }

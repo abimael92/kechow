@@ -1,7 +1,7 @@
 <template>
 	<!-- Top Nav: grid layout (no fixed widths; Flexbox/Grid only) -->
 <nav
-  class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-primary-200/80 shadow-soft backdrop-blur-sm bg-gradient-to-r from-primary-50 via-white to-primary-50 text-secondary-900 dark:bg-gray-900 dark:[background-image:none] dark:backdrop-blur-md dark:border-gray-700 dark:shadow-soft dark:text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
+  class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-primary-200/30 shadow-soft backdrop-blur-sm bg-gradient-to-r from-primary-800 via-primary-200 to-primary-800 text-secondary-900 dark:bg-gray-900 dark:[background-image:none] dark:backdrop-blur-md dark:border-gray-700 dark:shadow-soft dark:text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
 		role="navigation"
 		aria-label="Navegación principal"
 	>
@@ -17,13 +17,8 @@
 		<!-- Center: title -->
 		<div class="flex justify-center items-center min-w-0 pointer-events-none">
 			<h1
-				class="text-2xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-wide select-text font-chewy text-gradient-pulse truncate"
+				class="text-2xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-wide select-text font-chewy text-primary-500 dark:text-primary-400 text-gradient-pulse truncate"
 				aria-label="Kechow"
-				style="
-					color: #ec4899;
-					text-shadow: -1px -1px 0 #4f46e5, 1px -1px 0 #4f46e5,
-						-1px 1px 0 #4f46e5, 1px 1px 0 #4f46e5;
-				"
 			>
 				Kechow
 			</h1>

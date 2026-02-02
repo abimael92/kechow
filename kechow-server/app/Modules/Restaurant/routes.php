@@ -6,6 +6,8 @@ use App\Modules\Restaurant\Controllers\MenuItemController;
 Route::prefix('restaurants')->group(function () {
     // Public routes
     Route::get('/', [RestaurantController::class, 'index']);
+    // Owner list must be before /{restaurant} so /owner/my-restaurants is not matched as id
+    Route::get('/owner/my-restaurants', [RestaurantController::class, 'ownerRestaurants'])->middleware('auth:sanctum');
     Route::get('/{restaurant}', [RestaurantController::class, 'show']);
 
     // Protected routes
@@ -14,7 +16,6 @@ Route::prefix('restaurants')->group(function () {
         Route::put('/{restaurant}', [RestaurantController::class, 'update']);
         Route::delete('/{restaurant}', [RestaurantController::class, 'destroy']);
         Route::patch('/{restaurant}/toggle-status', [RestaurantController::class, 'toggleStatus']);
-        Route::get('/owner/my-restaurants', [RestaurantController::class, 'ownerRestaurants']);
 
         // Menu items
         Route::prefix('/{restaurant}/menu-items')->group(function () {

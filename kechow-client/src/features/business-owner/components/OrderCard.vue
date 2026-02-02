@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:shadow-lg">
+	<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:shadow-lg">
 		<!-- Order Header with Progress Indicator -->
 		<div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 sm:mb-5 gap-3 sm:gap-4">
 			<div class="flex items-start space-x-3 sm:space-x-4 flex-1">
@@ -179,7 +179,7 @@
 		>
 			<div class="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
 				<div 
-					:class="item.prepared ? 'bg-primary-500 border-primary-500' : 'bg-white dark:bg-gray-600 border-gray-300 dark:border-gray-500'"
+					:class="item.prepared ? 'bg-primary-500 border-primary-500' : 'bg-card dark:bg-gray-600 border-gray-300 dark:border-gray-500'"
 					class="w-4 h-4 sm:w-5 sm:h-5 rounded border-2 flex items-center justify-center transition-all flex-shrink-0"
 				>
 					<i v-if="item.prepared" class="ri-check-line text-white text-xs"></i>
@@ -248,7 +248,7 @@
 				</div>
 				<!-- QR Code for Order Pickup -->
 				<div class="flex flex-col items-center self-center">
-					<div class="w-16 h-16 sm:w-20 sm:h-20 bg-white dark:bg-gray-700 p-1.5 sm:p-2 rounded-lg border border-tertiary-300 dark:border-tertiary-600 mb-1 sm:mb-2">
+					<div class="w-16 h-16 sm:w-20 sm:h-20 bg-card dark:bg-gray-700 p-1.5 sm:p-2 rounded-lg border border-tertiary-300 dark:border-tertiary-600 mb-1 sm:mb-2">
 						<div class="w-full h-full bg-gradient-to-br from-tertiary-400 to-tertiary-600 dark:from-tertiary-500 dark:to-tertiary-700 rounded flex items-center justify-center">
 							<span class="text-white font-bold text-xs">QR</span>
 						</div>
@@ -409,7 +409,7 @@
 <div v-if="order.estimatedTime" class="mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 rounded-lg sm:rounded-xl border border-gray-200 dark:border-gray-700">
 	<div class="flex flex-col xs:flex-row xs:items-center justify-between gap-2">
 		<div class="flex items-center gap-2 sm:gap-3">
-			<div class="w-8 h-8 sm:w-10 sm:h-10 bg-white dark:bg-gray-700 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
+			<div class="w-8 h-8 sm:w-10 sm:h-10 bg-card dark:bg-gray-700 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
 				<i class="ri-time-line text-gray-600 dark:text-gray-400 text-sm sm:text-base"></i>
 			</div>
 			<div>

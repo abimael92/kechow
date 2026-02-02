@@ -6,7 +6,7 @@
 		</p>
 
 		<!--  Business Category & Menu Description  -->
-		<section class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+		<section class="bg-card p-6 rounded-xl shadow-sm space-y-4">
 			<div class="flex justify-between items-center">
 				<h2 class="text-xl font-semibold text-gray-800">{{ t('businessSettings.category.title') }}</h2>
 				<button
@@ -62,7 +62,7 @@
 		</section>
 
 		<!-- Delivery & Pre-order Settings -->
-		<section class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+		<section class="bg-card p-6 rounded-xl shadow-sm space-y-4">
 			<div class="flex justify-between items-center">
 				<h2 class="text-xl font-semibold text-gray-800">
 					{{ t('businessSettings.delivery.title') }}
@@ -100,7 +100,7 @@
 		</section>
 
 		<!-- Promotions / Free Delivery -->
-		<section class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+		<section class="bg-card p-6 rounded-xl shadow-sm space-y-4">
 			<div class="flex justify-between items-center">
 				<h2 class="text-xl font-semibold text-gray-800">
 					{{ t('businessSettings.promotions.title') }}

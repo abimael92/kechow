@@ -519,7 +519,7 @@ onMounted(() => {
 <style scoped>
 /* Base card styles */
 .rating-distribution-card {
-	background: white;
+	background: var(--color-card);
 	border-radius: 1rem;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	border: 1px solid #e5e7eb;
@@ -548,7 +548,7 @@ onMounted(() => {
 .rating-distribution-card.minimal {
 	border: none;
 	box-shadow: none;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 }
 
 .rating-distribution-card.detailed {
@@ -592,7 +592,7 @@ onMounted(() => {
 .view-toggle {
 	display: flex;
 	gap: 0.25rem;
-	background: #f3f4f6;
+	background: #FFEDD5;
 	padding: 0.25rem;
 	border-radius: 0.75rem;
 }
@@ -617,7 +617,7 @@ onMounted(() => {
 }
 
 .toggle-button.active {
-	background: white;
+	background: var(--color-card);
 	color: #3b82f6;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
@@ -750,7 +750,7 @@ onMounted(() => {
 	font-size: 0.75rem;
 	font-weight: 600;
 	color: #374151;
-	background: white;
+	background: var(--color-card);
 	padding: 0.125rem 0.5rem;
 	border-radius: 9999px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -802,7 +802,7 @@ onMounted(() => {
 	align-items: center;
 	gap: 0.25rem;
 	padding: 0.375rem 0.75rem;
-	background: #f3f4f6;
+	background: #FFEDD5;
 	border: 1px solid #e5e7eb;
 	border-radius: 0.5rem;
 	color: #6b7280;
@@ -823,7 +823,7 @@ onMounted(() => {
 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	gap: 1.5rem;
 	padding: 1.5rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 	margin-top: 2rem;
 }
@@ -893,7 +893,7 @@ onMounted(() => {
 	align-items: center;
 	justify-content: space-between;
 	padding: 1rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 	cursor: pointer;
 	transition: all 0.2s;
@@ -901,7 +901,7 @@ onMounted(() => {
 }
 
 .rating-item:hover {
-	background: white;
+	background: var(--color-card);
 	border-color: #e5e7eb;
 	transform: translateY(-2px);
 	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -955,7 +955,7 @@ onMounted(() => {
 	height: 2.5rem;
 	border-radius: 0.5rem;
 	border: 1px solid #e5e7eb;
-	background: white;
+	background: var(--color-card);
 	color: #6b7280;
 	display: flex;
 	align-items: center;
@@ -965,7 +965,7 @@ onMounted(() => {
 }
 
 .action-button:hover {
-	background: #f3f4f6;
+	background: #FFEDD5;
 	color: #374151;
 	border-color: #d1d5db;
 }
@@ -976,7 +976,7 @@ onMounted(() => {
 	flex-wrap: wrap;
 	gap: 1.5rem;
 	padding: 1.5rem;
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 	margin-top: 1.5rem;
 }
@@ -998,7 +998,7 @@ onMounted(() => {
 	padding: 0.5rem 0.75rem;
 	border: 1px solid #d1d5db;
 	border-radius: 0.5rem;
-	background: white;
+	background: var(--color-card);
 	color: #374151;
 	font-size: 0.875rem;
 	cursor: pointer;
@@ -1108,7 +1108,7 @@ onMounted(() => {
 .comparison-section {
 	margin-top: 2rem;
 	padding: 1.5rem;
-	background: #f0f9ff;
+	background: var(--color-app-bg);
 	border-radius: 0.75rem;
 	border: 1px solid #dbeafe;
 }
@@ -1181,13 +1181,13 @@ onMounted(() => {
 }
 
 .export-button {
-	background: white;
+	background: var(--color-card);
 	border-color: #d1d5db;
 	color: #374151;
 }
 
 .export-button:hover {
-	background: #f9fafb;
+	background: var(--color-app-bg);
 	border-color: #9ca3af;
 }
 

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 
@@ -34,8 +37,10 @@ async function handleRegister() {
 			password_confirmation: registerForm.password_confirmation,
 			role: registerForm.role,
 		});
+		toast.success('Cuenta creada correctamente');
 	} catch (error) {
-		alert('Registro fallido.');
+		const message = error instanceof Error ? error.message : 'Registro fallido. Verifica los datos e intenta de nuevo.';
+		toast.error(message);
 	}
 }
 </script>
@@ -71,7 +76,7 @@ async function handleRegister() {
 			</div>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<h2
-					class="text-xl sm:text-2xl font-bold mb-2 text-center text-gradient-pulse text-primary break-words"
+					class="text-xl sm:text-3xl font-bold mb-2 text-center font-chewy text-primary-500 dark:text-primary-400 break-words"
 				>
 					Crea tu cuenta de Kechow
 				</h2>

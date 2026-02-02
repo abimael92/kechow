@@ -7,7 +7,7 @@
 					<i class="ri-line-chart-line text-white text-lg sm:text-xl md:text-2xl"></i>
 				</div>
 				<div class="flex-1 min-w-0">
-					<h1 class="text-bubble text-3xl sm:text-4xl md:text-5xl lg:text-6xl shadow-primary-500 leading-tight sm:leading-snug">
+					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
 						{{ $t('analytics') }}
 					</h1>
 					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none truncate">
@@ -38,7 +38,7 @@
 					<transition name="fade">
 						<div 
 							v-if="showTimePeriodDropdown" 
-							class="absolute top-full left-0 right-0 md:right-auto md:left-0 mt-2 w-full md:w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
+							class="absolute top-full left-0 right-0 md:right-auto md:left-0 mt-2 w-full md:w-48 bg-card dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
 						>
 							<div class="py-1 sm:py-2">
 								<button
@@ -161,7 +161,7 @@
 			<template v-if="activeTab === 'overview'">
 				<div class="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
 					<!-- Revenue Trend Chart -->
-					<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 								{{ $t('revenueTrend') }}
@@ -201,7 +201,7 @@
 					</div>
 
 					<!-- Orders by Hour Chart -->
-					<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 								{{ $t('ordersByHour') }}
@@ -231,7 +231,7 @@
 					</div>
 
 					<!-- Sales by Category -->
-					<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
 							{{ $t('salesByCategory') }}
 						</h3>
@@ -252,7 +252,7 @@
 					</div>
 
 					<!-- Top Selling Items -->
-					<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 								{{ $t('topSellingItems') }}
@@ -300,7 +300,7 @@
 				</div>
 
 				<!-- Performance Insights -->
-				<div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+				<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 					<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
 						{{ $t('performanceInsights') }}
 					</h3>

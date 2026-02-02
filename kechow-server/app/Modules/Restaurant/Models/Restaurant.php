@@ -2,8 +2,10 @@
 // app/Modules/Restaurant/Models/Restaurant.php
 namespace App\Modules\Restaurant\Models;
 
+use Database\Factories\RestaurantFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use OpenApi\Annotations as OA;
 
 /**
@@ -38,6 +40,14 @@ class Restaurant extends Model
 {
     use HasFactory;
 
+    /**
+     * Create a new factory instance for the model (factory lives in Database\Factories).
+     */
+    protected static function newFactory(): Factory
+    {
+        return RestaurantFactory::new();
+    }
+
     protected $fillable = [
         'name', 'description', 'address', 'city', 'state', 'zip_code',
         'phone', 'email', 'website', 'opening_time', 'closing_time',
@@ -49,6 +59,10 @@ class Restaurant extends Model
         return $this->hasMany(MenuItem::class);
     }
 
+    /**
+     * Owner of the restaurant (User with role owner or admin).
+     * Inverse of User::restaurants().
+     */
     public function owner()
     {
         return $this->belongsTo(\App\Models\User::class, 'owner_id');

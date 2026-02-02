@@ -45,8 +45,9 @@ module.exports = {
                 'error-text': '#991B1B',
             },
             backgroundColor: {
-                app: '#F9FAFB',
-                card: '#FFFFFF',
+                /* Light mode: app/card use CSS vars (primary-tinted); dark overrides in .dark */
+                app: 'var(--color-app-bg)',
+                card: 'var(--color-card)',
                 panel: '#F3F4F6',
                 disabled: '#E5E7EB',
                 nav: '#1F2937',

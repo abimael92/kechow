@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+	<div class="bg-card p-6 rounded-2xl shadow-sm border border-gray-100">
 		<div class="flex items-center justify-between">
 			<div>
 				<p class="text-white text-sm">{{ title }}</p>
