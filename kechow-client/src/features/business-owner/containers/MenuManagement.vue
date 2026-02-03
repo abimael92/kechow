@@ -3,7 +3,7 @@
 		<!-- Header Section -->
 		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div class="flex items-center gap-2 sm:gap-3">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-secondary-600 to-secondary-500 flex items-center justify-center shadow-md shadow-primary-500/30">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
                     <i class="ri-restaurant-line text-white text-xl sm:text-2xl md:text-3xl"></i>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -54,7 +54,7 @@
 			<div 
 				v-for="stat in computedStats" 
 				:key="stat.label"
-				class="bg-card dark:bg-gray-800 p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300"
+				class="bg-card dark:bg-gray-800 p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl shadow-sm border border-primary-300 dark:border-gray-700 hover:shadow-md transition-shadow duration-300"
 			>
 				<div class="flex items-center justify-between">
 					<div class="min-w-0 flex-1">
@@ -82,7 +82,7 @@
 		</div>
 
 		<!-- Category Filter Tabs - Responsive -->
-		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4">
 			<!-- Tabs with horizontal scroll on mobile -->
 			<div class="relative">
 				<div class="overflow-x-auto pb-2 -mx-1 sm:mx-0">
@@ -124,21 +124,21 @@
 			<div class="mt-3 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-3">
 				<button
 					@click="exportMenu"
-					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
+					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-200 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
 				>
 					<i class="ri-download-line text-sm"></i>
 					Exportar
 				</button>
 				<button
 					@click="printMenu"
-					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
+					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-200 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
 				>
 					<i class="ri-printer-line text-sm"></i>
 					Imprimir Menú
 				</button>
 				<button
 					@click="toggleAllAvailability"
-					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
+					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-200 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
 				>
 					<i :class="[allItemsAvailable ? 'ri-toggle-line' : 'ri-toggle-fill', 'text-sm']"></i>
 					{{ allItemsAvailable ? 'Deshabilitar todos' : 'Habilitar todos' }}
@@ -148,7 +148,7 @@
 
 		<!-- Loading State -->
 		<div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-			<div v-for="n in 6" :key="n" class="bg-card dark:bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
+			<div v-for="n in 6" :key="n" class="bg-card dark:bg-gray-800 rounded-xl p-4 sm:p-6 border border-primary-300 dark:border-gray-700 animate-pulse">
 				<div class="space-y-3 sm:space-y-4">
 					<div class="h-32 sm:h-40 md:h-48 bg-gray-200 dark:bg-gray-700 rounded-lg sm:rounded-xl"></div>
 					<div class="space-y-2 sm:space-y-3">
@@ -210,7 +210,7 @@
 		</div>
 
 		<!-- Pagination -->
-		<div v-if="filteredItems.length > itemsPerPage" class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+		<div v-if="filteredItems.length > itemsPerPage" class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 pt-4 sm:pt-6 border-t border-primary-300 dark:border-gray-700">
 			<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 order-2 sm:order-1">
 				Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredItems.length) }} de {{ filteredItems.length }} elementos
 			</p>

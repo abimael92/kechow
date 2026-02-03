@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:shadow-lg">
+	<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-md border border-primary-300 dark:border-gray-700 p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:shadow-lg">
 		<!-- Order Header with Progress Indicator -->
 		<div class="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-4 sm:mb-5 gap-3 sm:gap-4">
 			<div class="flex items-start space-x-3 sm:space-x-4 flex-1">
@@ -313,7 +313,7 @@
 </div>
 
 <!-- Action Buttons -->
-<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4 pt-4 sm:pt-5 border-t border-gray-200 dark:border-gray-700">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 sm:gap-4 pt-4 sm:pt-5 border-t border-primary-300 dark:border-gray-700">
 	<!-- Quick Actions -->
 	<div class="flex flex-wrap gap-1 sm:gap-2">
 		<button
@@ -406,7 +406,7 @@
 </div>
 
 <!-- Estimated Time Display -->
-<div v-if="order.estimatedTime" class="mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 rounded-lg sm:rounded-xl border border-gray-200 dark:border-gray-700">
+<div v-if="order.estimatedTime" class="mt-3 sm:mt-4 p-2 sm:p-3 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700/50 dark:to-gray-800/50 rounded-lg sm:rounded-xl border border-primary-300 dark:border-gray-700">
 	<div class="flex flex-col xs:flex-row xs:items-center justify-between gap-2">
 		<div class="flex items-center gap-2 sm:gap-3">
 			<div class="w-8 h-8 sm:w-10 sm:h-10 bg-card dark:bg-gray-700 rounded-lg flex items-center justify-center shadow-sm flex-shrink-0">
@@ -485,11 +485,11 @@ const statusClasses = computed(() => {
 		preparing: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-700',
 		ready: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-700',
 		out_for_delivery: 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700',
-		delivered: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600',
+		delivered: 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-primary-300 dark:border-gray-600',
 		declined: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-700',
 		cancelled: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-700',
 	};
-	return statusMap[props.order.status] || 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600';
+	return statusMap[props.order.status] || 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-primary-300 dark:border-gray-600';
 });
 
 const statusIcon = computed(() => {

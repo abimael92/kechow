@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <div v-if="totalSales > 0" class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+    <div v-if="totalSales > 0" class="mt-4 pt-4 border-t border-primary-300 dark:border-gray-700">
       <div class="grid grid-cols-2 gap-4">
         <div class="text-center">
           <p class="text-sm text-gray-600 dark:text-gray-400">{{ t('totalSales') }}</p>

@@ -38,8 +38,9 @@ import { sampleMenuItems } from '../data/sampleMenuItems';
 import { sampleOrders } from '../data/sampleOrders';
 import { sampleReviews } from '../data/sampleReviews';
 
-// For development - use sample data
-const useSampleData = import.meta.env.MODE === 'development';
+// Fetch real data only - mock disabled. Set true to use sample data in dev if needed.
+// const useSampleData = import.meta.env.MODE === 'development';
+const useSampleData = false;
 
 interface GetAnalyticsParams {
 	period?: string;
@@ -303,6 +304,62 @@ export const getMenuStats = async (): Promise<MenuStats> => {
 };
 
 /* ------------------------- SETTINGS ------------------------- */
+
+/** Backend API restaurant shape from GET /api/restaurants/owner/my-restaurants */
+interface ApiRestaurant {
+	id: number;
+	name: string;
+	description?: string | null;
+	address?: string | null;
+	city?: string | null;
+	state?: string | null;
+	zip_code?: string | null;
+	phone?: string | null;
+	email?: string | null;
+	opening_time?: string | null;
+	closing_time?: string | null;
+	is_active?: boolean;
+}
+
+const DAY_NAMES = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+
+function mapApiRestaurantToSettings(r: ApiRestaurant): RestaurantSettings {
+	const openTime = r.opening_time ?? '10:00';
+	const closeTime = r.closing_time ?? '22:00';
+	const address = [r.address, r.city, r.state, r.zip_code].filter(Boolean).join(', ') || '';
+	return {
+		name: r.name ?? '',
+		phone: r.phone ?? '',
+		address,
+		description: r.description ?? '',
+		isOpen: r.is_active ?? true,
+		operatingHours: DAY_NAMES.map((day, i) => ({
+			id: `day-${i}`,
+			day,
+			openTime,
+			closeTime,
+			closed: false,
+		})),
+	};
+}
+
+function mapSettingsToApiPayload(settings: Partial<RestaurantSettings>): Record<string, unknown> {
+	const payload: Record<string, unknown> = {};
+	if (settings.name !== undefined) payload.name = settings.name;
+	if (settings.phone !== undefined) payload.phone = settings.phone;
+	if (settings.address !== undefined) payload.address = settings.address;
+	if (settings.description !== undefined) payload.description = settings.description;
+	if (settings.isOpen !== undefined) payload.is_active = settings.isOpen;
+	if (settings.operatingHours?.length) {
+		const first = settings.operatingHours.find((oh) => !oh.closed);
+		if (first) {
+			payload.opening_time = first.openTime;
+			payload.closing_time = first.closeTime;
+		}
+	}
+	return payload;
+}
+
 export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
 	if (useSampleData) {
 		return {
@@ -312,64 +369,36 @@ export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
 			description:
 				'Authentic Italian cuisine with fresh ingredients and traditional recipes. Family-owned restaurant serving delicious pizza, pasta, and more since 1985.',
 			isOpen: true,
-			operatingHours: [
-				{
-					id: 'monday',
-					day: 'Monday',
-					openTime: '10:00',
-					closeTime: '22:00',
-					closed: false,
-				},
-				{
-					id: 'tuesday',
-					day: 'Tuesday',
-					openTime: '10:00',
-					closeTime: '22:00',
-					closed: false,
-				},
-				{
-					id: 'wednesday',
-					day: 'Wednesday',
-					openTime: '10:00',
-					closeTime: '22:00',
-					closed: false,
-				},
-				{
-					id: 'thursday',
-					day: 'Thursday',
-					openTime: '10:00',
-					closeTime: '22:00',
-					closed: false,
-				},
-				{
-					id: 'friday',
-					day: 'Friday',
-					openTime: '10:00',
-					closeTime: '22:00',
-					closed: false,
-				},
-				{
-					id: 'saturday',
-					day: 'Saturday',
-					openTime: '10:00',
-					closeTime: '22:00',
-					closed: false,
-				},
-				{
-					id: 'sunday',
-					day: 'Sunday',
-					openTime: '10:00',
-					closeTime: '22:00',
-					closed: false,
-				},
-			],
+			operatingHours: DAY_NAMES.map((day, i) => ({
+				id: `day-${i}`,
+				day,
+				openTime: '10:00',
+				closeTime: '22:00',
+				closed: false,
+			})),
 		};
 	}
 
-	const response = await api.get<RestaurantSettings>(
-		'/owner/settings/restaurant'
-	);
-	return response.data;
+	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/api/restaurants/owner/my-restaurants');
+	const raw = res.data;
+	const restaurants = Array.isArray(raw) ? raw : (raw?.data ?? []);
+	if (restaurants.length === 0) {
+		return {
+			name: '',
+			phone: '',
+			address: '',
+			description: '',
+			isOpen: true,
+			operatingHours: DAY_NAMES.map((day, i) => ({
+				id: `day-${i}`,
+				day,
+				openTime: '10:00',
+				closeTime: '22:00',
+				closed: false,
+			})),
+		};
+	}
+	return mapApiRestaurantToSettings(restaurants[0]);
 };
 
 export const updateRestaurantSettings = async (
@@ -380,7 +409,16 @@ export const updateRestaurantSettings = async (
 		return new Promise((resolve) => setTimeout(resolve, 500));
 	}
 
-	await api.put('/owner/settings/restaurant', settings);
+	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/api/restaurants/owner/my-restaurants');
+	const raw = res.data;
+	const restaurants = Array.isArray(raw) ? raw : (raw?.data ?? []);
+	if (restaurants.length === 0) {
+		throw new Error('No restaurant found. Create a restaurant first.');
+	}
+	const restaurantId = restaurants[0].id;
+	const payload = mapSettingsToApiPayload(settings);
+	if (Object.keys(payload).length === 0) return;
+	await api.put(`/api/restaurants/${restaurantId}`, payload);
 };
 
 export const getMenuSettings = async (): Promise<MenuSettings> => {

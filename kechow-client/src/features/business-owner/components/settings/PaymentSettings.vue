@@ -9,7 +9,7 @@
 				<div
 					v-for="method in paymentMethods"
 					:key="method.name"
-					class="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+					class="flex items-center justify-between p-4 border border-primary-300 rounded-lg"
 				>
 					<div class="flex items-center">
 						<i

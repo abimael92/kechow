@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-gray-200 dark:hover:border-gray-600"
+		class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-primary-300 dark:hover:border-gray-600"
 	>
 		<div class="relative">
 			<img
@@ -161,7 +161,7 @@
 						<!-- More Actions Menu -->
 						<div 
 							v-if="showActionsMenu" 
-							class="absolute right-0 bottom-full mb-1 w-32 bg-card dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-10"
+							class="absolute right-0 bottom-full mb-1 w-32 bg-card dark:bg-gray-800 rounded-lg shadow-lg border border-primary-300 dark:border-gray-700 z-10"
 						>
 							<button
 								@click="emitDuplicate"

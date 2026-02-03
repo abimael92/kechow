@@ -19,7 +19,7 @@
 				<div
 					v-for="member in staff"
 					:key="member.email"
-					class="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+					class="flex items-center justify-between p-4 border border-primary-300 rounded-lg"
 				>
 					<div class="flex items-center">
 						<div
