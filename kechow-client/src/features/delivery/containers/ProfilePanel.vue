@@ -1,13 +1,18 @@
 <template>
 	<div class="space-y-6 p-4 sm:p-6">
 		<!-- Header -->
-		<div class="space-y-1">
-			<h1 class="text-2xl font-bold text-gray-900">
-				{{ $t('profileAndSettings') }}
-			</h1>
-			<p class="text-gray-600 text-sm sm:text-base">
-				{{ $t('manageAccountPreferences') }}
-			</p>
+		<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+			<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+				<i class="ri-user-settings-line text-white text-lg sm:text-xl md:text-2xl"></i>
+			</div>
+			<div>
+				<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
+					Perfil y Configuración
+				</h1>
+				<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none">
+					Gestiona tu cuenta y preferencias
+				</p>
+			</div>
 		</div>
 
 		<!-- Profile Card -->
@@ -55,7 +60,7 @@
 		</div>
 
 		<!-- Tabs -->
-		<div class="border-b border-gray-200 overflow-x-auto">
+		<div class="border-b border-primary-300 overflow-x-auto">
 			<div class="flex space-x-1 sm:space-x-2 w-max flex-nowrap snap-x">
 				<button
 					v-for="tab in tabs"

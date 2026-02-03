@@ -6,7 +6,7 @@
 		<!-- Support Options -->
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 			<button
-				class="p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
+				class="p-6 border border-primary-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
 			>
 				<i
 					class="ri-question-line text-blue-600 text-3xl mb-3 w-12 h-12 mx-auto"
@@ -18,7 +18,7 @@
 			</button>
 
 			<button
-				class="p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
+				class="p-6 border border-primary-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
 			>
 				<i
 					class="ri-chat-1-line text-green-600 text-3xl mb-3 w-12 h-12 mx-auto"
@@ -28,7 +28,7 @@
 			</button>
 
 			<button
-				class="p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
+				class="p-6 border border-primary-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
 			>
 				<i
 					class="ri-phone-line text-purple-600 text-3xl mb-3 w-12 h-12 mx-auto"
@@ -38,7 +38,7 @@
 			</button>
 
 			<button
-				class="p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
+				class="p-6 border border-primary-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer text-center"
 			>
 				<i
 					class="ri-mail-line text-orange-600 text-3xl mb-3 w-12 h-12 mx-auto"
