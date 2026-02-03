@@ -51,7 +51,14 @@ class Restaurant extends Model
     protected $fillable = [
         'name', 'description', 'address', 'city', 'state', 'zip_code',
         'phone', 'email', 'website', 'opening_time', 'closing_time',
+        'schedule_json', 'closed_dates', 'override_closed',
         'logo_url', 'is_active', 'latitude', 'longitude', 'delivery_radius', 'owner_id'
+    ];
+
+    protected $casts = [
+        'schedule_json' => 'array',
+        'closed_dates' => 'array',
+        'override_closed' => 'boolean',
     ];
 
     public function menuItems()
@@ -80,8 +87,49 @@ class Restaurant extends Model
             return false;
         }
 
+        if ($this->override_closed) {
+            return false;
+        }
+
+        $today = now()->format('Y-m-d');
+        if (is_array($this->closed_dates) && in_array($today, $this->closed_dates)) {
+            return false;
+        }
+
+        $schedule = $this->schedule_json;
+        $dayOfWeek = (int) now()->format('N') - 1; // 0=Mon, 6=Sun
         $currentTime = now()->format('H:i');
-        return $currentTime >= $this->opening_time && $currentTime <= $this->closing_time;
+
+        if (is_array($schedule) && isset($schedule[(string) $dayOfWeek])) {
+            $day = $schedule[(string) $dayOfWeek];
+            $enabled = $day['enabled'] ?? true;
+            if (!$enabled) {
+                return false;
+            }
+            $open = $day['open'] ?? $this->opening_time ?? '09:00';
+            $close = $day['close'] ?? $this->closing_time ?? '22:00';
+            $open = substr((string) $open, 0, 5);
+            $close = substr((string) $close, 0, 5);
+
+            if ($currentTime < $open || $currentTime > $close) {
+                return false;
+            }
+
+            $breakEnabled = $day['breakEnabled'] ?? false;
+            if ($breakEnabled) {
+                $breakStart = substr((string) ($day['breakStart'] ?? '14:00'), 0, 5);
+                $breakEnd = substr((string) ($day['breakEnd'] ?? '16:00'), 0, 5);
+                if ($currentTime >= $breakStart && $currentTime < $breakEnd) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        $open = $this->opening_time ? substr((string) $this->opening_time, 0, 5) : '09:00';
+        $close = $this->closing_time ? substr((string) $this->closing_time, 0, 5) : '22:00';
+        return $currentTime >= $open && $currentTime <= $close;
     }
 
     public function scopeActive($query)
