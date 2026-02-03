@@ -3,6 +3,7 @@
 namespace App\Modules\Restaurant\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Restaurant\Models\Restaurant;
 use App\Modules\Restaurant\Requests\CreateRestaurantRequest;
 use App\Modules\Restaurant\Requests\UpdateRestaurantRequest;
 use App\Modules\Restaurant\Resources\RestaurantResource;
@@ -35,9 +36,8 @@ class RestaurantController extends Controller
         return response()->json(new RestaurantResource($restaurant));
     }
 
-    public function update(UpdateRestaurantRequest $request, int $id): JsonResponse
+    public function update(UpdateRestaurantRequest $request, Restaurant $restaurant): JsonResponse
     {
-        $restaurant = $this->restaurantService->getRestaurantById($id);
         $updatedRestaurant = $this->restaurantService->updateRestaurant($restaurant, $request->validated());
         return response()->json(new RestaurantResource($updatedRestaurant));
     }

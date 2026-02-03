@@ -1,7 +1,21 @@
 <template>
-	<div class="min-h-screen flex items-center justify-center min-w-0 overflow-x-hidden px-4 py-6">
+	<div class="min-h-screen flex flex-col items-center justify-center min-w-0 overflow-x-hidden px-4 py-6 relative">
+		<!-- Light/Dark toggle - top right -->
+		<button
+			@click="toggleDarkMode"
+			class="absolute top-4 right-4 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-gray-700 transition-colors"
+			aria-label="Cambiar tema claro/oscuro"
+		>
+			<svg v-if="!isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3a9 9 0 009 9 9 9 0 11-9-9z" />
+			</svg>
+			<svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+			</svg>
+		</button>
+
 		<div
-			class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-10 w-full max-w-md animate-fade-in min-w-0"
+			class="bg-card dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-10 w-full max-w-md animate-fade-in min-w-0 border border-primary-300/50 dark:border-gray-700"
 		>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<img
@@ -19,7 +33,7 @@
 				</h2>
 			</div>
 
-			<p class="text-sm text-center text-gray-500 mb-6">
+			<p class="text-sm text-center text-gray-600 dark:text-gray-400 mb-6">
 				Inicia sesión en tu cuenta de Kechow
 			</p>
 
@@ -28,40 +42,39 @@
 				class="space-y-6 animate-slide-up p-0 sm:p-6 rounded-2xl max-w-md mx-auto w-full min-w-0"
 			>
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">Correo electrónico</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Correo electrónico</label>
 					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
+						class="flex items-center border border-primary-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-400"
-							><i class="fas fa-envelope"></i
-						></span>
+						<span class="px-3 text-gray-500 dark:text-gray-400"><i class="fas fa-envelope"></i></span>
 						<input
 							v-model="loginForm.email"
 							type="email"
 							placeholder="tu@ejemplo.com"
-							class="w-full p-2 outline-none text-gray-900"
+							class="w-full p-2 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 					</div>
 				</div>
 
 				<div>
-					<label class="block mb-1 text-sm font-medium text-gray-700">Contraseña</label>
+					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
 					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
+						class="flex items-center border border-primary-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 relative bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
+						<span class="px-3 text-gray-500 dark:text-gray-400"><i class="fas fa-lock"></i></span>
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							v-model="loginForm.password"
 							placeholder="••••••••"
-							class="w-full p-2 outline-none text-gray-900"
+							class="w-full p-2 pr-10 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 						<button
 							type="button"
 							@click="showPassword = !showPassword"
-							class="absolute right-0 text-white"
+							class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-gray-600 transition-colors"
+							:aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
 						>
 							<i :class="!showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
 						</button>
@@ -70,7 +83,7 @@
 
 				<button
 					type="submit"
-					class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition hover:scale-105 transition-transform"
+					class="w-full bg-primary-500 hover:bg-primary-600 text-white py-2.5 rounded-lg font-semibold transition hover:scale-[1.02] active:scale-[0.98] shadow-md"
 				>
 					Iniciar sesión
 				</button>
@@ -80,7 +93,7 @@
 				¿No tienes una cuenta?
 				<router-link
 					to="/register"
-					class="text-indigo-600 hover:underline font-semibold"
+					class="text-primary-500 dark:text-primary-400 hover:underline font-semibold"
 				>
 					Regístrate aquí
 				</router-link>
@@ -94,11 +107,13 @@ import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
-// Get the toast instance
+import { useDarkMode } from '@/shared/composables/useDarkMode';
+
 const toast = useToast();
 const showPassword = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
+const { isDark, toggleDarkMode } = useDarkMode();
 
 const loginForm = reactive({
 	email: '',

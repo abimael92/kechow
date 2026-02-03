@@ -45,6 +45,7 @@ export const register = async (payload: {
 	password: string;
 	password_confirmation: string;
 	role: string;
+	restaurant_name?: string;
 }) => {
 	try {
 		await api.get('/sanctum/csrf-cookie');

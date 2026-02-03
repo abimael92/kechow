@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="min-h-screen min-w-0 bg-gradient-to-br from-[#734ce8] via-[#a98dd4] via-50% to-[#6b4476] dark:from-gray-900 dark:to-gray-800 text-skin-base dark:text-skin-dark flex flex-col font-sans"
+		class="min-h-screen min-w-0 bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 dark:from-gray-900 dark:to-gray-800 text-secondary-900 dark:text-secondary-100 flex flex-col font-sans"
 		role="application"
 		aria-label="Kechow Food Delivery Application"
 	>

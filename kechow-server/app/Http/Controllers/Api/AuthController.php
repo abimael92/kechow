@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Restaurant\Models\Restaurant;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
@@ -58,19 +59,38 @@ class AuthController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
-        $request->validate([
+        $rules = [
             'name'     => 'required|string|max:255',
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|in:customer,owner,delivery',
-        ]);
+            'role'     => 'required|in:customer,owner,delivery',
+        ];
+        if ($request->role === 'owner') {
+            $rules['restaurant_name'] = 'required|string|max:255';
+        }
+        $request->validate($rules);
 
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role'     => $request->role,
         ]);
+
+        if ($request->role === 'owner' && $request->restaurant_name) {
+            Restaurant::create([
+                'name'         => $request->restaurant_name,
+                'address'      => 'Por definir',
+                'city'         => 'Por definir',
+                'state'        => null,
+                'zip_code'     => null,
+                'phone'        => null,
+                'email'        => $request->email,
+                'opening_time' => '09:00',
+                'closing_time' => '22:00',
+                'owner_id'     => $user->id,
+            ]);
+        }
 
         $token = $user->createToken('api')->plainTextToken;
 

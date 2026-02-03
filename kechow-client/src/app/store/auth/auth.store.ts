@@ -79,6 +79,7 @@ export const useAuthStore = defineStore('auth', () => {
 		password: string;
 		password_confirmation: string;
 		role: string;
+		restaurant_name?: string;
 	}) => {
 		try {
 			isLoading.value = true;

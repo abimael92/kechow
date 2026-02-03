@@ -318,28 +318,54 @@ interface ApiRestaurant {
 	email?: string | null;
 	opening_time?: string | null;
 	closing_time?: string | null;
+	schedule_json?: Record<string, { enabled?: boolean; open?: string; close?: string; breakEnabled?: boolean; breakStart?: string; breakEnd?: string }> | null;
+	closed_dates?: string[] | null;
+	override_closed?: boolean;
 	is_active?: boolean;
 }
 
 const DAY_NAMES = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
+/** Normalize time to H:i format (HH:mm) - backend validation requires this */
+function toHiFormat(t: string | null | undefined, fallback: string): string {
+	if (!t || typeof t !== 'string') return fallback;
+	const trimmed = t.trim();
+	if (!trimmed) return fallback;
+	const parts = trimmed.split(':');
+	if (parts.length >= 2) {
+		const h = parts[0].padStart(2, '0');
+		const m = parts[1].padStart(2, '0');
+		return `${h}:${m}`;
+	}
+	return fallback;
+}
+
 function mapApiRestaurantToSettings(r: ApiRestaurant): RestaurantSettings {
-	const openTime = r.opening_time ?? '10:00';
-	const closeTime = r.closing_time ?? '22:00';
+	const schedule = r.schedule_json ?? {};
 	const address = [r.address, r.city, r.state, r.zip_code].filter(Boolean).join(', ') || '';
+	const operatingHours = DAY_NAMES.map((day, i) => {
+		const key = String(i);
+		const s = schedule[key];
+		return {
+			id: `day-${i}`,
+			day,
+			openTime: toHiFormat(s?.open ?? r.opening_time, '10:00'),
+			closeTime: toHiFormat(s?.close ?? r.closing_time, '22:00'),
+			closed: s?.enabled === false,
+			breakEnabled: s?.breakEnabled ?? false,
+			breakStart: toHiFormat(s?.breakStart, '14:00'),
+			breakEnd: toHiFormat(s?.breakEnd, '16:00'),
+		};
+	});
 	return {
 		name: r.name ?? '',
 		phone: r.phone ?? '',
 		address,
 		description: r.description ?? '',
 		isOpen: r.is_active ?? true,
-		operatingHours: DAY_NAMES.map((day, i) => ({
-			id: `day-${i}`,
-			day,
-			openTime,
-			closeTime,
-			closed: false,
-		})),
+		operatingHours,
+		closedDates: Array.isArray(r.closed_dates) ? r.closed_dates : [],
+		overrideClosed: !!r.override_closed,
 	};
 }
 
@@ -350,12 +376,26 @@ function mapSettingsToApiPayload(settings: Partial<RestaurantSettings>): Record<
 	if (settings.address !== undefined) payload.address = settings.address;
 	if (settings.description !== undefined) payload.description = settings.description;
 	if (settings.isOpen !== undefined) payload.is_active = settings.isOpen;
+	if (settings.overrideClosed !== undefined) payload.override_closed = settings.overrideClosed;
+	if (settings.closedDates !== undefined) payload.closed_dates = settings.closedDates;
 	if (settings.operatingHours?.length) {
-		const first = settings.operatingHours.find((oh) => !oh.closed);
-		if (first) {
-			payload.opening_time = first.openTime;
-			payload.closing_time = first.closeTime;
+		const firstOpen = settings.operatingHours.find((oh) => !oh.closed);
+		if (firstOpen) {
+			payload.opening_time = toHiFormat(firstOpen.openTime, '10:00');
+			payload.closing_time = toHiFormat(firstOpen.closeTime, '22:00');
 		}
+		const scheduleJson: Record<string, Record<string, unknown>> = {};
+		settings.operatingHours.forEach((oh, i) => {
+			scheduleJson[String(i)] = {
+				enabled: !oh.closed,
+				open: toHiFormat(oh.openTime, '10:00'),
+				close: toHiFormat(oh.closeTime, '22:00'),
+				breakEnabled: !!oh.breakEnabled,
+				breakStart: toHiFormat(oh.breakStart, '14:00'),
+				breakEnd: toHiFormat(oh.breakEnd, '16:00'),
+			};
+		});
+		payload.schedule_json = scheduleJson;
 	}
 	return payload;
 }
@@ -375,7 +415,12 @@ export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
 				openTime: '10:00',
 				closeTime: '22:00',
 				closed: false,
+				breakEnabled: false,
+				breakStart: '14:00',
+				breakEnd: '16:00',
 			})),
+			closedDates: [],
+			overrideClosed: false,
 		};
 	}
 
@@ -395,7 +440,12 @@ export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
 				openTime: '10:00',
 				closeTime: '22:00',
 				closed: false,
+				breakEnabled: false,
+				breakStart: '14:00',
+				breakEnd: '16:00',
 			})),
+			closedDates: [],
+			overrideClosed: false,
 		};
 	}
 	return mapApiRestaurantToSettings(restaurants[0]);

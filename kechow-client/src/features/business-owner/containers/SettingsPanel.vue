@@ -454,7 +454,10 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
+import { useToast } from 'vue-toastification';
 import GeneralSettings from '@/features/business-owner/components/settings/GeneralSettings.vue';
+
+const toast = useToast();
 
 // Refs
 const generalSettingsRef = ref<InstanceType<typeof GeneralSettings> | null>(null);
@@ -602,6 +605,7 @@ const saveChanges = async () => {
       await new Promise(resolve => setTimeout(resolve, 1200));
     }
     hasChanges.value = false;
+    toast.success('Configuración guardada correctamente');
     const saveBtn = document.querySelector('.save-button');
     if (saveBtn) {
       saveBtn.classList.add('save-success');
@@ -609,7 +613,17 @@ const saveChanges = async () => {
     }
   } catch (error) {
     console.error('Error saving:', error);
-    alert('Error al guardar. Intenta de nuevo.');
+    const msg = (err: unknown) => {
+      const e = err as { response?: { data?: { message?: string; errors?: Record<string, string[]> } }; message?: string };
+      if (e?.response?.data?.message) return e.response.data.message;
+      const errs = e?.response?.data?.errors;
+      if (errs && typeof errs === 'object') {
+        const first = Object.values(errs).flat()[0];
+        if (first) return first;
+      }
+      return e?.message || 'Error al guardar. Intenta de nuevo.';
+    };
+    toast.error(msg(error));
   } finally {
     saving.value = false;
   }
