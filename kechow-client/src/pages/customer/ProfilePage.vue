@@ -117,7 +117,7 @@
 						<div
 							v-for="address in profile.addresses"
 							:key="address.id"
-							class="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+							class="border border-primary-300 dark:border-gray-700 rounded-lg p-4"
 						>
 							<div class="flex items-start justify-between">
 								<div class="flex-1">

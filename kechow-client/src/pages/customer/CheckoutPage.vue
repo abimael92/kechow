@@ -32,7 +32,7 @@
 								:class="
 									selectedAddressId === address.id
 										? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-										: 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+										: 'border-primary-300 dark:border-gray-700 hover:border-gray-300'
 								"
 							>
 								<input
@@ -94,7 +94,7 @@
 								:class="
 									selectedPaymentMethod === method.value
 										? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-										: 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+										: 'border-primary-300 dark:border-gray-700 hover:border-gray-300'
 								"
 							>
 								<input
@@ -134,7 +134,7 @@
 							</div>
 						</div>
 
-						<hr class="my-4 border-gray-200 dark:border-gray-700" />
+						<hr class="my-4 border-primary-300 dark:border-gray-700" />
 
 						<!-- Totals -->
 						<div class="space-y-2 text-sm">
@@ -152,7 +152,7 @@
 								<span class="text-gray-600 dark:text-gray-400">Impuesto (8%)</span>
 								<span class="text-gray-900 dark:text-white">${{ tax.toFixed(2) }}</span>
 							</div>
-							<hr class="my-2 border-gray-200 dark:border-gray-700" />
+							<hr class="my-2 border-primary-300 dark:border-gray-700" />
 							<div class="flex justify-between text-lg font-bold">
 								<span class="text-gray-900 dark:text-white">Total</span>
 								<span class="text-purple-600 dark:text-purple-400">

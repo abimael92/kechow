@@ -96,7 +96,7 @@
 						<div
 							v-for="item in order.items"
 							:key="item.id"
-							class="flex justify-between items-center py-3 border-b border-gray-200 dark:border-gray-700 last:border-0"
+							class="flex justify-between items-center py-3 border-b border-primary-300 dark:border-gray-700 last:border-0"
 						>
 							<div>
 								<p class="font-medium text-gray-900 dark:text-white">
@@ -119,7 +119,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+					<div class="mt-6 pt-6 border-t border-primary-300 dark:border-gray-700">
 						<div class="flex justify-between text-lg font-bold">
 							<span class="text-gray-900 dark:text-white">Total</span>
 							<span class="text-purple-600 dark:text-purple-400">

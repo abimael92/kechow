@@ -120,7 +120,7 @@ const filteredRestaurants = computed(() =>
 						v-for="restaurant in filteredRestaurants"
 						:key="restaurant.id"
 						@click="goToRestaurant(restaurant.id)"
-						class="cursor-pointer rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition hover:-translate-y-1 min-w-0"
+						class="cursor-pointer rounded-xl overflow-hidden border border-primary-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition hover:-translate-y-1 min-w-0"
 					>
 						<div class="overflow-hidden h-36 sm:h-40 md:h-48">
 							<img
