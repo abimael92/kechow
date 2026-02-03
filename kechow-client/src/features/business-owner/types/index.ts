@@ -135,9 +135,11 @@ export interface RestaurantSettings {
 	address: string;
 	description: string;
 	isOpen: boolean;
+	logoUrl?: string;
+	avgPrepTimeMinutes?: number | null;
 	operatingHours?: OperatingHours[];
 	closedDates?: string[];
-	overrideClosed?: boolean;
+	exceptionalClosedDates?: string[];
 }
 
 export interface OperatingHours {

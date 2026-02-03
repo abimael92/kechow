@@ -1,4 +1,14 @@
-import { api } from '@app/lib/axios';
+import { api, apiBaseUrl } from '@app/lib/axios';
+
+/** Ensures logo URL is absolute and uses API route (avoids 403 on direct storage). */
+function ensureAbsoluteLogoUrl(url: string | null | undefined): string {
+	if (!url || typeof url !== 'string') return '';
+	const abs = url.startsWith('http://') || url.startsWith('https://') ? url : apiBaseUrl + (url.startsWith('/') ? url : '/' + url);
+	// Rewrite old /storage/restaurant-logos/X to /api/restaurants/logo/X (avoids 403)
+	const m = abs.match(/\/storage\/restaurant-logos\/([a-zA-Z0-9._-]+)(?:\?|$)/);
+	if (m) return apiBaseUrl + '/api/restaurants/logo/' + m[1];
+	return abs;
+}
 import type {
 	Order,
 	OrdersResponse,
@@ -76,10 +86,10 @@ export const fetchOrders = async (filters?: OrderFilters): Promise<Order[]> => {
 		return filteredOrders;
 	}
 
-	const response = await api.get<OrdersResponse>('/owner/orders', {
+	const response = await api.get<OrdersResponse>('/api/owner/orders', {
 		params: filters,
 	});
-	return response.data.orders;
+	return response.data.orders ?? response.data.data ?? [];
 };
 
 export const updateOrderStatus = async (
@@ -96,7 +106,7 @@ export const updateOrderStatus = async (
 		return new Promise((resolve) => setTimeout(resolve, 500));
 	}
 
-	await api.patch(`/owner/orders/${orderId}/status`, { status, notes });
+	await api.patch(`/api/owner/orders/${orderId}/status`, { status, notes });
 };
 
 export const getOrderStats = async (): Promise<OrderStats> => {
@@ -134,7 +144,7 @@ export const getOrderStats = async (): Promise<OrderStats> => {
 		};
 	}
 
-	const response = await api.get<OrderStats>('/owner/orders/stats');
+	const response = await api.get<OrderStats>('/api/owner/orders/stats');
 	return response.data;
 };
 
@@ -162,7 +172,7 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
 		};
 	}
 
-	const response = await api.get<DashboardStats>('/owner/dashboard/stats');
+	const response = await api.get<DashboardStats>('/api/owner/dashboard/stats');
 	return response.data;
 };
 
@@ -173,7 +183,7 @@ export const getOrderById = async (orderId: string): Promise<Order> => {
 		return order;
 	}
 
-	const response = await api.get<Order>(`/owner/orders/${orderId}`);
+	const response = await api.get<Order>(`/api/owner/orders/${orderId}`);
 	return response.data;
 };
 
@@ -320,7 +330,9 @@ interface ApiRestaurant {
 	closing_time?: string | null;
 	schedule_json?: Record<string, { enabled?: boolean; open?: string; close?: string; breakEnabled?: boolean; breakStart?: string; breakEnd?: string }> | null;
 	closed_dates?: string[] | null;
-	override_closed?: boolean;
+	exceptional_closed_dates?: string[] | null;
+	logo_url?: string | null;
+	avg_prep_time_minutes?: number | null;
 	is_active?: boolean;
 }
 
@@ -340,9 +352,16 @@ function toHiFormat(t: string | null | undefined, fallback: string): string {
 	return fallback;
 }
 
+/** Treat "Por definir" as empty so we only show stored values. */
+function emptyIfPorDefinir(v: string | null | undefined): string {
+	if (!v || typeof v !== 'string') return '';
+	const t = v.trim();
+	return t.toLowerCase() === 'por definir' ? '' : t;
+}
+
 function mapApiRestaurantToSettings(r: ApiRestaurant): RestaurantSettings {
 	const schedule = r.schedule_json ?? {};
-	const address = [r.address, r.city, r.state, r.zip_code].filter(Boolean).join(', ') || '';
+	const address = emptyIfPorDefinir(r.address) || '';
 	const operatingHours = DAY_NAMES.map((day, i) => {
 		const key = String(i);
 		const s = schedule[key];
@@ -363,9 +382,11 @@ function mapApiRestaurantToSettings(r: ApiRestaurant): RestaurantSettings {
 		address,
 		description: r.description ?? '',
 		isOpen: r.is_active ?? true,
+		logoUrl: ensureAbsoluteLogoUrl(r.logo_url) || '',
+		avgPrepTimeMinutes: r.avg_prep_time_minutes ?? null,
 		operatingHours,
 		closedDates: Array.isArray(r.closed_dates) ? r.closed_dates : [],
-		overrideClosed: !!r.override_closed,
+		exceptionalClosedDates: Array.isArray(r.exceptional_closed_dates) ? r.exceptional_closed_dates : [],
 	};
 }
 
@@ -376,8 +397,10 @@ function mapSettingsToApiPayload(settings: Partial<RestaurantSettings>): Record<
 	if (settings.address !== undefined) payload.address = settings.address;
 	if (settings.description !== undefined) payload.description = settings.description;
 	if (settings.isOpen !== undefined) payload.is_active = settings.isOpen;
-	if (settings.overrideClosed !== undefined) payload.override_closed = settings.overrideClosed;
 	if (settings.closedDates !== undefined) payload.closed_dates = settings.closedDates;
+	if (settings.exceptionalClosedDates !== undefined) payload.exceptional_closed_dates = settings.exceptionalClosedDates;
+	if (settings.logoUrl !== undefined) payload.logo_url = settings.logoUrl || null;
+	if (settings.avgPrepTimeMinutes !== undefined) payload.avg_prep_time_minutes = settings.avgPrepTimeMinutes;
 	if (settings.operatingHours?.length) {
 		const firstOpen = settings.operatingHours.find((oh) => !oh.closed);
 		if (firstOpen) {
@@ -420,7 +443,9 @@ export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
 				breakEnd: '16:00',
 			})),
 			closedDates: [],
-			overrideClosed: false,
+			exceptionalClosedDates: [],
+			logoUrl: '',
+			avgPrepTimeMinutes: null,
 		};
 	}
 
@@ -445,10 +470,33 @@ export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
 				breakEnd: '16:00',
 			})),
 			closedDates: [],
-			overrideClosed: false,
+			exceptionalClosedDates: [],
+			logoUrl: '',
+			avgPrepTimeMinutes: null,
 		};
 	}
 	return mapApiRestaurantToSettings(restaurants[0]);
+};
+
+/** Upload restaurant logo (image file). Returns the logo URL. */
+export const uploadRestaurantLogo = async (file: File): Promise<string> => {
+	if (useSampleData) {
+		return URL.createObjectURL(file);
+	}
+	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/api/restaurants/owner/my-restaurants');
+	const raw = res.data;
+	const restaurants = Array.isArray(raw) ? raw : (raw?.data ?? []);
+	if (restaurants.length === 0) {
+		throw new Error('No restaurant found. Create a restaurant first.');
+	}
+	const restaurantId = restaurants[0].id;
+	const formData = new FormData();
+	formData.append('logo', file, file.name);
+	const uploadRes = await api.post<{ logo_url: string }>(
+		`/api/restaurants/${restaurantId}/logo`,
+		formData
+	);
+	return ensureAbsoluteLogoUrl(uploadRes.data.logo_url) || uploadRes.data.logo_url;
 };
 
 export const updateRestaurantSettings = async (
@@ -697,7 +745,7 @@ export const getAnalyticsData = async (
 		return data;
 	}
 
-	const response = await api.get<AnalyticsData>('/owner/analytics', {
+	const response = await api.get<AnalyticsData>('/api/owner/analytics', {
 		params: {
 			period,
 			compare,
