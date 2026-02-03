@@ -148,13 +148,13 @@ function goBack() {
 			<!-- BANNER - Mobile-first: fixed height, images scale -->
 			<div class="relative w-full max-w-full h-40 sm:h-48 md:h-56 bg-gray-200 dark:bg-gray-700 overflow-hidden rounded-lg">
 				<img
-					:src="restaurant.image"
+					:src="restaurant.logo_url || restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'"
 					:alt="restaurant.name"
 					class="absolute inset-0 w-full h-full max-w-full object-cover blur-sm scale-105"
 					loading="eager"
 				/>
 				<img
-					:src="restaurant.image"
+					:src="restaurant.logo_url || restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'"
 					:alt="restaurant.name"
 					class="relative z-10 mx-auto h-full w-auto max-w-full object-contain"
 				/>
