@@ -4,6 +4,8 @@ import { getEnv } from './env';
 
 const API_URL = getEnv('VITE_API_URL', 'http://127.0.0.1:8000');
 
+export const apiBaseUrl = API_URL.replace(/\/$/, '');
+
 export const api = axios.create({
 	baseURL: API_URL,
 	withCredentials: true,
@@ -14,6 +16,10 @@ export const api = axios.create({
 api.interceptors.request.use((config) => {
 	const token = localStorage.getItem('token');
 	if (token) config.headers.Authorization = `Bearer ${token}`;
+	// Let the browser set Content-Type with boundary for FormData (e.g. file uploads)
+	if (config.data instanceof FormData) {
+		delete config.headers['Content-Type'];
+	}
 	return config;
 });
 
