@@ -25,6 +25,14 @@ class UpdateOrderStatusRequest extends FormRequest
         return $this->user()->role === 'admin';
     }
 
+    protected function prepareForValidation(): void
+    {
+        $status = $this->input('status');
+        if ($status === 'declined') {
+            $this->merge(['status' => Order::STATUS_CANCELLED]);
+        }
+    }
+
     public function rules(): array
     {
         return [

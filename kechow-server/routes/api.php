@@ -17,6 +17,9 @@ require app_path('Modules/Restaurant/routes.php');
 // Load Order module routes (customer orders, owner restaurant orders, delivery)
 require app_path('Modules/Order/routes.php');
 
+// Owner dashboard, analytics, orders (auth:sanctum, scoped to owner's restaurants)
+require app_path('Modules/Owner/routes_owner.php');
+
 // One-time setup route: sessions table + seed users
 Route::get('/setup-backend/one-time-setup', function () {
     // Create sessions table

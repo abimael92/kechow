@@ -111,12 +111,16 @@ class OrderService
     }
 
     /** Get orders for multiple restaurants (e.g. owner's restaurants). */
-    public function getOrdersByRestaurantIds(array $restaurantIds): Collection
+    public function getOrdersByRestaurantIds(array $restaurantIds, ?array $statusFilter = null): Collection
     {
-        return Order::with('items.menuItem', 'user')
-            ->whereIn('restaurant_id', $restaurantIds)
-            ->latest()
-            ->get();
+        $query = Order::with('items.menuItem', 'user')
+            ->whereIn('restaurant_id', $restaurantIds);
+
+        if ($statusFilter !== null && !empty($statusFilter)) {
+            $query->whereIn('status', $statusFilter);
+        }
+
+        return $query->latest()->get();
     }
 
     public function getAvailableDriverOrders(): Collection
