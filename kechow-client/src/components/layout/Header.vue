@@ -157,12 +157,12 @@
 		>
 			<div
 				v-if="isDrawerOpen"
-				class="absolute top-full left-0 right-0 bg-gradient-to-b from-primary-50 via-white to-primary-100/50 dark:bg-[#2a1a40] dark:border-white border-b border-primary-200/80 shadow-soft lg:hidden overflow-auto max-h-[70vh]"
+				class="absolute top-full left-0 right-0 bg-primary-200 dark:bg-[#2a1a40] dark:border-white border-b border-primary-200/80 shadow-soft lg:hidden overflow-auto max-h-[70vh]"
 			>
 				<div class="px-4 py-3 flex flex-col gap-0.5">
-					<!-- Role-based nav links (solo para el rol del layout, nunca authStore) -->
+					<!-- Role-based nav links -->
 					<template v-if="drawerNavItems.length">
-						<div class="text-secondary-500 dark:text-gray-400 text-xs font-medium px-3 py-2 uppercase tracking-wide">
+						<div class="text-primary-600 dark:text-gray-400 text-md font-bold px-3 py-2 uppercase tracking-wide">
 							Navegación
 						</div>
 						<router-link
@@ -170,16 +170,16 @@
 							:key="item.path"
 							:to="item.path"
 							@click="closeDrawer"
-							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg text-secondary-800 dark:text-gray-200 hover:bg-secondary-100 dark:hover:bg-gray-700 hover:text-secondary-900 dark:hover:text-white transition-colors break-words"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg text-primary-800 dark:text-gray-200 hover:bg-primary-100 dark:hover:bg-gray-700 hover:text-primary-900 dark:hover:text-white transition-colors break-words"
 						>
 							{{ item.label }}
 						</router-link>
-						<div class="border-t border-secondary-200 dark:border-white/10 my-1" />
+						<div class="border-t border-primary-800 dark:border-white/10 my-1" />
 					</template>
 
 					<button
 						@click="toggleDarkMode"
-						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-secondary-100 dark:hover:bg-gray-700 transition-colors text-secondary-800 dark:text-gray-200"
+						class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-primary-100 dark:hover:bg-gray-700 transition-colors text-primary-800 dark:text-gray-200"
 						aria-label="Cambiar tema"
 					>
 						<svg
@@ -208,13 +208,13 @@
 					<template v-if="authStore.isAuthenticated">
 						<button
 							@click="goProfile"
-							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-secondary-100 dark:hover:bg-gray-700 transition-colors text-secondary-800 dark:text-gray-200"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-primary-100 dark:hover:bg-gray-700 transition-colors text-primary-800 dark:text-gray-200"
 						>
 							Perfil
 						</button>
 						<button
 							@click="logout"
-							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-secondary-100 dark:hover:bg-gray-700 transition-colors text-secondary-800 dark:text-gray-200"
+							class="flex items-center w-full px-3 py-3 min-h-[44px] text-left rounded-lg hover:bg-primary-100 dark:hover:bg-gray-700 transition-colors text-primary-800 dark:text-gray-200"
 						>
 							Cerrar sesión
 						</button>

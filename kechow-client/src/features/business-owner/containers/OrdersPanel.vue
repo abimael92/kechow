@@ -7,12 +7,12 @@
                 </div>
                 <div>
                     <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-					{{ $t('orders') }}
+					Pedidos
 					</h1>
                   	<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none tline-clamp-2">
-					{{ $t('manageTrackOrders') }}
+					Gestiona y sigue todos los pedidos de tu restaurante
 						<span v-if="orders.length > 0" class="ml-1 sm:ml-2 text-tertiary-800 dark:text-tertiary-400 font-medium whitespace-nowrap">
-							({{ orders.length }} {{ $t('orders', orders.length) }})
+							({{ orders.length }} pedidos)
 						</span>
                     </p>
                 </div>
@@ -25,16 +25,16 @@
 					<i class="ri-search-line search-icon"></i>
 					<input
 						v-model="searchQuery"
-						:placeholder="$t('searchPlaceholder')"
+						placeholder="Buscar comida, restaurantes, categorías…"
 						class="search-input"
 						@input="handleSearch"
-						:aria-label="$t('searchPlaceholder')"
+						aria-label="Buscar comida, restaurantes, categorías…"
 					/>
 					<button
 						v-if="searchQuery"
 						@click="clearSearch"
 						class="search-clear-button"
-						:aria-label="$t('clearSearch')"
+						aria-label="Limpiar búsqueda"
 					>
 						<i class="ri-close-line"></i>
 					</button>
@@ -46,10 +46,10 @@
 						@click="toggleFilterDropdown"
 						class="filter-button"
 						:aria-expanded="showFilterDropdown"
-						:aria-label="$t('filterOrders')"
+						aria-label="Filtrar pedidos"
 					>
 						<i class="ri-filter-line filter-icon"></i>
-						{{ $t('filter') }}
+						Filtrar
 						<i 
 							class="ri-arrow-down-s-line filter-arrow" 
 							:class="{ 'filter-arrow-open': showFilterDropdown }"
@@ -66,14 +66,14 @@
 							<div class="filter-content">
 								<!-- Header -->
 								<div class="filter-header">
-									<h3 class="filter-title">{{ $t('filter') }}</h3>
+									<h3 class="filter-title">Filtrar</h3>
 									<button
 										@click="resetFilters"
 										class="filter-reset-button"
-										:aria-label="$t('resetFilters')"
+										aria-label="Restablecer filtros"
 									>
 										<i class="ri-refresh-line"></i>
-										{{ $t('resetFilters') }}
+										Restablecer filtros
 									</button>
 								</div>
 								
@@ -83,7 +83,7 @@
 										<div class="filter-section-icon-container">
 											<i class="ri-filter-2-line filter-section-icon"></i>
 										</div>
-										<h3 class="filter-section-title">{{ $t('filterByStatus') }}</h3>
+										<h3 class="filter-section-title">Filtrar por Estado</h3>
 									</div>
 									
 									<div class="status-filter-grid">
@@ -128,7 +128,7 @@
 										<div class="sort-section-icon-container">
 											<i class="ri-sort-desc sort-section-icon"></i>
 										</div>
-										<h3 class="filter-section-title">{{ $t('sortBy') }}</h3>
+										<h3 class="filter-section-title">Ordenar por</h3>
 									</div>
 									
 									<div class="sort-container">
@@ -137,11 +137,11 @@
 											v-model="sortBy"
 											@change="applyFilters"
 											class="sort-select"
-											:aria-label="$t('sortBy')"
+											aria-label="Ordenar por"
 										>
-											<option value="newest">{{ $t('newestFirst') }}</option>
-											<option value="oldest">{{ $t('oldestFirst') }}</option>
-											<option value="amount">{{ $t('highestAmount') }}</option>
+											<option value="newest">Más recientes primero</option>
+											<option value="oldest">Más antiguos primero</option>
+											<option value="amount">Monto más alto</option>
 										</select>
 									</div>
 									
@@ -149,11 +149,11 @@
 									<div class="sort-indicators">
 										<div class="sort-indicator">
 											<i class="ri-arrow-up-line"></i>
-											<span>{{ $t('ascending') }}</span>
+											<span>Ascendente</span>
 										</div>
 										<div class="sort-indicator">
 											<i class="ri-arrow-down-line"></i>
-											<span>{{ $t('descending') }}</span>
+											<span>Descendente</span>
 										</div>
 									</div>
 								</div>
@@ -163,14 +163,14 @@
 									<button
 										@click="applyFilters"
 										class="apply-filters-button"
-										:aria-label="$t('applyFilters')"
+										aria-label="Aplicar Filtros"
 									>
 										<i class="ri-check-line"></i>
-										{{ $t('applyFilters') }}
+										Aplicar Filtros
 									</button>
 									
 									<p class="filter-stats">
-										{{ selectedStatuses.length }} {{ $t('activeFilters') }} • {{ filteredOrders.length }} {{ $t('results') }}
+										{{ selectedStatuses.length }} filtros activos • {{ filteredOrders.length }} resultados
 									</p>
 								</div>
 							</div>
@@ -183,13 +183,13 @@
 					@click="loadOrders"
 					:disabled="loading || !isOnline"
 					class="refresh-button"
-					:aria-label="!isOnline ? $t('offline') : $t('refresh')"
+					:aria-label="!isOnline ? 'Sin conexión' : 'Actualizar'"
 				>
 					<i 
 						class="ri-refresh-line refresh-icon" 
 						:class="{ 'refreshing': loading }"
 					></i>
-					{{ loading ? $t('refreshing') : $t('refresh') }}
+					{{ loading ? 'Actualizando...' : 'Actualizar' }}
 				</button>
 			</div>
 		</div>
@@ -207,11 +207,11 @@
 							? 'status-tab-active'
 							: 'status-tab-inactive'
 					]"
-					:aria-label="`${$t(tab.translationKey)} orders`"
+					:aria-label="`${tabLabels[tab.translationKey] || tab.translationKey} pedidos`"
 					:aria-selected="activeTab === tab.status"
 				>
 					<span :class="tab.iconClass"></span>
-					{{ $t(tab.translationKey) }}
+					{{ tabLabels[tab.translationKey] || tab.translationKey }}
 					<span 
 						class="status-tab-count"
 						:class="activeTab === tab.status ? 'status-tab-count-active' : 'status-tab-count-inactive'"
@@ -231,7 +231,7 @@
 				>
 					<div class="stat-content">
 						<div>
-							<p class="stat-label">{{ $t(stat.label) }}</p>
+							<p class="stat-label">{{ statLabels[stat.label] || stat.label }}</p>
 							<p class="stat-value">{{ stat.value }}</p>
 						</div>
 						<div
@@ -265,18 +265,18 @@
 				<i class="ri-inbox-line"></i>
 			</div>
 			<h3 class="empty-state-title">
-				{{ searchQuery ? $t('noResultsFound') : $t('noOrders') }}
+				{{ searchQuery ? 'No se encontraron resultados' : 'No hay pedidos aún' }}
 			</h3>
 			<p class="empty-state-description">
-				{{ searchQuery ? $t('tryDifferentSearch') : $t('createNewOrderPrompt') }}
+				{{ searchQuery ? 'Intenta con un término de búsqueda diferente' : 'Comienza creando tu primer pedido' }}
 			</p>
 			<button
 				v-if="!searchQuery"
 				class="empty-state-action-button"
-				:aria-label="$t('orderNow')"
+				aria-label="Ordenar Ahora"
 			>
 				<i class="ri-add-line"></i>
-				{{ $t('orderNow') }}
+				Ordenar Ahora
 			</button>
 		</div>
 
@@ -291,7 +291,7 @@
 			<!-- Pagination -->
 			<div v-if="filteredOrders.length > itemsPerPage" class="pagination">
 				<p class="pagination-info">
-					{{ $t('showing') }} {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredOrders.length) }} {{ $t('of') }} {{ filteredOrders.length }} {{ $t('orders', filteredOrders.length) }}
+					Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredOrders.length) }} de {{ filteredOrders.length }} pedidos
 				</p>
 				<div class="pagination-controls">
 					<button
@@ -299,18 +299,18 @@
 						:disabled="currentPage === 1"
 						class="pagination-button"
 						:class="{ 'disabled': currentPage === 1 }"
-						:aria-label="$t('previousPage')"
+						aria-label="Página anterior"
 					>
-						{{ $t('previous') }}
+						Anterior
 					</button>
 					<button
 						@click="nextPage"
 						:disabled="currentPage * itemsPerPage >= filteredOrders.length"
 						class="pagination-button"
 						:class="{ 'disabled': currentPage * itemsPerPage >= filteredOrders.length }"
-						:aria-label="$t('nextPage')"
+						aria-label="Página siguiente"
 					>
-						{{ $t('next') }}
+						Siguiente
 					</button>
 				</div>
 			</div>
@@ -327,7 +327,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import OrderCard from '../components/OrderCard.vue';
 import {
 	fetchOrders,
@@ -337,8 +336,23 @@ import type { Order } from '../types/';
 import { canTransition, normalizeOwnerStatus } from '@shared/order-state-machine';
 import { useOnline } from '@shared/composables/useOnline';
 
-const { t } = useI18n();
 const { isOnline } = useOnline();
+
+const tabLabels: Record<string, string> = {
+  allOrders: 'Todos los Pedidos',
+  new: 'Nuevos',
+  preparing: 'En Preparación',
+  ready: 'Listos',
+  delivered: 'Entregados',
+  statuscancelled: 'Cancelado'
+};
+
+const statLabels: Record<string, string> = {
+  totalOrders: 'Pedidos Totales',
+  pending: 'Pendiente',
+  revenue: 'Ingresos',
+  avgOrder: 'Pedido Promedio'
+};
 
 const orders = ref<Order[]>([]);
 const loading = ref(false);
@@ -392,11 +406,11 @@ const statusTabs = computed(() => [
 
 // Status options for filter dropdown
 const orderStatuses = computed(() => [
-	{ value: 'new', label: t('new') },
-	{ value: 'preparing', label: t('preparing') },
-	{ value: 'ready', label: t('ready') },
-	{ value: 'delivered', label: t('delivered') },
-	{ value: 'cancelled', label: t('statuscancelled') }
+	{ value: 'new', label: 'Nuevos' },
+	{ value: 'preparing', label: 'En Preparación' },
+	{ value: 'ready', label: 'Listos' },
+	{ value: 'delivered', label: 'Entregados' },
+	{ value: 'cancelled', label: 'Cancelado' }
 ]);
 
 // Statistics - highlighted card uses primary in light, overridden to purple in .dark

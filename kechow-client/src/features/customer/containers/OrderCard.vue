@@ -81,7 +81,7 @@
                         @click.stop="$emit('track', order)"
                         class="px-3 py-1.5 bg-primary-500 text-white text-sm rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-1.5">
                     <i class="ri-map-pin-line"></i>
-                    {{ $t('track') }}aqui
+                    Rastrear
                 </button>
                 
                 <!-- Reorder Button -->
