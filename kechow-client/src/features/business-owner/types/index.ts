@@ -136,6 +136,8 @@ export interface RestaurantSettings {
 	description: string;
 	isOpen: boolean;
 	operatingHours?: OperatingHours[];
+	closedDates?: string[];
+	overrideClosed?: boolean;
 }
 
 export interface OperatingHours {
@@ -144,6 +146,9 @@ export interface OperatingHours {
 	openTime: string;
 	closeTime: string;
 	closed: boolean;
+	breakEnabled?: boolean;
+	breakStart?: string;
+	breakEnd?: string;
 }
 
 export interface MenuSettings {
