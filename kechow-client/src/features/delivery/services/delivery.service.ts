@@ -10,8 +10,9 @@ import type {
 	DeliverySettings,
 } from '../types';
 
-// For development - use sample data (offline-safe simulation)
-const useSampleData = import.meta.env.MODE === 'development';
+// Fetch real data only - mock disabled. Set true to use sample data in dev if needed.
+// const useSampleData = import.meta.env.MODE === 'development';
+const useSampleData = false;
 
 // Simulated GPS: random position (fallback)
 const getSimulatedGPS = (): GPSLocation => {

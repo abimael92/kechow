@@ -340,7 +340,7 @@
 		<div v-if="mobileMenuOpen" class="lg:hidden fixed inset-0 z-50">
 			<div class="absolute inset-0 bg-black/50" @click="mobileMenuOpen = false"></div>
 			<div class="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-xl animate-slide-in">
-				<div class="p-4 border-b border-gray-200 dark:border-gray-700">
+				<div class="p-4 border-b border-primary-300 dark:border-gray-700">
 					<div class="flex items-center justify-between mb-4">
 						<h2 class="text-xl font-bold">Menú</h2>
 						<button @click="mobileMenuOpen = false" class="p-2">

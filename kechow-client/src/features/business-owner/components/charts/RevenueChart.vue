@@ -55,7 +55,7 @@
       <div
         v-if="showTooltip && tooltipVisible"
         ref="tooltip"
-        class="tooltip absolute bg-card dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-3 z-50 min-w-[180px]"
+        class="tooltip absolute bg-card dark:bg-gray-800 border border-primary-300 dark:border-gray-700 rounded-lg shadow-lg p-3 z-50 min-w-[180px]"
         :style="tooltipStyle"
       >
         <div class="text-sm font-semibold text-gray-900 dark:text-white mb-1">
@@ -669,7 +669,7 @@ export default defineComponent({
 
 <style scoped>
 .revenue-chart {
-  @apply bg-card dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6;
+  @apply bg-card dark:bg-gray-800 rounded-xl border border-primary-300 dark:border-gray-700 p-6;
 }
 
 .chart-container {

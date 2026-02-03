@@ -3,7 +3,7 @@
 		<!-- Header Section -->
 		<div class="flex flex-col md:flex-row md:justify-between md:items-center gap-3 sm:gap-4">
 			<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
-				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-secondary-600 to-secondary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
 					<i class="ri-line-chart-line text-white text-lg sm:text-xl md:text-2xl"></i>
 				</div>
 				<div class="flex-1 min-w-0">
@@ -38,7 +38,7 @@
 					<transition name="fade">
 						<div 
 							v-if="showTimePeriodDropdown" 
-							class="absolute top-full left-0 right-0 md:right-auto md:left-0 mt-2 w-full md:w-48 bg-card dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
+							class="absolute top-full left-0 right-0 md:right-auto md:left-0 mt-2 w-full md:w-48 bg-card dark:bg-gray-800 border border-primary-300 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
 						>
 							<div class="py-1 sm:py-2">
 								<button
@@ -131,7 +131,7 @@
 		</div>
 
 		<!-- Analytics Tabs - Responsive -->
-		<div class="border-b border-gray-200 dark:border-gray-700">
+		<div class="border-b border-primary-300 dark:border-gray-700">
 			<div class="flex overflow-x-auto -mx-2 sm:mx-0 pb-1">
 				<div class="flex gap-1 sm:gap-2 md:gap-8 px-2 sm:px-0 min-w-max">
 					<button
@@ -161,7 +161,7 @@
 			<template v-if="activeTab === 'overview'">
 				<div class="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
 					<!-- Revenue Trend Chart -->
-					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 								Tendencia Ingresos
@@ -201,7 +201,7 @@
 					</div>
 
 					<!-- Orders by Hour Chart -->
-					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 								Pedidos por Hora
@@ -231,7 +231,7 @@
 					</div>
 
 					<!-- Sales by Category -->
-					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
 							Ventas por Categoría
 						</h3>
@@ -252,7 +252,7 @@
 					</div>
 
 					<!-- Top Selling Items -->
-					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 								Más Vendidos
@@ -300,7 +300,7 @@
 				</div>
 
 				<!-- Performance Insights -->
-				<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+				<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 					<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
 						Información de Rendimiento
 					</h3>
@@ -308,7 +308,7 @@
 						<div 
 							v-for="insight in performanceInsights"
 							:key="insight.id"
-							class="p-3 sm:p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-700 transition-colors"
+							class="p-3 sm:p-4 rounded-lg border border-primary-300 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-700 transition-colors"
 							:class="{ 'bg-primary-50 dark:bg-primary-900/10': insight.highlight }"
 						>
 							<div class="flex items-start gap-2 sm:gap-3">

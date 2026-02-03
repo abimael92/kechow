@@ -1,9 +1,18 @@
 <template>
 	<div class="p-6 space-y-6">
 		<!-- Header -->
-		<div>
-			<h1 class="text-2xl font-bold text-gray-900">{{ $t('orders') }}</h1>
-			<p class="text-gray-600 mt-1">{{ $t('manageDeliveries') }}</p>
+		<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+			<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+				<i class="ri-bike-line text-white text-lg sm:text-xl md:text-2xl"></i>
+			</div>
+			<div>
+				<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
+					Pedidos
+				</h1>
+				<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none">
+					Gestiona tus entregas y haz seguimiento
+				</p>
+			</div>
 		</div>
 
 		<!-- Tabs -->
@@ -26,7 +35,7 @@
 					}"
 				>
 					<i :class="getTabIcon(tab.key)" class="w-6 h-6 text-xl"></i>
-					{{ $t(tab.label) }} ({{ tabCount(tab.key) }})
+					{{ tab.label }} ({{ tabCount(tab.key) }})
 					<span
 						v-if="activeTab === i"
 						class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-2 m-1 rounded-full bg-current transition-all"
@@ -43,15 +52,15 @@
 			<div class="flex items-center space-x-3 mb-3 md:mb-0">
 				<i class="ri-notification-line text-blue-600 dark:text-blue-400 w-5 h-5 flex items-center justify-center"></i>
 				<div>
-					<p class="font-medium text-blue-900 dark:text-blue-200">{{ $t(ordersSummary.title) }}</p>
-					<p class="text-sm text-blue-700 dark:text-blue-300">{{ $t(ordersSummary.subtitle) }}</p>
+					<p class="font-medium text-blue-900 dark:text-blue-200">{{ ordersSummary.title }}</p>
+					<p class="text-sm text-blue-700 dark:text-blue-300">{{ ordersSummary.subtitle }}</p>
 				</div>
 			</div>
 			<div class="text-right">
-				<p class="text-sm text-blue-600 dark:text-blue-400">{{ $t('avgDistance') }}</p>
+				<p class="text-sm text-blue-600 dark:text-blue-400">Distancia promedio</p>
 				<p class="font-semibold text-blue-900 dark:text-blue-200">{{ ordersSummary.avgDistance }}</p>
 				<p class="text-xs text-blue-700 dark:text-blue-300 mt-1">
-					{{ $t('potentialEarnings') }}: ${{ ordersSummary.totalEarnings }}
+					Ganancias potenciales: ${{ ordersSummary.totalEarnings }}
 				</p>
 			</div>
 		</div>
@@ -94,7 +103,7 @@
 					<div class="text-right">
 						<p class="text-2xl font-bold text-green-600">${{ order.amount }}</p>
 						<p class="text-sm text-gray-500">
-							{{ order.items }} {{ $t('items') }}
+							{{ order.items }} artículos
 						</p>
 						<p class="text-xs text-gray-400">{{ order.paymentMethod }}</p>
 					</div>
@@ -136,7 +145,7 @@
 							</div>
 							<div class="flex-1 min-w-0">
 								<p class="text-sm font-medium text-gray-900">
-									{{ $t('pickup') }}
+									Recogida
 								</p>
 								<p class="text-sm text-gray-600 truncate">{{ order.pickup }}</p>
 							</div>
@@ -173,13 +182,13 @@
 							:disabled="deliveryStore.hasActiveOrder"
 							class="flex-1 bg-green-600 text-white py-3 rounded-lg font-medium hover:bg-green-400 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							{{ $t('acceptOrder') }}
+							Aceptar pedido
 						</button>
 						<button
 							@click="handleRejectOrder(order.id)"
 							class="flex-1 py-3 rounded-lg font-medium bg-red-600 hover:bg-red-800 transition-colors whitespace-nowrap text-white"
 						>
-							{{ $t('decline') }}
+							Rechazar
 						</button>
 					</div>
 					<div v-else-if="order.status === 'active'" class="flex flex-col sm:flex-row gap-2 mt-4">
@@ -187,7 +196,7 @@
 							@click="router.push(`/delivery/live/${order.id}`)"
 							class="flex-1 bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-400 transition-colors whitespace-nowrap"
 						>
-							{{ $t('viewDelivery') }}
+							Ver entrega
 						</button>
 					</div>
 				</div>
@@ -210,9 +219,9 @@ const deliveryStore = useDeliveryStore();
 
 // Tabs
 const tabs = ref([
-	{ label: 'available', key: 'available' },
-	{ label: 'active', key: 'active' },
-	{ label: 'completed', key: 'completed' },
+	{ label: 'Disponibles', key: 'available' },
+	{ label: 'Activos', key: 'active' },
+	{ label: 'Completados', key: 'completed' },
 ]);
 const activeTab = ref(0);
 
@@ -297,8 +306,8 @@ const ordersSummary = computed(() => {
 	const totalEarnings = available.reduce((sum, o) => sum + o.amount + o.fee, 0);
 	const avgDist = available.length ? (available.reduce((s, o) => s + o.distance, 0) / available.length).toFixed(1) : '0';
 	return {
-		title: 'ordersWaitingPickup',
-		subtitle: 'potentialEarnings',
+		title: '3 pedidos esperando recogida',
+		subtitle: 'Ganancias potenciales',
 		avgDistance: `${avgDist} km`,
 		totalEarnings: totalEarnings.toFixed(2),
 	};

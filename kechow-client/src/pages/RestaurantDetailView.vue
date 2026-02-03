@@ -276,7 +276,7 @@ function goBack() {
 			>
 				<div
 					v-if="totalItems"
-					class="fixed bottom-4 left-4 right-4 max-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 z-40 min-w-0"
+					class="fixed bottom-4 left-4 right-4 max-w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-xl shadow-lg border border-primary-300 dark:border-gray-700 p-4 z-40 min-w-0"
 				>
 					<div class="flex items-center justify-between">
 						<div class="flex-1">

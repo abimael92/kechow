@@ -21,7 +21,7 @@
 		<!-- Order Info Card -->
 		<div
 			v-if="deliveryStore.activeOrder"
-			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-primary-300 dark:border-gray-700"
 		>
 			<div class="flex items-center justify-between mb-4">
 				<div>
@@ -122,7 +122,7 @@
 
 		<!-- GPS Location Display -->
 		<div
-			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-primary-300 dark:border-gray-700"
 		>
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
 				<i class="ri-map-pin-line mr-2"></i>
@@ -163,7 +163,7 @@
 		<!-- Route Info -->
 		<div
 			v-if="deliveryStore.activeOrder"
-			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 space-y-4"
+			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-primary-300 dark:border-gray-700 space-y-4"
 		>
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
 				{{ t('deliveryRoute') }}
@@ -222,7 +222,7 @@
 			</div>
 
 			<!-- Distance & ETA -->
-			<div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+			<div class="flex items-center justify-between pt-4 border-t border-primary-300 dark:border-gray-700">
 				<div class="text-center">
 					<p class="text-sm text-gray-600 dark:text-gray-400">{{ t('distance') }}</p>
 					<p class="text-lg font-bold text-gray-900 dark:text-white">
@@ -241,7 +241,7 @@
 		<!-- Items List -->
 		<div
 			v-if="deliveryStore.activeOrder"
-			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700"
+			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-primary-300 dark:border-gray-700"
 		>
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
 				{{ t('orderItems') }}

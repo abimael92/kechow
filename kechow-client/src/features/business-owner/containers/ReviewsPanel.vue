@@ -55,7 +55,7 @@
 						<transition name="fade">
 							<div 
 								v-if="showFilterDropdown" 
-								class="absolute top-full left-0 right-0 xs:right-auto xs:left-0 mt-2 w-full xs:w-64 bg-card dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
+								class="absolute top-full left-0 right-0 xs:right-auto xs:left-0 mt-2 w-full xs:w-64 bg-card dark:bg-gray-800 border border-primary-300 dark:border-gray-700 rounded-lg sm:rounded-xl shadow-lg z-50 overflow-hidden"
 							>
 								<div class="p-3 sm:p-4 space-y-3 sm:space-y-4">
 									<div>
@@ -204,7 +204,7 @@
 		</div>
 
 		<!-- Rating Distribution -->
-		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 			<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 sm:gap-3 mb-4 sm:mb-6">
 				<h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
 					Distribución de Calificaciones
@@ -224,7 +224,7 @@
 		</div>
 
 		<!-- Filter Tabs -->
-		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4">
+		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-primary-300 dark:border-gray-700 p-3 sm:p-4">
 			<!-- Tabs with horizontal scroll on mobile -->
 			<div class="relative">
 				<div class="overflow-x-auto pb-2 -mx-1 sm:mx-0">
@@ -293,7 +293,7 @@
 
 		<!-- Reviews List -->
 		<div v-if="loading" class="space-y-3 sm:space-y-4 md:space-y-6">
-			<div v-for="n in 3" :key="n" class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
+			<div v-for="n in 3" :key="n" class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 border border-primary-300 dark:border-gray-700 animate-pulse">
 				<div class="flex items-start gap-2 sm:gap-3 md:gap-4">
 					<div class="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
 					<div class="flex-1 space-y-2 sm:space-y-3">
@@ -331,7 +331,7 @@
 			/>
 			
 			<!-- Pagination -->
-			<div v-if="filteredReviews.length > itemsPerPage" class="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
+			<div v-if="filteredReviews.length > itemsPerPage" class="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0 pt-4 sm:pt-6 border-t border-primary-300 dark:border-gray-700">
 				<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 order-2 sm:order-1">
 					Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredReviews.length) }} de {{ filteredReviews.length }} reseñas
 				</p>

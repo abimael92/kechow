@@ -4,15 +4,15 @@
     <header class="settings-header">
       <div class="header-content">
         <div class="header-icon-title">
-          <div class="header-icon-wrapper">
-            <i class="ri-truck-line"></i>
+          <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+            <i :class="[activeTab === 'general' ? 'ri-store-2-line' : 'ri-truck-line', 'text-white text-lg sm:text-xl md:text-2xl']"></i>
           </div>
-          <div class="header-text">
-            <h1 class="main-title">
-              Configuración de entrega
+          <div class="header-text flex-1 min-w-0">
+            <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-2xl sm:text-3xl md:text-4xl leading-tight sm:leading-snug m-0 mb-1">
+              {{ activeTab === 'general' ? 'Configuración general' : 'Configuración de entrega' }}
             </h1>
-            <p class="subtitle">
-              Gestiona zonas, tarifas y horarios de entrega
+            <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base m-0">
+              {{ activeTab === 'general' ? 'Información del restaurante y horarios' : 'Gestiona zonas, tarifas y horarios de entrega' }}
             </p>
           </div>
         </div>
@@ -50,6 +50,13 @@
 
     <!-- Main Content Area -->
     <main class="settings-main">
+      <!-- General Tab -->
+      <transition name="fade-slide">
+        <section v-if="activeTab === 'general'" class="tab-content general-tab">
+          <GeneralSettings ref="generalSettingsRef" @change="hasChanges = true" />
+        </section>
+      </transition>
+
       <!-- Zones Tab -->
       <transition name="fade-slide">
         <section v-if="activeTab === 'zones'" class="tab-content zones-tab">
@@ -447,6 +454,10 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
+import GeneralSettings from '@/features/business-owner/components/settings/GeneralSettings.vue';
+
+// Refs
+const generalSettingsRef = ref<InstanceType<typeof GeneralSettings> | null>(null);
 
 // State
 const deliveryRadius = ref(5);
@@ -459,11 +470,12 @@ const averageDeliveryTime = ref(30);
 const selectedCurrency = ref('USD');
 const saving = ref(false);
 const hasChanges = ref(false);
-const activeTab = ref('zones');
+const activeTab = ref('general');
 const showQuickActions = ref(false);
 
 // Tabs configuration
 const tabs = [
+  { id: 'general', label: 'General', icon: 'ri-store-2-line' },
   { id: 'zones', label: 'Zonas', icon: 'ri-map-pin-2-line' },
   { id: 'pricing', label: 'Tarifas', icon: 'ri-money-dollar-circle-line' },
   { id: 'options', label: 'Opciones', icon: 'ri-list-settings-line' },
@@ -584,9 +596,12 @@ const resetToDefaults = () => {
 const saveChanges = async () => {
   saving.value = true;
   try {
-    await new Promise(resolve => setTimeout(resolve, 1200));
+    if (activeTab.value === 'general' && generalSettingsRef.value) {
+      await generalSettingsRef.value.save();
+    } else {
+      await new Promise(resolve => setTimeout(resolve, 1200));
+    }
     hasChanges.value = false;
-    // Show success feedback
     const saveBtn = document.querySelector('.save-button');
     if (saveBtn) {
       saveBtn.classList.add('save-success');
@@ -652,7 +667,6 @@ onMounted(() => {
 /* Reset and Base Styles */
 .delivery-settings-responsive {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   display: flex;
   flex-direction: column;
 }
@@ -684,35 +698,12 @@ onMounted(() => {
   flex: 1;
 }
 
-.header-icon-wrapper {
-  width: 56px;
-  height: 56px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 24px;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
 .header-text {
   flex: 1;
 }
 
-.main-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin: 0 0 0.25rem 0;
-  font-family: 'Inter', system-ui, sans-serif;
-}
-
-.subtitle {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin: 0;
+.text-bubble {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
 }
 
 /* Save Button */
@@ -757,13 +748,15 @@ onMounted(() => {
 /* Navigation */
 .settings-nav {
   background: var(--color-card);
-  border-bottom: 1px solid #e5e7eb;
+  border: 1px solid #fe7f24;
   position: sticky;
   top: 88px;
   z-index: 90;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  margin: 2rem 0 2rem 0;
+  border-radius: 12px;
 }
 
 .settings-nav::-webkit-scrollbar {
@@ -1806,14 +1799,10 @@ input:checked + .slider:before {
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  .delivery-settings-responsive {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  }
   
   .settings-header,
   .content-card,
   .modal-container {
-    background: #1e293b;
     border-color: #334155;
   }
   

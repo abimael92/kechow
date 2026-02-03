@@ -3,15 +3,15 @@
         <!-- Header -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-secondary-600 to-secondary-500 flex items-center justify-center shadow-md shadow-primary-500/30">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
                     <i class="ri-home-3-line text-white text-xl sm:text-2xl md:text-3xl"></i>
                 </div>
                 <div class="flex-1 min-w-0">
                     <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-                        {{ t('dashboard') }}
+                        Tablero
                     </h1>
                     <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
-                        {{ t('subtitle') }}
+                        ¡Bienvenido de nuevo! 
                     </p>
                 </div>
             </div>
@@ -19,10 +19,10 @@
             <!-- Desktop welcome message -->
             <div class="hidden sm:block text-right">
                 <p class="text-neutral-600 dark:text-neutral-400 text-sm md:text-base">
-                    {{ t('welcomeBack') }}, {{ authStore.user?.name || 'User' }}
+                    {{ authStore.user?.name || 'Usuario' }}
                 </p>
                 <p class="text-neutral-500 dark:text-neutral-500 text-xs md:text-sm">
-                    {{ t('lastLogin') }}: {{ formatLastLogin() }}
+                    Último acceso: {{ formatLastLogin() }}
                 </p>
             </div>
         </div>

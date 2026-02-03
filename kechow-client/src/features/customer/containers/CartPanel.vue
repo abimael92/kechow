@@ -195,7 +195,7 @@ onMounted(() => {
 								removingItemId === item.id
 									? 'opacity-0 scale-95'
 									: 'opacity-100 scale-100',
-								'hover:shadow-md hover:border-gray-200 dark:hover:border-gray-600',
+								'hover:shadow-md hover:border-primary-300 dark:hover:border-gray-600',
 							]"
 						>
 							<div class="flex flex-col sm:flex-row gap-4">
@@ -393,7 +393,7 @@ onMounted(() => {
 									<span>IVA (8%)</span>
 									<span>${{ tax.toFixed(2) }}</span>
 								</div>
-								<div class="border-t border-gray-200 dark:border-gray-700 pt-3 mt-3">
+								<div class="border-t border-primary-300 dark:border-gray-700 pt-3 mt-3">
 									<div
 										class="flex justify-between text-base md:text-lg font-bold text-gray-900 dark:text-white"
 									>
@@ -456,7 +456,7 @@ onMounted(() => {
 
 							<!-- Security Badge -->
 							<div
-								class="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
+								class="flex items-center justify-center gap-2 mt-4 pt-4 border-t border-primary-300 dark:border-gray-700"
 							>
 								<svg
 									class="w-4 h-4 text-green-500"

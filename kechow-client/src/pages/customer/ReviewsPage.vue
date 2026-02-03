@@ -149,7 +149,7 @@
 					</div>
 					<div
 						v-if="review.response"
-						class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
+						class="mt-4 pt-4 border-t border-primary-300 dark:border-gray-700"
 					>
 						<p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">
 							Respuesta del restaurante:

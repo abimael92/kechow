@@ -1,7 +1,7 @@
 <!-- @/components/RestaurantCard.vue -->
 <template>
     <div 
-        class="bg-card dark:bg-secondary-800 rounded-card overflow-hidden border border-secondary-200 dark:border-secondary-700 shadow-soft hover:shadow-medium transition-all duration-300 cursor-pointer group min-w-0"
+        class="bg-card dark:bg-secondary-800 rounded-card overflow-hidden border border-primary-500 dark:border-secondary-700 shadow-soft hover:shadow-medium transition-all duration-300 cursor-pointer group min-w-0"
         @click="$emit('click', restaurant)"
     >
         <!-- Restaurant Image -->

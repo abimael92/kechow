@@ -4,13 +4,18 @@
 		<div
 			class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0"
 		>
-			<div>
-				<h1 class="text-xl sm:text-2xl font-bold text-gray-900">
-					{{ $t('earnings') }}
-				</h1>
-				<p class="text-gray-600 text-sm sm:text-base mt-1">
-					{{ $t('trackEarningsPayments') }}
-				</p>
+			<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+					<i class="ri-money-dollar-circle-line text-white text-lg sm:text-xl md:text-2xl"></i>
+				</div>
+				<div>
+					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
+						Ganancias
+					</h1>
+					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none">
+						Sigue tus ganancias y pagos de entregas
+					</p>
+				</div>
 			</div>
 			<div class="flex flex-wrap bg-gray-100 rounded-lg p-1 gap-1">
 				<button
@@ -153,7 +158,7 @@
 		<!-- Quick Action Buttons -->
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6">
 			<button
-				class="bg-white border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+				class="bg-white border border-primary-300 rounded-xl p-4 hover:bg-gray-50 transition-colors cursor-pointer"
 			>
 				<div class="text-center">
 					<CurrencyDollarIcon
@@ -164,7 +169,7 @@
 				</div>
 			</button>
 			<button
-				class="bg-white border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+				class="bg-white border border-primary-300 rounded-xl p-4 hover:bg-gray-50 transition-colors cursor-pointer"
 			>
 				<div class="text-center">
 					<BadgeCheckIcon
@@ -175,7 +180,7 @@
 				</div>
 			</button>
 			<button
-				class="bg-white border border-gray-200 rounded-xl p-4 hover:bg-gray-50 transition-colors cursor-pointer"
+				class="bg-white border border-primary-300 rounded-xl p-4 hover:bg-gray-50 transition-colors cursor-pointer"
 			>
 				<div class="text-center">
 					<CalculatorIcon
