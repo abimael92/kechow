@@ -7,7 +7,7 @@
         <!-- Restaurant Image -->
         <div class="relative h-36 sm:h-40 md:h-48 overflow-hidden">
             <img 
-                :src="restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'" 
+                :src="restaurant.logo_url || restaurant.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'" 
                 :alt="restaurant.name"
                 class="w-full h-full max-w-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
@@ -95,6 +95,7 @@ interface Restaurant {
     name: string;
     description: string;
     image?: string;
+    logo_url?: string;
     menu: MenuItem[];
     rating?: number; // Made optional
     deliveryTime?: number; // Made optional

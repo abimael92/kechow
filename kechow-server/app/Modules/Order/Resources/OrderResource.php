@@ -8,12 +8,18 @@ class OrderResource extends JsonResource
 {
     public function toArray($request): array
     {
+        $status = $this->status;
+        if ($status === 'pending') {
+            $status = 'new'; // Frontend expects 'new' for pending orders
+        }
+
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
             'user_id' => $this->user_id,
             'restaurant_id' => $this->restaurant_id,
             'total' => $this->total,
-            'status' => $this->status,
+            'totalAmount' => (float) $this->total,
+            'status' => $status,
             'delivery_address' => $this->delivery_address,
             'delivery_notes' => $this->delivery_notes,
             'driver_id' => $this->driver_id,
@@ -21,12 +27,17 @@ class OrderResource extends JsonResource
             'actual_delivery_time' => $this->actual_delivery_time,
             'can_be_cancelled' => $this->canBeCancelled(),
             'is_completed' => $this->isCompleted(),
+            'customerName' => $this->user?->name ?? '',
+            'address' => $this->delivery_address ?? '',
+            'phone' => $this->user?->phone ?? '',
             'user' => new \App\Http\Resources\UserResource($this->whenLoaded('user')),
             'restaurant' => new \App\Modules\Restaurant\Resources\RestaurantResource($this->whenLoaded('restaurant')),
             'driver' => new \App\Http\Resources\UserResource($this->whenLoaded('driver')),
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'createdAt' => $this->created_at?->toIso8601String(),
+            'updatedAt' => $this->updated_at?->toIso8601String(),
         ];
     }
 }

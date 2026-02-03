@@ -9,12 +9,13 @@ class OrderItemResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->id,
+            'id' => (string) $this->id,
             'order_id' => $this->order_id,
             'menu_item_id' => $this->menu_item_id,
-            'quantity' => $this->quantity,
-            'price' => $this->price,
-            'subtotal' => $this->subtotal,
+            'name' => $this->menuItem?->name ?? 'Unknown',
+            'quantity' => (int) $this->quantity,
+            'price' => (float) $this->price,
+            'subtotal' => (float) ($this->quantity * $this->price),
             'menu_item' => new \App\Modules\Restaurant\Resources\MenuItemResource($this->whenLoaded('menuItem')),
         ];
     }

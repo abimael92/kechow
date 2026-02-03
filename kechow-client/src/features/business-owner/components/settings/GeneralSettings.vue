@@ -1,7 +1,7 @@
 <template>
 	<div class="general-settings">
-		<!-- Restaurant info first -->
-		<div class="content-card info-card">
+		<!-- Restaurant info (shown in General tab) -->
+		<div v-show="displayMode === 'info' || displayMode === 'all'" class="content-card info-card">
 			<div class="card-header">
 				<h2>
 					<i class="ri-store-2-line"></i>
@@ -50,6 +50,66 @@
 					></textarea>
 				</div>
 				<div class="input-group full-width">
+					<label>Logo del negocio</label>
+					<div class="logo-upload-block">
+						<div class="logo-preview-wrap">
+							<img
+								:src="logoPreviewSrc"
+								alt="Vista previa del logo"
+								class="logo-preview-img"
+								@error="onLogoPreviewError"
+							/>
+						</div>
+						<div class="logo-actions">
+							<input
+								ref="logoFileInputRef"
+								type="file"
+								accept="image/jpeg,image/png,image/webp,image/gif"
+								class="logo-file-input"
+								@change="onLogoFileSelect"
+							/>
+							<button type="button" class="logo-btn" @click="triggerLogoFileInput">
+								<i class="ri-image-add-line"></i>
+								Seleccionar imagen
+							</button>
+							<button type="button" class="logo-btn logo-btn-secondary" @click="usePlaceholderLogo">
+								<i class="ri-image-line"></i>
+								Usar imagen predeterminada
+							</button>
+						</div>
+						<span class="input-hint">Los clientes verán este logo en la página del restaurante</span>
+					</div>
+				</div>
+				<div class="input-group">
+					<label for="avgPrepTime">Tiempo promedio para completar pedido</label>
+					<select
+						id="avgPrepTime"
+						v-model="avgPrepTimeMinutesSelect"
+						@change="onAvgPrepTimeChange"
+					>
+						<option value="">
+							—
+						</option>
+						<option :value="15">
+							15 min
+						</option>
+						<option :value="20">
+							20 min
+						</option>
+						<option :value="30">
+							30 min
+						</option>
+						<option :value="45">
+							45 min
+						</option>
+						<option :value="60">
+							60 min
+						</option>
+					</select>
+					<span class="input-hint">Opcional. Minutos estimados de preparación</span>
+				</div>
+				<!-- Restaurante activo (commented out)
+				<div class="input-group full-width">
 					<div class="toggle-row">
 						<div class="toggle-info">
 							<label for="isOpen">Restaurante activo</label>
@@ -61,36 +121,18 @@
 						</label>
 					</div>
 				</div>
+				-->
 			</div>
 		</div>
 
-		<!-- Schedule and availability -->
-		<div class="content-card schedule-card">
+		<!-- Schedule and availability (shown in Horarios tab) -->
+		<div v-show="displayMode === 'schedule' || displayMode === 'all'" class="content-card schedule-card">
 			<div class="card-header">
 				<h2>
 					<i class="ri-calendar-schedule-line"></i>
 					Horario y disponibilidad
 				</h2>
 				<p class="card-subtitle">Configura los días y horas en que atiendes. Los clientes verán esta información.</p>
-			</div>
-
-			<!-- Manual override: closed today -->
-			<div class="override-section">
-				<div class="toggle-row">
-					<div class="toggle-info">
-						<label for="overrideClosed">Cerrar hoy (excepción manual)</label>
-						<span class="toggle-hint">Marca esto para mostrarte como cerrado hoy aunque tu horario diga lo contrario</span>
-					</div>
-					<label class="switch">
-						<input
-							id="overrideClosed"
-							v-model="overrideClosed"
-							type="checkbox"
-							@change="onChange"
-						/>
-						<span class="slider"></span>
-					</label>
-				</div>
 			</div>
 
 			<!-- Schedule mode toggle -->
@@ -254,7 +296,7 @@
 					</button>
 				</div>
 				<ul v-if="closedDates.length > 0" class="closed-dates-list">
-					<li v-for="(d, idx) in closedDates" :key="d" class="closed-date-item">
+					<li v-for="(d, idx) in closedDates" :key="'h-' + d" class="closed-date-item">
 						<span>{{ formatDate(d) }}</span>
 						<button type="button" class="btn-remove" @click="removeClosedDate(idx)" aria-label="Eliminar">
 							<i class="ri-close-line"></i>
@@ -263,13 +305,48 @@
 				</ul>
 				<p v-else class="no-dates">No hay fechas cerradas configuradas</p>
 			</div>
+
+			<!-- Exceptional closed dates (override) -->
+			<div class="holidays-section exceptional-section">
+				<h3><i class="ri-error-warning-line"></i> Cierres excepcionales</h3>
+				<p class="section-hint">Añade fechas específicas en las que cerrarás por razones excepcionales (averías, eventos, etc.)</p>
+				<div class="holiday-input-row">
+					<input
+						v-model="newExceptionalDate"
+						type="date"
+						class="date-input"
+						@keydown.enter="addExceptionalDate"
+					/>
+					<button type="button" class="btn-add" @click="addExceptionalDate">
+						<i class="ri-add-line"></i>
+						Añadir fecha
+					</button>
+				</div>
+				<ul v-if="exceptionalClosedDates.length > 0" class="closed-dates-list">
+					<li v-for="(d, idx) in exceptionalClosedDates" :key="'e-' + d" class="closed-date-item">
+						<span>{{ formatDate(d) }}</span>
+						<button type="button" class="btn-remove" @click="removeExceptionalDate(idx)" aria-label="Eliminar">
+							<i class="ri-close-line"></i>
+						</button>
+					</li>
+				</ul>
+				<p v-else class="no-dates">No hay cierres excepcionales configurados</p>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getRestaurantSettings, updateRestaurantSettings } from '@/features/business-owner/services/businessOwner.service';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import { getRestaurantSettings, updateRestaurantSettings, uploadRestaurantLogo } from '@/features/business-owner/services/businessOwner.service';
+
+withDefaults(
+	defineProps<{
+		/** 'info' = General tab (restaurant info only), 'schedule' = Horarios tab (schedule only), 'all' = both */
+		displayMode?: 'info' | 'schedule' | 'all';
+	}>(),
+	{ displayMode: 'all' }
+);
 
 const emit = defineEmits<{
 	(e: 'change'): void;
@@ -280,9 +357,42 @@ const restaurantPhone = ref('');
 const restaurantAddress = ref('');
 const restaurantDescription = ref('');
 const isOpen = ref(true);
-const overrideClosed = ref(false);
+const logoUrl = ref('');
+const logoFile = ref<File | null>(null);
+const logoFileInputRef = ref<HTMLInputElement | null>(null);
+const logoObjectUrl = ref<string | null>(null);
+const PLACEHOLDER_LOGO = '/images/placeholder-image.png';
+/** Fallback when placeholder fails (e.g. 404) */
+const FALLBACK_IMG = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect fill="#e5e7eb" width="120" height="120"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-size="12" font-family="sans-serif">Sin imagen</text></svg>');
+
+/** Avg prep time: empty string = optional/not set, or number (15/20/30/45/60). */
+const avgPrepTimeMinutesSelect = ref<string | number>('');
+
+const logoPreview = computed(() => {
+	if (logoObjectUrl.value) return logoObjectUrl.value;
+	if (logoUrl.value) return logoUrl.value;
+	return PLACEHOLDER_LOGO;
+});
+
+/** Actual src used by img; falls back on load error. */
+const logoPreviewSrc = ref('');
+watch(logoPreview, (url) => {
+	logoPreviewSrc.value = url || PLACEHOLDER_LOGO;
+	if (import.meta.env.DEV) {
+		console.log('[Logo preview] src:', logoPreviewSrc.value, '| logoUrl:', logoUrl.value, '| logoObjectUrl:', !!logoObjectUrl.value);
+	}
+}, { immediate: true });
+
+function onLogoPreviewError() {
+	if (import.meta.env.DEV) {
+		console.warn('[Logo preview] Image failed to load:', logoPreviewSrc.value);
+	}
+	logoPreviewSrc.value = logoPreviewSrc.value === PLACEHOLDER_LOGO ? FALLBACK_IMG : PLACEHOLDER_LOGO;
+}
 const closedDates = ref<string[]>([]);
 const newClosedDate = ref('');
+const exceptionalClosedDates = ref<string[]>([]);
+const newExceptionalDate = ref('');
 
 const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
@@ -314,6 +424,40 @@ const operatingDays = ref(
 const onChange = () => {
 	emit('change');
 };
+
+function onAvgPrepTimeChange() {
+	onChange();
+}
+
+function onLogoFileSelect(e: Event) {
+	const input = e.target as HTMLInputElement;
+	const file = input.files?.[0];
+	if (!file) return;
+	if (!file.type.startsWith('image/')) return;
+	if (logoObjectUrl.value) URL.revokeObjectURL(logoObjectUrl.value);
+	logoObjectUrl.value = URL.createObjectURL(file);
+	logoFile.value = file;
+	onChange();
+}
+
+function triggerLogoFileInput() {
+	logoFileInputRef.value?.click();
+}
+
+function usePlaceholderLogo() {
+	if (logoObjectUrl.value) {
+		URL.revokeObjectURL(logoObjectUrl.value);
+		logoObjectUrl.value = null;
+	}
+	logoFile.value = null;
+	logoUrl.value = '';
+	if (logoFileInputRef.value) logoFileInputRef.value.value = '';
+	onChange();
+}
+
+onUnmounted(() => {
+	if (logoObjectUrl.value) URL.revokeObjectURL(logoObjectUrl.value);
+});
 
 function onWeekdayModeChange() {
 	if (weekdayMode.value) {
@@ -367,6 +511,20 @@ function removeClosedDate(idx: number) {
 	onChange();
 }
 
+function addExceptionalDate() {
+	const d = newExceptionalDate.value.trim();
+	if (!d) return;
+	if (exceptionalClosedDates.value.includes(d)) return;
+	exceptionalClosedDates.value = [...exceptionalClosedDates.value, d].sort();
+	newExceptionalDate.value = '';
+	onChange();
+}
+
+function removeExceptionalDate(idx: number) {
+	exceptionalClosedDates.value = exceptionalClosedDates.value.filter((_, i) => i !== idx);
+	onChange();
+}
+
 
 const loadSettings = async () => {
 	try {
@@ -379,8 +537,15 @@ const loadSettings = async () => {
 		restaurantAddress.value = data.address || '';
 		restaurantDescription.value = data.description || '';
 		isOpen.value = data.isOpen ?? true;
-		overrideClosed.value = data.overrideClosed ?? false;
+		logoUrl.value = data.logoUrl || '';
+		if (logoObjectUrl.value) {
+			URL.revokeObjectURL(logoObjectUrl.value);
+			logoObjectUrl.value = null;
+		}
+		logoFile.value = null;
+		avgPrepTimeMinutesSelect.value = data.avgPrepTimeMinutes ?? '';
 		closedDates.value = Array.isArray(data.closedDates) ? [...data.closedDates] : [];
+		exceptionalClosedDates.value = Array.isArray(data.exceptionalClosedDates) ? [...data.exceptionalClosedDates] : [];
 		if (data.operatingHours?.length) {
 			const loaded = data.operatingHours.slice(0, 7).map(
 				(
@@ -444,14 +609,24 @@ const loadSettings = async () => {
 };
 
 const saveSettings = async () => {
+	let finalLogoUrl = logoUrl.value;
+	if (logoFile.value) {
+		finalLogoUrl = await uploadRestaurantLogo(logoFile.value);
+		if (logoObjectUrl.value) URL.revokeObjectURL(logoObjectUrl.value);
+		logoObjectUrl.value = null;
+		logoFile.value = null;
+		logoUrl.value = finalLogoUrl;
+	}
 	await updateRestaurantSettings({
 		name: restaurantName.value,
 		phone: restaurantPhone.value,
 		address: restaurantAddress.value,
 		description: restaurantDescription.value,
 		isOpen: isOpen.value,
-		overrideClosed: overrideClosed.value,
+		logoUrl: finalLogoUrl,
+		avgPrepTimeMinutes: avgPrepTimeMinutesSelect.value === '' ? null : Number(avgPrepTimeMinutesSelect.value),
 		closedDates: closedDates.value,
+		exceptionalClosedDates: exceptionalClosedDates.value,
 		operatingHours: operatingDays.value.map((d) => ({
 			id: `day-${d.id}`,
 			day: d.name,
@@ -523,17 +698,6 @@ defineExpose({
 	font-size: 0.875rem;
 	color: #6b7280;
 	line-height: 1.4;
-}
-
-.override-section {
-	padding: 1rem 1.5rem;
-	background: rgba(254, 243, 199, 0.6);
-	border-bottom: 1px solid rgba(253, 230, 138, 0.8);
-}
-
-.dark .override-section {
-	background: rgba(120, 53, 15, 0.2);
-	border-color: rgba(120, 53, 15, 0.3);
 }
 
 .schedule-mode-section {
@@ -987,6 +1151,14 @@ defineExpose({
 	margin: 0;
 }
 
+.exceptional-section {
+	background: rgba(254, 243, 199, 0.15);
+}
+
+.dark .exceptional-section {
+	background: rgba(120, 53, 15, 0.08);
+}
+
 /* Settings grid */
 .settings-grid {
 	display: grid;
@@ -1016,6 +1188,7 @@ defineExpose({
 }
 
 .input-group input,
+.input-group select,
 .input-group textarea {
 	padding: 0.75rem 1rem;
 	border: 1px solid #d1d5db;
@@ -1026,12 +1199,14 @@ defineExpose({
 }
 
 .dark .input-group input,
+.dark .input-group select,
 .dark .input-group textarea {
 	border-color: #4b5563;
 	color: #f9fafb;
 }
 
 .input-group input:focus,
+.input-group select:focus,
 .input-group textarea:focus {
 	outline: none;
 	border-color: #FF6B00;
@@ -1041,6 +1216,103 @@ defineExpose({
 .input-group textarea {
 	resize: vertical;
 	min-height: 100px;
+}
+
+.input-hint {
+	font-size: 0.75rem;
+	color: #6b7280;
+	margin-top: -0.25rem;
+}
+
+.dark .input-hint {
+	color: #9ca3af;
+}
+
+.logo-upload-block {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.logo-preview-wrap {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 120px;
+	min-width: 120px;
+	height: 120px;
+	min-height: 120px;
+	border-radius: 0.75rem;
+	border: 1px solid #e5e7eb;
+	overflow: hidden;
+	background: #f9fafb;
+	flex-shrink: 0;
+}
+
+.dark .logo-preview-wrap {
+	border-color: #4b5563;
+	background: #374151;
+}
+
+.logo-preview-img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	object-position: center;
+}
+
+.logo-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+
+.logo-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	padding: 0.5rem 1rem;
+	border: 1px solid #d1d5db;
+	border-radius: 0.5rem;
+	background: #fff;
+	color: #374151;
+	font-size: 0.875rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.logo-btn:hover {
+	background: #f9fafb;
+	border-color: #9ca3af;
+}
+
+.logo-btn-secondary {
+	background: #f3f4f6;
+	color: #6b7280;
+}
+
+.logo-btn-secondary:hover {
+	background: #e5e7eb;
+}
+
+.dark .logo-btn {
+	background: #374151;
+	border-color: #4b5563;
+	color: #e5e7eb;
+}
+
+.dark .logo-btn:hover {
+	background: #4b5563;
+}
+
+.logo-file-input {
+	position: absolute;
+	width: 0;
+	height: 0;
+	opacity: 0;
+	pointer-events: none;
 }
 
 .toggle-row {

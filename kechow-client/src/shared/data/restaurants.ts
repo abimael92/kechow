@@ -14,6 +14,7 @@ export type Restaurant = {
 	name: string;
 	description: string;
 	image?: string;
+	logo_url?: string;
 	menu: MenuItem[];
 	rating?: number;
 };

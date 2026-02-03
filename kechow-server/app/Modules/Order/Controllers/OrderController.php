@@ -37,6 +37,17 @@ class OrderController extends Controller
         return response()->json(new OrderResource($order));
     }
 
+    /** Show order for owner (must belong to owner's restaurants). */
+    public function showOwnerOrder(Request $request, Order $order): JsonResponse
+    {
+        $restaurantIds = $request->user()->restaurants()->pluck('id')->toArray();
+        if (!in_array($order->restaurant_id, $restaurantIds)) {
+            abort(403, 'Unauthorized');
+        }
+        $order->load('items.menuItem', 'user', 'driver');
+        return response()->json((new OrderResource($order))->resolve());
+    }
+
     public function updateStatus(UpdateOrderStatusRequest $request, Order $order): JsonResponse
     {
         $role = $request->user()->role ?? null;
@@ -54,10 +65,68 @@ class OrderController extends Controller
     {
         $restaurantIds = $request->user()->restaurants()->pluck('id')->toArray();
         if (empty($restaurantIds)) {
-            return response()->json([]);
+            return response()->json(['orders' => []]);
         }
-        $orders = $this->orderService->getOrdersByRestaurantIds($restaurantIds);
-        return response()->json(OrderResource::collection($orders));
+        $orders = $this->orderService->getOrdersByRestaurantIds($restaurantIds, $this->mapStatusFilter($request->get('status')));
+        return response()->json(['orders' => OrderResource::collection($orders)->resolve()]);
+    }
+
+    /** Map frontend status 'new' to backend 'pending'. */
+    private function mapStatusFilter($status): ?array
+    {
+        if (!is_array($status) || empty($status)) {
+            return null;
+        }
+        return array_map(fn ($s) => $s === 'new' ? 'pending' : $s, $status);
+    }
+
+    /** Order stats for owner dashboard (today, weekly, monthly). */
+    public function orderStats(Request $request): JsonResponse
+    {
+        $restaurantIds = $request->user()->restaurants()->pluck('id')->toArray();
+        if (empty($restaurantIds)) {
+            return response()->json([
+                'today' => ['orders' => 0, 'revenue' => 0, 'averageOrderValue' => 0],
+                'weekly' => ['orders' => 0, 'revenue' => 0, 'trend' => 'stable'],
+                'monthly' => ['orders' => 0, 'revenue' => 0, 'completionRate' => 0],
+            ]);
+        }
+
+        $todayStart = now()->startOfDay();
+        $weekStart = now()->startOfWeek();
+        $monthStart = now()->startOfMonth();
+
+        $orders = Order::whereIn('restaurant_id', $restaurantIds)->get();
+        $todayOrders = $orders->filter(fn ($o) => $o->created_at->gte($todayStart));
+        $weeklyOrders = $orders->filter(fn ($o) => $o->created_at->gte($weekStart));
+        $monthlyOrders = $orders->filter(fn ($o) => $o->created_at->gte($monthStart));
+
+        $todayRevenue = (float) $todayOrders->sum('total');
+        $weeklyRevenue = (float) $weeklyOrders->sum('total');
+        $monthlyRevenue = (float) $monthlyOrders->sum('total');
+
+        $todayCount = $todayOrders->count();
+        $monthlyCount = $monthlyOrders->count();
+        $monthlyDelivered = $monthlyOrders->where('status', Order::STATUS_DELIVERED)->count();
+        $completionRate = $monthlyCount > 0 ? round($monthlyDelivered / $monthlyCount * 100, 1) : 0;
+
+        return response()->json([
+            'today' => [
+                'orders' => $todayCount,
+                'revenue' => $todayRevenue,
+                'averageOrderValue' => $todayCount > 0 ? round($todayRevenue / $todayCount, 2) : 0,
+            ],
+            'weekly' => [
+                'orders' => $weeklyOrders->count(),
+                'revenue' => $weeklyRevenue,
+                'trend' => 'stable',
+            ],
+            'monthly' => [
+                'orders' => $monthlyCount,
+                'revenue' => $monthlyRevenue,
+                'completionRate' => $completionRate,
+            ],
+        ]);
     }
 
     public function driverOrders(Request $request): JsonResponse

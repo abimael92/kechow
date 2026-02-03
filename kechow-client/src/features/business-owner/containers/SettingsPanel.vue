@@ -5,14 +5,14 @@
       <div class="header-content">
         <div class="header-icon-title">
           <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
-            <i :class="[activeTab === 'general' ? 'ri-store-2-line' : 'ri-truck-line', 'text-white text-lg sm:text-xl md:text-2xl']"></i>
+            <i :class="[activeTab === 'general' ? 'ri-store-2-line' : 'ri-calendar-schedule-line', 'text-white text-lg sm:text-xl md:text-2xl']"></i>
           </div>
           <div class="header-text flex-1 min-w-0">
             <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-2xl sm:text-3xl md:text-4xl leading-tight sm:leading-snug m-0 mb-1">
-              {{ activeTab === 'general' ? 'Configuración general' : 'Configuración de entrega' }}
+              {{ activeTab === 'general' ? 'Configuración general' : activeTab === 'times' ? 'Horarios' : 'Configuración de entrega' }}
             </h1>
             <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base m-0">
-              {{ activeTab === 'general' ? 'Información del restaurante y horarios' : 'Gestiona zonas, tarifas y horarios de entrega' }}
+              {{ activeTab === 'general' ? 'Información del restaurante' : activeTab === 'times' ? 'Horario y disponibilidad del restaurante' : 'Gestiona zonas, tarifas y horarios de entrega' }}
             </p>
           </div>
         </div>
@@ -50,14 +50,23 @@
 
     <!-- Main Content Area -->
     <main class="settings-main">
-      <!-- General Tab -->
+      <!-- General + Horarios tabs share one GeneralSettings instance (info vs schedule) -->
       <transition name="fade-slide">
-        <section v-if="activeTab === 'general'" class="tab-content general-tab">
-          <GeneralSettings ref="generalSettingsRef" @change="hasChanges = true" />
+        <section
+          v-if="activeTab === 'general' || activeTab === 'times'"
+          class="tab-content"
+          :class="activeTab === 'general' ? 'general-tab' : 'times-tab'"
+        >
+          <GeneralSettings
+            ref="generalSettingsRef"
+            :display-mode="activeTab === 'general' ? 'info' : 'schedule'"
+            @change="hasChanges = true"
+          />
         </section>
       </transition>
 
-      <!-- Zones Tab -->
+      <!-- Zones Tab (commented out) -->
+      <!--
       <transition name="fade-slide">
         <section v-if="activeTab === 'zones'" class="tab-content zones-tab">
           <div class="content-card">
@@ -144,8 +153,10 @@
           </div>
         </section>
       </transition>
+      -->
 
-      <!-- Pricing Tab -->
+      <!-- Pricing Tab (commented out) -->
+      <!--
       <transition name="fade-slide">
         <section v-if="activeTab === 'pricing'" class="tab-content pricing-tab">
           <div class="content-card">
@@ -245,6 +256,7 @@
           </div>
         </section>
       </transition>
+      -->
 
       <!-- Options Tab -->
       <transition name="fade-slide">
@@ -286,84 +298,6 @@
         </section>
       </transition>
 
-      <!-- Times Tab -->
-      <transition name="fade-slide">
-        <section v-if="activeTab === 'times'" class="tab-content times-tab">
-          <div class="content-card">
-            <div class="card-header">
-              <h2>
-                <i class="ri-time-line"></i>
-                Horarios de entrega
-              </h2>
-            </div>
-
-            <div class="time-controls">
-              <div class="average-time-input">
-                <label for="averageTime">Tiempo promedio de entrega</label>
-                <div class="time-input-wrapper">
-                  <input
-                    id="averageTime"
-                    v-model.number="averageDeliveryTime"
-                    type="number"
-                    min="5"
-                    max="180"
-                    step="5"
-                    @input="validateDeliveryTime"
-                  />
-                  <span class="time-unit">minutos</span>
-                </div>
-              </div>
-
-              <div class="delivery-hours">
-                <h3>Horario de entrega por día</h3>
-                <div class="days-grid">
-                  <div
-                    v-for="day in deliveryDays"
-                    :key="day.id"
-                    class="day-card"
-                    :class="{ disabled: !day.enabled }"
-                  >
-                    <div class="day-header">
-                      <label class="day-toggle">
-                        <input
-                          v-model="day.enabled"
-                          type="checkbox"
-                        />
-                        <span class="day-name">{{ day.name }}</span>
-                      </label>
-                    </div>
-                    <div v-if="day.enabled" class="day-times">
-                      <div class="time-input-group">
-                        <label>Inicio</label>
-                        <input
-                          v-model="day.startTime"
-                          type="time"
-                          class="time-input"
-                        />
-                      </div>
-                      <div class="time-separator">
-                        <span>a</span>
-                      </div>
-                      <div class="time-input-group">
-                        <label>Fin</label>
-                        <input
-                          v-model="day.endTime"
-                          type="time"
-                          class="time-input"
-                        />
-                      </div>
-                    </div>
-                    <div v-else class="day-closed">
-                      <i class="ri-close-circle-line"></i>
-                      <span>Cerrado</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </transition>
     </main>
 
     <!-- Floating Action Button (Mobile) -->
@@ -378,7 +312,7 @@
     </button>
 
     <!-- Global Actions -->
-    <footer class="settings-footer">
+    <!-- <footer class="settings-footer">
       <button
         @click="resetToDefaults"
         class="footer-button secondary"
@@ -394,10 +328,10 @@
         <i class="ri-flashlight-line"></i>
         Acciones rápidas
       </button>
-    </footer>
+    </footer> -->
 
     <!-- Quick Actions Modal -->
-    <transition name="modal">
+    <!-- <transition name="modal">
       <div v-if="showQuickActions" class="modal-overlay">
         <div class="modal-container">
           <div class="modal-header">
@@ -448,7 +382,7 @@
           </div>
         </div>
       </div>
-    </transition>
+    </transition> -->
   </div>
 </template>
 
@@ -479,10 +413,10 @@ const showQuickActions = ref(false);
 // Tabs configuration
 const tabs = [
   { id: 'general', label: 'General', icon: 'ri-store-2-line' },
-  { id: 'zones', label: 'Zonas', icon: 'ri-map-pin-2-line' },
-  { id: 'pricing', label: 'Tarifas', icon: 'ri-money-dollar-circle-line' },
-  { id: 'options', label: 'Opciones', icon: 'ri-list-settings-line' },
+  // { id: 'zones', label: 'Zonas', icon: 'ri-map-pin-2-line' },
+  // { id: 'pricing', label: 'Tarifas', icon: 'ri-money-dollar-circle-line' },
   { id: 'times', label: 'Horarios', icon: 'ri-time-line' },
+  { id: 'options', label: 'Opciones', icon: 'ri-list-settings-line' },
 ];
 
 // Data
@@ -599,7 +533,7 @@ const resetToDefaults = () => {
 const saveChanges = async () => {
   saving.value = true;
   try {
-    if (activeTab.value === 'general' && generalSettingsRef.value) {
+    if ((activeTab.value === 'general' || activeTab.value === 'times') && generalSettingsRef.value) {
       await generalSettingsRef.value.save();
     } else {
       await new Promise(resolve => setTimeout(resolve, 1200));

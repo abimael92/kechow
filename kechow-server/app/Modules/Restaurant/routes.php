@@ -6,6 +6,8 @@ use App\Modules\Restaurant\Controllers\MenuItemController;
 Route::prefix('restaurants')->group(function () {
     // Public routes
     Route::get('/', [RestaurantController::class, 'index']);
+    // Serve logo files (public, no auth) - must be before /{restaurant}
+    Route::get('/logo/{filename}', [RestaurantController::class, 'serveLogo'])->where('filename', '[a-zA-Z0-9._-]+');
     // Owner list must be before /{restaurant} so /owner/my-restaurants is not matched as id
     Route::get('/owner/my-restaurants', [RestaurantController::class, 'ownerRestaurants'])->middleware('auth:sanctum');
     Route::get('/{restaurant}', [RestaurantController::class, 'show']);
@@ -14,6 +16,7 @@ Route::prefix('restaurants')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [RestaurantController::class, 'store']);
         Route::put('/{restaurant}', [RestaurantController::class, 'update']);
+        Route::post('/{restaurant}/logo', [RestaurantController::class, 'uploadLogo']);
         Route::delete('/{restaurant}', [RestaurantController::class, 'destroy']);
         Route::patch('/{restaurant}/toggle-status', [RestaurantController::class, 'toggleStatus']);
 

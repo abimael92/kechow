@@ -1,8 +1,8 @@
 <template>
-	<div class="bg-card p-6 rounded-2xl shadow-sm border border-gray-100">
+	<div class="bg-card p-6 rounded-2xl shadow-sm border border-primary-200">
 		<div class="flex items-center justify-between">
 			<div>
-				<p class="text-white text-sm">{{ title }}</p>
+				<p class="text-secondary-500 text-sm">{{ title }}</p>
 				<p class="text-3xl font-bold text-gray-900 mt-1">{{ value }}</p>
 				<p
 					class="text-sm mt-1"
