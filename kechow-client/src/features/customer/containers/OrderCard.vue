@@ -1,6 +1,6 @@
 <!-- @/features/customer/components/OrderCard.vue -->
 <template>
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-300 group cursor-pointer"
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-6 border border-primary-300 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-300 group cursor-pointer"
          @click="$emit('view', order)">
         <!-- Order Header -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">

@@ -9,30 +9,32 @@ import { sampleOrders } from '../data/sampleOrders';
 import { sampleReviews } from '../data/sampleReviews';
 import { restaurants } from '@shared/data/restaurants';
 
-// Use mock data in development or when API fails
-const USE_MOCK_DATA = import.meta.env.MODE === 'development' || import.meta.env.VITE_USE_MOCK_DATA === 'true';
+// Fetch real data only - mock disabled. Use mock only when API fails (fallback).
+// const USE_MOCK_DATA = import.meta.env.MODE === 'development' || import.meta.env.VITE_USE_MOCK_DATA === 'true';
+const USE_MOCK_DATA = false;
 
 /**
- * Helper to handle API calls with mock fallback
+ * Helper to handle API calls - fetches real data only. Uses mock fallback only when API fails.
  */
 async function withMockFallback<T>(
 	apiCall: () => Promise<T>,
 	mockData: T,
 	errorMessage = 'Error al cargar datos'
 ): Promise<T> {
-	if (USE_MOCK_DATA) {
-		// Simulate network delay
-		await new Promise((resolve) => setTimeout(resolve, 300));
-		return mockData;
-	}
+	// if (USE_MOCK_DATA) {
+	// 	await new Promise((resolve) => setTimeout(resolve, 300));
+	// 	return mockData;
+	// }
 
 	try {
 		return await apiCall();
 	} catch (error) {
-		console.warn(`${errorMessage}, usando datos de prueba:`, error);
-		// Simulate network delay for mock
-		await new Promise((resolve) => setTimeout(resolve, 300));
-		return mockData;
+		if (USE_MOCK_DATA) {
+			console.warn(`${errorMessage}, usando datos de prueba:`, error);
+			await new Promise((resolve) => setTimeout(resolve, 300));
+			return mockData;
+		}
+		throw error;
 	}
 }
 

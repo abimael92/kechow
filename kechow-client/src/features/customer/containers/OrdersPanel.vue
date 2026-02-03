@@ -50,7 +50,7 @@
 				></i>
 				<input
 					placeholder="Buscar pedidos..."
-					class="w-full pl-12 pr-10 py-3 lg:py-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm lg:text-base placeholder-gray-500 dark:placeholder-gray-400"
+					class="w-full pl-12 pr-10 py-3 lg:py-4 bg-white dark:bg-gray-800 border border-primary-300 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm lg:text-base placeholder-gray-500 dark:placeholder-gray-400"
 					type="text"
 					v-model="searchQuery"
 					@input="filterOrders"
