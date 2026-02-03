@@ -16,6 +16,7 @@ const registerForm = reactive({
 	password: '',
 	password_confirmation: '',
 	role: 'customer',
+	restaurant_name: '',
 });
 
 function joinUsClicked() {
@@ -29,17 +30,31 @@ function joinUsClicked() {
 }
 
 async function handleRegister() {
+	if (setRole.value && registerForm.role === 'owner' && !registerForm.restaurant_name?.trim()) {
+		toast.error('Ingresa el nombre de tu restaurante');
+		return;
+	}
 	try {
-		await authStore.register({
+		const payload: Record<string, string> = {
 			name: registerForm.name,
 			email: registerForm.email,
 			password: registerForm.password,
 			password_confirmation: registerForm.password_confirmation,
 			role: registerForm.role,
-		});
+		};
+		if (registerForm.role === 'owner' && registerForm.restaurant_name.trim()) {
+			payload.restaurant_name = registerForm.restaurant_name.trim();
+		}
+		await authStore.register(payload);
 		toast.success('Cuenta creada correctamente');
 	} catch (error) {
-		const message = error instanceof Error ? error.message : 'Registro fallido. Verifica los datos e intenta de nuevo.';
+		const e = error as { response?: { data?: { message?: string; errors?: Record<string, string[]> } }; message?: string };
+		let message = 'Registro fallido. Verifica los datos e intenta de nuevo.';
+		if (e?.response?.data?.message) message = e.response.data.message;
+		else if (e?.response?.data?.errors) {
+			const first = Object.values(e.response.data.errors).flat()[0];
+			if (first) message = first;
+		} else if (e?.message) message = e.message;
 		toast.error(message);
 	}
 }
@@ -178,19 +193,42 @@ async function handleRegister() {
 					</div>
 				</div>
 
-				<!-- Role Select -->
+				<!-- Role Selection (radio) -->
 				<div v-if="setRole">
-					<label class="block mb-1 text-sm font-medium text-gray-700"
-						>Registrarse como <span class="text-red-600">*</span></label
-					>
-					<select
-						v-model="registerForm.role"
-						required
-						class="w-full p-2 text-white"
-					>
-						<option value="owner">Propietario</option>
-						<option value="delivery">Repartidor</option>
-					</select>
+					<label class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+						Registrarse como <span class="text-red-600">*</span>
+					</label>
+					<div class="flex flex-col gap-3">
+						<label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+							:class="registerForm.role === 'owner' ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-gray-300 dark:border-gray-600'">
+							<input
+								v-model="registerForm.role"
+								type="radio"
+								value="owner"
+								class="w-4 h-4 text-primary-600"
+							/>
+							<span class="font-medium text-gray-900 dark:text-white">Propietario</span>
+							<div v-if="registerForm.role === 'owner'" class="flex-1 flex items-center gap-2 ml-2">
+								<input
+									v-model="registerForm.restaurant_name"
+									type="text"
+									placeholder="Nombre del restaurante"
+									required
+									class="flex-1 min-w-0 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500"
+								/>
+							</div>
+						</label>
+						<label class="flex items-center gap-3 p-3 rounded-lg border cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+							:class="registerForm.role === 'delivery' ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20' : 'border-gray-300 dark:border-gray-600'">
+							<input
+								v-model="registerForm.role"
+								type="radio"
+								value="delivery"
+								class="w-4 h-4 text-primary-600"
+							/>
+							<span class="font-medium text-gray-900 dark:text-white">Repartidor</span>
+						</label>
+					</div>
 				</div>
 
 				<button
