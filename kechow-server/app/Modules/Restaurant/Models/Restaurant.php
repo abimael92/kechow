@@ -51,14 +51,14 @@ class Restaurant extends Model
     protected $fillable = [
         'name', 'description', 'address', 'city', 'state', 'zip_code',
         'phone', 'email', 'website', 'opening_time', 'closing_time',
-        'schedule_json', 'closed_dates', 'override_closed',
-        'logo_url', 'is_active', 'latitude', 'longitude', 'delivery_radius', 'owner_id'
+        'schedule_json', 'closed_dates', 'exceptional_closed_dates',
+        'logo_url', 'avg_prep_time_minutes', 'is_active', 'latitude', 'longitude', 'delivery_radius', 'owner_id'
     ];
 
     protected $casts = [
         'schedule_json' => 'array',
         'closed_dates' => 'array',
-        'override_closed' => 'boolean',
+        'exceptional_closed_dates' => 'array',
     ];
 
     public function menuItems()
@@ -87,12 +87,11 @@ class Restaurant extends Model
             return false;
         }
 
-        if ($this->override_closed) {
-            return false;
-        }
-
         $today = now()->format('Y-m-d');
         if (is_array($this->closed_dates) && in_array($today, $this->closed_dates)) {
+            return false;
+        }
+        if (is_array($this->exceptional_closed_dates) && in_array($today, $this->exceptional_closed_dates)) {
             return false;
         }
 

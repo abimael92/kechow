@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Modules\Restaurant\Models\Restaurant;
 use App\Modules\Restaurant\Requests\CreateRestaurantRequest;
 use App\Modules\Restaurant\Requests\UpdateRestaurantRequest;
+use App\Modules\Restaurant\Requests\UploadLogoRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Modules\Restaurant\Resources\RestaurantResource;
 use App\Modules\Restaurant\Resources\RestaurantCollection;
 use App\Modules\Restaurant\Services\RestaurantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class RestaurantController extends Controller
 {
@@ -40,6 +43,31 @@ class RestaurantController extends Controller
     {
         $updatedRestaurant = $this->restaurantService->updateRestaurant($restaurant, $request->validated());
         return response()->json(new RestaurantResource($updatedRestaurant));
+    }
+
+    public function uploadLogo(UploadLogoRequest $request, Restaurant $restaurant): JsonResponse
+    {
+        $file = $request->file('logo');
+        $path = $file->store('restaurant-logos', 'public');
+        $filename = basename($path);
+        $fullUrl = url("/api/restaurants/logo/{$filename}");
+        $restaurant->update(['logo_url' => $fullUrl]);
+        return response()->json(['logo_url' => $fullUrl]);
+    }
+
+    /** Serve logo file (public, no auth) - avoids 403 on direct storage URLs. */
+    public function serveLogo(string $filename): BinaryFileResponse|JsonResponse
+    {
+        if (str_contains($filename, '/') || str_contains($filename, '..')) {
+            return response()->json(['message' => 'Invalid filename'], 400);
+        }
+        $path = 'restaurant-logos/' . $filename;
+        if (!Storage::disk('public')->exists($path)) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+        return response()->file(Storage::disk('public')->path($path), [
+            'Content-Type' => Storage::disk('public')->mimeType($path),
+        ]);
     }
 
     public function destroy(int $id): JsonResponse
