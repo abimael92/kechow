@@ -8,12 +8,12 @@
 				</div>
 				<div class="flex-1 min-w-0">
 					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-						{{ $t('customerReviews') }}
+					Reseñas de Clientes
 					</h1>
 					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
-						{{ $t('manageRespondFeedback') }}
+						Gestiona y responde a los comentarios de los clientes
 						<span v-if="reviews.length > 0" class="ml-1 sm:ml-2 text-tertiary-800 dark:text-tertiary-400 font-medium whitespace-nowrap">
-							({{ reviews.length }} {{ $t('reviews', reviews.length) }})
+							({{ reviews.length }} reseñas)
 						</span>
 					</p>
 				</div>
@@ -25,7 +25,7 @@
 					<i class="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm sm:text-base"></i>
 					<input
 						v-model="searchQuery"
-						:placeholder="$t('searchReviews')"
+						placeholder="Buscar reseñas..."
 						class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-2.5 bg-card dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
 						@input="handleSearch"
 					/>
@@ -47,7 +47,7 @@
 							class="w-full xs:w-auto bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 text-sm sm:text-base"
 						>
 							<i class="ri-filter-line text-sm sm:text-base"></i>
-							<span class="hidden xs:inline">{{ $t('filter') }}</span>
+							<span class="hidden xs:inline">Filtrar</span>
 							<i class="ri-arrow-down-s-line text-xs sm:text-sm transition-transform duration-200" :class="{ 'rotate-180': showFilterDropdown }"></i>
 						</button>
 						
@@ -59,7 +59,7 @@
 							>
 								<div class="p-3 sm:p-4 space-y-3 sm:space-y-4">
 									<div>
-										<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base mb-1 sm:mb-2">{{ $t('filterByRating') }}</h3>
+										<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base mb-1 sm:mb-2">Filtrar por Calificación</h3>
 										<div class="space-y-1.5 sm:space-y-2">
 											<label v-for="rating in ratingOptions" :key="rating.value" class="flex items-center gap-1.5 sm:gap-2 cursor-pointer">
 												<input
@@ -80,7 +80,7 @@
 									</div>
 									
 									<div>
-										<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base mb-1 sm:mb-2">{{ $t('filterByStatus') }}</h3>
+										<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base mb-1 sm:mb-2">Filtrar por Estado</h3>
 										<div class="space-y-1.5 sm:space-y-2">
 											<label class="flex items-center gap-1.5 sm:gap-2 cursor-pointer">
 												<input
@@ -89,7 +89,7 @@
 													@change="applyFilters"
 													class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-400 w-4 h-4"
 												/>
-												<span class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm">{{ $t('unreadOnly') }}</span>
+												<span class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm">Solo no leídas</span>
 											</label>
 											<label class="flex items-center gap-1.5 sm:gap-2 cursor-pointer">
 												<input
@@ -98,23 +98,23 @@
 													@change="applyFilters"
 													class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-400 w-4 h-4"
 												/>
-												<span class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm">{{ $t('unrespondedOnly') }}</span>
+												<span class="text-gray-700 dark:text-gray-300 text-xs sm:text-sm">Solo sin responder</span>
 											</label>
 										</div>
 									</div>
 									
 									<div>
-										<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base mb-1 sm:mb-2">{{ $t('sortBy') }}</h3>
+										<h3 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base mb-1 sm:mb-2">Ordenar por</h3>
 										<select
 											v-model="sortBy"
 											@change="applyFilters"
 											class="w-full px-2.5 py-1.5 sm:px-3 sm:py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 text-xs sm:text-sm"
 										>
-											<option value="newest">{{ $t('newestFirst') }}</option>
-											<option value="oldest">{{ $t('oldestFirst') }}</option>
-											<option value="highest">{{ $t('highestRating') }}</option>
-											<option value="lowest">{{ $t('lowestRating') }}</option>
-											<option value="helpful">{{ $t('mostHelpful') }}</option>
+											<option value="newest">Más recientes primero</option>
+											<option value="oldest">Más antiguos primero</option>
+											<option value="highest">Calificación más alta</option>
+											<option value="lowest">Calificación más baja</option>
+											<option value="helpful">Más útiles</option>
 										</select>
 									</div>
 									
@@ -122,7 +122,7 @@
 										@click="resetFilters"
 										class="w-full px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
 									>
-										{{ $t('resetFilters') }}
+										Restablecer filtros
 									</button>
 								</div>
 							</div>
@@ -135,7 +135,7 @@
 						class="flex-1 xs:flex-none min-w-[80px] bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 text-sm sm:text-base"
 					>
 						<i class="ri-download-line text-sm sm:text-base"></i>
-						<span class="hidden xs:inline">{{ $t('export') }}</span>
+						<span class="hidden xs:inline">Exportar</span>
 					</button>
 					
 					<!-- Refresh Button -->
@@ -148,7 +148,7 @@
 							class="ri-refresh-line text-sm sm:text-base transition-transform duration-500" 
 							:class="{ 'animate-spin': loading }"
 						></i>
-						<span class="hidden xs:inline">{{ loading ? $t('refreshing') : $t('refresh') }}</span>
+						<span class="hidden xs:inline">{{ loading ? 'Actualizando...' : 'Actualizar' }}</span>
 					</button>
 				</div>
 			</div>
@@ -157,7 +157,7 @@
 		<!-- Stats Overview -->
 		<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
 			<ReviewStatsCard
-				:title="$t('averageRating')"
+				title="Calificación Promedio"
 				:value="averageRating.toFixed(1)"
 				:showStars="true"
 				:stars="averageRating"
@@ -170,7 +170,7 @@
 			/>
 
 			<ReviewStatsCard
-				:title="$t('totalReviews')"
+				title="Total de Reseñas"
 				:value="reviews.length.toString()"
 				:change="reviewsChange"
 				:changeType="reviewsChangeType"
@@ -181,7 +181,7 @@
 			/>
 
 			<ReviewStatsCard
-				:title="$t('responseRate')"
+				title="Tasa de Respuesta"
 				:value="responseRate"
 				:change="responseRateChange"
 				:changeType="responseRateChangeType"
@@ -192,7 +192,7 @@
 			/>
 
 			<ReviewStatsCard
-				:title="$t('positiveReviews')"
+				title="Reseñas Positivas"
 				:value="positiveReviewsCount.toString()"
 				:change="positiveReviewsChange"
 				:changeType="positiveReviewsChangeType"
@@ -207,12 +207,12 @@
 		<div class="bg-card dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 			<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 sm:gap-3 mb-4 sm:mb-6">
 				<h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-					{{ $t('ratingDistribution') }}
+					Distribución de Calificaciones
 				</h2>
 				<div class="flex items-center gap-1.5 sm:gap-2">
-					<span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{{ $t('total') }}: {{ reviews.length }} {{ $t('reviews', reviews.length) }}</span>
+					<span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total: {{ reviews.length }} reseñas</span>
 					<span class="text-xs sm:text-sm px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 whitespace-nowrap">
-						{{ $t('avg') }}: {{ averageRating.toFixed(1) }}
+						Prom.: {{ averageRating.toFixed(1) }}
 					</span>
 				</div>
 			</div>
@@ -243,7 +243,7 @@
 						>
 							<i :class="filter.icon" class="text-xs sm:text-sm"></i>
 							<span class="truncate max-w-[80px] sm:max-w-none">
-								{{ filter.id === 'all' ? $t('allReviews') : $t('stars', { n: parseInt(filter.id) }) }}
+								{{ filter.id === 'all' ? 'Todas las Reseñas' : `${parseInt(filter.id)} Estrellas` }}
 							</span>
 							<span 
 								class="ml-1 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-semibold flex-shrink-0"
@@ -257,7 +257,7 @@
 				<!-- Scroll indicator for mobile -->
 				<div class="sm:hidden text-center mt-1">
 					<p class="text-xs text-gray-500 dark:text-gray-400">
-						{{ $t('swipeForMoreFilters') }}
+						← Desliza para ver más filtros →
 					</p>
 				</div>
 			</div>
@@ -268,7 +268,7 @@
 					<div class="flex items-center gap-1.5 sm:gap-2">
 						<i class="ri-checkbox-multiple-fill text-primary-600 dark:text-primary-400 text-sm"></i>
 						<span class="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
-							{{ selectedReviews.length }} {{ $t('reviews', selectedReviews.length) }} {{ $t('selected') }}
+							{{ selectedReviews.length }} reseñas seleccionadas
 						</span>
 					</div>
 					<div class="flex flex-wrap gap-1.5 sm:gap-2">
@@ -277,14 +277,14 @@
 							class="px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm bg-card dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors flex items-center gap-1 sm:gap-2 whitespace-nowrap"
 						>
 							<i class="ri-check-line text-xs sm:text-sm"></i>
-							{{ $t('markAsRead') }}
+							Marcar como leída
 						</button>
 						<button
 							@click="deleteSelectedReviews"
 							class="px-2.5 py-1 sm:px-3 sm:py-1.5 text-xs sm:text-sm bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors flex items-center gap-1 sm:gap-2 whitespace-nowrap"
 						>
 							<i class="ri-delete-bin-line text-xs sm:text-sm"></i>
-							{{ $t('delete') }}
+							Eliminar
 						</button>
 					</div>
 				</div>
@@ -310,10 +310,10 @@
 				<i class="ri-message-line text-4xl sm:text-5xl md:text-6xl"></i>
 			</div>
 			<h3 class="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-				{{ searchQuery ? $t('noReviewsFound') : $t('noReviews') }}
+				{{ searchQuery ? 'No se encontraron reseñas' : 'No hay reseñas' }}
 			</h3>
 			<p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base mb-4 sm:mb-6 max-w-md mx-auto px-4">
-				{{ searchQuery ? $t('tryDifferentSearchReview') : $t('noReviewsDescription') }}
+				{{ searchQuery ? 'Intenta con un término de búsqueda diferente' : 'Los clientes podrán dejar reseñas una vez que ordenen de tu restaurante.' }}
 			</p>
 		</div>
 
@@ -333,7 +333,7 @@
 			<!-- Pagination -->
 			<div v-if="filteredReviews.length > itemsPerPage" class="flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
 				<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 order-2 sm:order-1">
-					{{ $t('showing') }} {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredReviews.length) }} {{ $t('of') }} {{ filteredReviews.length }} {{ $t('reviews', filteredReviews.length) }}
+					Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredReviews.length) }} de {{ filteredReviews.length }} reseñas
 				</p>
 				<div class="flex gap-1.5 sm:gap-2 order-1 sm:order-2">
 					<button
@@ -342,14 +342,14 @@
 						class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-1 text-xs sm:text-sm"
 					>
 						<i class="ri-arrow-left-s-line text-xs sm:text-sm"></i>
-						{{ $t('previous') }}
+						Anterior
 					</button>
 					<button
 						@click="nextPage"
 						:disabled="currentPage * itemsPerPage >= filteredReviews.length"
 						class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-1 text-xs sm:text-sm"
 					>
-						{{ $t('next') }}
+						Siguiente
 						<i class="ri-arrow-right-s-line text-xs sm:text-sm"></i>
 					</button>
 				</div>
@@ -371,12 +371,12 @@
 			@click.stop
 		>
 			<h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-				{{ $t('replyToReview') }}
+				Responder a la reseña
 			</h3>
 			<textarea
 				v-model="responseText"
 				rows="4"
-				:placeholder="$t('yourResponse')"
+				placeholder="Tu respuesta"
 				class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-purple-500 focus:border-transparent mb-4"
 			></textarea>
 			<div class="flex gap-3">
@@ -384,14 +384,14 @@
 					@click="cancelResponse"
 					class="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
 				>
-					{{ $t('cancel') }}
+					Cancelar
 				</button>
 				<button
 					@click="submitResponse"
 					:disabled="!responseText.trim() || loading"
 					class="flex-1 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
 				>
-					{{ loading ? $t('processing') : $t('sendResponse') }}
+					{{ loading ? 'Procesando...' : 'Enviar respuesta' }}
 				</button>
 			</div>
 		</div>
@@ -400,14 +400,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import ReviewStatsCard from '../components/reviews/ReviewStatsCard.vue';
 import RatingDistribution from '../components/reviews/RatingDistribution.vue';
 import ReviewCard from '../components/reviews/ReviewCard.vue';
 import { fetchReviews, addReviewResponse, markReviewHelpful, flagReview } from '../services/businessOwner.service';
 import type { Review } from '../types/';
-
-const { t } = useI18n();
 
 const reviews = ref<Review[]>([]);
 const loading = ref(false);
@@ -423,11 +420,11 @@ const currentPage = ref(1);
 const itemsPerPage = 10;
 
 const ratingOptions = [
-  { value: 5, label: t('ratingFilter.5stars') },
-  { value: 4, label: t('ratingFilter.4stars') },
-  { value: 3, label: t('ratingFilter.3stars') },
-  { value: 2, label: t('ratingFilter.2stars') },
-  { value: 1, label: t('ratingFilter.1star') }
+  { value: 5, label: '5 estrellas' },
+  { value: 4, label: '4 estrellas' },
+  { value: 3, label: '3 estrellas' },
+  { value: 2, label: '2 estrellas' },
+  { value: 1, label: '1 estrella' }
 ];
 
 // Computed properties
@@ -456,22 +453,22 @@ const ratingDistribution = computed(() => {
 });
 
 // Mock changes
-const ratingChange = computed(() => `+0.2 ${t('fromLastMonth')}`);
+const ratingChange = computed(() => '+0.2 desde el mes pasado');
 const ratingChangeType = computed(() => 'positive' as const);
-const reviewsChange = computed(() => `+12 ${t('fromLastMonth')}`);
+const reviewsChange = computed(() => '+12 desde el mes pasado');
 const reviewsChangeType = computed(() => 'positive' as const);
-const responseRateChange = computed(() => `+5% ${t('fromLastMonth')}`);
+const responseRateChange = computed(() => '+5% desde el mes pasado');
 const responseRateChangeType = computed(() => 'positive' as const);
-const positiveReviewsChange = computed(() => `+80% ${t('ofTotal')}`);
+const positiveReviewsChange = computed(() => '+80% del total');
 const positiveReviewsChangeType = computed(() => 'positive' as const);
 
 const filterTabs = computed(() => [
-  { id: 'all', label: t('allReviews'), count: reviews.value.length, icon: 'ri-list-check', color: '#8b34e0' },
-  { id: '5', label: t('stars', { n: 5 }), count: ratingDistribution.value[5], icon: 'ri-star-fill', color: '#10b981' },
-  { id: '4', label: t('stars', { n: 4 }), count: ratingDistribution.value[4], icon: 'ri-star-fill', color: '#3b82f6' },
-  { id: '3', label: t('stars', { n: 3 }), count: ratingDistribution.value[3], icon: 'ri-star-half-fill', color: '#f59e0b' },
-  { id: '2', label: t('stars', { n: 2 }), count: ratingDistribution.value[2], icon: 'ri-star-line', color: '#ef4444' },
-  { id: '1', label: t('stars', { n: 1 }), count: ratingDistribution.value[1], icon: 'ri-star-line', color: '#dc2626' }
+  { id: 'all', label: 'Todas las Reseñas', count: reviews.value.length, icon: 'ri-list-check', color: '#8b34e0' },
+  { id: '5', label: '5 Estrellas', count: ratingDistribution.value[5], icon: 'ri-star-fill', color: '#10b981' },
+  { id: '4', label: '4 Estrellas', count: ratingDistribution.value[4], icon: 'ri-star-fill', color: '#3b82f6' },
+  { id: '3', label: '3 Estrellas', count: ratingDistribution.value[3], icon: 'ri-star-half-fill', color: '#f59e0b' },
+  { id: '2', label: '2 Estrellas', count: ratingDistribution.value[2], icon: 'ri-star-line', color: '#ef4444' },
+  { id: '1', label: '1 Estrella', count: ratingDistribution.value[1], icon: 'ri-star-line', color: '#dc2626' }
 ]);
 
 const filteredReviews = computed(() => {
@@ -601,7 +598,11 @@ const markSelectedAsRead = async () => {
 };
 
 const deleteSelectedReviews = async () => {
-  if (confirm(t('confirmDeleteReviews', { count: selectedReviews.value.length }))) {
+  const count = selectedReviews.value.length;
+  const msg = count === 1
+    ? '¿Estás seguro de que quieres eliminar 1 reseña?'
+    : `¿Estás seguro de que quieres eliminar ${count} reseñas?`;
+  if (confirm(msg)) {
     console.log('Deleting reviews:', selectedReviews.value);
     selectedReviews.value = [];
     await loadReviews();

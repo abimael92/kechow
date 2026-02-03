@@ -8,12 +8,12 @@
 				</div>
 				<div class="flex-1 min-w-0">
 					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-						{{ $t('analytics') }}
+						Analíticas
 					</h1>
 					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none truncate">
-						{{ $t('trackPerformance') }}
+						Rendimiento del restaurante
 						<span v-if="analyticsData" class="ml-1 sm:ml-2 text-tertiary-800 dark:text-tertiary-400 font-medium whitespace-nowrap">
-							{{ $t('lastUpdated') }}: {{ formatTime(analyticsData.lastUpdated) }}
+							Última actualización: {{ formatTime(analyticsData.lastUpdated) }}
 						</span>
 					</p>
 				</div>
@@ -29,7 +29,7 @@
 						<div class="flex items-center gap-1 sm:gap-2">
 							<i class="ri-calendar-line text-sm sm:text-base"></i>
 							<span class="truncate">
-								{{ $t(timePeriodOptions.find(p => p.value === selectedPeriod)?.label || 'last30Days') }}
+								{{ periodLabels[timePeriodOptions.find(p => p.value === selectedPeriod)?.label || 'last30Days'] || 'Últimos 30 días' }}
 							</span>
 						</div>
 						<i class="ri-arrow-down-s-line text-xs sm:text-sm transition-transform duration-200" :class="{ 'rotate-180': showTimePeriodDropdown }"></i>
@@ -52,7 +52,7 @@
 											: 'text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
 									]"
 								>
-									<span>{{ $t(period.label) }}</span>
+									<span>{{ periodLabels[period.label] }}</span>
 									<i v-if="selectedPeriod === period.value" class="ri-check-line text-sm"></i>
 								</button>
 							</div>
@@ -66,7 +66,7 @@
 					class="flex-1 md:flex-none min-w-[100px] bg-gradient-to-r from-tertiary-600 to-tertiary-500 text-white px-3 sm:px-4 md:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300 cursor-pointer whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 text-sm sm:text-base"
 				>
 					<i class="ri-download-line text-sm sm:text-base"></i>
-					<span class="hidden xs:inline">{{ $t('export') }}</span>
+					<span class="hidden xs:inline">Exportar</span>
 				</button>
 
 				<!-- Refresh Button -->
@@ -79,7 +79,7 @@
 						class="ri-refresh-line text-sm sm:text-base sm:text-lg transition-transform duration-500" 
 						:class="{ 'animate-spin': loading }"
 					></i>
-					<span class="hidden xs:inline">{{ loading ? $t('refreshing') : $t('refresh') }}</span>
+					<span class="hidden xs:inline">{{ loading ? 'Actualizando...' : 'Actualizar' }}</span>
 				</button>
 			</div>
 		</div>
@@ -87,7 +87,7 @@
 		<!-- Analytics Summary Cards -->
 		<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
 			<AnalyticsCard
-				:title="$t('totalRevenue')"
+				title="Ingresos Totales"
 				:value="`$${formatNumber(analyticsData?.revenue.total || 0)}`"
 				:change="getChangeText(analyticsData?.revenue.change || 0, 'fromLastMonth')"
 				:icon="getRevenueIcon(analyticsData?.revenue.change || 0)"
@@ -98,7 +98,7 @@
 				class="cursor-pointer hover:shadow-md transition-shadow"
 			/>
 			<AnalyticsCard
-				:title="$t('totalOrders')"
+				title="Pedidos Totales"
 				:value="formatNumber(analyticsData?.orders.total || 0)"
 				:change="getChangeText(analyticsData?.orders.change || 0, 'fromLastMonth')"
 				icon="ri-file-list-line"
@@ -109,7 +109,7 @@
 				class="cursor-pointer hover:shadow-md transition-shadow"
 			/>
 			<AnalyticsCard
-				:title="$t('avgOrderValue')"
+				title="Valor Medio Pedido"
 				:value="`$${formatCurrency(analyticsData?.avgOrderValue.current || 0)}`"
 				:change="getChangeText(analyticsData?.avgOrderValue.change || 0, 'fromLastMonth')"
 				icon="ri-shopping-cart-line"
@@ -119,7 +119,7 @@
 				class="cursor-pointer hover:shadow-md transition-shadow"
 			/>
 			<AnalyticsCard
-				:title="$t('customerRating')"
+				title="Valoración Clientes"
 				:value="formatRating(analyticsData?.customerRating.current || 0)"
 				:change="getChangeText(analyticsData?.customerRating.change || 0, 'fromLastMonth', true)"
 				icon="ri-star-line"
@@ -146,7 +146,7 @@
 						]"
 					>
 						<i :class="tab.icon" class="text-sm sm:text-base"></i>
-						<span>{{ $t(tab.label) }}</span>
+						<span>{{ tabLabels[tab.label] }}</span>
 						<span v-if="tab.badge" class="ml-1 px-1.5 py-0.5 bg-primary-300 dark:bg-primary-900/30 text-primary-600 dark:text-primary-400 text-xs rounded-full">
 							{{ tab.badge }}
 						</span>
@@ -164,7 +164,7 @@
 					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-								{{ $t('revenueTrend') }}
+								Tendencia Ingresos
 							</h3>
 							<div class="flex gap-1 sm:gap-2">
 								<button
@@ -178,7 +178,7 @@
 											: 'text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700'
 									]"
 								>
-									{{ $t(chartType) }}
+									{{ chartLabels[chartType] }}
 								</button>
 							</div>
 						</div>
@@ -195,7 +195,7 @@
 							/>
 							<div v-else class="w-full h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg text-center text-gray-500 dark:text-gray-400 p-4">
 								<i class="ri-line-chart-line text-xl sm:text-2xl md:text-3xl mb-2"></i>
-								<p class="text-xs sm:text-sm">{{ $t('revenueChartPlaceholder') }}</p>
+								<p class="text-xs sm:text-sm">Aquí se mostrará el gráfico de ingresos</p>
 							</div>
 						</div>
 					</div>
@@ -204,13 +204,13 @@
 					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-								{{ $t('ordersByHour') }}
+								Pedidos por Hora
 							</h3>
 							<button
 								@click="toggleOrderHourView"
 								class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-blue-500 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors whitespace-nowrap self-end xs:self-auto"
 							>
-								{{ $t(orderHourView === 'day' ? 'viewByWeek' : 'viewByDay') }}
+								{{ orderHourView === 'day' ? 'Ver por semana' : 'Ver por día' }}
 							</button>
 						</div>
 						<div class="w-full h-48 sm:h-56 md:h-64">
@@ -225,7 +225,7 @@
 							/>
 							<div v-else class="w-full h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg text-center text-gray-500 dark:text-gray-400 p-4">
 								<i class="ri-bar-chart-line text-xl sm:text-2xl md:text-3xl mb-2"></i>
-								<p class="text-xs sm:text-sm">{{ $t('ordersByHourPlaceholder') }}</p>
+								<p class="text-xs sm:text-sm">Aquí se mostrará el gráfico de pedidos</p>
 							</div>
 						</div>
 					</div>
@@ -233,7 +233,7 @@
 					<!-- Sales by Category -->
 					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
-							{{ $t('salesByCategory') }}
+							Ventas por Categoría
 						</h3>
 						<div class="w-full h-48 sm:h-56 md:h-64">
 							<div v-if="loading" class="w-full h-full flex items-center justify-center">
@@ -246,7 +246,7 @@
 							/>
 							<div v-else class="w-full h-full flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900 rounded-lg text-center text-gray-500 dark:text-gray-400 p-4">
 								<i class="ri-pie-chart-line text-xl sm:text-2xl md:text-3xl mb-2"></i>
-								<p class="text-xs sm:text-sm">{{ $t('salesByCategoryPlaceholder') }}</p>
+								<p class="text-xs sm:text-sm">Aquí se mostrará el gráfico por categoría</p>
 							</div>
 						</div>
 					</div>
@@ -255,13 +255,13 @@
 					<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 						<div class="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2 mb-3 sm:mb-4 md:mb-6">
 							<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
-								{{ $t('topSellingItems') }}
+								Más Vendidos
 							</h3>
 							<button
 								@click="toggleTopItemsView"
 								class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium bg-blue-500 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors whitespace-nowrap self-end xs:self-auto"
 							>
-								{{ $t(topItemsView === 'revenue' ? 'viewByOrders' : 'viewByRevenue') }}
+								{{ topItemsView === 'revenue' ? 'Ver por pedidos' : 'Ver por ingresos' }}
 							</button>
 						</div>
 						<div class="space-y-2 sm:space-y-3 md:space-y-4">
@@ -293,7 +293,7 @@
 							</template>
 							<div v-else class="text-center py-4 sm:py-6 md:py-8 text-gray-500 dark:text-gray-400">
 								<i class="ri-information-line text-lg sm:text-xl md:text-2xl mb-1 sm:mb-2"></i>
-								<p class="text-xs sm:text-sm">{{ $t('noTopItemsData') }}</p>
+								<p class="text-xs sm:text-sm">No hay datos de artículos más vendidos</p>
 							</div>
 						</div>
 					</div>
@@ -302,7 +302,7 @@
 				<!-- Performance Insights -->
 				<div class="bg-card dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
 					<h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
-						{{ $t('performanceInsights') }}
+						Información de Rendimiento
 					</h3>
 					<div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
 						<div 
@@ -316,7 +316,7 @@
 									<i :class="insight.icon" class="text-sm sm:text-lg" :style="{ color: insight.color }"></i>
 								</div>
 								<div class="flex-1 min-w-0">
-									<h4 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">{{ $t(insight.title) }}</h4>
+									<h4 class="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">{{ insightLabels[insight.title] }}</h4>
 									<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">{{ insight.description }}</p>
 									<div v-if="insight.metric" class="flex items-center gap-1 sm:gap-2 mt-1 sm:mt-2">
 										<span class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white truncate">{{ insight.metric }}</span>
@@ -337,10 +337,10 @@
 					<i :class="activeTabIcon" class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl"></i>
 				</div>
 				<h3 class="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
-					{{ $t('comingSoon') }}
+					Próximamente
 				</h3>
 				<p class="text-gray-500 dark:text-gray-400 text-sm sm:text-base max-w-md mx-auto px-4">
-					{{ $t('featureComingSoon') }}
+					¡Esta función llegará pronto!
 				</p>
 			</div>
 		</div>
@@ -352,7 +352,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import AnalyticsCard from '../components/AnalyticsCard.vue';
 import TopSellingItem from '../components/TopSellingItem.vue';
 import RevenueChart from '../components/charts/RevenueChart.vue';
@@ -361,7 +360,32 @@ import SalesByCategoryChart from '../components/charts/SalesByCategoryChart.vue'
 import { getAnalyticsData } from '../services/businessOwner.service';
 import type { AnalyticsData } from '../types/';
 
-const { t } = useI18n();
+const periodLabels: Record<string, string> = {
+	last7Days: 'Últimos 7 días',
+	last30Days: 'Últimos 30 días',
+	last90Days: 'Últimos 90 días',
+	thisYear: 'Este año',
+	customRange: 'Rango personalizado'
+};
+
+const tabLabels: Record<string, string> = {
+	overview: 'Resumen',
+	revenue: 'Ingresos',
+	products: 'Productos',
+	customers: 'Clientes'
+};
+
+const chartLabels: Record<string, string> = {
+	line: 'Línea',
+	bar: 'Barras',
+	area: 'Área'
+};
+
+const insightLabels: Record<string, string> = {
+	peakHours: 'Horas pico',
+	bestCategory: 'Mejor Categoría',
+	customerGrowth: 'Crecimiento de Clientes'
+};
 
 const loading = ref(false);
 const analyticsData = ref<AnalyticsData | null>(null);
@@ -398,7 +422,7 @@ const performanceInsights = computed(() => [
 	{
 		id: 1,
 		title: 'peakHours',
-		description: t('peakHoursDescription'),
+		description: 'La mayoría de pedidos entre 6-9 PM',
 		icon: 'ri-time-line',
 		color: '#3b82f6',
 		bgColor: 'bg-blue-300 dark:bg-blue-900/30',
@@ -409,18 +433,18 @@ const performanceInsights = computed(() => [
 	{
 		id: 2,
 		title: 'bestCategory',
-		description: t('bestCategoryDescription'),
+		description: 'Pizza tiene el mayor volumen de ventas',
 		icon: 'ri-pie-chart-line',
 		color: '#10b981',
 		bgColor: 'bg-emerald-300 dark:bg-emerald-900/30',
-		metric: t('pizza'),
+		metric: 'Pizza',
 		trend: 22,
 		highlight: false
 	},
 	{
 		id: 3,
 		title: 'customerGrowth',
-		description: t('customerGrowthDescription'),
+		description: 'Nuevos clientes este mes',
 		icon: 'ri-user-add-line',
 		color: '#8b5cf6',
 		bgColor: 'bg-purple-300 dark:bg-purple-900/30',
@@ -465,7 +489,8 @@ const getChangeText = (change: number, periodKey: string, isRating = false) => {
 	const prefix = change > 0 ? '+' : '';
 	const unit = isRating ? '' : '%';
 	const value = isRating ? change.toFixed(1) : Math.abs(change).toFixed(1);
-	return `${prefix}${value}${unit} ${t(periodKey)}`;
+	const periodText = periodKey === 'fromLastMonth' ? 'desde el mes pasado' : periodKey;
+	return `${prefix}${value}${unit} ${periodText}`;
 };
 
 const getRevenueIcon = (change: number) => {

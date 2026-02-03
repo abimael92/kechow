@@ -8,12 +8,12 @@
                 </div>
                 <div class="flex-1 min-w-0">
                     <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-                        {{ $t('menuManagement') }}
+                        Gestión de Menú
                     </h1>
                     <p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none truncate">
-                        {{ $t('trackMenuItems') }}
+                        Añade, edita y gestiona los platos de tu restaurante
                         <span v-if="menuItems.length > 0" class="ml-1 sm:ml-2 text-tertiary-800 dark:text-tertiary-400 font-medium">
-                            ({{ menuItems.length }} {{ $t('products', menuItems.length) }})
+                            ({{ menuItems.length }} productos)
                         </span>
                     </p>
                 </div>
@@ -25,7 +25,7 @@
 					<i class="ri-search-line absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 text-sm sm:text-base"></i>
 					<input
 						v-model="searchQuery"
-						:placeholder="$t('searchMenuPlaceholder')"
+						placeholder="Buscar platos, ingredientes..."
 						class="w-full pl-9 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-2.5 bg-card dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all text-sm sm:text-base"
 						@input="handleSearch"
 					/>
@@ -44,7 +44,7 @@
 					class="bg-gradient-to-r from-primary-600 to-primary-500 text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300 cursor-pointer whitespace-nowrap flex items-center justify-center gap-1 sm:gap-2 text-sm sm:text-base"
 				>
 					<i class="ri-add-line text-base sm:text-lg"></i>
-					{{ $t('addMenuItem') }}
+					Añadir Plato
 				</button>
 			</div>
 		</div>
@@ -62,7 +62,7 @@
 							{{ stat.displayValue }}
 						</p>
 						<p class="text-gray-600 dark:text-gray-400 text-xs sm:text-sm mt-0.5 sm:mt-1 truncate">
-							{{ $t(stat.label) }}
+							{{ statLabels[stat.label] }}
 						</p>
 						<div v-if="stat.trend" class="flex items-center gap-1 mt-1 sm:mt-2">
 							<i :class="[stat.trendIcon, 'text-xs sm:text-sm', stat.trend > 0 ? 'text-emerald-500' : 'text-red-500']"></i>
@@ -70,7 +70,7 @@
 								{{ stat.trend > 0 ? '+' : '' }}{{ stat.trend }}%
 							</span>
 							<span class="text-xs text-gray-500 dark:text-gray-400 ml-1 hidden sm:inline">
-								{{ $t('changeFromLastMonth') }}
+								desde el mes pasado
 							</span>
 						</div>
 					</div>
@@ -101,7 +101,7 @@
 						>
 							<i :class="category.icon" class="text-xs sm:text-sm"></i>
 							<span class="truncate max-w-[80px] sm:max-w-none">
-								{{ $t(category.translationKey) }}
+								{{ categoryLabels[category.translationKey] }}
 							</span>
 							<span 
 								class="ml-1 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full text-xs font-semibold flex-shrink-0"
@@ -115,7 +115,7 @@
 				<!-- Scroll indicator for mobile -->
 				<div class="sm:hidden text-center mt-2">
 					<p class="text-xs text-gray-500 dark:text-gray-400">
-						{{ $t('swipeForMoreCategories') }}
+						← Desliza para ver más categorías →
 					</p>
 				</div>
 			</div>
@@ -127,21 +127,21 @@
 					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
 				>
 					<i class="ri-download-line text-sm"></i>
-					{{ $t('export') }}
+					Exportar
 				</button>
 				<button
 					@click="printMenu"
 					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
 				>
 					<i class="ri-printer-line text-sm"></i>
-					{{ $t('printMenu') }}
+					Imprimir Menú
 				</button>
 				<button
 					@click="toggleAllAvailability"
 					class="px-3 py-1.5 sm:px-4 sm:py-2 bg-primary-500 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-200 dark:hover:bg-primary-800/40 transition-colors flex items-center gap-1 sm:gap-2 flex-1 sm:flex-none justify-center"
 				>
 					<i :class="[allItemsAvailable ? 'ri-toggle-line' : 'ri-toggle-fill', 'text-sm']"></i>
-					{{ allItemsAvailable ? $t('disableAll') : $t('enableAll') }}
+					{{ allItemsAvailable ? 'Deshabilitar todos' : 'Habilitar todos' }}
 				</button>
 			</div>
 		</div>
@@ -165,10 +165,10 @@
 				<i class="ri-restaurant-2-line text-4xl sm:text-5xl md:text-6xl"></i>
 			</div>
 			<h3 class="text-lg sm:text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
-				{{ searchQuery ? $t('noMenuItemsFound') : $t('noMenuItems') }}
+				{{ searchQuery ? 'No se encontraron elementos del menú' : 'No hay elementos en el menú' }}
 			</h3>
 			<p class="text-gray-500 dark:text-gray-400 mb-4 sm:mb-6 text-sm sm:text-base max-w-md mx-auto px-4">
-				{{ searchQuery ? $t('tryDifferentSearchMenu') : $t('addFirstMenuItemPrompt') }}
+				{{ searchQuery ? 'Intenta con un término de búsqueda diferente' : 'Comienza añadiendo tu primer elemento al menú' }}
 			</p>
 			<button
 				v-if="!searchQuery"
@@ -176,7 +176,7 @@
 				class="bg-gradient-to-r from-primary-600 to-primary-500 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold hover:shadow-lg hover:shadow-primary-500/30 transition-all duration-300 inline-flex items-center gap-1 sm:gap-2 text-sm sm:text-base"
 			>
 				<i class="ri-add-line"></i>
-				{{ $t('addMenuItem') }}
+				Añadir Plato
 			</button>
 		</div>
 
@@ -201,10 +201,10 @@
 					<i class="ri-add-line text-xl sm:text-2xl text-primary-600 dark:text-primary-400"></i>
 				</div>
 				<h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2">
-					{{ $t('addNewItem') }}
+					Añadir Nuevo Elemento
 				</h3>
 				<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center">
-					{{ $t('addNewItemDescription') }}
+					Crea un nuevo elemento para tu menú
 				</p>
 			</button>
 		</div>
@@ -212,7 +212,7 @@
 		<!-- Pagination -->
 		<div v-if="filteredItems.length > itemsPerPage" class="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-0 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">
 			<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 order-2 sm:order-1">
-				{{ $t('showing') }} {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredItems.length) }} {{ $t('of') }} {{ filteredItems.length }} {{ $t('items', filteredItems.length) }}
+				Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }}–{{ Math.min(currentPage * itemsPerPage, filteredItems.length) }} de {{ filteredItems.length }} elementos
 			</p>
 			<div class="flex gap-1.5 sm:gap-2 order-1 sm:order-2">
 				<button
@@ -221,14 +221,14 @@
 					class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-1 text-xs sm:text-sm"
 				>
 					<i class="ri-arrow-left-s-line text-sm"></i>
-					{{ $t('previous') }}
+					Anterior
 				</button>
 				<button
 					@click="nextPage"
 					:disabled="currentPage * itemsPerPage >= filteredItems.length"
 					class="px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center gap-1 text-xs sm:text-sm"
 				>
-					{{ $t('next') }}
+					Siguiente
 					<i class="ri-arrow-right-s-line text-sm"></i>
 				</button>
 			</div>
@@ -247,7 +247,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import MenuItemCard from '../components/MenuItemCard.vue';
 import MenuModal from '../components/MenuModal.vue';
 import {
@@ -259,7 +258,21 @@ import {
 } from '../services/businessOwner.service';
 import type { MenuItem } from '../types/';
 
-const { t } = useI18n();
+const statLabels: Record<string, string> = {
+	totalItems: 'Total',
+	availableItems: 'Disponibles',
+	outOfStockItems: 'Agotados',
+	averagePrice: 'Precio Medio'
+};
+
+const categoryLabels: Record<string, string> = {
+	allItems: 'Todos',
+	'categories.platoprincipal': 'Platos Fuertes',
+	'categories.sopas': 'Sopas',
+	'categories.ensaladas': 'Ensaladas',
+	'categories.postres': 'Postres',
+	'categories.bebidas': 'Bebidas'
+};
 
 const menuItems = ref<MenuItem[]>([]);
 const loading = ref(false);

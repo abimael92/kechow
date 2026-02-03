@@ -1,7 +1,7 @@
 <template>
 	<!-- Footer: flex/grid, scroll-safe, touch targets, dark contrast -->
 	<footer
-		class="bg-gradient-to-t from-primary-900 via-secondary-100  via-80% to-primary-900 border-t border-primary-200/80 px-4 sm:px-6 md:px-8 py-6 text-sm text-secondary-800 overflow-auto dark:bg-nav dark:from-transparent dark:via-transparent dark:to-transparent dark:border-secondary-700 dark:text-white/90"
+		class="bg-primary-900/45 border-t border-primary-200/80 px-4 sm:px-6 md:px-8 py-6 text-sm text-secondary-800 overflow-auto dark:bg-nav dark:from-transparent dark:via-transparent dark:to-transparent dark:border-secondary-700 dark:text-white/90"
 	>
 		<div
 			class="flex flex-col md:flex-row justify-between lg:justify-evenly items-center md:items-start text-center gap-6 sm:gap-8 md:gap-4 lg:gap-0 px-2 md:px-4 lg:px-12"
