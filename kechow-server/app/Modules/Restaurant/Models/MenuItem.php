@@ -31,7 +31,7 @@ class MenuItem extends Model
 
     protected $fillable = [
         'restaurant_id', 'name', 'description', 'price',
-        'image_url', 'is_available', 'category', 'preparation_time'
+        'image_url', 'is_available', 'category', 'preparation_time', 'stock'
     ];
 
     protected $casts = [
