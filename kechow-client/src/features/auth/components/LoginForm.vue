@@ -1,9 +1,9 @@
 <template>
-	<div class="min-h-screen flex flex-col items-center justify-center min-w-0 overflow-x-hidden px-4 py-6 relative">
-		<!-- Light/Dark toggle - top right -->
-		<button
+	<div class="min-h-screen flex flex-col items-center justify-center min-w-0 overflow-x-hidden px-4 py-4 md:py-6 lg:py-8 relative">
+		<!-- Light/Dark toggle - top right, hidden on mobile (use burger menu) -->
+		<!-- <button
 			@click="toggleDarkMode"
-			class="absolute top-4 right-4 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-gray-700 transition-colors"
+			class="hidden lg:flex absolute top-4 right-4 p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-gray-700 transition-colors"
 			aria-label="Cambiar tema claro/oscuro"
 		>
 			<svg v-if="!isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
@@ -12,22 +12,22 @@
 			<svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
 			</svg>
-		</button>
+		</button> -->
 
 		<div
-			class="bg-card dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-10 w-full max-w-md animate-fade-in min-w-0 border border-primary-300/50 dark:border-gray-700"
+			class="bg-card dark:bg-gray-800 rounded-2xl border-l-4 border-secondary-300 shadow-lg p-6 sm:p-10 w-full max-w-md animate-fade-in min-w-0 border border-primary-300/50 dark:border-gray-700"
 		>
 			<div class="flex flex-col items-center justify-center gap-2">
 				<img
 					src="/images/kechow_logo.png"
 					alt="Kechow Logo"
-					class="w-16 h-16 object-contain animate-rushIn animate-wiggle"
+					class="w-24 h-24 object-contain animate-rushIn animate-wiggle"
 					role="img"
 					aria-hidden="true"
 					tabindex="-1"
 				/>
 				<h2
-					class="text-3xl sm:text-4xl font-bold mb-2 text-center font-chewy text-primary-500 dark:text-primary-400"
+					class="text-4xl sm:text-5xl font-bold mb-2 text-center font-chewy text-primary-500 dark:text-primary-400"
 				>
 					¡Bienvenido de nuevo!
 				</h2>
@@ -46,12 +46,12 @@
 					<div
 						class="flex items-center border border-primary-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-500 dark:text-gray-400"><i class="fas fa-envelope"></i></span>
+						<span class="pl-3 pr-2 text-gray-500 dark:text-gray-400"><i class="ri-mail-line text-base"></i></span>
 						<input
 							v-model="loginForm.email"
 							type="email"
 							placeholder="tu@ejemplo.com"
-							class="w-full p-2 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
+							class="w-full py-2.5 pl-1 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 					</div>
@@ -62,21 +62,22 @@
 					<div
 						class="flex items-center border border-primary-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 relative bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-500 dark:text-gray-400"><i class="fas fa-lock"></i></span>
+						<span class="pl-3 pr-2 text-gray-500 dark:text-gray-400"><i class="ri-lock-line text-base"></i></span>
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							v-model="loginForm.password"
 							placeholder="••••••••"
-							class="w-full p-2 pr-10 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
+							class="w-full py-2.5 pr-12 pl-1 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 						<button
 							type="button"
 							@click="showPassword = !showPassword"
-							class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded text-gray-600 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-gray-600 transition-colors"
+							class="absolute rounded-r-xl border-l-2 border-secondary-300 bg-white right-0 top-0 bottom-0 flex items-center justify-center w-12 min-w-[44px] min-h-[44px] text-gray-500 dark:text-gray-400 hover:text-primary-500 dark:hover:text-primary-400 hover:bg-primary-50 dark:hover:bg-gray-600/50 dark:bg-gray-600/30
+							active:bg-primary-100 dark:active:bg-gray-600 transition-colors"
 							:aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
 						>
-							<i :class="!showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+							<i :class="showPassword ? 'ri-eye-line text-xl' : 'ri-eye-off-line text-xl'"></i>
 						</button>
 					</div>
 				</div>

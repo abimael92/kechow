@@ -19,7 +19,7 @@
 		</main>
 
 		<Footer />
-		<BottomNav :role="'owner'" />
+		<!-- <BottomNav :role="'owner'" /> -->
 	</div>
 </template>
 

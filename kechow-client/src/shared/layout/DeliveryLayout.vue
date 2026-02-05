@@ -19,7 +19,7 @@
 		</main>
 
 		<Footer />
-		<BottomNav :role="'delivery'" />
+		<!-- <BottomNav :role="'delivery'" /> -->
 	</div>
 </template>
 

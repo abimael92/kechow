@@ -6,6 +6,14 @@ export interface OrderItem {
 	notes?: string;
 }
 
+export interface OrderDriver {
+	id?: number;
+	name: string;
+	phone?: string;
+	email?: string;
+	role?: string;
+}
+
 export interface Order {
 	id: string;
 	customerName: string;
@@ -14,6 +22,8 @@ export interface Order {
 	address: string;
 	items: OrderItem[];
 	totalAmount: number;
+	total?: number;
+	driver?: OrderDriver;
 	status:
 		| 'new'
 		| 'preparing'
