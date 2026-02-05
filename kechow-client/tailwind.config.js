@@ -38,12 +38,25 @@ module.exports = {
                     200: '#99F6E4',
                     300: '#5EEAD4',
                     400: '#2DD4BF',
-                    500: '#14B8A6', // Main tertiary color
+                    500: '#14B8A6',
                     600: '#0D9488',
                     700: '#0F766E',
                     800: '#115E59',
                     900: '#134E4A',
                     950: '#042F2E',
+                },
+                /* Accent: #0EA5E9 (teal/sky) - highlights, badges */
+                accent: {
+                    50: '#F0F9FF',
+                    100: '#E0F2FE',
+                    200: '#BAE6FD',
+                    300: '#7DD3FC',
+                    400: '#38BDF8',
+                    500: '#0EA5E9',
+                    600: '#0284C7',
+                    700: '#0369A1',
+                    800: '#075985',
+                    900: '#0C4A6E',
                 },
                 success: '#16A34A',
                 warning: '#F59E0B',
@@ -56,6 +69,31 @@ module.exports = {
                 'warning-text': '#92400E',
                 'error-bg': '#FEE2E2',
                 'error-text': '#991B1B',
+                /* Delivery dashboard: #3B82F6 blue, #10B981 green, #F59E0B amber, #EF4444 red */
+                'driver-primary': {
+                    50: '#EFF6FF',
+                    100: '#DBEAFE',
+                    200: '#BFDBFE',
+                    300: '#93C5FD',
+                    400: '#60A5FA',
+                    500: '#3B82F6',
+                    600: '#2563EB',
+                    700: '#1D4ED8',
+                    800: '#1E40AF',
+                    900: '#1E3A8A',
+                },
+                'driver-success': {
+                    500: '#10B981',
+                    600: '#059669',
+                },
+                'driver-warning': {
+                    500: '#F59E0B',
+                    600: '#D97706',
+                },
+                'driver-error': {
+                    500: '#EF4444',
+                    600: '#DC2626',
+                },
             },
             backgroundColor: {
                 /* Light mode: app/card use CSS vars (primary-tinted); dark overrides in .dark */
