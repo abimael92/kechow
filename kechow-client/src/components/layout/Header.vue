@@ -1,7 +1,7 @@
 <template>
 	<!-- Top Nav: grid layout (no fixed widths; Flexbox/Grid only) -->
 <nav
-  class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-primary-200/30 shadow-soft backdrop-blur-sm bg-gradient-to-r from-primary-800 via-primary-200 to-primary-800 text-secondary-900 dark:bg-gray-900 dark:[background-image:none] dark:backdrop-blur-md dark:border-gray-700 dark:shadow-soft dark:text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
+  class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-primary-200/30 shadow-soft backdrop-blur-sm bg-gradient-to-r from-primary-900 via-primary-200 to-primary-900 text-secondary-900 dark:bg-gray-900 dark:[background-image:none] dark:backdrop-blur-md dark:border-gray-700 dark:shadow-soft dark:text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
 		role="navigation"
 		aria-label="Navegación principal"
 	>
@@ -10,14 +10,14 @@
 			<img
 				src="/images/kechow_logo.png"
 				alt="Kechow Logo"
-				class="w-12 h-12 sm:w-16 sm:h-16 object-contain animate-rushIn animate-wiggle flex-shrink-0"
+				class="w-18 h-18 md:mr-4 sm:w-24 sm:h-24 md:w-18 md:h-18 object-contain animate-rushIn animate-wiggle flex-shrink-0"
 			/>
 		</div>
 
 		<!-- Center: title -->
 		<div class="flex justify-center items-center min-w-0 pointer-events-none">
 			<h1
-				class="text-2xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-wide select-text font-chewy text-primary-500 dark:text-primary-400 text-gradient-pulse truncate"
+				class="text-6xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-wide select-text font-chewy text-primary-500 dark:text-primary-400 text-gradient-pulse truncate"
 				aria-label="Kechow"
 			>
 				Kechow
@@ -51,41 +51,41 @@
 			<!-- i18n preparado para múltiples idiomas. Por ahora la app usa solo español. -->
 			<!-- <LanguageToggle class="hidden lg:block" /> -->
 			<button
-				class="hidden lg:flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
-				@click="toggleDarkMode"
-				aria-label="Cambiar tema"
-			>
-				<svg
-					v-if="!isDark"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					class="w-5 h-5 sm:w-6 sm:h-6"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="1.5"
-						d="M12 3a9 9 0 009 9 9 9 0 11-9-9z"
-					/>
-				</svg>
-				<svg
-					v-else
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					class="w-5 h-5 sm:w-6 sm:h-6"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="1.5"
-						d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-					/>
-				</svg>
-			</button>
+  class="hidden lg:flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
+  @click="toggleDarkMode"
+  aria-label="Cambiar tema"
+>
+  <svg
+    v-if="!isDark"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    class="w-7 h-7 sm:w-8 sm:h-8 text-secondary-800"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+      d="M12 3a9 9 0 009 9 9 9 0 11-9-9z"
+    />
+  </svg>
+  <svg
+    v-else
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    class="w-7 h-7 sm:w-8 sm:h-8 text-primary-500"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+      d="M12 3v1m0 16v1m8.485-8.485h-1M4.515 12.515h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+    />
+  </svg>
+</button>
 
 			<div
 				class="relative hidden lg:block"
@@ -94,14 +94,15 @@
 			>
 				<button
 					@click="toggleUserMenu"
-					class="flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary-500 rounded-lg bg-secondary-200 dark:bg-gradient-to-r dark:from-primary-light dark:to-primary-dark p-1 user-menu-button text-secondary-800 dark:text-white"
+					class="flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary-800 rounded-lg relative user-menu-button border-solid
+					border-2 border-secondary-900 bg-primary-300 dark:bg-secondary-400 p-1 user-menu-button text-secondary-800 dark:text-white"
 					aria-haspopup="true"
 					:aria-expanded="userMenuOpen ? 'true' : 'false'"
 					aria-label="Menú de usuario"
 					title="Menú de usuario"
 				>
 					<UserCircle
-						class="w-6 h-6 sm:w-7 sm:h-7 text-white bg-transparent rounded flex-shrink-0"
+						class="w-6 h-6 sm:w-7 sm:h-7 text-secondary-800 bg-transparent rounded flex-shrink-0"
 					/>
 					<span
 						v-if="notifications > 0"
@@ -120,12 +121,13 @@
 				>
 					<ul
 						v-if="userMenuOpen"
-						class="absolute right-0 mt-2 min-w-[10rem] bg-gradient-to-br from-primary-light to-primary-dark rounded-xl shadow-strong text-white text-sm py-2"
+						class="absolute right-0 mt-2 min-w-[10rem] bg-primary-300 dark:bg-secondary-300  rounded-xl shadow-strong text-white text-sm py-2"
 						role="menu"
 					>
 						<li>
 							<button
-								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-primary-500 rounded-lg transition-colors"
+								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-primary-500 
+								dark:hover:bg-primary-200 dark:text-secondary-800 rounded-lg transition-colors"
 								role="menuitem"
 								@click="goProfile"
 							>
@@ -134,7 +136,7 @@
 						</li>
 						<li>
 							<button
-								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-primary-500 rounded-lg transition-colors"
+								class="w-full text-left px-4 py-3 min-h-[44px] flex items-center hover:bg-primary-500 dark:hover:bg-primary-200 dark:text-secondary-800 rounded-lg transition-colors"
 								role="menuitem"
 								@click="logout"
 							>
@@ -157,7 +159,7 @@
 		>
 			<div
 				v-if="isDrawerOpen"
-				class="absolute top-full left-0 right-0 bg-primary-200 dark:bg-[#2a1a40] dark:border-white border-b border-primary-200/80 shadow-soft lg:hidden overflow-auto max-h-[70vh]"
+				class="absolute top-full left-0 right-0 bg-primary-200 dark:bg-secondary-800 dark:border-white border-b border-primary-200/80 shadow-soft lg:hidden overflow-auto max-h-[70vh]"
 			>
 				<div class="px-4 py-3 flex flex-col gap-0.5">
 					<!-- Role-based nav links -->
