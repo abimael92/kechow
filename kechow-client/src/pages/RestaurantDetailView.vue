@@ -1,77 +1,93 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { restaurants } from '@/shared/data/restaurants';
-import type { MenuItem } from '../types';
+import { useCartStore } from '@/features/customer/cart/cart.store';
+import { useCartPanel } from '@/features/customer/cart/useCartPanel';
 
 const route = useRoute();
 const router = useRouter();
+const cartStore = useCartStore();
+const { openCartPanel } = useCartPanel();
 
-// Find restaurant by ID
-const restaurantId = computed(() => route.params.id?.toString());
+const restaurantId = computed(() => {
+	const id = route.params.id;
+	return id ? Number(id) : 0;
+});
 const restaurant = computed(() =>
-	restaurants.find((r) => r.id.toString() === restaurantId.value)
+	restaurants.find((r) => r.id === restaurantId.value)
 );
 
-// Cart state
-const cart = ref<Record<number, number>>({});
-const showAddedFeedback = ref<number | null>(null); // For item add feedback
+const showAddedFeedback = ref<number | null>(null);
 
-onMounted(() => {
-	restaurant.value?.menu.forEach((item) => {
-		if (!(item.id in cart.value)) cart.value[item.id] = 0;
-	});
-});
+function cartQuantityFor(itemId: number): number {
+	const found = cartStore.items.find((i) => i.menu_item_id === itemId);
+	return found?.quantity ?? 0;
+}
 
-function add(id: number) {
-	if (!cart.value[id]) cart.value[id] = 0;
-
-	const item = restaurant.value?.menu.find((i) => i.id === id) as
-		| MenuItem
-		| undefined;
-
-	const maxQuantity = Math.min(20, item?.stock ?? 0);
-
-	if (cart.value[id] < maxQuantity) {
-		cart.value[id]++;
-
-		// Show feedback animation
-		showAddedFeedback.value = id;
-		setTimeout(() => {
-			showAddedFeedback.value = null;
-		}, 600);
+async function add(item: { id: number; name: string; price: number; image?: string; stock?: number }) {
+	const result = await cartStore.addItem(
+		restaurantId.value,
+		{
+			id: item.id,
+			name: item.name,
+			price: item.price,
+			image_url: item.image,
+			stock: item.stock,
+			is_available: true,
+		},
+		1
+	);
+	if (result.success) {
+		showAddedFeedback.value = item.id;
+		setTimeout(() => { showAddedFeedback.value = null; }, 600);
 	}
 }
 
-function remove(id: number) {
-	if (!cart.value[id]) cart.value[id] = 0;
-	cart.value[id] = Math.max(cart.value[id] - 1, 0);
+async function remove(item: { id: number; name: string; price: number; stock?: number }) {
+	const cartItem = cartStore.items.find((i) => i.menu_item_id === item.id);
+	if (!cartItem) return;
+	const qty = cartQuantityFor(item.id);
+	if (qty <= 1) return;
+	await cartStore.updateQuantity(cartItem.id, qty - 1);
 }
 
-function setQuantity(id: number, quantity: number) {
-	const item = restaurant.value?.menu.find((i) => i.id === id) as
-		| MenuItem
-		| undefined;
-
-	const maxQuantity = Math.min(20, item?.stock ?? 20);
-	cart.value[id] = Math.max(0, Math.min(quantity, maxQuantity));
+async function setQuantity(
+	item: { id: number; name: string; price: number; stock?: number },
+	quantity: number
+) {
+	const maxQty = Math.min(20, item.stock ?? 20);
+	const qty = Math.max(0, Math.min(quantity, maxQty));
+	const cartItem = cartStore.items.find((i) => i.menu_item_id === item.id);
+	if (!cartItem) {
+		if (qty > 0) {
+			await cartStore.addItem(
+				restaurantId.value,
+				{
+					id: item.id,
+					name: item.name,
+					price: item.price,
+					stock: item.stock,
+					is_available: true,
+				},
+				qty
+			);
+		}
+		return;
+	}
+	await cartStore.updateQuantity(cartItem.id, qty);
 }
 
-const totalItems = computed(() =>
-	Object.values(cart.value).reduce((a, b) => a + b, 0)
-);
+const totalItems = computed(() => cartStore.itemCount);
+const totalPrice = computed(() => cartStore.subtotal);
 
-const totalPrice = computed(() => {
-	return Object.entries(cart.value).reduce((total, [id, quantity]) => {
-		const item = restaurant.value?.menu.find((i) => i.id === Number(id));
-		return total + (item?.price || 0) * quantity;
-	}, 0);
-});
-
-// Safe back navigation
 function goBack() {
 	if (window.history.length > 1) router.back();
 	else router.push({ name: 'Home' });
+}
+
+function goToCart() {
+	openCartPanel();
 }
 </script>
 
@@ -106,7 +122,7 @@ function goBack() {
 					<!-- Cart indicator in header -->
 					<div class="relative flex-shrink-0 order-first sm:order-none self-end sm:self-auto">
 						<button
-							@click="router.push({ name: 'CartPage' })"
+							@click="goToCart"
 							class="relative p-2 rounded-lg transition-colors duration-200"
 							:class="
 								totalItems
@@ -198,8 +214,8 @@ function goBack() {
 										{{ item.description || 'Hecho al momento y delicioso.' }}
 									</p>
 								</div>
-								<p class="text-lg font-bold text-primary whitespace-nowrap">
-									${{ (item.price || 9.99).toFixed(2) }}
+								<p class="text-lg font-bold text-primary-500 whitespace-nowrap">
+									${{ (item.price || 9.99).toLocaleString('es-MX', { minimumFractionDigits: 2 }) }} MXN
 								</p>
 							</div>
 
@@ -216,10 +232,10 @@ function goBack() {
 								<!-- Controls -->
 								<div class="flex items-center gap-3">
 									<button
-										@click="remove(item.id)"
-										:disabled="(cart[item.id] ?? 0) <= 0"
+										@click="remove(item)"
+										:disabled="cartQuantityFor(item.id) <= 0"
 										:aria-label="`Quitar uno: ${item.name}`"
-										class="w-[60px] h-8 flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+										class="w-[60px] h-8 min-h-[44px] flex items-center justify-center rounded-full text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 									>
 										−
 									</button>
@@ -227,34 +243,33 @@ function goBack() {
 									<!-- Quantity input with direct editing -->
 									<input
 										type="number"
-										:value="cart[item.id] || 0"
+										:value="cartQuantityFor(item.id)"
 										@input="
 											setQuantity(
-												item.id,
-												parseInt(($event.target as HTMLInputElement).value) ||
-													0
+												item,
+												parseInt(($event.target as HTMLInputElement).value) || 0
 											)
 										"
 										@blur="
 											($event.target as HTMLInputElement).value = String(
-												cart[item.id] || 0
+												cartQuantityFor(item.id)
 											)
 										"
 										min="0"
 										:max="Math.min(20, item.stock ?? 20)"
-										class="w-18 text-center border border-gray-300 rounded-md text-lg font-medium text-primary focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"
-										aria-label="Quantity"
+										class="w-18 min-h-[44px] text-center border border-gray-300 dark:border-gray-600 rounded-md text-lg font-medium text-primary focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-colors duration-200"
+										:aria-label="`Cantidad de ${item.name}`"
 									/>
 
 									<button
-										@click="add(item.id)"
+										@click="add(item)"
 										:disabled="
-											(cart[item.id] ?? 0) >= 20 ||
+											cartQuantityFor(item.id) >= 20 ||
 											(item.stock !== undefined &&
-												(cart[item.id] ?? 0) >= item.stock)
+												cartQuantityFor(item.id) >= item.stock)
 										"
 										:aria-label="`Agregar uno: ${item.name}`"
-										class="w-[60px] h-8 flex items-center justify-center rounded-full bg-primary text-white text-lg font-bold hover:bg-primary/90 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
+										class="w-[60px] h-8 min-h-[44px] flex items-center justify-center rounded-full bg-primary-500 text-white text-lg font-bold hover:bg-primary-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors duration-200 font-medium"
 									>
 										+
 									</button>
@@ -283,13 +298,13 @@ function goBack() {
 							<p class="font-semibold text-sm">
 								{{ totalItems }} item{{ totalItems !== 1 ? 's' : '' }}
 							</p>
-							<p class="text-primary font-bold text-lg">
-								${{ totalPrice.toFixed(2) }}
+							<p class="text-primary-500 font-bold text-lg">
+								${{ totalPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 }) }} MXN
 							</p>
 						</div>
 						<button
-							@click="router.push({ name: 'CartPage' })"
-							class="bg-primary text-white font-semibold px-4 sm:px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors duration-200 shadow-sm flex items-center gap-2 min-w-0"
+							@click="goToCart"
+							class="bg-primary-500 text-white font-semibold px-4 sm:px-6 py-3 rounded-lg hover:bg-primary-600 transition-colors duration-200 shadow-sm flex items-center gap-2 min-w-0 min-h-[44px]"
 						>
 							<svg
 								class="w-4 h-4 flex-shrink-0"

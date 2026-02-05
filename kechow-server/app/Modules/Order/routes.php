@@ -17,5 +17,7 @@ Route::prefix('orders')->group(function () {
         // Driver routes
         Route::get('/driver/available', [OrderController::class, 'driverOrders']);
         Route::post('/{order}/accept', [OrderController::class, 'acceptOrder']);
+        Route::post('/{order}/start-delivery', [OrderController::class, 'startDelivery']);
+        Route::post('/{order}/complete-delivery', [OrderController::class, 'completeDelivery']);
     });
 });

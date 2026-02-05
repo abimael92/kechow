@@ -137,7 +137,33 @@ class OrderController extends Controller
 
     public function acceptOrder(Request $request, Order $order): JsonResponse
     {
+        if ($order->driver_id !== null) {
+            return response()->json(['message' => 'El pedido ya fue asignado.'], 422);
+        }
         $updatedOrder = $this->orderService->assignDriver($order, $request->user()->id);
         return response()->json(new OrderResource($updatedOrder));
+    }
+
+    /** Driver starts delivery (no-op status-wise; order already out_for_delivery). */
+    public function startDelivery(Request $request, Order $order): JsonResponse
+    {
+        if ($order->driver_id !== $request->user()->id) {
+            abort(403, 'No autorizado');
+        }
+        if ($order->status !== Order::STATUS_OUT_FOR_DELIVERY) {
+            return response()->json(['message' => 'El pedido no está en estado de entrega.'], 422);
+        }
+        return response()->json(new OrderResource($order->fresh(['items.menuItem', 'restaurant', 'user', 'driver'])));
+    }
+
+    /** Driver marks order as delivered. */
+    public function completeDelivery(Request $request, Order $order): JsonResponse
+    {
+        if ($order->driver_id !== $request->user()->id) {
+            abort(403, 'No autorizado');
+        }
+        $updatedOrder = $this->orderService->updateOrderStatus($order, Order::STATUS_DELIVERED, 'delivery');
+        $updatedOrder->update(['actual_delivery_time' => now()]);
+        return response()->json(new OrderResource($updatedOrder->fresh(['items.menuItem', 'restaurant', 'user', 'driver'])));
     }
 }
