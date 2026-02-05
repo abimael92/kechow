@@ -2,6 +2,7 @@
 // app/Modules/Order/Services/OrderService.php
 namespace App\Modules\Order\Services;
 
+use App\Events\OrderCreated;
 use App\Modules\Order\Models\Order;
 use App\Modules\Order\Models\OrderItem;
 use App\Modules\Order\OrderStateMachine;
@@ -67,7 +68,9 @@ class OrderService
                 ]);
             }
 
-            return $order->load('items.menuItem', 'restaurant');
+            $order = $order->load('items.menuItem', 'restaurant', 'user');
+            event(new OrderCreated($order));
+            return $order;
         });
     }
 
@@ -113,7 +116,7 @@ class OrderService
     /** Get orders for multiple restaurants (e.g. owner's restaurants). */
     public function getOrdersByRestaurantIds(array $restaurantIds, ?array $statusFilter = null): Collection
     {
-        $query = Order::with('items.menuItem', 'user')
+        $query = Order::with('items.menuItem', 'user', 'driver')
             ->whereIn('restaurant_id', $restaurantIds);
 
         if ($statusFilter !== null && !empty($statusFilter)) {

@@ -5,11 +5,11 @@
 			<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
 				<i class="ri-bike-line text-white text-lg sm:text-xl md:text-2xl"></i>
 			</div>
-			<div>
+			<div class="min-w-0 flex-1">
 				<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-					Pedidos
+					Pedidos2
 				</h1>
-				<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none">
+				<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
 					Gestiona tus entregas y haz seguimiento
 				</p>
 			</div>
