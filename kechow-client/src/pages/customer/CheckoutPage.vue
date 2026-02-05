@@ -390,9 +390,9 @@ const placeOrder = async () => {
 		const fullAddress = `${selectedAddress.street}, ${selectedAddress.city}, ${selectedAddress.state} ${selectedAddress.zipCode}`;
 
 		const order = await createOrder({
-			restaurantId: 1, // TODO: Get from cart context
+			restaurantId: cartStore.restaurantId ?? 1,
 			items: cartItems.value.map((item) => ({
-				menuItemId: item.id.toString(),
+				menuItemId: String(item.menu_item_id),
 				quantity: item.quantity,
 			})),
 			deliveryAddress: fullAddress,

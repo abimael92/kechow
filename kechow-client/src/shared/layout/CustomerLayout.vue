@@ -18,14 +18,29 @@
 			<router-view />
 		</main>
 
+		<!-- Floating cart badge -->
+		<div
+			v-if="showCartBadge"
+			class="fixed bottom-4 right-4 z-50 md:bottom-6 md:right-6 lg:top-20 lg:right-8 lg:bottom-auto"
+		>
+			<CartBadge use-overlay />
+		</div>
+
+		<CartOverlay />
+
 		<Footer />
-		<!-- <BottomNav :role="'customer'" /> -->
 	</div>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import Header from '@/components/layout/Header.vue';
 import Footer from '@/components/layout/Footer.vue';
 import RoleNavigation from '@shared/layout/RoleNavigation.vue';
-import BottomNav from '@shared/layout/BottomNav.vue';
+import CartBadge from '@/features/customer/cart/CartBadge.vue';
+import CartOverlay from '@/features/customer/cart/CartOverlay.vue';
+
+const route = useRoute();
+const showCartBadge = computed(() => route.name !== 'CheckoutPage');
 </script>
