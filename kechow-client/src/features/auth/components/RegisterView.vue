@@ -110,14 +110,14 @@ async function handleRegister() {
 				<div>
 					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Nombre</label>
 					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
+						class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-400"><i class="fas fa-user"></i></span>
+						<span class="pl-3 pr-2 text-gray-500 dark:text-gray-400"><i class="ri-user-line text-base"></i></span>
 						<input
 							v-model="registerForm.name"
 							type="text"
 							placeholder="Tu nombre"
-							class="w-full text-gray-800 p-2 outline-none"
+							class="w-full py-2.5 pl-1 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 					</div>
@@ -126,16 +126,14 @@ async function handleRegister() {
 				<div>
 					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Correo electrónico</label>
 					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500"
+						class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-400"
-							><i class="fas fa-envelope"></i
-						></span>
+						<span class="pl-3 pr-2 text-gray-500 dark:text-gray-400"><i class="ri-mail-line text-base"></i></span>
 						<input
 							v-model="registerForm.email"
 							type="email"
 							placeholder="tu@ejemplo.com"
-							class="w-full text-gray-800 p-2 outline-none"
+							class="w-full py-2.5 pl-1 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 					</div>
@@ -145,22 +143,23 @@ async function handleRegister() {
 				<div>
 					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
 					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
+						class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
+						<span class="pl-3 pr-2 text-gray-500 dark:text-gray-400"><i class="ri-lock-line text-base"></i></span>
 						<input
 							:type="showPassword ? 'text' : 'password'"
 							v-model="registerForm.password"
 							placeholder="••••••••"
-							class="w-full p-2 text-gray-800 outline-none"
+							class="w-full py-2.5 pr-12 pl-1 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 						<button
 							type="button"
 							@click="showPassword = !showPassword"
-							class="absolute right-0 text-white"
+							class="absolute right-0 top-0 bottom-0 flex items-center justify-center w-12 min-w-[44px] min-h-[44px] text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-600/50 active:bg-indigo-100 dark:active:bg-gray-600 transition-colors"
+							:aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
 						>
-							<i :class="!showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+							<i :class="showPassword ? 'ri-eye-line text-xl' : 'ri-eye-off-line text-xl'"></i>
 						</button>
 					</div>
 				</div>
@@ -169,26 +168,23 @@ async function handleRegister() {
 				<div>
 					<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Confirmar contraseña</label>
 					<div
-						class="flex items-center border rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative"
+						class="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 relative bg-white dark:bg-gray-700"
 					>
-						<span class="px-3 text-gray-400"><i class="fas fa-lock"></i></span>
+						<span class="pl-3 pr-2 text-gray-500 dark:text-gray-400"><i class="ri-lock-line text-base"></i></span>
 						<input
 							:type="showConfirmPassword ? 'text' : 'password'"
 							v-model="registerForm.password_confirmation"
 							placeholder="••••••••"
-							class="w-full text-gray-800 p-2 outline-none"
+							class="w-full py-2.5 pr-12 pl-1 outline-none text-gray-900 dark:text-white bg-transparent placeholder-gray-500 dark:placeholder-gray-400"
 							required
 						/>
 						<button
 							type="button"
 							@click="showConfirmPassword = !showConfirmPassword"
-							class="absolute right-0 text-white"
+							class="absolute right-0 top-0 bottom-0 flex items-center justify-center w-12 min-w-[44px] min-h-[44px] text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-gray-600/50 active:bg-indigo-100 dark:active:bg-gray-600 transition-colors"
+							:aria-label="showConfirmPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
 						>
-							<i
-								:class="
-									!showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
-								"
-							></i>
+							<i :class="showConfirmPassword ? 'ri-eye-line text-xl' : 'ri-eye-off-line text-xl'"></i>
 						</button>
 					</div>
 				</div>
