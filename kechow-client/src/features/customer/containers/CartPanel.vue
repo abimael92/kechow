@@ -71,16 +71,18 @@
 										</div>
 										<button
 											@click="remove(item.id)"
-											class="text-red-400 hover:text-red-600 dark:hover:text-red-500 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg transition-colors"
-											aria-label="Quitar del carrito"
+											class="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 min-h-[44px] min-w-[44px] flex items-center justify-center gap-1 rounded-lg transition-colors"
+											aria-label="Eliminar del carrito"
 										>
-											<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
 											</svg>
+											<span class="text-sm font-medium hidden sm:inline">Eliminar</span>
 										</button>
 									</div>
 									<div class="flex items-center justify-between mt-4">
 										<div class="flex items-center gap-2">
+											<span class="text-sm text-gray-500 dark:text-gray-400 font-medium sr-only sm:not-sr-only">Cantidad</span>
 											<button
 												@click="decrease(item)"
 												:disabled="item.quantity <= 1"
@@ -255,9 +257,7 @@ function remove(itemId: number | string) {
 }
 
 function continueShopping() {
-	if (!props.standalone) {
-		(defineEmits as () => { close: () => void })()?.close?.();
-	}
+	if (!props.standalone) emit('close');
 	router.push({ name: 'RestaurantList' });
 }
 
