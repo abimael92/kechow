@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Customer\AddressController;
+use App\Http\Controllers\Api\Customer\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -7,6 +9,17 @@ use Illuminate\Support\Facades\Artisan;
 
 // Load Auth module routes
 require app_path('Modules/Auth/routes.php');
+
+// Customer: profile and saved addresses (auth:sanctum)
+Route::prefix('customer')->middleware('auth:sanctum')->group(function () {
+    Route::get('profile', [ProfileController::class, 'show']);
+    Route::put('profile', [ProfileController::class, 'update']);
+    Route::get('addresses', [AddressController::class, 'index']);
+    Route::post('addresses', [AddressController::class, 'store']);
+    Route::put('addresses/{address}', [AddressController::class, 'update']);
+    Route::delete('addresses/{address}', [AddressController::class, 'destroy']);
+    Route::patch('addresses/{address}/default', [AddressController::class, 'setDefault']);
+});
 
 // Load Owner module routes (admin-only owner management)
 require app_path('Modules/Owner/routes.php');
