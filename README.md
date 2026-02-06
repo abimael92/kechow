@@ -59,6 +59,78 @@ Las imágenes de cabecera muestran la interfaz principal (front) y el panel de g
 
 El registro permite elegir rol (`customer`, `owner`, `delivery`). Los owners pueden asociar restaurantes al registrarse.
 
+### Cómo interactúan los roles (flujo del pedido)
+
+Cliente, dueño y repartidor colaboran en un mismo pedido; cada uno usa su propia vista en la app:
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente
+    participant S as Sistema Kechow
+    participant O as Dueño restaurante
+    participant D as Repartidor
+
+    C->>S: Explora restaurantes y menú
+    C->>S: Crea pedido (carrito → checkout)
+    S->>O: Nuevo pedido pendiente
+    O->>S: Acepta o rechaza
+    O->>S: Marca: Preparando → Listo
+    S->>D: Pedido listo para entrega
+    D->>S: Acepta entrega
+    D->>S: En camino → Entregado
+    S->>C: Pedido completado
+```
+
+### Qué hace cada rol en la app (vistas y acciones)
+
+Cada rol entra a un layout distinto y solo ve las pantallas permitidas para su rol:
+
+```mermaid
+flowchart TB
+    subgraph Cliente["Cliente"]
+        direction TB
+        c1[Inicio / Restaurantes]
+        c2[Detalle restaurante y menú]
+        c3[Carrito]
+        c4[Checkout]
+        c5[Pedidos y seguimiento]
+        c6[Perfil]
+    end
+
+    subgraph Dueño["Dueño de restaurante"]
+        direction TB
+        o1[Dashboard]
+        o2[Menú y productos]
+        o3[Pedidos entrantes]
+        o4[Reseñas y analíticas]
+        o5[Ajustes del negocio]
+    end
+
+    subgraph Repartidor["Repartidor"]
+        direction TB
+        d1[Dashboard]
+        d2[Pedidos disponibles]
+        d3[Entrega en curso]
+        d4[Ganancias]
+        d5[Perfil]
+    end
+
+    subgraph Admin["Admin (solo API)"]
+        direction TB
+        a1[CRUD owners/usuarios]
+        a2[Resolución de disputas]
+    end
+```
+
+### Resumen visual por rol
+
+| Rol        | Entra por        | Interacción principal con…                          |
+| ---------- | ---------------- | --------------------------------------------------- |
+| **Cliente**   | `/home`, `/restaurants` | Restaurantes, menú, pedidos (crear y ver estado).   |
+| **Dueño**     | `/owner/dashboard`     | Sus restaurantes, menú, pedidos (aceptar/preparar/listo). |
+| **Repartidor** | `/delivery/dashboard`  | Pedidos listos (aceptar, en camino, entregado).     |
+| **Admin**     | API (sin UI en front)   | Usuarios, owners, disputas.                         |
+
 ---
 
 ## Stack Tecnológico
@@ -70,6 +142,63 @@ El registro permite elegir rol (`customer`, `owner`, `delivery`). Los owners pue
 | **Base de Datos** | MySQL / SQLite                               |
 | **Autenticación** | Laravel Sanctum                              |
 | **Herramientas**  | Composer, npm, ESLint, Prettier               |
+
+---
+
+## Arquitectura del sistema
+
+Flujo de alto nivel:
+
+**Frontend (Vue 3) → Llamadas API → Backend (Laravel) → Base de Datos**  
+↑  
+**(Autenticación Sanctum)**
+
+```mermaid
+flowchart TD
+    F[Frontend: Vue 3] -->|API Calls| B[Backend: Laravel 10]
+    B -->|Eloquent ORM| D[(Database: MySQL / SQLite)]
+    F -.->|Auth| S[Laravel Sanctum]
+    S --> B
+```
+
+**Flujo de una petición (autenticada):**
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant V as Vue 3 SPA
+    participant S as Sanctum
+    participant L as Laravel API
+    participant DB as MySQL/SQLite
+
+    U->>V: Navega / acción
+    V->>V: Token en localStorage
+    V->>L: HTTP + Bearer token
+    L->>S: Valida token
+    S-->>L: Usuario + rol
+    L->>DB: Query (Eloquent)
+    DB-->>L: Datos
+    L-->>V: JSON
+    V-->>U: UI actualizada
+```
+
+**Ciclo de vida del pedido (estados):**
+
+```mermaid
+stateDiagram-v2
+    [*] --> pending: Cliente hace pedido
+    pending --> accepted: Restaurante acepta
+    pending --> preparing: Restaurante prepara
+    pending --> cancelled: Cancelado
+    accepted --> preparing: En cocina
+    accepted --> cancelled: Cancelado
+    preparing --> ready: Listo para recoger
+    ready --> out_for_delivery: Asignado a repartidor
+    ready --> delivered: Entrega directa
+    out_for_delivery --> delivered: Repartidor entrega
+    delivered --> [*]
+    cancelled --> [*]
+```
 
 ---
 
@@ -354,4 +483,6 @@ Este proyecto está bajo la licencia [MIT](https://opensource.org/licenses/MIT).
 
 **Kechow** – [@abimael92](https://github.com/abimael92)
 
-Repositorio: [https://github.com/abimael92/kechow](https://github.com/abimael92/kechow). Para preguntas o propuestas, abre un issue o pull request.
+Repositorio: [https://github.com/abimael92/kechow](https://github.com/abimael92/kechow).
+
+Para preguntas o propuestas, abre un issue o pull request.
