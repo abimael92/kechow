@@ -11,35 +11,53 @@
 
 ---
 
-**Kechow** es una plataforma moderna que facilita la conexión entre las personas y la mejor comida local.
-Rápida, fácil de usar y accesible desde cualquier dispositivo, diseñada para apoyar negocios locales y satisfacer antojos sin complicaciones.
+**Kechow** es una plataforma moderna que facilita la conexión entre las personas y la mejor comida local. Rápida, fácil de usar y accesible desde cualquier dispositivo, diseñada para apoyar negocios locales y satisfacer antojos sin complicaciones.
 
 ---
 
-## Demo en Vivo
+## Descripción y Objetivo
 
-[![Probar ahora](https://img.shields.io/badge/Probar_ahora-FF6B6B?style=for-the-badge&logo=vercel&logoColor=white)](https://kechow.vercel.app)
+**Problema:** En muchas localidades (p. ej. Jiménez) no existe una forma sencilla de descubrir restaurantes locales, ver menús y hacer pedidos desde un solo lugar. Los negocios carecen de una vitrina digital unificada.
+
+**Objetivo:** Ofrecer una app única que una a clientes, dueños de restaurantes y repartidores: explorar restaurantes, gestionar menús y pedidos, y realizar entregas con una experiencia ágil y mantenible.
 
 ---
 
-## ¿Por qué Kechow?
+## Demo / Screenshots
 
-- Entregas rápidas como un perro lujurioso en tu pierna 🐕‍🔥
-- Apoya negocios locales y comida con sabor auténtico
-- App ligera, fácil para todos en Jiménez
-- Backend en Laravel para un rendimiento sólido y seguro
-- Frontend moderno con Vue 3 + Vite + TypeScript
+| Vista | Descripción |
+| ----- | ----------- |
+| [Probar ahora](https://kechow.vercel.app) | Demo en vivo (frontend) |
+| [Estado del API](https://api.kechow.dev/health) | Comprobación del backend |
+
+Las imágenes de cabecera muestran la interfaz principal (front) y el panel de gestión (back). Se pueden añadir más capturas en esta sección (carrito, detalle de restaurante, panel de repartidor, etc.).
 
 ---
 
 ## Características Principales
 
-- App súper rápida construida con Vue 3 + Vite
-- Backend robusto con Laravel 10
-- Diseño responsivo para cualquier dispositivo
-- Sistema completo de pedidos
-- Dashboard para negocios locales
-- Búsqueda inteligente por tipo de comida
+- App construida con **Vue 3 + Vite + TypeScript** (rendimiento y tipado).
+- Backend **Laravel 10** con API REST y autenticación **Laravel Sanctum**.
+- Diseño **responsivo** y **mobile-first**.
+- Sistema de **pedidos** con estados (recibido, preparando, en camino, entregado).
+- **Dashboard para dueños**: menú, pedidos, reseñas, analíticas básicas, configuración.
+- **Dashboard para repartidores**: pedidos disponibles, entregas en curso, ganancias.
+- Búsqueda y exploración de restaurantes por categoría.
+- Carrito, checkout y seguimiento de pedidos (flujo en desarrollo).
+- Soporte **dark mode** y diseño consistente con Tailwind CSS.
+
+---
+
+## Roles de Usuario
+
+| Rol | Descripción | Acceso principal |
+| --- | ----------- | ----------------- |
+| **Customer** | Cliente final | Explorar restaurantes, menú, carrito, pedidos, perfil. |
+| **Owner** | Dueño de restaurante | Registrar y editar restaurantes, gestionar menú, ver y gestionar pedidos, reseñas, analíticas, ajustes. |
+| **Delivery** | Repartidor | Ver pedidos asignados, aceptar/rechazar, marcar en camino/entregado, ganancias, perfil. |
+| **Admin** | Administrador (backend) | Gestión de usuarios/owners (CRUD), resolución de disputas. |
+
+El registro permite elegir rol (`customer`, `owner`, `delivery`). Los owners pueden asociar restaurantes al registrarse.
 
 ---
 
@@ -47,317 +65,293 @@ Rápida, fácil de usar y accesible desde cualquier dispositivo, diseñada para 
 
 | Categoría         | Tecnologías                                  |
 | ----------------- | -------------------------------------------- |
-| **Frontend**      | Vue 3, Vite, TypeScript, Tailwind CSS, Pinia |
+| **Frontend**      | Vue 3, Vite, TypeScript, Tailwind CSS, Pinia, Vue Router, Vue I18n |
 | **Backend**       | Laravel 10, PHP 8.1+                         |
-| **Base de Datos** | MySQL/SQLite                                 |
+| **Base de Datos** | MySQL / SQLite                               |
 | **Autenticación** | Laravel Sanctum                              |
-| **Herramientas**  | Composer, npm, Vite                          |
+| **Herramientas**  | Composer, npm, ESLint, Prettier               |
 
 ---
 
-## Estructura del Proyecto
+## Requisitos Previos
 
-```bash
-kechow/
-├── kechow-server/      # Backend (Laravel)
-│   ├── app/            # Lógica de la aplicación
-│   ├── database/       # Migraciones y seeders
-│   └── routes/         # Definición de endpoints API
-│
-├── kechow-client/      # Frontend (Vue 3)
-│   ├── src/
-│   │   ├── features/   # Módulos funcionales
-│   │   ├── stores/     # Gestión de estado
-│   │   └── utils/      # Funciones auxiliares
-│
-└── package.json        # Scripts para desarrollo
-```
+| Componente    | Versión       | Comprobación        |
+| ------------- | ------------- | ------------------- |
+| Node.js       | 18.x o 20.x   | `node -v`           |
+| npm           | 10.x          | `npm -v`            |
+| PHP           | 8.1+          | `php -v`            |
+| Composer      | 2.0+          | `composer --version`|
+| Base de datos | MySQL 5.7+ o SQLite | `mysql --version` (si usas MySQL) |
 
 ---
 
-## Demo en Vivo (próximamente)
+## Instalación
 
-[![Probar Demo](https://img.shields.io/badge/Probar_Demo-FF6B6B?style=for-the-badge&logo=vercel&logoColor=white)](https://kechow.vercel.app)
-[![Estado del API](https://img.shields.io/badge/API_Status-LIVE-brightgreen)](https://api.kechow.dev/health)
-
----
-
-## Configuración del Proyecto
-
-### Requisitos del Sistema
-
-| Componente    | Versión Requerida | Comando de Verificación |
-| ------------- | ----------------- | ----------------------- |
-| Node.js       | 18.x o superior   | `node -v`               |
-| PHP           | 8.1+              | `php -v`                |
-| Composer      | 2.0+              | `composer --version`    |
-| Base de Datos | MySQL 5.7+/SQLite | `mysql --version`       |
-
-### Instalación Paso a Paso
-
-#### 1. Clonar el repositorio
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/abimael92/kechow.git
 cd kechow-main
 ```
 
-##### 2. Instala dependencias
+### 2. Instalar dependencias
 
-```
+```bash
 # Backend (Laravel)
 composer install --working-dir=kechow-server
 
 # Frontend (Vue)
 npm install --prefix kechow-client
 
-# Dependencias raíz (para scripts)
+# Raíz (scripts con concurrently)
 npm install
 ```
 
-##### 3. Configuración de entorno
+### 3. Configuración de entorno
 
-Es fundamental configurar correctamente los archivos de entorno para ambos proyectos:
-Puedes usar el archivo de ejemplo `.env.example` para guiarte
+**Backend:**
 
-###
-
-```
-npm run start
-
-```
-
-```
-# Frontend
-cp kechow-client/.env.example kechow-client/.env
-
-# Backend
+```bash
 cp kechow-server/.env.example kechow-server/.env
 php kechow-server/artisan key:generate
 ```
 
-##### 4. Configurar base de datos
+**Frontend:** Crear `kechow-client/.env` con al menos:
 
+```env
+VITE_API_URL=http://127.0.0.1:8000
 ```
+
+Ajusta la URL si el backend corre en otro host/puerto.
+
+### 4. Base de datos
+
+```bash
 php kechow-server/artisan migrate --seed
 ```
 
-##### 5. Ejecutar la aplicación
+Con el seeder obtendrás usuarios de prueba (incl. owners con contraseña `123456`). Revisa `kechow-server/database/seeders/` para credenciales exactas.
 
-```
-# Opción recomendada (Corre frontend y backend en paralelo)
+### 5. Ejecutar la aplicación
+
+**Opción recomendada (frontend y backend a la vez):**
+
+```bash
 npm run start
-
-
-# Alternativa (servicios separados)
-# Terminal 1:
-php kechow-server/artisan serve
-# Terminal 2:
-npm run dev --prefix kechow-client
 ```
 
-## Stack Tecnológico
+- Backend: http://127.0.0.1:8000  
+- Frontend: http://127.0.0.1:5173 (Vite)
 
-### Frontend:
+**Por separado:**
 
-- **Vue 3** - Framework progresivo de JavaScript
-- **Vite** - Herramientas frontend de última generación
-- **TypeScript** - Superset de JavaScript con tipos
-- **Pinia** - Gestión de estado
-- **Tailwind CSS** - Framework CSS utility-first
+```bash
+# Terminal 1 – Backend
+cd kechow-server && php artisan serve
 
-### Backend:
-
-- **Laravel 10** - Framework PHP para desarrollo web
-- **PHP 8.1+** - Lenguaje de scripting del lado del servidor
-- **Laravel Sanctum** - Autenticación para APIs
-
-### Base de Datos:
-
-- **MySQL** - Base de datos relacional
-- **SQLite** - Alternativa ligera
-
-### ¿Por qué este stack?
-
-| Componente   | Beneficio                              |
-| ------------ | -------------------------------------- |
-| Vue 3 + Vite | Experiencia de desarrollo ultrarrápida |
-| Laravel      | Backend robusto con sintaxis elegante  |
-| Tailwind CSS | Desarrollo ágil de interfaces          |
-| TypeScript   | Seguridad de tipos y mejor tooling     |
-| MySQL/SQLite | Flexibilidad en despliegues            |
-
-## 📊 Arquitectura del Sistema
-
-Frontend (Vue 3) → Llamadas API → Backend (Laravel) → Base de Datos
-↑
-(Autenticación Sanctum)
-
-```mermaid
-flowchart TD
-    F[Frontend: Vue 3] -->|API Calls| B[Backend: Laravel 10]
-    B -->|Eloquent ORM| D[(Database: MySQL / SQLite)]
-    F -.->|Auth| S[Laravel Sanctum]
-    S --> B
+# Terminal 2 – Frontend
+cd kechow-client && npm run dev
 ```
-
-# Funcionalidades
-
-### Para los usuarios:
-
-- Ver y explorar restaurantes
-- Buscar por tipo de comida
-- Visualizar menú y hacer pedidos
-- Búsqueda inteligente de restaurantes
-- Sistema de pedidos integrado
-- Diseño mobile-first
-- Sistema de valoraciones
-
-### Para dueños de negocios:
-
-- Registrar su restaurante
-- Administrar productos y pedidos
-- Panel de administración
-- Gestión de menú digital
-- Seguimiento de pedidos
-- Estadísticas básicas
-
-# Estructura del Código
-
-```
-kechow-client/
-├── features/          # Módulos principales como cart, menu, etc.
-├── components/        # Componentes reutilizables
-├── pages/             # Vistas de cada página
-├── store/             # Pinia stores
-├── styles/            # Tailwind y estilos globales
-└── utils/             # Funciones auxiliares
-```
-
-```
-kechow-server/
-├── app/
-│   ├── Http/
-│   ├── Modules/       # Modularización por dominio
-│   ├── Docs/          # Documentación API
-│   └── Requests/      # Validaciones personalizadas
-```
-
-## Contribuciones
-
-¡Todos son bienvenidos! Abre un issue, haz un fork y manda tu PR.
-Nos encanta la comida y el buen código 🍽️🧑‍💻
-
-#### Cómo Contribuir?
-
-    1. Haz fork del repositorio
-    2. Crea una rama (`git checkout -b mi-feature`)
-    3. Haz commit de tus cambios (`git commit -am 'Añade nueva feature'`)
-    4. Haz push a la rama (`git push origin mi-feature`)
-    5. Abre un Pull Request
-
-## Ayuda Rápida
-
-¿Algo no funciona? Revisa tu .env, asegúrate que las migraciones corrieron correctamente y que el backend y frontend están corriendo.
-
-¿Problemas con dependencias?
-
-```
-rm -rf node_modules && npm install
-```
-
-## Lista de funciones para la app de entrega Kechow
-
-### Inicio / Explorar
-
-- [ ] Restaurantes destacados
-- [ ] Filtros por categoría (Pizza, Tacos, Hamburguesas, etc.)
-- [ ] Banners de promociones o sliders
-
-### Búsqueda
-
-- [ ] Barra de búsqueda libre
-- [ ] Sugerencias automáticas (autocomplete)
-- [ ] Filtros/orden (por calificación, precio, tiempo de entrega)
-
-### Detalle del restaurante
-
-- [x] Información del restaurante, horarios, tiempo de entrega
-- [ ] Menú agrupado por categorías
-- [ ] Botón "Agregar al carrito" desde cada ítem
-- [ ] Modificadores de ítem (extra queso, nivel de picante, etc.)
-
-### Carrito
-
-- [ ] Lista de productos seleccionados
-- [ ] Editar cantidad / eliminar
-- [ ] Subtotal + envío + impuestos
-- [ ] Botón de pagar
-
-### Dirección de entrega
-
-- [ ] Usar direcciones guardadas o ingresar nueva
-- [ ] Marcador en mapa (opcional)
-
-### Pago
-
-- [ ] Selección de método de pago (tarjeta, efectivo, wallet)
-- [ ] Confirmación del resumen del pedido
-
-### Seguimiento del pedido
-
-- [ ] Estado en vivo del pedido (recibido, preparando, en camino)
-- [ ] Vista de mapa con ubicación del repartidor (opcional)
-
-### Historial de pedidos
-
-- [ ] Lista de pedidos pasados
-- [ ] Botón de reordenar
-- [ ] Calificar/comentar pedidos anteriores
-
-### Perfil
-
-- [ ] Ver/editar datos personales
-- [ ] Ver direcciones guardadas
-- [ ] Métodos de pago
-- [x] Cerrar sesión
-
-### Promociones
-
-- [ ] Ingreso y validación de código promocional
-- [ ] Lista de ofertas disponibles
-
-### Ajustes
-
-- [ ] Preferencias de notificación
-- [ ] Cambio de idioma / moneda
-- [ ] Política de privacidad / Términos
 
 ---
 
-### Paneles opcionales para restaurante/admin
+## Scripts y Comandos
 
-#### Panel del restaurante
+**Raíz del monorepo:**
 
-- [ ] Agregar/editar ítems del menú
-- [ ] Ver pedidos entrantes
-- [ ] Configurar horarios/disponibilidad
+| Script   | Descripción                                      |
+| -------- | ------------------------------------------------- |
+| `npm run start` | Inicia backend (Laravel) y frontend (Vite) en paralelo |
+| `npm run dev`   | Alias de `start`                                  |
+| `npm run build` | Build de producción del frontend                  |
+| `npm run lint`  | ESLint en `kechow-client`                         |
+| `npm run format`| Prettier en `kechow-client`                       |
+| `npm run test`  | Tests del cliente                                 |
 
-#### Gestión de pedidos
+**Solo frontend (`kechow-client/`):**
 
-- [ ] Aceptar / rechazar pedidos
-- [ ] Marcar como preparando / listo / en camino
+| Script            | Descripción                          |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Servidor de desarrollo Vite          |
+| `npm run build`   | Build para producción                |
+| `npm run preview` | Vista previa del build (puerto 4173) |
+| `npm run lint`    | ESLint (.ts, .vue)                   |
+| `npm run typecheck` | Vue-tsc (sin emit)                 |
+| `npm run format:check` | Prettier check                   |
 
-#### Gestión de usuarios (Admin)
+**Solo backend (`kechow-server/`):**
 
-- [ ] Bloquear cuentas
-- [ ] Resolver disputas
+```bash
+php artisan serve          # Servidor HTTP
+php artisan migrate --seed # Migraciones + seeders
+php artisan config:clear   # Limpiar caché de config
+```
 
-## Próximos Pasos
+---
 
-- Dashboard avanzado para negocios
-- Notificaciones en tiempo real
-- Versión móvil nativa
-- Integración con pasarelas de pago
+## Estructura del Proyecto
 
-https://lottiefiles.com/free-animation/delivery-food-splash-N1rHOrHdTD
+```
+kechow-main/
+├── kechow-server/           # Backend Laravel
+│   ├── app/
+│   │   ├── Http/Controllers/ # Controladores API
+│   │   ├── Modules/         # Módulos (Owner, Restaurant, etc.)
+│   │   └── Models/         # Eloquent
+│   ├── database/
+│   │   ├── migrations/
+│   │   └── seeders/
+│   ├── routes/
+│   │   └── api.php         # Rutas API
+│   └── .env.example
+│
+├── kechow-client/          # Frontend Vue 3
+│   ├── src/
+│   │   ├── app/            # Router, store (auth), lib (axios, env), config
+│   │   ├── features/       # Módulos: auth, business-owner, customer, delivery
+│   │   ├── pages/          # Vistas por rol (customer, owner, delivery)
+│   │   ├── shared/         # Layouts, componentes reutilizables
+│   │   ├── assets/         # Imágenes, estilos globales, SVG
+│   │   └── main.ts
+│   ├── public/             # Favicon, logo, assets estáticos
+│   └── vite.config.ts
+│
+├── Docs/                   # Documentación (arquitectura, integración, etc.)
+├── package.json            # Scripts raíz (start, build, lint, test)
+└── README.md
+```
+
+Cada **feature** en el cliente agrupa vistas, componentes, servicios y stores por dominio (auth, owner, customer, delivery).
+
+---
+
+## Configuración
+
+### Variables de entorno
+
+**Backend (`kechow-server/.env`):**
+
+Las necesarias para desarrollo local:
+
+| Variable     | Descripción           | Ejemplo              |
+| ------------ | --------------------- | -------------------- |
+| `APP_NAME`   | Nombre de la app      | `Kechow`             |
+| `APP_KEY`    | Clave de cifrado      | Generada con `key:generate` |
+| `APP_DEBUG`  | Modo debug            | `true` (solo desarrollo) |
+| `VITE_API_URL` | URL pública del API (para assets) | `http://127.0.0.1:8000` |
+| `FRONTEND_URL` | Origen del frontend (CORS) | `http://127.0.0.1:5173` |
+| `DB_CONNECTION` | Driver de BD        | `mysql` o `sqlite`   |
+| `DB_DATABASE` | Nombre de la BD       | `kechow`             |
+| `DB_USERNAME` / `DB_PASSWORD` | Credenciales BD | Según entorno |
+
+Para producción, configurar también `APP_ENV=production`, `APP_DEBUG=false` y credenciales seguras.
+
+**Frontend (`kechow-client/.env`):**
+
+| Variable       | Descripción        | Ejemplo              |
+| -------------- | ------------------ | -------------------- |
+| `VITE_API_URL` | URL base del API   | `http://127.0.0.1:8000` |
+
+No commitear `.env`; usar `.env.example` como plantilla.
+
+### Credenciales de ejemplo
+
+Tras `php artisan migrate --seed`, los seeders crean usuarios de prueba. Los owners sembrados suelen usar contraseña `123456`. Revisa `kechow-server/database/seeders/OwnerSeeder.php` y `UserSeeder.php` para emails y roles exactos.
+
+---
+
+## Gestión de Assets
+
+- **Imágenes públicas:** `kechow-client/public/images/` (favicon, logos, placeholders). Se referencian por ruta absoluta, p. ej. `/images/kechow_logo.png`.
+- **Favicon:** Variantes en `public/images/favicon/` (ICO, PNG, webmanifest). Actualizar `index.html` y `site.webmanifest` si cambias rutas.
+- **Assets por feature:** Imágenes o ilustraciones por módulo en `src/assets/` (p. ej. fotos de restaurantes, SVG). Importar desde componentes o estilos.
+- **Iconos:** El proyecto usa **Heroicons** (`@heroicons/vue`) y **Lucide** (`lucide-vue-next`). SVG propios en `src/assets/svg/`.
+- **Fuentes:** Inter y Chewy cargadas desde Google Fonts en `src/assets/styles/global.css`. No subir binarios de fuentes al repo salvo que se decida self-hosting.
+
+---
+
+## Estilo y UX
+
+- **Sistema de diseño:** Tailwind CSS con tema extendido en `kechow-client/tailwind.config.js` y variables CSS en `src/assets/styles/global.css`.
+- **Colores:**
+  - **Primario:** `#FF6B00` (naranja Kechow), escala `primary-50`–`primary-950`.
+  - **Secundario:** Grises para navegación y texto (`secondary-*`).
+  - **Acento:** Teal/sky para highlights (`accent-*`). Delivery usa `driver-primary`, `driver-success`, `driver-warning`, `driver-error`.
+  - **Semánticos:** `success`, `warning`, `error`, `info` (y variantes `-bg` / `-text` para badges).
+- **Tipografía:** Inter (UI), Chewy (logo y títulos). Tamaños responsivos con `clamp` (hero, h1–h3).
+- **Responsividad:** Mobile-first; breakpoints estándar de Tailwind. Botones y áreas táctiles mínimas ~44px.
+- **Tema oscuro:** Clase `dark` en raíz; variables `--color-app-bg` y `--color-card` cambian en `.dark`. Componentes usan utilidades `dark:`.
+- **Componentes:** Clases `.btn-primary`, `.btn-secondary` y bordes/radios (`rounded-button`, `rounded-card`, `rounded-input`) definidos en `global.css` y Tailwind.
+
+Mantener consistencia usando las utilidades del tema y evitando colores hardcodeados.
+
+---
+
+## Limitaciones Actuales
+
+- Muchas funcionalidades del flujo cliente están en desarrollo (carrito completo, checkout, pasarela de pago, direcciones guardadas, códigos promocionales).
+- Seguimiento en tiempo real del repartidor (mapa en vivo) no implementado.
+- Notificaciones push o en tiempo real (WebSockets) no integradas.
+- Panel de administración (bloqueo de cuentas, disputas) expuesto vía API; sin UI de admin en el frontend.
+- Algunos ítems del menú (modificadores, extras) pueden no estar cubiertos al 100%.
+- i18n preparado (Vue I18n); cobertura de cadenas puede ser parcial.
+
+---
+
+## Buenas Prácticas Aplicadas
+
+- **Frontend:** TypeScript estricto, componentes Vue 3 Composition API, Pinia para estado, rutas protegidas por rol (`requiresAuth`, `role`), lazy loading de rutas pesadas, alias de rutas (`@/`, `@features/`, etc.), ESLint + Prettier.
+- **Backend:** API REST con Laravel, Sanctum para SPA, políticas y middlewares por rol, validación con Form Requests, módulos por dominio (Owner, Restaurant), migraciones versionadas y seeders documentados.
+- **Seguridad:** CORS configurado, tokens Bearer, no loguear datos sensibles en producción, variables sensibles en `.env`.
+- **Mantenibilidad:** Estructura por features, documentación en `Docs/`, configuración centralizada (app.config, env).
+
+---
+
+## Roadmap / Mejoras Futuras
+
+- Restaurantes destacados, filtros por categoría, banners o sliders en inicio.
+- Búsqueda con autocompletado y filtros (valoración, precio, tiempo de entrega).
+- Menú agrupado por categorías, modificadores de ítem, carrito completo con envío e impuestos.
+- Direcciones guardadas y selección en checkout; mapa opcional.
+- Integración de pasarela de pago (tarjeta, efectivo, wallet).
+- Seguimiento en vivo del pedido (estados y mapa del repartidor).
+- Historial de pedidos con reordenar y valoraciones.
+- Perfil: edición de datos, direcciones, métodos de pago.
+- Códigos promocionales y ofertas.
+- Ajustes: notificaciones, idioma, moneda, políticas legales.
+- Panel restaurante: menú, pedidos entrantes, horarios y disponibilidad.
+- Dashboard avanzado para negocios, notificaciones en tiempo real, versión móvil nativa.
+
+---
+
+## Contribuir
+
+1. Haz fork del repositorio.
+2. Crea una rama: `git checkout -b mi-feature`.
+3. Commit: `git commit -am 'Añade nueva feature'`.
+4. Push: `git push origin mi-feature`.
+5. Abre un Pull Request.
+
+Revisa que `npm run lint` y `npm run typecheck` pasen en el cliente. Para dudas o diseño, abre un issue.
+
+---
+
+## Ayuda Rápida
+
+- **La app no arranca:** Comprueba que `.env` esté configurado en server y client, que las migraciones se hayan ejecutado y que backend (puerto 8000) y frontend (5173) estén en marcha.
+- **Problemas de dependencias (frontend):** `cd kechow-client && rm -rf node_modules && npm install`.
+- **CORS o 401:** Verifica `FRONTEND_URL` en el backend y que el frontend use la misma `VITE_API_URL` que el servidor que expone el API.
+
+---
+
+## Licencia
+
+Este proyecto está bajo la licencia [MIT](https://opensource.org/licenses/MIT).
+
+---
+
+## Autor / Contacto
+
+**Kechow** – [@abimael92](https://github.com/abimael92)
+
+Repositorio: [https://github.com/abimael92/kechow](https://github.com/abimael92/kechow). Para preguntas o propuestas, abre un issue o pull request.
