@@ -1,477 +1,504 @@
 <template>
-	<div class="landing-root">
-	<section
-		class="max-w-4xl mx-auto flex flex-col items-center text-center space-y-12 fade-in-up text-black dark:text-white px-6 py-24 min-h-[90vh] relative overflow-hidden"
-	>
-		<!-- Delivery-themed animated background (black) -->
-		<div
-			class="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center"
-		>
-			<!-- Bigger delivery route circle -->
-			<div
-				class="relative w-[80vmin] h-[80vmin] border-8 border-dashed border-black rounded-full animate-spin-slow opacity-30 flex items-center justify-center"
-			>
-				<!-- Floating package -->
-				<div
-					class="absolute w-6 h-6 bg-black rotate-12 rounded-sm animate-float1"
-					style="top: 15%; left: 50%; transform: translateX(-50%)"
-				></div>
+	<div class="landing-root min-h-full bg-app dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+		<main>
+			<!-- Hero Section -->
+			<section class="relative overflow-hidden pt-20 pb-32">
+				<!-- Animated Background -->
+				<div class="absolute inset-0 opacity-5">
+					<div class="absolute inset-0" :style="animatedBackground"></div>
+				</div>
 
-				<!-- Floating pin -->
-				<div
-					class="absolute w-5 h-5 bg-black rounded-full animate-float2"
-					style="bottom: 15%; left: 50%; transform: translateX(-50%)"
-				></div>
+				<div class="container mx-auto px-4 relative z-10">
+					<div class="grid lg:grid-cols-2 gap-12 items-center">
+						<!-- Hero Content -->
+						<div class="space-y-8">
+							<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary-100 to-accent-100 dark:from-primary-900/30 dark:to-accent-900/30 mb-4">
+								<Sparkles class="w-4 h-4 text-primary-500" />
+								<span class="text-sm font-medium text-primary-700 dark:text-primary-300">
+									🎉 ¡Nuevo en Jiménez!
+								</span>
+							</div>
 
-				<!-- Location SVG -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float3"
-					style="top: 48%; left: 22%; transform: translate(-50%, -50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="currentColor"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path
-						d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1114.5 9 2.5 2.5 0 0112 11.5z"
-					/>
-				</svg>
+							<h1 class="text-4xl md:text-6xl font-chewy leading-tight">
+								<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+									Tu comida favorita,
+								</span>
+								<br />
+								<span class="text-gray-900 dark:text-white">
+									entregada en minutos
+								</span>
+							</h1>
 
-				<!-- Scooter / Delivery Bike -->
-				<svg
-					class="absolute w-10 h-10 text-black animate-float4"
-					style="top: 18%; right: 28%; transform: translate(50%, -50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
-					viewBox="0 0 24 24"
-					fill="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					aria-hidden="true"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-					<path
-						d="M13 4a1 1 0 0 1 1 1h4a1 1 0 0 1 .783 .378l.074 .108l3 5l.055 .103l.04 .107l.029 .109l.016 .11l.003 .085v6a1 1 0 0 1 -1 1h-1.171a3.001 3.001 0 0 1 -5.658 0h-4.342a3.001 3.001 0 0 1 -5.658 0h-1.171a1 1 0 0 1 -1 -1v-11a2 2 0 0 1 2 -2zm-6 12a1 1 0 1 0 0 2a1 1 0 0 0 0 -2m10 0a1 1 0 1 0 0 2a1 1 0 0 0 0 -2m.434 -9h-3.434v3h5.234z"
-					/>
-				</svg>
+							<p class="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+								Descubre los mejores restaurantes de Jiménez desde la comodidad de tu hogar. 
+								Pedidos rápidos, seguimiento en tiempo real y entrega directa a tu puerta.
+							</p>
 
-				<!-- Clock / Timer -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float5"
-					style="bottom: 28%; left: 18%; transform: translate(-50%, 50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<circle cx="12" cy="12" r="10"></circle>
-					<path d="M12 6v6l4 2"></path>
-				</svg>
+							<!-- Stats -->
+							<div class="grid grid-cols-3 gap-4">
+								<div class="text-center p-4 rounded-xl bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 backdrop-blur-sm">
+									<div class="text-2xl font-bold text-primary-600 dark:text-primary-400">30min</div>
+									<div class="text-sm text-gray-600 dark:text-gray-400">Entrega promedio</div>
+								</div>
+								<div class="text-center p-4 rounded-xl bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 backdrop-blur-sm">
+									<div class="text-2xl font-bold text-primary-600 dark:text-primary-400">50+</div>
+									<div class="text-sm text-gray-600 dark:text-gray-400">Restaurantes</div>
+								</div>
+								<div class="text-center p-4 rounded-xl bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 backdrop-blur-sm">
+									<div class="text-2xl font-bold text-primary-600 dark:text-primary-400">4.8★</div>
+									<div class="text-sm text-gray-600 dark:text-gray-400">Calificación</div>
+								</div>
+							</div>
 
-				<!-- Shopping Bag -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float6"
-					style="top: 38%; left: 63%; transform: translate(-50%, -50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-					<path
-						d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z"
-					/>
-					<path d="M9 11v-5a3 3 0 0 1 6 0v5" />
-				</svg>
+							<!-- CTA Buttons -->
+							<div class="flex flex-wrap gap-4">
+								<BaseButton 
+									size="lg"
+									class="bg-primary-500 hover:bg-primary-600 text-white"
+									@click="goToOrder"
+								>
+									<template #icon>
+										<ShoppingBag class="w-5 h-5" />
+									</template>
+									Ordenar Ahora
+								</BaseButton>
+								<BaseButton 
+									size="lg"
+									variant="outline"
+									class="border-primary-500 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+									@click="scrollToFeatures"
+								>
+									<template #icon>
+										<Sparkles class="w-5 h-5" />
+									</template>
+									Ver Características
+								</BaseButton>
+							</div>
+						</div>
 
-				<!-- Fork & Knife -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float7"
-					style="bottom: 34%; right: 15%; transform: translate(50%, 50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-					<path
-						d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"
-					/>
-				</svg>
+						<!-- Hero Image/Animation -->
+						<div class="relative">
+							<div class="relative rounded-3xl overflow-hidden shadow-2xl">
+								<!-- Food Image -->
+								<div class="aspect-square bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900 dark:to-accent-900 flex items-center justify-center">
+									<div class="text-center p-8">
+										<div class="text-6xl mb-6 animate-bounce">🍔</div>
+										<p class="text-2xl font-chewy text-primary-700 dark:text-primary-300">
+											¡Comida deliciosa en camino!
+										</p>
+									</div>
+								</div>
 
-				<!-- Hot Drink / Coffee Cup -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float8"
-					style="top: 62%; right: 33%; transform: translate(50%, -50%)"
-					xmlns="https://tabler.io/icons"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-					<path
-						d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"
-					/>
-					<path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2" />
-					<path d="M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2" />
-					<path d="M3 10h14v5a6 6 0 0 1 -6 6h-2a6 6 0 0 1 -6 -6v-5z" />
-					<path d="M16.746 16.726a3 3 0 1 0 .252 -5.555" />
-				</svg>
+								<!-- Floating Delivery Animation -->
+								<div class="absolute -bottom-6 -right-6 w-32 h-32">
+									<div class="relative w-full h-full">
+										<!-- Delivery Scooter -->
+										<div class="absolute inset-0 animate-pulse-slow">
+											<Bike class="w-full h-full text-primary-500" />
+										</div>
+										<!-- Delivery Route -->
+										<div class="absolute inset-0 border-2 border-dashed border-primary-300 rounded-full animate-spin-slow"></div>
+									</div>
+								</div>
+							</div>
 
-				<!-- Shopping Cart -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float9"
-					style="top: 32%; right: 12%; transform: translate(50%, -50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<circle cx="9" cy="21" r="1"></circle>
-					<circle cx="20" cy="21" r="1"></circle>
-					<path
-						d="M1 1h4l2.68 13.39a1 1 0 0 0 1 .61h9a1 1 0 0 0 1-.76l1.38-7.59H6"
-					></path>
-				</svg>
+							<!-- Floating Elements -->
+							<div class="absolute -top-6 -left-6 w-24 h-24 bg-primary-400/20 rounded-full blur-xl animate-ping-slow"></div>
+							<div class="absolute -bottom-6 -right-6 w-32 h-32 bg-accent-400/10 rounded-full blur-xl animate-pulse"></div>
+						</div>
+					</div>
+				</div>
+			</section>
 
-				<!-- Box with Arrow (Shipping Box) -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float10"
-					style="bottom: 52%; left: 8%; transform: translate(-50%, 50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-					<path d="M12 21l-8 -4.5v-9l8 -4.5l8 4.5v4.5" />
-					<path d="M12 12l8 -4.5" />
-					<path d="M12 12v9" />
-					<path d="M12 12l-8 -4.5" />
-					<path d="M15 18h7" />
-					<path d="M19 15l3 3l-3 3" />
-				</svg>
+			<!-- Features Section -->
+			<section id="features" class="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+				<div class="container mx-auto px-4">
+					<div class="text-center mb-16">
+						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
+							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+								¿Por qué elegir Kechow?
+							</span>
+						</h2>
+						<p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+							La mejor experiencia de comida a domicilio en Jiménez
+						</p>
+					</div>
 
-				<!-- Heart / Like -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float11"
-					style="top: 28%; left: 43%; transform: translate(-50%, -50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="currentColor"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path
-						d="M12 21s-8-4.5-8-11a5 5 0 0 1 10 0 5 5 0 0 1 10 0c0 6.5-8 11-8 11z"
-					/>
-				</svg>
+					<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+						<FeatureCard
+							v-for="feature in features"
+							:key="feature.title"
+							:icon="feature.icon"
+							:title="feature.title"
+							:description="feature.description"
+							:color="feature.color"
+						/>
+					</div>
+				</div>
+			</section>
 
-				<!-- pizza slice -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float11"
-					style="top: 18%; left: 20%; transform: translate(-50%, -50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-					<path
-						d="M12 21.5c-3.04 0 -5.952 -.714 -8.5 -1.983l8.5 -16.517l8.5 16.517a19.09 19.09 0 0 1 -8.5 1.983z"
-					/>
-					<path
-						d="M5.38 15.866a14.94 14.94 0 0 0 6.815 1.634a14.944 14.944 0 0 0 6.502 -1.479"
-					/>
-					<path d="M13 11.01v-.01" />
-					<path d="M11 14v-.01" />
-				</svg>
+			<!-- Popular Restaurants -->
+			<section id="restaurants" class="py-20">
+				<div class="container mx-auto px-4">
+					<div class="text-center mb-16">
+						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
+							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+								Restaurantes Destacados
+							</span>
+						</h2>
+						<p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+							Los favoritos de Jiménez a solo un clic de distancia
+						</p>
+					</div>
 
-				<!-- Star (Rating) -->
-				<svg
-					class="absolute w-8 h-8 text-black animate-float12"
-					style="bottom: 27%; right: 63%; transform: translate(50%, 50%)"
-					xmlns="http://www.w3.org/2000/svg"
-					fill="currentColor"
-					viewBox="0 0 24 24"
-					aria-hidden="true"
-				>
-					<path
-						d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
-					/>
-				</svg>
-			</div>
-		</div>
+					<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+						<RestaurantCard
+							v-for="restaurant in popularRestaurants"
+							:key="restaurant.id"
+							:restaurant="restaurant"
+						/>
+					</div>
 
-		<!-- Actual content (z-10 to stay on top) -->
-		<div
-			class="z-10 relative flex flex-col items-center text-center space-y-8 max-w-xl mx-auto"
-		>
-			<h1
-				class="text-5xl sm:text-6xl mt-16 font-extrabold drop-shadow-lg text-black dark:text-white"
-			>
-				Comida Deliciosa, Entrega Rápida
-			</h1>
+					<div class="text-center mt-12">
+						<BaseButton 
+							variant="outline"
+							class="border-primary-500 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+							@click="viewAllRestaurants"
+						>
+							Ver todos los restaurantes
+						</BaseButton>
+					</div>
+				</div>
+			</section>
 
-			<p class="text-xl max-w-lg opacity-90 leading-relaxed mx-auto">
-				Pide a tus restaurantes favoritos y recibe comida fresca y caliente en la puerta de tu casa en minutos.
-			</p>
+			<!-- How It Works -->
+			<section id="how-it-works" class="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+				<div class="container mx-auto px-4">
+					<div class="text-center mb-16">
+						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
+							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+								Cómo funciona
+							</span>
+						</h2>
+						<p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+							Ordenar nunca fue tan fácil
+						</p>
+					</div>
 
-			<p
-				class="text-lg max-w-md opacity-80 underline underline-offset- decoration-accent decoration-4 cursor-pointer hover:decoration-secondary transition mx-auto"
-				@click="alertComingSoon"
-			>
-				La app favorita de tu ciudad — ¡próximamente!
-			</p>
+					<div class="grid md:grid-cols-4 gap-8">
+						<StepCard
+							v-for="(step, index) in steps"
+							:key="step.title"
+							:number="index + 1"
+							:title="step.title"
+							:description="step.description"
+							:icon="step.icon"
+						/>
+					</div>
+				</div>
+			</section>
 
-			<BaseButton
-				@click="goHome"
-				class="btn px-8 py-3 text-lg font-semibold rounded-md shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition"
-				aria-label="Comenzar"
-			>
-				Comenzar
-			</BaseButton>
-		</div>
-	</section>
+			<!-- Testimonials -->
+			<section id="testimonials" class="py-20">
+				<div class="container mx-auto px-4">
+					<div class="text-center mb-16">
+						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
+							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+								Lo que dicen nuestros clientes
+							</span>
+						</h2>
+					</div>
 
-	<!-- Separate Testimonials section -->
-	<section
-		aria-label="Testimonios de clientes"
-		class="max-w-4xl mx-auto mt-32 w-full max-w-3xl bg-white dark:bg-gray-800 rounded-lg p-10 shadow-lg text-center min-h-[40vh]"
-	>
-		<h2 class="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-			Lo que dicen nuestros clientes
-		</h2>
-		<ul class="space-y-6 text-lg">
-			<li class="italic text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
-				"¡Comida increíble y entrega rápida! La interfaz es muy limpia y fácil de usar."
-				<br />
-				<span class="font-semibold">- Jamie L.</span>
-			</li>
-			<li class="italic text-gray-700 dark:text-gray-300 max-w-xl mx-auto">
-				"Me encantan las animaciones y la experiencia fluida. ¡No puedo esperar al lanzamiento!"
-				<br />
-				<span class="font-semibold">- Maria G.</span>
-			</li>
-		</ul>
-	</section>
+					<div class="grid md:grid-cols-3 gap-8">
+						<TestimonialCard
+							v-for="testimonial in testimonials"
+							:key="testimonial.name"
+							:name="testimonial.name"
+							:text="testimonial.text"
+							:rating="testimonial.rating"
+							:avatar="testimonial.avatar"
+						/>
+					</div>
+				</div>
+			</section>
+
+			<!-- CTA Section -->
+			<section class="py-20">
+				<div class="container mx-auto px-4">
+					<div class="bg-gradient-to-r from-primary-500 to-accent-500 rounded-3xl p-12 text-center relative overflow-hidden">
+						<!-- Background Pattern -->
+						<div class="absolute inset-0 opacity-10">
+							<div class="absolute inset-0" :style="animatedBackground"></div>
+						</div>
+
+						<div class="relative z-10">
+							<h2 class="text-3xl md:text-4xl font-chewy mb-6 text-white">
+								¿Listo para saborear Jiménez?
+							</h2>
+							<p class="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
+								Únete a miles de personas que ya disfrutan de la mejor comida local
+							</p>
+							<div class="flex flex-col sm:flex-row gap-4 justify-center">
+								<BaseButton 
+									size="lg"
+									class="bg-white text-primary-600 hover:bg-gray-100"
+									@click="goToOrder"
+								>
+									<template #icon>
+										<ShoppingBag class="w-5 h-5" />
+									</template>
+									Empezar a Ordenar
+								</BaseButton>
+								<BaseButton 
+									size="lg"
+									variant="outline"
+									class="border-2 border-white text-white hover:bg-white/10"
+									@click="scrollToFeatures"
+								>
+									Aprender Más
+								</BaseButton>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router';
 import BaseButton from '@/shared/ui/BaseButton.vue';
-const router = useRouter();
+import FeatureCard from '@/components/landing/FeatureCard.vue'
+import RestaurantCard from '@/components/landing/RestaurantCard.vue'
+import StepCard from '@/components/landing/StepCard.vue'
+import TestimonialCard from '@/components/landing/TestimonialCard.vue'
+import { 
+	ShoppingBag, 
+	Sparkles, 
+	Clock, 
+	Shield, 
+	Truck, 
+	MapPin, 
+	Bike,
+	Search,
+	Smartphone,
+	CreditCard,
+	CheckCircle
+} from 'lucide-vue-next'
 
-function goHome() {
-	router.push('/home');
+const router = useRouter()
+
+const goToOrder = () => {
+	router.push('/restaurants')
 }
 
-function alertComingSoon() {
-	alert('¡Estén atentos! Lanzamos muy pronto 🚀');
+const scrollToFeatures = () => {
+	const element = document.getElementById('features')
+	if (element) {
+		element.scrollIntoView({ behavior: 'smooth' })
+	}
 }
+
+const viewAllRestaurants = () => {
+	router.push('/restaurants')
+}
+
+// Animated background pattern
+const animatedBackground = {
+	backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FF6B00' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+	backgroundSize: '60px 60px'
+}
+
+// Features data
+const features = [
+	{
+		icon: Clock,
+		title: 'Entrega Rápida',
+		description: '30 minutos o menos garantizados en Jiménez',
+		color: 'primary'
+	},
+	{
+		icon: Shield,
+		title: 'Comida Segura',
+		description: 'Protocolos de higiene y empaque sellado',
+		color: 'accent'
+	},
+	{
+		icon: Truck,
+		title: 'Seguimiento en Vivo',
+		description: 'Sigue a tu repartidor en tiempo real',
+		color: 'primary'
+	},
+	{
+		icon: MapPin,
+		title: 'Cobertura Total',
+		description: 'Entregamos en toda Jiménez',
+		color: 'accent'
+	},
+	{
+		icon: Sparkles,
+		title: 'Calidad Premium',
+		description: 'Solo restaurantes verificados',
+		color: 'primary'
+	},
+	{
+		icon: CheckCircle,
+		title: 'Pago Seguro',
+		description: 'Múltiples métodos de pago',
+		color: 'accent'
+	}
+]
+
+// Popular restaurants
+const popularRestaurants = [
+	{
+		id: 1,
+		name: 'Taquería El Güero',
+		cuisine: 'Mexicana',
+		rating: 4.8,
+		deliveryTime: '25-30 min',
+		image: '/images/restaurants/taqueria.jpg'
+	},
+	{
+		id: 2,
+		name: 'Pizzas Don Pepe',
+		cuisine: 'Italiana',
+		rating: 4.6,
+		deliveryTime: '30-35 min',
+		image: '/images/restaurants/pizza.jpg'
+	},
+	{
+		id: 3,
+		name: 'Hamburguesas El Chavo',
+		cuisine: 'Americana',
+		rating: 4.7,
+		deliveryTime: '20-25 min',
+		image: '/images/restaurants/burgers.jpg'
+	},
+	{
+		id: 4,
+		name: 'Sushi House',
+		cuisine: 'Japonesa',
+		rating: 4.9,
+		deliveryTime: '35-40 min',
+		image: '/images/restaurants/sushi.jpg'
+	},
+	{
+		id: 5,
+		name: 'Tortas Ahogadas',
+		cuisine: 'Mexicana',
+		rating: 4.5,
+		deliveryTime: '25-30 min',
+		image: '/images/restaurants/tortas.jpg'
+	},
+	{
+		id: 6,
+		name: 'Cafetería Central',
+		cuisine: 'Café & Postres',
+		rating: 4.8,
+		deliveryTime: '20-25 min',
+		image: '/images/restaurants/cafe.jpg'
+	}
+]
+
+// Steps
+const steps = [
+	{
+		title: 'Explora',
+		description: 'Busca entre los mejores restaurantes de Jiménez',
+		icon: Search
+	},
+	{
+		title: 'Ordena',
+		description: 'Personaliza tu pedido y añade al carrito',
+		icon: Smartphone
+	},
+	{
+		title: 'Paga',
+		description: 'Pago seguro en línea o al recibir',
+		icon: CreditCard
+	},
+	{
+		title: 'Disfruta',
+		description: 'Recibe y disfruta tu comida caliente',
+		icon: CheckCircle
+	}
+]
+
+// Testimonials
+const testimonials = [
+	{
+		name: 'María González',
+		text: '¡Los mejores tacos al pastor de Jiménez! La entrega siempre es puntual y la comida llega caliente.',
+		rating: 5,
+		avatar: 'MG'
+	},
+	{
+		name: 'Carlos Rodríguez',
+		text: 'Me encanta poder pedir desde casa. El seguimiento en tiempo real es genial.',
+		rating: 5,
+		avatar: 'CR'
+	},
+	{
+		name: 'Ana Martínez',
+		text: 'Excelente servicio y variedad de restaurantes. ¡100% recomendado!',
+		rating: 4,
+		avatar: 'AM'
+	}
+]
+
 </script>
 
 <style scoped>
-@keyframes float1 {
-	0%,
-	100% {
-		transform: translateY(0) rotate(12deg);
-	}
-	50% {
-		transform: translateY(-20px) rotate(18deg);
-	}
+@keyframes spin-slow {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
-@keyframes float2 {
-	0%,
-	100% {
+
+@keyframes pulse-slow {
+	0%, 100% { opacity: 1; }
+	50% { opacity: 0.5; }
+}
+
+@keyframes bounce {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-20px); }
+}
+
+@keyframes ping-slow {
+	0% { transform: scale(1); opacity: 1; }
+	100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-spin-slow {
+	animation: spin-slow 20s linear infinite;
+}
+
+.animate-pulse-slow {
+	animation: pulse-slow 2s ease-in-out infinite;
+}
+
+.animate-bounce {
+	animation: bounce 2s ease-in-out infinite;
+}
+
+.animate-ping-slow {
+	animation: ping-slow 3s ease-out infinite;
+}
+
+.animate-slide-in {
+	animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+	from {
+		transform: translateY(-10px);
+		opacity: 0;
+	}
+	to {
 		transform: translateY(0);
+		opacity: 1;
 	}
-	50% {
-		transform: translateY(15px);
-	}
-}
-@keyframes float3 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(-10px) translateX(5px);
-	}
-}
-@keyframes float4 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(12px) translateX(-6px);
-	}
-}
-@keyframes float5 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0) rotate(0);
-	}
-	50% {
-		transform: translateY(-8px) translateX(8px) rotate(10deg);
-	}
-}
-@keyframes float6 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(-14px);
-	}
-}
-@keyframes float7 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(10px) translateX(6px);
-	}
-}
-@keyframes float8 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(-12px) translateX(4px);
-	}
-}
-@keyframes float9 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(15px) translateX(-5px);
-	}
-}
-@keyframes float10 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(-10px) translateX(-6px);
-	}
-}
-@keyframes float11 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0);
-	}
-	50% {
-		transform: translateY(13px) translateX(3px);
-	}
-}
-@keyframes float12 {
-	0%,
-	100% {
-		transform: translateY(0) translateX(0) rotate(0deg);
-	}
-	50% {
-		transform: translateY(-8px) translateX(6px) rotate(15deg);
-	}
-}
-
-.animate-float1 {
-	animation: float1 4s ease-in-out infinite;
-}
-.animate-float2 {
-	animation: float2 6s ease-in-out infinite;
-}
-.animate-float3 {
-	animation: float3 5s ease-in-out infinite;
-}
-.animate-float4 {
-	animation: float4 4.5s ease-in-out infinite;
-}
-.animate-float5 {
-	animation: float5 6.5s ease-in-out infinite;
-}
-.animate-float6 {
-	animation: float6 5.5s ease-in-out infinite;
-}
-.animate-float7 {
-	animation: float7 4.7s ease-in-out infinite;
-}
-.animate-float8 {
-	animation: float8 5.2s ease-in-out infinite;
-}
-.animate-float9 {
-	animation: float9 4.9s ease-in-out infinite;
-}
-.animate-float10 {
-	animation: float10 6.1s ease-in-out infinite;
-}
-.animate-float11 {
-	animation: float11 5.8s ease-in-out infinite;
-}
-.animate-float12 {
-	animation: float12 5.3s ease-in-out infinite;
-}
-
-@keyframes spinSlow {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
-}
-.animate-spin-slow {
-	animation: spinSlow 60s linear infinite;
-}
-
-@keyframes spinSlow {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
-.animate-spin-slow {
-	animation: spinSlow 60s linear infinite;
 }
 </style>
-// Updated landing page styles and layout
-// Updated landing page styles and layout
