@@ -68,4 +68,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Modules\Restaurant\Models\Restaurant::class, 'owner_id');
     }
+
+    /**
+     * Saved delivery addresses (customer).
+     */
+    public function addresses()
+    {
+        return $this->hasMany(UserAddress::class);
+    }
 }
