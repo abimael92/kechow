@@ -1,17 +1,19 @@
 <template>
 	<!-- Top Nav: grid layout (no fixed widths; Flexbox/Grid only) -->
-<nav
-  class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-primary-200/30 shadow-soft backdrop-blur-sm bg-gradient-to-r from-primary-900 via-primary-200 to-primary-900 text-secondary-900 dark:bg-gray-900 dark:[background-image:none] dark:backdrop-blur-md dark:border-gray-700 dark:shadow-soft dark:text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
+	<nav
+		class="sticky top-0 z-50 px-4 py-3 sm:px-6 sm:py-4 border-b border-primary-200/30 shadow-soft backdrop-blur-sm bg-gradient-to-r from-primary-900 via-primary-200 to-primary-900 text-secondary-900 dark:bg-gray-900 dark:[background-image:none] dark:backdrop-blur-md dark:border-gray-700 dark:shadow-soft dark:text-white grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 min-h-[44px] sm:min-h-0"
 		role="navigation"
 		aria-label="Navegación principal"
 	>
-		<!-- Left: logo -->
+		<!-- Left: logo (always links to home/landing) -->
 		<div class="flex items-center justify-start min-w-0">
-			<img
-				src="/images/kechow_logo.png"
-				alt="Kechow Logo"
-				class="w-18 h-18 md:mr-4 sm:w-24 sm:h-24 md:w-18 md:h-18 object-contain animate-rushIn animate-wiggle flex-shrink-0"
-			/>
+			<router-link to="/" class="flex items-center gap-2 min-w-0">
+				<img
+					src="/images/kechow_logo.png"
+					alt="Kechow Logo"
+					class="w-18 h-18 md:mr-4 sm:w-24 sm:h-24 md:w-18 md:h-18 object-contain animate-rushIn animate-wiggle flex-shrink-0"
+				/>
+			</router-link>
 		</div>
 
 		<!-- Center: title -->
@@ -48,8 +50,6 @@
 			</button>
 
 			<!-- Desktop items - hidden on mobile -->
-			<!-- i18n preparado para múltiples idiomas. Por ahora la app usa solo español. -->
-			<!-- <LanguageToggle class="hidden lg:block" /> -->
 			<button
   class="hidden lg:flex items-center justify-center min-h-[44px] min-w-[44px] hover:scale-110 transition-transform focus:outline-none focus:ring-2 focus:ring-primary rounded"
   @click="toggleDarkMode"
