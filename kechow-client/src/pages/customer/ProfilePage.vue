@@ -1,9 +1,9 @@
 <template>
-	<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 px-4 sm:px-6 lg:px-8">
+	<div class="min-h-screen bg-app dark:bg-secondary-900 py-6 px-4 sm:px-6 lg:px-8">
 		<div class="max-w-4xl mx-auto">
 			<!-- Header -->
 			<div class="mb-6">
-				<h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+				<h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
 					Mi Perfil
 				</h1>
 				<p class="text-gray-600 dark:text-gray-400 mt-2">
@@ -12,20 +12,20 @@
 			</div>
 
 			<div v-if="loading" class="text-center py-12">
-				<div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+				<div class="inline-block animate-spin rounded-full h-8 w-8 border-2 border-primary-500 border-t-transparent"></div>
 				<p class="mt-4 text-gray-600 dark:text-gray-400">Cargando perfil...</p>
 			</div>
 
 			<div v-else class="space-y-6">
 				<!-- Profile Information -->
-				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+				<div class="bg-card dark:bg-gray-800 rounded-xl shadow-soft border border-primary-100 dark:border-gray-700 p-4 sm:p-6">
 					<div class="flex items-center justify-between mb-6">
-						<h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+						<h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
 							Información Personal
 						</h2>
 						<button
 							@click="editingProfile = !editingProfile"
-							class="py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+							class="min-h-[44px] px-4 py-2 rounded-button font-medium bg-primary-500 text-white hover:bg-primary-600 transition-colors"
 						>
 							{{ editingProfile ? 'Cancelar' : 'Editar' }}
 						</button>
@@ -33,230 +33,116 @@
 
 					<div v-if="!editingProfile" class="space-y-4">
 						<div>
-							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								Nombre
-							</label>
+							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
 							<p class="text-gray-900 dark:text-white">{{ profile.name }}</p>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								Email
-							</label>
+							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
 							<p class="text-gray-900 dark:text-white">{{ profile.email }}</p>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								Teléfono
-							</label>
-							<p class="text-gray-900 dark:text-white">{{ profile.phone }}</p>
+							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono</label>
+							<p class="text-gray-900 dark:text-white">{{ profile.phone || '—' }}</p>
 						</div>
 					</div>
 
 					<div v-else class="space-y-4">
 						<div>
-							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								Nombre
-							</label>
+							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre</label>
 							<input
 								v-model="editedProfile.name"
 								type="text"
-								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+								class="w-full px-4 py-2.5 border border-secondary-300 dark:border-gray-600 rounded-input bg-card text-gray-900 dark:text-white min-h-[44px]"
 							/>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								Email
-							</label>
+							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
 							<input
 								v-model="editedProfile.email"
 								type="email"
-								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+								class="w-full px-4 py-2.5 border border-secondary-300 dark:border-gray-600 rounded-input bg-card text-gray-900 dark:text-white min-h-[44px]"
 							/>
 						</div>
 						<div>
-							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-								Teléfono
-							</label>
+							<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono</label>
 							<input
 								v-model="editedProfile.phone"
 								type="tel"
-								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+								class="w-full px-4 py-2.5 border border-secondary-300 dark:border-gray-600 rounded-input bg-card text-gray-900 dark:text-white min-h-[44px]"
 							/>
 						</div>
 						<button
 							@click="saveProfile"
 							:disabled="saving"
-							class="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg disabled:opacity-50"
+							class="w-full min-h-[44px] py-2 px-4 rounded-button font-semibold bg-primary-500 text-white hover:bg-primary-600 disabled:opacity-50 transition-colors"
 						>
 							{{ saving ? 'Guardando...' : 'Guardar Cambios' }}
 						</button>
 					</div>
 				</div>
 
-				<!-- Addresses -->
-				<div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-					<div class="flex items-center justify-between mb-6">
-						<h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-							Mis Direcciones
+				<!-- Direcciones -->
+				<div class="bg-card dark:bg-gray-800 rounded-xl shadow-soft border border-primary-100 dark:border-gray-700 p-4 sm:p-6">
+					<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+						<h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+							Direcciones
 						</h2>
 						<button
-							@click="showAddAddress = true"
-							class="py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+							@click="openAddAddress"
+							class="min-h-[44px] px-4 py-2 rounded-button font-medium bg-primary-500 text-white hover:bg-primary-600 transition-colors flex items-center justify-center gap-2"
 						>
-							+ Agregar Dirección
+							<i class="ri-add-line text-lg" aria-hidden="true"></i>
+							Agregar Dirección
 						</button>
 					</div>
 
-					<div v-if="profile.addresses.length === 0" class="text-center py-8">
-						<p class="text-gray-600 dark:text-gray-400 mb-4">
-							No tienes direcciones guardadas
-						</p>
-					</div>
-
-					<div v-else class="space-y-4">
-						<div
-							v-for="address in profile.addresses"
-							:key="address.id"
-							class="border border-primary-300 dark:border-gray-700 rounded-lg p-4"
-						>
-							<div class="flex items-start justify-between">
-								<div class="flex-1">
-									<div class="flex items-center gap-2 mb-2">
-										<span class="font-semibold text-gray-900 dark:text-white">
-											{{ address.label }}
-										</span>
-										<span
-											v-if="address.isDefault"
-											class="text-xs bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 px-2 py-1 rounded"
-										>
-											Predeterminada
-										</span>
-									</div>
-									<p class="text-sm text-gray-600 dark:text-gray-400">
-										{{ address.street }}, {{ address.city }}, {{ address.state }}
-										{{ address.zipCode }}
-									</p>
-								</div>
-								<div class="flex gap-2">
-									<button
-										@click="editAddress(address)"
-										class="p-2 text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
-									>
-										<i class="ri-edit-line"></i>
-									</button>
-									<button
-										@click="removeAddress(address.id)"
-										class="p-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-500"
-									>
-										<i class="ri-delete-bin-line"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-					</div>
+					<AddressList
+						:addresses="profile.addresses"
+						@set-default="setDefaultAddress"
+						@edit="editAddress"
+						@delete="removeAddress"
+					/>
 				</div>
 			</div>
 		</div>
 
-		<!-- Add/Edit Address Modal -->
-		<div
-			v-if="showAddAddress || editingAddress"
-			class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-			@click.self="closeAddressModal"
-		>
-			<div
-				class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full p-6"
-				@click.stop
-			>
-				<h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
-					{{ editingAddress ? 'Editar Dirección' : 'Agregar Dirección' }}
-				</h3>
-				<div class="space-y-4">
-					<div>
-						<label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-							Etiqueta
-						</label>
-						<input
-							v-model="addressForm.label"
-							type="text"
-							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-						/>
-					</div>
-					<div>
-						<label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-							Calle y Número
-						</label>
-						<input
-							v-model="addressForm.street"
-							type="text"
-							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-						/>
-					</div>
-					<div class="grid grid-cols-2 gap-4">
-						<div>
-							<label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-								Ciudad
-							</label>
-							<input
-								v-model="addressForm.city"
-								type="text"
-								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-							/>
+		<!-- Modal: Add/Edit Address -->
+		<Teleport to="body">
+			<Transition name="modal">
+				<div
+					v-if="showAddressModal"
+					class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+					role="dialog"
+					aria-modal="true"
+					aria-labelledby="address-modal-title"
+					@click.self="closeAddressModal"
+				>
+					<div
+						class="bg-card dark:bg-gray-800 rounded-xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
+						@click.stop
+					>
+						<div class="p-4 sm:p-6 sticky top-0 bg-card dark:bg-gray-800 border-b border-primary-100 dark:border-gray-700">
+							<h3 id="address-modal-title" class="text-xl font-semibold text-gray-900 dark:text-white">
+								{{ editingAddress ? 'Editar Dirección' : 'Agregar Dirección' }}
+							</h3>
 						</div>
-						<div>
-							<label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-								Estado
-							</label>
-							<input
-								v-model="addressForm.state"
-								type="text"
-								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+						<div class="p-4 sm:p-6 pt-0">
+							<AddressForm
+								:model-value="addressFormModel"
+								:saving="savingAddress"
+								@submit="saveAddress"
+								@cancel="closeAddressModal"
 							/>
 						</div>
 					</div>
-					<div>
-						<label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-							Código Postal
-						</label>
-						<input
-							v-model="addressForm.zipCode"
-							type="text"
-							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-						/>
-					</div>
-					<label class="flex items-center gap-2">
-						<input
-							v-model="addressForm.isDefault"
-							type="checkbox"
-							class="text-purple-500"
-						/>
-						<span class="text-sm text-gray-700 dark:text-gray-300">
-							Establecer como dirección predeterminada
-						</span>
-					</label>
 				</div>
-				<div class="flex gap-3 mt-6">
-					<button
-						@click="closeAddressModal"
-						class="flex-1 py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700"
-					>
-						Cancelar
-					</button>
-					<button
-						@click="saveAddress"
-						:disabled="savingAddress"
-						class="flex-1 py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white rounded-lg disabled:opacity-50"
-					>
-						{{ savingAddress ? 'Guardando...' : 'Guardar' }}
-					</button>
-				</div>
-			</div>
-		</div>
+			</Transition>
+		</Teleport>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useToast } from 'vue-toastification';
 import {
 	getCustomerProfile,
@@ -264,9 +150,12 @@ import {
 	addAddress,
 	updateAddress,
 	deleteAddress,
+	setDefaultAddress as apiSetDefaultAddress,
 	type CustomerProfile,
 	type Address,
 } from '@/features/customer/services/customer.service';
+import AddressForm from '@/features/customer/addresses/AddressForm.vue';
+import AddressList from '@/features/customer/addresses/AddressList.vue';
 
 const toast = useToast();
 
@@ -286,24 +175,21 @@ const editedProfile = ref({
 	phone: '',
 });
 
-const showAddAddress = ref(false);
+const showAddressModal = ref(false);
 const editingAddress = ref(false);
 const savingAddress = ref(false);
-const addressForm = ref<Omit<Address, 'id'>>({
-	label: '',
-	street: '',
-	city: '',
-	state: '',
-	zipCode: '',
-	isDefault: false,
-});
 const editingAddressId = ref<string>('');
+
+const addressFormModel = computed(() => {
+	if (!editingAddress.value || !editingAddressId.value) return null;
+	return profile.value.addresses.find((a) => a.id === editingAddressId.value) ?? null;
+});
 
 onMounted(async () => {
 	await loadProfile();
 });
 
-const loadProfile = async () => {
+async function loadProfile() {
 	try {
 		loading.value = true;
 		const profileData = await getCustomerProfile();
@@ -313,14 +199,14 @@ const loadProfile = async () => {
 			email: profileData.email,
 			phone: profileData.phone,
 		};
-	} catch (error) {
+	} catch {
 		toast.error('Error al cargar perfil');
 	} finally {
 		loading.value = false;
 	}
-};
+}
 
-const saveProfile = async () => {
+async function saveProfile() {
 	try {
 		saving.value = true;
 		const updated = await updateCustomerProfile({
@@ -330,77 +216,94 @@ const saveProfile = async () => {
 		});
 		profile.value = updated;
 		editingProfile.value = false;
-		toast.success('Perfil actualizado exitosamente');
-	} catch (error) {
+		toast.success('Perfil actualizado');
+	} catch {
 		toast.error('Error al actualizar perfil');
 	} finally {
 		saving.value = false;
 	}
-};
+}
 
-const editAddress = (address: Address) => {
-	editingAddress.value = true;
+function openAddAddress() {
+	editingAddressId.value = '';
+	editingAddress.value = false;
+	showAddressModal.value = true;
+}
+
+function editAddress(address: Address) {
 	editingAddressId.value = address.id;
-	addressForm.value = {
-		label: address.label,
-		street: address.street,
-		city: address.city,
-		state: address.state,
-		zipCode: address.zipCode,
-		isDefault: address.isDefault,
-	};
-};
+	editingAddress.value = true;
+	showAddressModal.value = true;
+}
 
-const closeAddressModal = () => {
-	showAddAddress.value = false;
+function closeAddressModal() {
+	showAddressModal.value = false;
 	editingAddress.value = false;
 	editingAddressId.value = '';
-	addressForm.value = {
-		label: '',
-		street: '',
-		city: '',
-		state: '',
-		zipCode: '',
-		isDefault: false,
-	};
-};
+}
 
-const saveAddress = async () => {
-	if (!addressForm.value.label || !addressForm.value.street) {
-		toast.error('Por favor completa todos los campos requeridos');
-		return;
-	}
-
+async function saveAddress(payload: Omit<Address, 'id'>) {
 	try {
 		savingAddress.value = true;
-		if (editingAddress.value) {
-			const updated = await updateAddress(editingAddressId.value, addressForm.value);
+		if (editingAddress.value && editingAddressId.value) {
+			const updated = await updateAddress(editingAddressId.value, payload);
 			const index = profile.value.addresses.findIndex((a) => a.id === editingAddressId.value);
-			if (index !== -1) {
-				profile.value.addresses[index] = updated;
-			}
+			if (index !== -1) profile.value.addresses[index] = updated;
 		} else {
-			const newAddr = await addAddress(addressForm.value);
+			const newAddr = await addAddress(payload);
 			profile.value.addresses.push(newAddr);
 		}
 		closeAddressModal();
-		toast.success('Dirección guardada exitosamente');
-	} catch (error) {
+		toast.success('Dirección guardada');
+	} catch {
 		toast.error('Error al guardar dirección');
 	} finally {
 		savingAddress.value = false;
 	}
-};
+}
 
-const removeAddress = async (addressId: string) => {
-	if (!confirm('¿Estás seguro de eliminar esta dirección?')) return;
+async function setDefaultAddress(addressId: string) {
+	try {
+		const updated = await apiSetDefaultAddress(addressId);
+		const index = profile.value.addresses.findIndex((a) => a.id === addressId);
+		if (index !== -1) profile.value.addresses[index] = updated;
+		profile.value.addresses = profile.value.addresses.map((a) => ({
+			...a,
+			isDefault: a.id === addressId,
+		}));
+		toast.success('Dirección predeterminada actualizada');
+	} catch {
+		toast.error('Error al marcar dirección predeterminada');
+	}
+}
 
+async function removeAddress(addressId: string) {
+	if (!confirm('¿Eliminar esta dirección?')) return;
 	try {
 		await deleteAddress(addressId);
 		profile.value.addresses = profile.value.addresses.filter((a) => a.id !== addressId);
-		toast.success('Dirección eliminada exitosamente');
-	} catch (error) {
+		toast.success('Dirección eliminada');
+	} catch {
 		toast.error('Error al eliminar dirección');
 	}
-};
+}
 </script>
+
+<style scoped>
+.modal-enter-active,
+.modal-leave-active {
+	transition: opacity 0.2s ease;
+}
+.modal-enter-from,
+.modal-leave-to {
+	opacity: 0;
+}
+.modal-enter-active .bg-card,
+.modal-leave-active .bg-card {
+	transition: transform 0.2s ease;
+}
+.modal-enter-from .bg-card,
+.modal-leave-to .bg-card {
+	transform: scale(0.98);
+}
+</style>

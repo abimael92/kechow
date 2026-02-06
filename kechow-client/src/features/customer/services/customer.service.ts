@@ -283,6 +283,8 @@ export const createReview = async (
 
 /* ------------------------- PROFILE & ADDRESSES ------------------------- */
 
+const CUSTOMER_API = '/api/customer';
+
 export interface Address {
 	id: string;
 	label: string;
@@ -302,12 +304,12 @@ export interface CustomerProfile {
 }
 
 /**
- * Get customer profile
+ * Get customer profile (with addresses)
  */
 export const getCustomerProfile = async (): Promise<CustomerProfile> => {
 	return withMockFallback(
 		async () => {
-			const response = await api.get<CustomerProfile>('/customer/profile');
+			const response = await api.get<CustomerProfile>(`${CUSTOMER_API}/profile`);
 			return response.data;
 		},
 		{
@@ -340,7 +342,7 @@ export const updateCustomerProfile = async (
 	return withMockFallback(
 		async () => {
 			const response = await api.put<CustomerProfile>(
-				'/customer/profile',
+				`${CUSTOMER_API}/profile`,
 				profile
 			);
 			return response.data;
@@ -362,7 +364,7 @@ export const updateCustomerProfile = async (
 export const addAddress = async (address: Omit<Address, 'id'>): Promise<Address> => {
 	return withMockFallback(
 		async () => {
-			const response = await api.post<Address>('/customer/addresses', address);
+			const response = await api.post<Address>(`${CUSTOMER_API}/addresses`, address);
 			return response.data;
 		},
 		{
@@ -383,7 +385,7 @@ export const updateAddress = async (
 	return withMockFallback(
 		async () => {
 			const response = await api.put<Address>(
-				`/customer/addresses/${addressId}`,
+				`${CUSTOMER_API}/addresses/${addressId}`,
 				address
 			);
 			return response.data;
@@ -407,9 +409,17 @@ export const updateAddress = async (
 export const deleteAddress = async (addressId: string): Promise<void> => {
 	return withMockFallback(
 		async () => {
-			await api.delete(`/customer/addresses/${addressId}`);
+			await api.delete(`${CUSTOMER_API}/addresses/${addressId}`);
 		},
 		undefined,
 		'Error al eliminar dirección'
 	);
+};
+
+/**
+ * Set address as default
+ */
+export const setDefaultAddress = async (addressId: string): Promise<Address> => {
+	const response = await api.patch<Address>(`${CUSTOMER_API}/addresses/${addressId}/default`);
+	return response.data;
 };
