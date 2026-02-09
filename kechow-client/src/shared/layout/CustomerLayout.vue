@@ -19,12 +19,12 @@
 		</main>
 
 		<!-- Floating cart badge -->
-		<div
+		<!-- <div
 			v-if="showCartBadge"
 			class="fixed bottom-4 right-4 z-50 md:bottom-6 md:right-6 lg:top-20 lg:right-8 lg:bottom-auto"
 		>
 			<CartBadge use-overlay />
-		</div>
+		</div> -->
 
 		<CartOverlay />
 
