@@ -1,46 +1,5 @@
 <template>
 	<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
-	
-
-		<!-- Greeting Banner -->
-		<div class="hidden lg:block bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 lg:p-8 rounded-2xl mb-6 lg:mb-8">
-			<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-				<div>
-					<h1 class="text-2xl lg:text-3xl font-bold mb-2">
-						{{ getGreeting() }} {{ userName.split(' ')[0] }}!
-					</h1>
-					<p class="text-white/90">
-						Descubre comida deliciosa cerca de ti
-					</p>
-				</div>
-				<div class="flex items-center gap-4 mt-4 lg:mt-0">
-					<button 
-						@click="toggleLanguage"
-						class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg transition-colors flex items-center gap-2"
-					>
-						<i class="ri-translate-2"></i>
-						<span>Idioma</span>
-					</button>
-					<button 
-						@click="viewCart"
-						class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg transition-colors relative"
-					>
-						<i class="ri-shopping-cart-line"></i>
-						<span v-if="cartItemCount > 0" class="ml-2">{{ cartItemCount }}</span>
-					</button>
-				</div>
-			</div>
-		</div>
-
-		<!-- Mobile Greeting -->
-		<div class="lg:hidden mb-6">
-			<h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-				{{ getGreeting() }} {{ userName.split(' ')[0] }}!
-			</h1>
-			<p class="text-gray-600 dark:text-gray-400">
-				Descubre comida deliciosa cerca de ti
-			</p>
-		</div>
 
 		<!-- Search bar -->
 		<div class="mb-6 lg:mb-8">
