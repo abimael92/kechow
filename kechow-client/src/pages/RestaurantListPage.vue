@@ -7,43 +7,10 @@
 			<div class="w-full px-4 py-3 min-w-0">
 				<div class="flex items-center justify-between max-w-7xl mx-auto min-w-0 gap-2">
 					<div class="flex items-center gap-3">
-						<button 
-							@click="toggleMobileMenu"
-							class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-							aria-label="Abrir menú"
-						>
-							<i class="ri-menu-line text-xl"></i>
-						</button>
+				
 						<h1 class="text-xl sm:text-2xl font-chewy font-bold text-primary-500 dark:text-primary-400">
 								Restaurantes
 							</h1>
-						</div>
-						
-						<div class="flex items-center gap-2">
-							<!-- Language Toggle -->
-							<button 
-								@click="toggleLanguage"
-								class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-sm font-medium flex items-center gap-1"
-								title="Idioma"
-							>
-								<i class="ri-translate-2"></i>
-								<span class="hidden sm:inline">Idioma</span>
-							</button>
-							
-							<!-- Cart Button -->
-							<button 
-								@click="openCart"
-								class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors relative"
-								aria-label="Carrito"
-							>
-								<i class="ri-shopping-cart-line text-xl"></i>
-								<span 
-									v-if="cartItemCount > 0"
-									class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center"
-								>
-									{{ cartItemCount }}
-								</span>
-							</button>
 						</div>
 					</div>
 					
@@ -130,7 +97,7 @@
 					</div>
 					
 					<!-- Quick Stats -->
-					<div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
+					<!-- <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
 						<h3 class="font-semibold text-lg mb-4">Estadísticas rápidas</h3>
 						<div class="space-y-3">
 							<div class="flex justify-between">
@@ -142,7 +109,7 @@
 								<span class="font-semibold">{{ filteredRestaurants.length }}</span>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</aside>
 
 				<!-- Main Content Area -->
