@@ -1,458 +1,728 @@
 <template>
-	<div
-		class="min-w-0 overflow-x-hidden bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300"
-	>
-		<!-- Mobile Header with Hamburger Menu - STICKY BUT NOT OVERLAPPING -->
-		<div class="sticky top-0 z-50 w-full lg:hidden bg-gradient-to-r from-primary-50 via-white to-primary-50 dark:bg-secondary-800 shadow-soft border-b border-primary-200/60 dark:border-secondary-700 min-w-0">
-			<div class="w-full px-4 py-3 min-w-0">
-				<div class="flex items-center justify-between max-w-7xl mx-auto min-w-0 gap-2">
-					<div class="flex items-center gap-3">
-				
-						<h1 class="text-xl sm:text-2xl font-chewy font-bold text-primary-500 dark:text-primary-400">
-								Restaurantes
-							</h1>
-						</div>
-					</div>
-					
-					<!-- Mobile Search -->
-					<div class="mt-3">
-						<SearchBar v-model:search="search" />
-					</div>
+<div class="min-w-0 bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300">
+
+		<!-- HEADER - YOUR EXACT HEADER, JUST ADDED BETTER SPACING/RESPONSIVENESS -->
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12">
+			<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+					<i class="ri-store-3-line text-white text-lg sm:text-xl md:text-2xl"></i>
+				</div>
+				<div class="min-w-0 flex-1">
+					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
+						Restaurantes
+					</h1>
+					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-1">
+						{{ greetingMessage }}
+					</p>
 				</div>
 			</div>
 		</div>
 
-			<!-- Main Content -->
-			<div class="lg:grid lg:grid-cols-4 lg:gap-8">
-				<!-- Desktop Sidebar -->
-				<aside class="hidden lg:block space-y-6">
-					<!-- Filters Section -->
-					<div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-						<h3 class="font-semibold text-lg mb-4">Filtros</h3>
-						
-						<!-- Sort Options -->
-						<div class="space-y-4">
-							<div>
-								<label class="block text-sm font-medium mb-2">Ordenar por</label>
-								<select 
-									v-model="sortOption"
-									class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+		<!-- MAIN CONTENT -->
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+			
+			<!-- QUICK ACTIONS - Floating Action Bar -->
+			<div class="flex flex-wrap items-center justify-between gap-4 mb-10">
+				<div class="flex items-center gap-3">
+					<button 
+						@click="toggleFilters"
+						class="lg:hidden relative px-6 py-3 bg-white dark:bg-slate-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2 text-slate-700 dark:text-slate-200 font-medium"
+					>
+						<i class="ri-filter-3-line text-orange-600 text-xl"></i>
+						Filtros
+						<span v-if="hasActiveFilters" class="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 rounded-full text-white text-xs flex items-center justify-center">
+							{{ activeFiltersCount }}
+						</span>
+					</button>
+					
+					<!-- Category Pills - Animated -->
+					<div class="hidden lg:flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
+						<button
+							v-for="category in categories.slice(0, 5)"
+							:key="category.id"
+							@click="toggleCategory(category.name)"
+							:class="[
+								'px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-2 whitespace-nowrap',
+								selectedCategory === category.name
+									? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30 scale-105'
+									: 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+							]"
+						>
+							<i :class="category.icon" class="text-lg"></i>
+							{{ category.name }}
+						</button>
+						<button 
+							v-if="selectedCategory"
+							@click="selectedCategory = ''"
+							class="px-5 py-2.5 rounded-full text-sm font-medium bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40 transition-all duration-300 whitespace-nowrap"
+						>
+							<i class="ri-close-line text-lg"></i>
+							Limpiar
+						</button>
+					</div>
+				</div>
+				
+				<!-- Sort & View Controls -->
+				<div class="flex items-center gap-3">
+					<!-- Sort Dropdown - Enhanced -->
+					<div class="relative">
+						<select 
+							v-model="sortOption"
+							class="appearance-none pl-5 pr-12 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-lg cursor-pointer"
+						>
+							<option v-for="option in sortOptions" :key="option.value" :value="option.value">
+								Ordenar: {{ option.label }}
+							</option>
+						</select>
+						<div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+							<i class="ri-arrow-down-s-line text-slate-500"></i>
+						</div>
+					</div>
+					
+					<!-- View Toggle - Glass Morphism -->
+					<div class="flex items-center bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-xl border border-slate-200 dark:border-slate-700 p-1 shadow-lg">
+						<button 
+							@click="viewMode = 'grid'"
+							:class="[
+								'p-2.5 rounded-lg transition-all duration-300',
+								viewMode === 'grid'
+									? 'bg-orange-600 text-white shadow-lg'
+									: 'text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400'
+							]"
+						>
+							<i class="ri-grid-fill text-lg"></i>
+						</button>
+						<button 
+							@click="viewMode = 'list'"
+							:class="[
+								'p-2.5 rounded-lg transition-all duration-300',
+								viewMode === 'list'
+									? 'bg-orange-600 text-white shadow-lg'
+									: 'text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400'
+							]"
+						>
+							<i class="ri-list-unordered text-lg"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- FILTERS DRAWER - Mobile -->
+			<Transition name="drawer">
+				<div v-if="filtersOpen" class="lg:hidden fixed inset-0 z-50 flex items-end">
+					<div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="filtersOpen = false"></div>
+					<div class="relative w-full bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl animate-slide-up">
+						<div class="p-6">
+							<div class="flex items-center justify-between mb-6">
+								<h3 class="text-xl font-bold text-slate-900 dark:text-white">Filtros</h3>
+								<button 
+									@click="filtersOpen = false"
+									class="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
 								>
-									<option value="name">Nombre</option>
-									<option value="rating">Calificación</option>
-									<option value="deliveryTime">Tiempo de entrega</option>
-								</select>
+									<i class="ri-close-line text-xl"></i>
+								</button>
 							</div>
 							
-							<!-- Price Range -->
+							<!-- Mobile Filters Content -->
+							<div class="space-y-6 max-h-[70vh] overflow-y-auto pb-6">
+								<MobileFilters 
+									v-model:price-range="priceRange"
+									v-model:delivery-time="deliveryTimeFilter"
+									v-model:selected-category="selectedCategory"
+									:categories="categories"
+									:price-options="priceOptions"
+									@close="filtersOpen = false"
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</Transition>
+
+			<!-- DESKTOP SIDEBAR & CONTENT -->
+			<div class="lg:grid lg:grid-cols-12 lg:gap-8">
+				
+				<!-- SIDEBAR - Desktop - Modern Design -->
+				<aside class="hidden lg:block lg:col-span-3 space-y-6">
+					<!-- Filters Card - Glass Morphism -->
+					<div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-200/50 dark:border-slate-700/50 shadow-xl sticky top-24">
+						<div class="flex items-center justify-between mb-6">
+							<h3 class="font-semibold text-lg flex items-center gap-2 text-slate-900 dark:text-white">
+								<i class="ri-filter-3-line text-orange-600"></i>
+								Filtros avanzados
+							</h3>
+							<button 
+								v-if="hasActiveFilters"
+								@click="resetFilters"
+								class="text-sm text-orange-600 hover:text-orange-700 dark:text-orange-400 flex items-center gap-1 transition-colors font-medium"
+							>
+								<i class="ri-refresh-line"></i>
+								Limpiar
+							</button>
+						</div>
+						
+						<div class="space-y-8">
+							<!-- Price Range - Interactive -->
 							<div>
-								<label class="block text-sm font-medium mb-2">Rango de precios</label>
+								<label class="block text-sm font-medium mb-4 text-slate-700 dark:text-slate-300">
+									Rango de precios
+								</label>
+								<div class="grid grid-cols-3 gap-2">
+									<button
+										v-for="price in priceOptions"
+										:key="price.value"
+										@click="priceRange = price.value"
+										:class="[
+											'relative px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 overflow-hidden group',
+											priceRange === price.value
+												? 'bg-orange-600 text-white shadow-lg shadow-orange-600/30'
+												: 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600'
+										]"
+									>
+										<span class="relative z-10">{{ price.symbol }}</span>
+										<span class="absolute inset-0 bg-gradient-to-r from-orange-500 to-teal-500 opacity-0 group-hover:opacity-10 transition-opacity"></span>
+									</button>
+								</div>
+							</div>
+							
+							<!-- Delivery Time - Slider Style -->
+							<div>
+								<label class="block text-sm font-medium mb-4 text-slate-700 dark:text-slate-300">
+									Tiempo de entrega
+								</label>
+								<div class="space-y-3">
+									<div
+										v-for="time in deliveryOptions"
+										:key="time.value"
+										@click="deliveryTimeFilter = time.value"
+										:class="[
+											'flex items-center justify-between p-4 rounded-xl cursor-pointer transition-all duration-300 border-2',
+											deliveryTimeFilter === time.value
+												? 'border-orange-600 bg-orange-50 dark:bg-orange-900/20'
+												: 'border-transparent bg-slate-50 dark:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600'
+										]"
+									>
+										<div class="flex items-center gap-3">
+											<div :class="[
+												'w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all',
+												deliveryTimeFilter === time.value
+													? 'border-orange-600 bg-orange-600'
+													: 'border-slate-400'
+											]">
+												<div v-if="deliveryTimeFilter === time.value" class="w-2 h-2 bg-white rounded-full"></div>
+											</div>
+											<span class="font-medium">{{ time.label }}</span>
+										</div>
+										<span class="text-sm text-slate-500">{{ time.range }}</span>
+									</div>
+								</div>
+							</div>
+							
+							<!-- Dietary Preferences -->
+							<div>
+								<label class="block text-sm font-medium mb-4 text-slate-700 dark:text-slate-300">
+									Preferencias
+								</label>
 								<div class="space-y-2">
-									<label class="flex items-center gap-2">
-										<input 
-											type="radio" 
-											v-model="priceRange" 
-											value="all"
-											class="text-primary-500 focus:ring-primary-500"
-										>
-										<span class="text-sm">Todos los precios</span>
+									<label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+										<span class="flex items-center gap-3">
+											<i class="ri-plant-line text-orange-600"></i>
+											<span class="text-sm">Vegetariano</span>
+										</span>
+										<input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-orange-600 focus:ring-orange-500">
 									</label>
-									<label class="flex items-center gap-2">
-										<input 
-											type="radio" 
-											v-model="priceRange" 
-											value="$"
-											class="text-primary-500 focus:ring-primary-500"
-										>
-										<span class="text-sm">$ Económico</span>
-									</label>
-									<label class="flex items-center gap-2">
-										<input 
-											type="radio" 
-											v-model="priceRange" 
-											value="$$"
-											class="text-primary-500 focus:ring-primary-500"
-										>
-										<span class="text-sm">$$ Moderado</span>
-									</label>
-									<label class="flex items-center gap-2">
-										<input 
-											type="radio" 
-											v-model="priceRange" 
-											value="$$$"
-											class="text-primary-500 focus:ring-primary-500"
-										>
-										<span class="text-sm">$$$ Caro</span>
+									<label class="flex items-center justify-between p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+										<span class="flex items-center gap-3">
+											<i class="ri-heart-pulse-line text-rose-600"></i>
+											<span class="text-sm">Saludable</span>
+										</span>
+										<input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-orange-600 focus:ring-orange-500">
 									</label>
 								</div>
 							</div>
 						</div>
 						
-						<button 
-							@click="resetFilters"
-							class="w-full mt-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors font-medium"
-						>
-							Limpiar filtros
-						</button>
-					</div>
-					
-					<!-- Quick Stats -->
-					<!-- <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm">
-						<h3 class="font-semibold text-lg mb-4">Estadísticas rápidas</h3>
-						<div class="space-y-3">
-							<div class="flex justify-between">
-								<span class="text-gray-600 dark:text-gray-400">Total de restaurantes</span>
-								<span class="font-semibold">{{ restaurants.length }}</span>
-							</div>
-							<div class="flex justify-between">
-								<span class="text-gray-600 dark:text-gray-400">Mostrando</span>
-								<span class="font-semibold">{{ filteredRestaurants.length }}</span>
-							</div>
-						</div>
-					</div> -->
-				</aside>
-
-				<!-- Main Content Area -->
-				<main class="min-w-0 lg:col-span-3 space-y-6 sm:space-y-8 px-4 sm:px-6 lg:px-0">
-					<!-- Categories Section -->
-					<section>
-						<div class="flex justify-between items-center mb-4">
-							<h2 class="section-heading">Categorías destacadas</h2>
-							<div class="flex items-center gap-2">
-								<button class="link-button" @click="resetFilters">
-									Limpiar
-								</button>
-								<span v-if="selectedCategory" class="text-sm text-gray-600 dark:text-gray-400">
-									Seleccionado: {{ selectedCategory }}
+						<!-- Active Filters Tags -->
+						<div v-if="hasActiveFilters" class="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700">
+							<p class="text-xs font-medium text-slate-500 mb-3">Filtros activos:</p>
+							<div class="flex flex-wrap gap-2">
+								<span 
+									v-if="selectedCategory"
+									class="inline-flex items-center gap-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 px-3 py-1.5 rounded-full text-xs font-medium"
+								>
+									{{ selectedCategory }}
+									<button @click.stop="selectedCategory = ''" class="hover:text-orange-900">
+										<i class="ri-close-line"></i>
+									</button>
+								</span>
+								<span 
+									v-if="priceRange !== 'all'"
+									class="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-full text-xs font-medium"
+								>
+									{{ getPriceLabel(priceRange) }}
+									<button @click.stop="priceRange = 'all'" class="hover:text-blue-900">
+										<i class="ri-close-line"></i>
+									</button>
 								</span>
 							</div>
 						</div>
-						<div class="relative">
-							<div class="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
-								<CategoryChips
-									v-for="category in categories"
-									:key="category.id"
-									:category="category"
-									:selected="category.name === selectedCategory"
-									@click="toggleCategory(category.name)"
-								/>
-							</div>
-							<!-- Scroll indicators -->
-							<div v-if="showLeftScroll" class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white dark:from-gray-800 to-transparent pointer-events-none"></div>
-							<div v-if="showRightScroll" class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white dark:from-gray-800 to-transparent pointer-events-none"></div>
-						</div>
-					</section>
+					</div>
+				</aside>
 
-					<!-- Active Filters (Mobile) -->
-					<section v-if="(selectedCategory || priceRange !== 'all')" class="lg:hidden">
-						<div class="flex flex-wrap gap-2">
-							<span 
-								v-if="selectedCategory"
-								class="inline-flex items-center gap-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 px-3 py-1.5 rounded-full text-sm"
-							>
-								{{ selectedCategory }}
-								<button @click="selectedCategory = ''" class="ml-1 hover:text-primary-900 dark:hover:text-primary-100">
-									<i class="ri-close-line"></i>
-								</button>
-							</span>
-							<span 
-								v-if="priceRange !== 'all'"
-								class="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1.5 rounded-full text-sm"
-							>
-								Precio: {{ priceRange }}
-								<button @click="priceRange = 'all'" class="ml-1 hover:text-blue-900 dark:hover:text-blue-100">
-									<i class="ri-close-line"></i>
-								</button>
-							</span>
-						</div>
-					</section>
-
-					<!-- Restaurants Section -->
-					<section>
-						<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-							<h2 class="section-heading">Restaurantes destacados</h2>
-							<div class="flex items-center gap-3">
-								<!-- Mobile Sort Dropdown -->
-								<select 
-									v-model="sortOption"
-									class="lg:hidden px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-sm"
-								>
-									<option value="name">Nombre</option>
-									<option value="rating">Calificación</option>
-									<option value="deliveryTime">Tiempo de entrega</option>
-								</select>
-								
-								<button 
-									@click="toggleViewMode"
-									class="p-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-									:title="viewMode === 'grid' ? 'Cambiar a lista' : 'Cambiar a cuadrícula'"
-								>
-									<i :class="viewMode === 'grid' ? 'ri-list-check' : 'ri-grid-fill'"></i>
-								</button>
-								
-								<button class="link-button" @click="resetFilters">
-									Restablecer todo
-								</button>
+				<!-- MAIN CONTENT - Restaurant Grid/List -->
+				<main class="lg:col-span-9 space-y-8">
+					
+					<!-- Loading State - Modern Skeleton -->
+					<div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+						<div v-for="i in 6" :key="i" class="animate-pulse">
+							<div class="bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200 dark:border-slate-700">
+								<div class="w-full h-48 bg-slate-200 dark:bg-slate-700 rounded-xl mb-4"></div>
+								<div class="h-6 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-3"></div>
+								<div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2 mb-2"></div>
+								<div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-2/3"></div>
 							</div>
 						</div>
-						
-						<!-- Loading State (skeleton loaders) -->
-						<div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-							<div v-for="i in 6" :key="i" class="bg-white dark:bg-neutral-900 rounded-xl p-6 border border-neutral-200 dark:border-neutral-800">
-								<Skeleton variant="card" class="mb-4 w-full rounded-xl" />
-								<Skeleton variant="text" class="mb-3 w-3/4" />
-								<Skeleton variant="text" class="w-1/2" />
+					</div>
+					
+					<!-- Empty State - Engaging Design -->
+					<div v-else-if="filteredRestaurants.length === 0" class="text-center py-20">
+						<div class="relative inline-block">
+							<div class="w-40 h-40 mx-auto mb-8 bg-gradient-to-br from-orange-100 to-teal-100 dark:from-orange-900/30 dark:to-teal-900/30 rounded-full flex items-center justify-center">
+								<i class="ri-restaurant-line text-6xl text-orange-600 dark:text-orange-400"></i>
+							</div>
+							<div class="absolute -top-2 -right-2 w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center text-white animate-bounce">
+								<i class="ri-search-line"></i>
 							</div>
 						</div>
-						
-						<!-- Empty State -->
-						<div v-else-if="filteredRestaurants.length === 0" class="text-center py-16">
-							<div class="w-24 h-24 mx-auto mb-6 text-gray-400 dark:text-gray-600">
-								<i class="ri-restaurant-line text-6xl"></i>
+						<h3 class="text-3xl font-bold mb-3 text-slate-900 dark:text-white">¡Ups! No encontramos nada</h3>
+						<p class="text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto text-lg">
+							{{ getEmptyStateMessage }}
+						</p>
+						<button
+							@click="resetFilters"
+							class="px-8 py-4 bg-gradient-to-r from-orange-600 to-teal-600 hover:from-orange-700 hover:to-teal-700 text-white rounded-xl transition-all duration-300 font-medium shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center gap-2"
+						>
+							<i class="ri-refresh-line text-xl"></i>
+							Explorar todos los restaurantes
+						</button>
+					</div>
+					
+					<!-- Restaurant Grid/List with Stagger Animation -->
+					<div v-else>
+						<!-- Results Header -->
+						<div class="flex items-center justify-between mb-6">
+							<div>
+								<h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+									<!-- <span class="bg-gradient-to-r from-orange-600 to-teal-600 bg-clip-text text-transparent">
+										{{ filteredRestaurants.length }}
+									</span> restaurantes encontrados -->
+								</h2>
+								<p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+									{{ search ? `Resultados para "${search}"` : 'Los mejores lugares cerca de ti' }}
+								</p>
 							</div>
-							<h3 class="text-xl font-semibold mb-2">No se encontraron restaurantes</h3>
-							<p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
-								{{
-									search 
-										? `No hay resultados para "${search}"`
-										: selectedCategory
-											? `No hay resultados para la categoría "${selectedCategory}"`
-											: 'Prueba con otros filtros'
-								}}
+							<p class="text-sm text-slate-500 hidden sm:block">
+								Página {{ currentPage }} de {{ totalPages }}
 							</p>
-							<button
-								@click="resetFilters"
-								class="px-6 py-3 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors font-medium"
-							>
-								Limpiar filtros
-							</button>
 						</div>
+
+						<TransitionGroup 
+							:name="viewMode === 'grid' ? 'stagger-grid' : 'stagger-list'"
+							tag="div"
+							:class="[
+								viewMode === 'grid' 
+									? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' 
+									: 'space-y-4'
+							]"
+						>
+							<RestaurantCard
+								v-for="(restaurant, index) in paginatedRestaurants"
+								:key="restaurant.id"
+								:restaurant="restaurant"
+								:view-mode="viewMode"
+								:style="{ animationDelay: `${index * 50}ms` }"
+								@favorite="toggleFavorite"
+								@click="viewRestaurantDetails"
+								class="cursor-pointer transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl"
+							/>
+						</TransitionGroup>
 						
-						<!-- Restaurants Grid/List -->
-						<div v-else class="min-w-0">
-							<!-- Grid View: 1 col mobile, 2 sm, 3 xl -->
-							<ul v-if="viewMode === 'grid'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-								<RestaurantCard
-									v-for="restaurant in sortedRestaurants"
-									:key="restaurant.id"
-									:restaurant="restaurant"
-									:view-mode="viewMode"
-									@favorite="toggleFavorite"
-									@click="viewRestaurantDetails"
-								/>
-							</ul>
+						<!-- Modern Pagination -->
+						<div v-if="totalPages > 1" class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mt-12 pt-6 border-t border-slate-200 dark:border-slate-700">
+							<p class="text-sm text-slate-600 dark:text-slate-400 order-2 sm:order-1">
+								Mostrando <span class="font-semibold">{{ (currentPage - 1) * itemsPerPage + 1 }}</span> - 
+								<span class="font-semibold">{{ Math.min(currentPage * itemsPerPage, filteredRestaurants.length) }}</span> 
+								de <span class="font-semibold">{{ filteredRestaurants.length }}</span> restaurantes
+							</p>
 							
-							<!-- List View -->
-							<ul v-else class="space-y-4">
-								<RestaurantCard
-									v-for="restaurant in sortedRestaurants"
-									:key="restaurant.id"
-									:restaurant="restaurant"
-									:view-mode="viewMode"
-									@favorite="toggleFavorite"
-									@click="viewRestaurantDetails"
-								/>
-							</ul>
-						</div>
-						
-						<!-- Pagination (for large datasets) -->
-						<div v-if="filteredRestaurants.length > itemsPerPage" class="flex justify-center mt-8">
-							<div class="flex gap-1">
+							<div class="flex items-center justify-center sm:justify-end gap-2 order-1 sm:order-2">
 								<button
 									@click="prevPage"
 									:disabled="currentPage === 1"
 									:class="[
-										'px-3 py-2 rounded-lg transition-colors',
+										'w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300',
 										currentPage === 1
-											? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-											: 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600'
+											? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+											: 'bg-white dark:bg-slate-800 hover:bg-orange-600 hover:text-white border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-orange-600/30'
 									]"
 								>
-									<i class="ri-arrow-left-line"></i>
+									<i class="ri-arrow-left-line text-lg"></i>
 								</button>
 								
-								<button
-									v-for="page in visiblePages"
-									:key="page"
-									@click="goToPage(page)"
-									:class="[
-										'w-10 h-10 rounded-lg transition-colors',
-										currentPage === page
-											? 'bg-primary-500 text-white'
-											: 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600'
-									]"
-								>
-									{{ page }}
-								</button>
+								<div class="flex items-center gap-1">
+									<button
+										v-for="page in visiblePages"
+										:key="page"
+										@click="goToPage(page)"
+										:class="[
+											'w-11 h-11 rounded-xl text-sm font-medium transition-all duration-300',
+											currentPage === page
+												? 'bg-gradient-to-r from-orange-600 to-teal-600 text-white shadow-lg shadow-orange-600/30 scale-110'
+												: page === '...'
+													? 'cursor-default bg-transparent'
+													: 'bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700'
+										]"
+									>
+										{{ page }}
+									</button>
+								</div>
 								
 								<button
 									@click="nextPage"
 									:disabled="currentPage === totalPages"
 									:class="[
-										'px-3 py-2 rounded-lg transition-colors',
+										'w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300',
 										currentPage === totalPages
-											? 'bg-gray-100 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
-											: 'bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600'
+											? 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+											: 'bg-white dark:bg-slate-800 hover:bg-orange-600 hover:text-white border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-orange-600/30'
 									]"
 								>
-									<i class="ri-arrow-right-line"></i>
+									<i class="ri-arrow-right-line text-lg"></i>
 								</button>
 							</div>
 						</div>
-					</section>
-				</main>
-			</div>
-
-		<!-- Mobile Menu -->
-		<div v-if="mobileMenuOpen" class="lg:hidden fixed inset-0 z-50">
-			<div class="absolute inset-0 bg-black/50" @click="mobileMenuOpen = false"></div>
-			<div class="absolute left-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-800 shadow-xl animate-slide-in">
-				<div class="p-4 border-b border-primary-300 dark:border-gray-700">
-					<div class="flex items-center justify-between mb-4">
-						<h2 class="text-xl font-bold">Menú</h2>
-						<button @click="mobileMenuOpen = false" class="p-2">
-							<i class="ri-close-line text-xl"></i>
-						</button>
 					</div>
-					
-					<!-- Mobile Language Toggle -->
-					<button 
-						@click="toggleLanguage"
-						class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center justify-between mb-4"
-					>
-						<span>Idioma</span>
-						<span class="font-medium">Idioma</span>
-					</button>
-				</div>
-				
-				<div class="p-4 space-y-4">
-					<button 
-						v-for="item in mobileMenuItems"
-						:key="item.label"
-						@click="handleMobileMenuClick(item)"
-						class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-3"
-					>
-						<i :class="item.icon" class="text-lg"></i>
-						<span>{{ menuLabel(item.label) }}</span>
-					</button>
-				</div>
+				</main>
 			</div>
 		</div>
 
-		<!-- Floating Action Button for Mobile -->
-		<button
-			v-if="showFAB"
-			@click="scrollToTop"
-			class="lg:hidden fixed bottom-6 right-6 w-12 h-12 bg-primary-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-primary-600 transition-all active:scale-95 z-40"
-			:class="{ 'opacity-0 translate-y-4': !showScrollToTop }"
-		>
-			<i class="ri-arrow-up-line"></i>
-		</button>
-	
+		<!-- BOTTOM NAVIGATION - Mobile First Design -->
+		<!-- <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 px-4 py-2 z-40">
+			<div class="flex items-center justify-around">
+				<button 
+					v-for="item in bottomNavItems" 
+					:key="item.label"
+					@click="handleNavigation(item.action)"
+					class="flex flex-col items-center p-2 rounded-xl transition-all duration-300"
+					:class="[currentRoute === item.action ? 'text-orange-600 dark:text-orange-400' : 'text-slate-600 dark:text-slate-400']"
+				>
+					<div :class="['p-1.5 rounded-lg transition-all', currentRoute === item.action ? 'bg-orange-100 dark:bg-orange-900/30' : '']">
+						<i :class="[item.icon, 'text-xl']"></i>
+					</div>
+					<span class="text-[10px] font-medium mt-1">{{ item.label }}</span>
+				</button>
+			</div>
+		</nav> -->
+
+		<!-- SCROLL TO TOP - Floating Action -->
+		<Transition name="slide-fade">
+			<button
+				v-if="showScrollToTop"
+				@click="scrollToTop"
+				class="fixed bottom-24 lg:bottom-8 right-6 w-14 h-14 bg-gradient-to-r from-orange-600 to-orange-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:shadow-3xl hover:scale-110 transition-all duration-500 z-50 group"
+			>
+				<i class="ri-arrow-up-line text-2xl group-hover:-translate-y-1 transition-transform"></i>
+			</button>
+		</Transition>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { AppConfig } from '@/app/config';
 import type { Restaurant } from '@/shared/data/restaurants';
 
 const router = useRouter();
+const route = useRoute();
+const toast = useToast();
+const API_BASE_URL = `${AppConfig.apiBaseUrl}/api`;
 
-import SearchBar from '@/components/SearchBar.vue';
-import CategoryChips from '@/components/CategoryChips.vue';
 import RestaurantCard from '@/components/RestaurantCard.vue';
-import Skeleton from '@/shared/ui/Skeleton.vue';
-
-import { restaurants as restaurantData } from '@/shared/data/restaurants';
+import MobileFilters from '@/components/MobileFilters.vue';
 import { categoryIcons } from '@/assets/svg/food';
 
-// Spanish-only UI labels for mobile menu
-const menuLabels: Record<string, string> = {
-	home: 'Inicio',
-	orders: 'Pedidos',
-	favorites: 'Favoritos',
-	profile: 'Perfil',
-	settings: 'Configuración',
-	help: 'Ayuda',
-};
-function menuLabel(key: string): string {
-	return menuLabels[key] ?? key;
+// ============================================
+// TYPES & INTERFACES
+// ============================================
+
+interface SortOption {
+	value: 'name' | 'rating' | 'deliveryTime';
+	label: string;
 }
 
-// State
-const restaurants = ref<any[]>(restaurantData.map(restaurant => ({
-	...restaurant,
-	image: restaurant.image || '',
-	rating: (restaurant as any).rating || 0,
-	isFavorite: (restaurant as any).isFavorite || false
-})));
+interface PriceOption {
+	value: string;
+	label: string;
+	symbol: string;
+}
+
+interface DeliveryOption {
+	value: string;
+	label: string;
+	range: string;
+}
+
+// ============================================
+// CONSTANTS
+// ============================================
+
+const sortOptions: SortOption[] = [
+	{ value: 'name', label: 'Nombre' },
+	{ value: 'rating', label: 'Mejor calificados' },
+	{ value: 'deliveryTime', label: 'Menor tiempo' }
+];
+
+const priceOptions: PriceOption[] = [
+	{ value: 'all', label: 'Todos', symbol: '💰' },
+	{ value: '$', label: 'Económico', symbol: '$' },
+	{ value: '$$', label: 'Moderado', symbol: '$$' },
+	{ value: '$$$', label: 'Premium', symbol: '$$$' }
+];
+
+const deliveryOptions: DeliveryOption[] = [
+	{ value: 'all', label: 'Todos', range: 'Cualquier tiempo' },
+	{ value: 'fast', label: 'Rápido', range: '< 30 min' },
+	{ value: 'medium', label: 'Normal', range: '30-45 min' },
+	{ value: 'slow', label: 'Express', range: '< 60 min' }
+];
+
+const bottomNavItems = [
+	{ label: 'Inicio', icon: 'ri-home-5-line', action: 'home' },
+	{ label: 'Buscar', icon: 'ri-search-line', action: 'search' },
+	{ label: 'Pedidos', icon: 'ri-shopping-bag-3-line', action: 'orders' },
+	{ label: 'Favoritos', icon: 'ri-heart-3-line', action: 'favorites' },
+	{ label: 'Perfil', icon: 'ri-user-3-line', action: 'profile' }
+];
+
+// ============================================
+// STATE
+// ============================================
+
+// Data
+const restaurants = ref<any[]>([]);
+const loading = ref(true);
+const currentRoute = ref('home');
+
+// Categories
 const categories = ref([
-	{ id: 'c1', name: 'Mariscos', icon: categoryIcons.Seafood },
-	{ id: 'c2', name: 'Mexicana', icon: categoryIcons.MexicanFood },
-	{ id: 'c3', name: 'Comida Rápida', icon: categoryIcons.FastFood },
-	{ id: 'c4', name: 'Vegetariana', icon: categoryIcons.Vegan },
+	{ id: 'c1', name: 'Mariscos', icon: categoryIcons.Seafood, count: 0 },
+	{ id: 'c2', name: 'Mexicana', icon: categoryIcons.MexicanFood, count: 0 },
+	{ id: 'c3', name: 'Italiana', icon: 'ri-restaurant-2-line', count: 0 },
+	{ id: 'c4', name: 'Japonesa', icon: 'ri-sushi-line', count: 0 },
+	{ id: 'c5', name: 'Vegetariana', icon: categoryIcons.Vegan, count: 0 },
+	{ id: 'c6', name: 'Comida Rápida', icon: categoryIcons.FastFood, count: 0 },
+	{ id: 'c7', name: 'Cafeterías', icon: 'ri-cup-line', count: 0 },
+	{ id: 'c8', name: 'Postres', icon: 'ri-cake-3-line', count: 0 },
 ]);
 
+// Filters
 const search = ref('');
 const selectedCategory = ref('');
-const sortOption = ref<'name' | 'rating' | 'deliveryTime'>('name');
+const sortOption = ref<'name' | 'rating' | 'deliveryTime'>('rating');
 const priceRange = ref('all');
+const deliveryTimeFilter = ref('all');
 const viewMode = ref<'grid' | 'list'>('grid');
-const mobileMenuOpen = ref(false);
-const showScrollToTop = ref(false);
-const loading = ref(false);
+const filtersOpen = ref(false);
+
+// Pagination
 const currentPage = ref(1);
 const itemsPerPage = 12;
-const cartItemCount = ref(3);
-const showLeftScroll = ref(false);
-const showRightScroll = ref(false);
 
-// Add this computed property to your script section
-const sortedRestaurants = computed(() => {
-    const sorted = [...filteredRestaurants.value];
-    
-    switch (sortOption.value) {
-        case 'name':
-            return sorted.sort((a, b) => a.name.localeCompare(b.name));
-        case 'rating':
-            return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        case 'deliveryTime':
-            return sorted.sort((a, b) => (a.deliveryTime || 999) - (b.deliveryTime || 999));
-        default:
-            return sorted;
-    }
+// UI State
+const showScrollToTop = ref(false);
+
+// ============================================
+// API FUNCTIONS - Laravel Backend
+// ============================================
+
+async function fetchRestaurants() {
+	try {
+		loading.value = true;
+		
+		const response = await fetch(`${API_BASE_URL}/restaurants`, {
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'X-Requested-With': 'XMLHttpRequest'
+			}
+		});
+		
+		if (!response.ok) throw new Error(`HTTP ${response.status}`);
+		
+		const json = await response.json();
+		const restaurantList = json.data || json;
+		
+		if (!Array.isArray(restaurantList)) {
+			restaurants.value = [];
+			return;
+		}
+		
+		// Transform Laravel models to frontend format
+		restaurants.value = restaurantList.map((item: any) => {
+			const isOpen = checkIfOpenNow(item);
+			
+			return {
+				id: item.id,
+				name: item.name,
+				description: item.description || '',
+				image: item.logo_url || item.cover_image || '/images/restaurant-placeholder.jpg',
+				cuisine: item.cuisine_type || 'Internacional',
+				priceRange: item.price_range || '$$',
+				deliveryTime: item.avg_prep_time_minutes || 35,
+				deliveryFee: item.delivery_fee || 0,
+				minimumOrder: item.minimum_order || 0,
+				address: item.address || '',
+				city: item.city || '',
+				rating: item.rating || 4.5,
+				reviewCount: item.reviews_count || 0,
+				isOpen: isOpen,
+				isFavorite: false,
+				promotion: item.has_promotion ? '20% OFF' : null,
+				tags: item.tags || []
+			};
+		});
+		
+		// Update category counts
+		updateCategoryCounts();
+		
+	} catch (error) {
+		console.error('Error fetching restaurants:', error);
+		toast.error('Error al cargar restaurantes');
+		restaurants.value = [];
+	} finally {
+		loading.value = false;
+	}
+}
+
+function checkIfOpenNow(restaurant: any): boolean {
+	if (!restaurant.is_active) return false;
+	
+	const now = new Date();
+	const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+	
+	// Default hours if not specified
+	const openTime = restaurant.opening_time?.substring(0, 5) || '09:00';
+	const closeTime = restaurant.closing_time?.substring(0, 5) || '22:00';
+	
+	return currentTime >= openTime && currentTime <= closeTime;
+}
+
+async function toggleFavorite(restaurant: any) {
+	try {
+		const token = localStorage.getItem('token');
+		if (!token) {
+			toast.warning('Inicia sesión para guardar favoritos');
+			return;
+		}
+		
+		const newState = !restaurant.isFavorite;
+		const method = newState ? 'POST' : 'DELETE';
+		
+		const response = await fetch(`${API_BASE_URL}/favorites`, {
+			method,
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${token}`,
+				'X-Requested-With': 'XMLHttpRequest'
+			},
+			body: JSON.stringify({ restaurant_id: restaurant.id })
+		});
+		
+		if (response.ok) {
+			restaurant.isFavorite = newState;
+			toast.success(newState 
+				? `${restaurant.name} agregado a favoritos`
+				: `${restaurant.name} eliminado de favoritos`
+			);
+		}
+	} catch (error) {
+		console.error('Failed to toggle favorite:', error);
+		toast.error('Error al actualizar favoritos');
+	}
+}
+
+// ============================================
+// COMPUTED PROPERTIES
+// ============================================
+
+const greetingMessage = computed(() => {
+	const hour = new Date().getHours();
+	if (hour < 12) return '¡Buenos días! ¿Qué se te antoja hoy?';
+	if (hour < 18) return '¡Buenas tardes! Hora de comer algo rico';
+	return '¡Buenas noches! ¿Pedimos algo?';
 });
 
-// Also add paginatedRestaurants if you want pagination
-const paginatedRestaurants = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return sortedRestaurants.value.slice(start, end);
+const hasActiveFilters = computed(() => {
+	return selectedCategory.value || priceRange.value !== 'all' || deliveryTimeFilter.value !== 'all';
+});
+
+const activeFiltersCount = computed(() => {
+	let count = 0;
+	if (selectedCategory.value) count++;
+	if (priceRange.value !== 'all') count++;
+	if (deliveryTimeFilter.value !== 'all') count++;
+	return count;
+});
+
+const topRatedCount = computed(() => {
+	return restaurants.value.filter(r => (r.rating || 0) >= 4.5).length;
 });
 
 const filteredRestaurants = computed(() => {
 	return restaurants.value.filter((restaurant) => {
-		// Search filter
-		const matchesSearch = 
-			!search.value ||
+		const matchesSearch = !search.value ||
 			restaurant.name.toLowerCase().includes(search.value.toLowerCase()) ||
-			restaurant.description.toLowerCase().includes(search.value.toLowerCase()) ||
-			((restaurant as any).cuisine || '').toLowerCase().includes(search.value.toLowerCase());
+			restaurant.description?.toLowerCase().includes(search.value.toLowerCase()) ||
+			restaurant.cuisine?.toLowerCase().includes(search.value.toLowerCase());
 		
-		// Category filter
-		const matchesCategory = 
-			!selectedCategory.value ||
-			((restaurant as any).cuisine || '').toLowerCase().includes(selectedCategory.value.toLowerCase());
+		const matchesCategory = !selectedCategory.value ||
+			restaurant.cuisine?.toLowerCase().includes(selectedCategory.value.toLowerCase());
 		
-		// Price filter
-		const matchesPrice = 
-			priceRange.value === 'all' ||
-			(restaurant as any).priceRange === priceRange.value;
+		const matchesPrice = priceRange.value === 'all' ||
+			restaurant.priceRange === priceRange.value;
 		
-		return matchesSearch && matchesCategory && matchesPrice;
+		const matchesDeliveryTime = deliveryTimeFilter.value === 'all' ||
+			(deliveryTimeFilter.value === 'fast' && restaurant.deliveryTime < 30) ||
+			(deliveryTimeFilter.value === 'medium' && restaurant.deliveryTime >= 30 && restaurant.deliveryTime <= 45) ||
+			(deliveryTimeFilter.value === 'slow' && restaurant.deliveryTime <= 60);
+		
+		return matchesSearch && matchesCategory && matchesPrice && matchesDeliveryTime;
 	});
 });
 
+const sortedRestaurants = computed(() => {
+	const sorted = [...filteredRestaurants.value];
+	
+	switch (sortOption.value) {
+		case 'name':
+			return sorted.sort((a, b) => a.name.localeCompare(b.name));
+		case 'rating':
+			return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+		case 'deliveryTime':
+			return sorted.sort((a, b) => (a.deliveryTime || 999) - (b.deliveryTime || 999));
+		default:
+			return sorted;
+	}
+});
+
+const paginatedRestaurants = computed(() => {
+	const start = (currentPage.value - 1) * itemsPerPage;
+	const end = start + itemsPerPage;
+	return sortedRestaurants.value.slice(start, end);
+});
 
 const totalPages = computed(() => 
 	Math.ceil(sortedRestaurants.value.length / itemsPerPage)
@@ -461,93 +731,112 @@ const totalPages = computed(() =>
 const visiblePages = computed(() => {
 	const pages = [];
 	const maxVisible = 5;
+	const total = totalPages.value;
+	const current = currentPage.value;
 	
-	if (totalPages.value <= maxVisible) {
-		for (let i = 1; i <= totalPages.value; i++) pages.push(i);
-	} else if (currentPage.value <= 3) {
-		pages.push(1, 2, 3, 4, '...', totalPages.value);
-	} else if (currentPage.value >= totalPages.value - 2) {
-		pages.push(1, '...', totalPages.value - 3, totalPages.value - 2, totalPages.value - 1, totalPages.value);
+	if (total <= maxVisible) {
+		for (let i = 1; i <= total; i++) pages.push(i);
+	} else if (current <= 3) {
+		pages.push(1, 2, 3, 4, '...', total);
+	} else if (current >= total - 2) {
+		pages.push(1, '...', total - 3, total - 2, total - 1, total);
 	} else {
-		pages.push(1, '...', currentPage.value - 1, currentPage.value, currentPage.value + 1, '...', totalPages.value);
+		pages.push(1, '...', current - 1, current, current + 1, '...', total);
 	}
 	
 	return pages;
 });
 
-const showFAB = computed(() => {
-	return window.innerWidth < 1024; // Only show on mobile/tablet
+const averageDeliveryTime = computed(() => {
+	const times = filteredRestaurants.value.map(r => r.deliveryTime).filter(Boolean);
+	if (times.length === 0) return 0;
+	return Math.round(times.reduce((a, b) => a + b, 0) / times.length);
 });
 
-const mobileMenuItems = computed(() => [
-	{ label: 'home', icon: 'ri-home-line', action: 'home' },
-	{ label: 'orders', icon: 'ri-shopping-bag-line', action: 'orders' },
-	{ label: 'favorites', icon: 'ri-heart-line', action: 'favorites' },
-	{ label: 'profile', icon: 'ri-user-line', action: 'profile' },
-	{ label: 'settings', icon: 'ri-settings-line', action: 'settings' },
-	{ label: 'help', icon: 'ri-question-line', action: 'help' },
-]);
+const getEmptyStateMessage = computed(() => {
+	if (search.value) return `No encontramos "${search.value}"`;
+	if (selectedCategory.value) return `No hay restaurantes en ${selectedCategory.value}`;
+	if (priceRange.value !== 'all') return `No hay restaurantes en este rango de precio`;
+	return 'Prueba con otros filtros';
+});
 
-// Methods
+// ============================================
+// METHODS
+// ============================================
+
+function updateCategoryCounts() {
+	const counts: Record<string, number> = {};
+	
+	restaurants.value.forEach(restaurant => {
+		const cuisine = restaurant.cuisine;
+		if (cuisine) {
+			counts[cuisine] = (counts[cuisine] || 0) + 1;
+		}
+	});
+	
+	categories.value = categories.value.map(cat => ({
+		...cat,
+		count: counts[cat.name] || 0
+	}));
+}
+
 function toggleCategory(category: string) {
 	selectedCategory.value = selectedCategory.value === category ? '' : category;
 	currentPage.value = 1;
+	filtersOpen.value = false;
+}
+
+function toggleFilters() {
+	filtersOpen.value = !filtersOpen.value;
 }
 
 function resetFilters() {
 	search.value = '';
 	selectedCategory.value = '';
-	sortOption.value = 'name';
+	sortOption.value = 'rating';
 	priceRange.value = 'all';
+	deliveryTimeFilter.value = 'all';
 	currentPage.value = 1;
+	filtersOpen.value = false;
+	
+	toast.info('Filtros limpiados');
 }
 
-function toggleViewMode() {
-	viewMode.value = viewMode.value === 'grid' ? 'list' : 'grid';
-}
-
-function toggleLanguage() {
-	// App is Spanish-only; kept for future i18n.
-}
-
-function toggleMobileMenu() {
-	mobileMenuOpen.value = !mobileMenuOpen.value;
-}
-
-const actionToRoute: Record<string, string> = {
-	home: '/home',
-	orders: '/orders',
-	profile: '/profile',
-	favorites: '/home', // no favorites route yet
-	settings: '/profile',
-	help: '/home',
-};
-function handleMobileMenuClick(item: any) {
-	mobileMenuOpen.value = false;
-	const path = actionToRoute[item.action];
-	if (path) router.push(path);
-}
-
-function toggleFavorite(restaurant: Restaurant) {
-    const index = restaurants.value.findIndex(r => r.id === restaurant.id);
-    if (index !== -1) {
-        (restaurants.value[index] as any).isFavorite = !(restaurants.value[index] as any).isFavorite;
-    }
-    console.log('Toggle favorite:', restaurant.name, (restaurant as any).isFavorite);
+function getPriceLabel(value: string): string {
+	const option = priceOptions.find(p => p.value === value);
+	return option ? option.label : value;
 }
 
 function viewRestaurantDetails(restaurant: Restaurant) {
-	router.push({ name: 'RestaurantDetail', params: { id: String(restaurant.id) } });
+	router.push({ 
+		name: 'RestaurantDetail', 
+		params: { id: String(restaurant.id) } 
+	});
 }
 
-function openCart() {
-	router.push({ name: 'CartPage' });
+function handleNavigation(action: string) {
+	currentRoute.value = action;
+	
+	switch(action) {
+		case 'home':
+			router.push('/');
+			break;
+		case 'search':
+			router.push('/search');
+			break;
+		case 'orders':
+			router.push('/orders');
+			break;
+		case 'favorites':
+			router.push('/favorites');
+			break;
+		case 'profile':
+			router.push('/profile');
+			break;
+	}
 }
 
-function scrollToTop() {
-	window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
+// Pagination methods
 function prevPage() {
 	if (currentPage.value > 1) {
 		currentPage.value--;
@@ -569,111 +858,245 @@ function goToPage(page: number | string) {
 	}
 }
 
+// Scroll methods
+function scrollToTop() {
+	window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function checkScroll() {
-	showScrollToTop.value = window.scrollY > 300;
+	showScrollToTop.value = window.scrollY > 600;
 }
 
-function checkCategoriesScroll() {
-	const container = document.querySelector('.scrollbar-hide');
-	if (container) {
-		showLeftScroll.value = container.scrollLeft > 10;
-		showRightScroll.value = container.scrollLeft < container.scrollWidth - container.clientWidth - 10;
-	}
-}
+// ============================================
+// WATCHERS
+// ============================================
 
-// Lifecycle
-onMounted(() => {
+watch([search, selectedCategory, sortOption, priceRange, deliveryTimeFilter], () => {
+	currentPage.value = 1;
+});
+
+watch(() => route.path, (path) => {
+	// Update current route for bottom nav
+	if (path === '/') currentRoute.value = 'home';
+	else if (path.includes('search')) currentRoute.value = 'search';
+	else if (path.includes('orders')) currentRoute.value = 'orders';
+	else if (path.includes('favorites')) currentRoute.value = 'favorites';
+	else if (path.includes('profile')) currentRoute.value = 'profile';
+});
+
+// ============================================
+// LIFECYCLE HOOKS
+// ============================================
+
+onMounted(async () => {
+	await fetchRestaurants();
+	
 	window.addEventListener('scroll', checkScroll);
-	window.addEventListener('resize', checkCategoriesScroll);
+	window.addEventListener('keydown', (e) => {
+		if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+			e.preventDefault();
+			document.querySelector('input')?.focus();
+		}
+	});
 	
-	// Simulate loading
-	loading.value = true;
-	setTimeout(() => {
-		loading.value = false;
-	}, 500);
-	
-	// Check scroll position for categories
-	setTimeout(checkCategoriesScroll, 100);
+	// Initialize route
+	if (route.path === '/') currentRoute.value = 'home';
 });
 
 onUnmounted(() => {
 	window.removeEventListener('scroll', checkScroll);
-	window.removeEventListener('resize', checkCategoriesScroll);
 });
 </script>
 
 <style scoped>
-/* Animation for mobile menu */
-@keyframes slideIn {
+/* Modern Animations */
+@keyframes slideUp {
 	from {
-		transform: translateX(-100%);
+		opacity: 0;
+		transform: translateY(30px);
 	}
 	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(30px);
+	}
+	to {
+		opacity: 1;
 		transform: translateX(0);
 	}
 }
 
-.animate-slide-in {
-	animation: slideIn 0.3s ease-out;
+.animate-slide-up {
+	animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Transition for FAB */
-.fixed {
-	transition: all 0.3s ease;
+.animate-fade-in {
+	animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Responsive typography */
-.section-heading {
-	@apply text-xl sm:text-2xl font-bold text-gray-900 dark:text-white;
+.animate-scale-in {
+	animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.link-button {
-	@apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium text-sm transition-colors;
+.animation-delay-300 {
+	animation-delay: 300ms;
+	opacity: 0;
+	animation-fill-mode: forwards;
 }
 
-/* Responsive container */
-.container {
-	@apply px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl;
+.animation-delay-600 {
+	animation-delay: 600ms;
+	opacity: 0;
+	animation-fill-mode: forwards;
 }
 
-/* Hide scrollbar but keep functionality */
-.scrollbar-hide {
-	scrollbar-width: none;
-	-ms-overflow-style: none;
+/* Stagger Animations for Grid */
+.stagger-grid-enter-active,
+.stagger-grid-leave-active {
+	transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.scrollbar-hide::-webkit-scrollbar {
-	display: none;
+.stagger-grid-enter-from {
+	opacity: 0;
+	transform: scale(0.8) translateY(30px);
 }
 
-/* Responsive grid adjustments */
+.stagger-grid-leave-to {
+	opacity: 0;
+	transform: scale(0.8) translateY(30px);
+}
+
+.stagger-list-enter-active,
+.stagger-list-leave-active {
+	transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stagger-list-enter-from {
+	opacity: 0;
+	transform: translateX(-30px);
+}
+
+.stagger-list-leave-to {
+	opacity: 0;
+	transform: translateX(30px);
+}
+
+/* Drawer Animation */
+.drawer-enter-active,
+.drawer-leave-active {
+	transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-enter-from,
+.drawer-leave-to {
+	transform: translateY(100%);
+	opacity: 0;
+}
+
+/* Slide Fade */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+	transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+	opacity: 0;
+	transform: translateY(20px);
+}
+
+/* Custom Scrollbar */
+.scrollbar-thin {
+	scrollbar-width: thin;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+	height: 6px;
+	width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+	background-color: rgba(156, 163, 175, 0.5);
+	border-radius: 20px;
+}
+
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+	background-color: rgba(75, 85, 99, 0.5);
+}
+
+/* Mobile Bottom Navigation */
+@media (max-width: 1023px) {
+	main {
+		padding-bottom: 80px;
+	}
+}
+
+/* Glass Morphism Effects */
+.backdrop-blur-xl {
+	backdrop-filter: blur(24px);
+	-webkit-backdrop-filter: blur(24px);
+}
+
+/* Hover Effects */
+.hover-lift {
+	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .hover-lift:hover {
+	box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Smooth Transitions */
+* {
+	transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 150ms;
+}
+
+/* Font Optimization */
+.font-inter {
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Responsive Typography */
 @media (max-width: 640px) {
-	.grid-cols-1 {
-		grid-template-columns: 1fr;
-	}
-}
-
-@media (min-width: 641px) and (max-width: 768px) {
-	.grid-cols-2 {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-	.grid-cols-2 {
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
-
-@media (min-width: 1025px) and (max-width: 1280px) {
-	.grid-cols-3 {
-		grid-template-columns: repeat(3, 1fr);
-	}
-}
-
-@media (min-width: 1281px) {
-	.grid-cols-3 {
-		grid-template-columns: repeat(3, 1fr);
+	h1 {
+		font-size: clamp(2rem, 8vw, 2.5rem);
 	}
 }
 </style>

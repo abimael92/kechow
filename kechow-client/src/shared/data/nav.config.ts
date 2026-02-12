@@ -12,7 +12,7 @@ export interface NavItem {
 }
 
 const customerNavItems: NavItem[] = [
-	{ path: '/home', label: 'Inicio' },
+	// { path: '/home', label: 'Inicio' },
 	{ path: '/restaurants', label: 'Restaurantes' },
 	{ path: '/cart', label: 'Mi Carrito' },
 	{ path: '/orders', label: 'Mis Pedidos' },
