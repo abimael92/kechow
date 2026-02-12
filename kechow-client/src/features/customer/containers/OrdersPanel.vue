@@ -19,7 +19,7 @@
 		</div>
 
 		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-			
+
 			<!-- TABS - Primary colors -->
 			<div class="flex items-center justify-between mb-8">
 				<div class="flex items-center gap-1 bg-white/80 dark:bg-secondary-800/80 backdrop-blur-sm p-1 rounded-2xl shadow-lg border border-primary-100/50 dark:border-secondary-700">
@@ -231,7 +231,7 @@
 											{{ statusText(order.status ?? '') }}
 										</span>
 									</div>
-									
+
 									<div class="flex flex-wrap gap-2 mb-3">
 										<span
 											v-for="(item, idx) in order.items?.slice(0, 3)"
@@ -252,7 +252,7 @@
 										</div>
 										<div class="flex items-center gap-1 text-secondary-600 dark:text-secondary-400">
 											<i class="ri-calendar-line"></i>
-											{{ formatDate(order.createdAt) }}
+											{{ formatDate(order.createdAt ?? '') }}
 										</div>
 									</div>
 								</div>
@@ -316,7 +316,7 @@
 									{{ page }}
 								</button>
 							</div>
-							
+
 							<button
 								@click="nextPage"
 								:disabled="currentPage === totalPages"
