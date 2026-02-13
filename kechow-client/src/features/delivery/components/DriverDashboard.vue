@@ -1,46 +1,20 @@
 <template>
-	<div class="min-h-screen p-4 sm:p-6 lg:p-8 space-y-6 max-w-5xl mx-auto">
-		<!-- Header -->
-		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-			<div>
-				<h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
+		<div class="space-y-6 mb-4">
+		<!-- Header Section -->
+            <div class="flex items-center gap-3 space-y-2 ">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+                    <i class="ri-shopping-cart-line text-white text-lg sm:text-xl md:text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
 					Tablero de repartidor
-				</h1>
-				<p class="text-gray-600 dark:text-gray-400 mt-1">
-					{{ driverStore.isOnline ? 'Listo para recibir pedidos' : 'Activa tu disponibilidad' }}
-				</p>
+					</h1>
+                  	<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-2">
+						{{ driverStore.isOnline ? 'Listo para recibir pedidos' : 'Activa tu disponibilidad' }}
+						
+                    </p>
+                </div>
 			</div>
-
-			<!-- Online toggle -->
-			<div class="flex items-center gap-4">
-				<span
-					:class="[
-						'text-sm font-medium',
-						driverStore.isOnline ? 'text-driver-success-500' : 'text-gray-500 dark:text-gray-400',
-					]"
-				>
-					{{ driverStore.isOnline ? 'En línea' : 'Desconectado' }}
-				</span>
-				<button
-					role="switch"
-					:aria-checked="driverStore.isOnline"
-					:disabled="driverStore.hasActiveOrder"
-					@click="driverStore.toggleOnline()"
-					:class="[
-						'relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-driver-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900',
-						driverStore.isOnline ? 'bg-driver-success-500' : 'bg-gray-300 dark:bg-gray-600',
-						driverStore.hasActiveOrder ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
-					]"
-				>
-					<span
-						:class="[
-							'inline-block h-6 w-6 transform rounded-full bg-white shadow transition',
-							driverStore.isOnline ? 'translate-x-7' : 'translate-x-1',
-						]"
-					></span>
-				</button>
-			</div>
-		</div>
 
 		<!-- Stats -->
 		<DriverStats />
