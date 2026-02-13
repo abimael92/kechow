@@ -1,5 +1,5 @@
 <template>
-	<div class="landing-root min-h-full bg-app dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+	<div class="landing-root min-h-full bg-app dark:bg-gray-900 text-gray-900 dark:text-gray-100 ">
 		<main>
 			<!-- Hero Section -->
 			<section class="relative overflow-hidden pt-20 pb-32">
@@ -15,22 +15,22 @@
 							<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary-100 to-accent-100 dark:from-primary-900/30 dark:to-accent-900/30 mb-4">
 								<Sparkles class="w-4 h-4 text-primary-500" />
 								<span class="text-sm font-medium text-primary-700 dark:text-primary-300">
-									🎉 ¡Nuevo en Jiménez!
+									¡Nuevo en Jiménez!
 								</span>
 							</div>
 
 							<h1 class="text-4xl md:text-6xl font-chewy leading-tight">
-								<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+								<span class="bg-gradient-to-r from-primary-500 to-orange-800 bg-clip-text text-transparent">
 									Tu comida favorita,
 								</span>
 								<br />
-								<span class="text-gray-900 dark:text-white">
-									entregada en minutos
+								<span class="text-accent-500 dark:text-accent-300">
+									en minutos
 								</span>
 							</h1>
 
-							<p class="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-								Descubre los mejores restaurantes de Jiménez desde la comodidad de tu hogar. 
+							<p class="text-xl text-secondary-600 dark:text-primary-300 leading-relaxed">
+								Descubre los mejores restaurantes de Jiménez desde la comodidad de tu hogar.
 								Pedidos rápidos, seguimiento en tiempo real y entrega directa a tu puerta.
 							</p>
 
@@ -38,15 +38,15 @@
 							<div class="grid grid-cols-3 gap-4">
 								<div class="text-center p-4 rounded-xl bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 backdrop-blur-sm">
 									<div class="text-2xl font-bold text-primary-600 dark:text-primary-400">30min</div>
-									<div class="text-sm text-gray-600 dark:text-gray-400">Entrega promedio</div>
+									<div class="text-sm text-primary-900 dark:text-primary-300">Entrega promedio</div>
 								</div>
 								<div class="text-center p-4 rounded-xl bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 backdrop-blur-sm">
 									<div class="text-2xl font-bold text-primary-600 dark:text-primary-400">50+</div>
-									<div class="text-sm text-gray-600 dark:text-gray-400">Restaurantes</div>
+									<div class="text-sm text-primary-900 dark:text-primary-300">Restaurantes</div>
 								</div>
 								<div class="text-center p-4 rounded-xl bg-gradient-to-br from-white/50 to-transparent dark:from-gray-800/50 backdrop-blur-sm">
 									<div class="text-2xl font-bold text-primary-600 dark:text-primary-400">4.8★</div>
-									<div class="text-sm text-gray-600 dark:text-gray-400">Calificación</div>
+									<div class="text-sm text-primary-900 dark:text-primary-300">Calificación</div>
 								</div>
 							</div>
 
@@ -54,7 +54,7 @@
 							<div class="flex flex-wrap gap-4">
 								<BaseButton 
 									size="lg"
-									class="bg-primary-500 hover:bg-primary-600 text-white"
+									class="bg-primary-500 hover:bg-primary-400 text-white"
 									@click="goToOrder"
 								>
 									<template #icon>
@@ -65,7 +65,7 @@
 								<BaseButton 
 									size="lg"
 									variant="outline"
-									class="border-primary-500 text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/20"
+									class="border-accent-500 border-2 text-accent-500 bg-white hover:bg-accent-500 hover:text-white dark:hover:bg-primary-900/20"
 									@click="scrollToFeatures"
 								>
 									<template #icon>
@@ -82,7 +82,12 @@
 								<!-- Food Image -->
 								<div class="aspect-square bg-gradient-to-br from-primary-100 to-accent-100 dark:from-primary-900 dark:to-accent-900 flex items-center justify-center">
 									<div class="text-center p-8">
-										<div class="text-6xl mb-6 animate-bounce">🍔</div>
+										<div class=" mb-2 animate-bounce">
+											<img
+												src="/images/kechow_puppy.png" 
+												alt="Delicious Food"
+											/>
+										</div>
 										<p class="text-2xl font-chewy text-primary-700 dark:text-primary-300">
 											¡Comida deliciosa en camino!
 										</p>
@@ -90,21 +95,21 @@
 								</div>
 
 								<!-- Floating Delivery Animation -->
-								<div class="absolute -bottom-6 -right-6 w-32 h-32">
+								<!-- <div class="absolute -bottom-6 -right-6 w-32 h-32">
 									<div class="relative w-full h-full">
-										<!-- Delivery Scooter -->
+										 Delivery Scooter
 										<div class="absolute inset-0 animate-pulse-slow">
 											<Bike class="w-full h-full text-primary-500" />
 										</div>
-										<!-- Delivery Route -->
+										Delivery Route -
 										<div class="absolute inset-0 border-2 border-dashed border-primary-300 rounded-full animate-spin-slow"></div>
 									</div>
-								</div>
+								</div> -->
 							</div>
 
 							<!-- Floating Elements -->
 							<div class="absolute -top-6 -left-6 w-24 h-24 bg-primary-400/20 rounded-full blur-xl animate-ping-slow"></div>
-							<div class="absolute -bottom-6 -right-6 w-32 h-32 bg-accent-400/10 rounded-full blur-xl animate-pulse"></div>
+							<div class="absolute -bottom-6 -right-6 w-32 h-32 bg-accent-600/10 rounded-full blur-xl animate-pulse"></div>
 						</div>
 					</div>
 				</div>
@@ -115,7 +120,7 @@
 				<div class="container mx-auto px-4">
 					<div class="text-center mb-16">
 						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
-							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+							<span class="bg-gradient-to-r from-primary-500 to-primary-800 bg-clip-text text-transparent text-5xl">
 								¿Por qué elegir Kechow?
 							</span>
 						</h2>
@@ -126,23 +131,23 @@
 
 					<div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 						<FeatureCard
-							v-for="feature in features"
+						v-for="(feature, index) in features"
 							:key="feature.title"
 							:icon="feature.icon"
 							:title="feature.title"
 							:description="feature.description"
-							:color="feature.color"
+							:color="feature.color" 
 						/>
 					</div>
 				</div>
 			</section>
 
 			<!-- Popular Restaurants -->
-			<section id="restaurants" class="py-20">
+			<!-- <section id="restaurants" class="py-20">
 				<div class="container mx-auto px-4">
 					<div class="text-center mb-16">
 						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
-							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+							<span class="bg-gradient-to-r from-primary-500 to-primary-800 bg-clip-text text-transparent text-5xl">
 								Restaurantes Destacados
 							</span>
 						</h2>
@@ -169,15 +174,15 @@
 						</BaseButton>
 					</div>
 				</div>
-			</section>
+			</section> -->
 
 			<!-- How It Works -->
-			<section id="how-it-works" class="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+			<section id="how-it-works" class="py-20 ">
 				<div class="container mx-auto px-4">
 					<div class="text-center mb-16">
 						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
-							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
-								Cómo funciona
+							<span class="bg-gradient-to-r from-primary-500 to-primary-800 bg-clip-text text-transparent text-5xl">
+							¿Cómo funciona?
 							</span>
 						</h2>
 						<p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -199,11 +204,11 @@
 			</section>
 
 			<!-- Testimonials -->
-			<section id="testimonials" class="py-20">
+			<section id="testimonials"  class="py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
 				<div class="container mx-auto px-4">
 					<div class="text-center mb-16">
 						<h2 class="text-3xl md:text-4xl font-chewy mb-4">
-							<span class="bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent">
+							<span class="bg-gradient-to-r from-primary-500 to-primary-800 bg-clip-text text-transparent text-5xl">
 								Lo que dicen nuestros clientes
 							</span>
 						</h2>
@@ -225,7 +230,7 @@
 			<!-- CTA Section -->
 			<section class="py-20">
 				<div class="container mx-auto px-4">
-					<div class="bg-gradient-to-r from-primary-500 to-accent-500 rounded-3xl p-12 text-center relative overflow-hidden">
+					<div class="bg-gradient-to-r from-accent-400/90 to-accent-500/90 rounded-3xl p-12 text-center relative overflow-hidden">
 						<!-- Background Pattern -->
 						<div class="absolute inset-0 opacity-10">
 							<div class="absolute inset-0" :style="animatedBackground"></div>
@@ -241,21 +246,24 @@
 							<div class="flex flex-col sm:flex-row gap-4 justify-center">
 								<BaseButton 
 									size="lg"
-									class="bg-white text-primary-600 hover:bg-gray-100"
+									class="bg-accent-800 hover:bg-accent-600 text-white"
 									@click="goToOrder"
 								>
 									<template #icon>
 										<ShoppingBag class="w-5 h-5" />
 									</template>
-									Empezar a Ordenar
+									Ordenar Ahora
 								</BaseButton>
 								<BaseButton 
 									size="lg"
 									variant="outline"
-									class="border-2 border-white text-white hover:bg-white/10"
+									class="border-accent-500 border-2 text-accent-500 bg-white hover:bg-accent-500 hover:text-white dark:hover:bg-primary-900/20"
 									@click="scrollToFeatures"
 								>
-									Aprender Más
+									<template #icon>
+										<Sparkles class="w-5 h-5" />
+									</template>
+									Ver Características
 								</BaseButton>
 							</div>
 						</div>
@@ -316,37 +324,37 @@ const features = [
 		icon: Clock,
 		title: 'Entrega Rápida',
 		description: '30 minutos o menos garantizados en Jiménez',
-		color: 'primary'
+		color: 'primary' as const
 	},
 	{
 		icon: Shield,
 		title: 'Comida Segura',
 		description: 'Protocolos de higiene y empaque sellado',
-		color: 'accent'
+		color: 'accent' as const
 	},
 	{
 		icon: Truck,
 		title: 'Seguimiento en Vivo',
 		description: 'Sigue a tu repartidor en tiempo real',
-		color: 'primary'
+		color: 'primary' as const
 	},
 	{
 		icon: MapPin,
 		title: 'Cobertura Total',
 		description: 'Entregamos en toda Jiménez',
-		color: 'accent'
+		color: 'accent' as const
 	},
 	{
 		icon: Sparkles,
 		title: 'Calidad Premium',
 		description: 'Solo restaurantes verificados',
-		color: 'primary'
+		color: 'primary' as const
 	},
 	{
 		icon: CheckCircle,
 		title: 'Pago Seguro',
 		description: 'Múltiples métodos de pago',
-		color: 'accent'
+		color: 'accent' as const
 	}
 ]
 
