@@ -1,23 +1,26 @@
 <template>
-	<div class="min-w-0 bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300">
-		<div class="max-w-4xl mx-auto">
-			<!-- Header -->
-<div class="max-w-4xl mx-auto px-4 mb-16 sm:px-6 lg:px-8 pt-8 lg:pt-12">
-	<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
-		<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
-			<i class="ri-chat-3-line text-white text-lg sm:text-xl md:text-2xl"></i>
-		</div>
-		<div class="min-w-0 flex-1">
-			<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-				Reseñas
-			</h1>
-			<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-1">
-				Comparte tu experiencia con otros clientes
-			</p>
-		</div>
-	</div>
-</div>
+		<div class="min-w-0 bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300">
 
+		<!-- HEADER -->
+		<div class="max-w-7xl mx-auto px-4 mb-8 sm:px-6 lg:px-8 pt-4 lg:pt-8">
+			<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+					<i class="ri-chat-3-line text-white text-lg sm:text-xl md:text-2xl"></i>
+				</div>
+				<div class="min-w-0 flex-1">
+					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
+									Reseñas
+
+					</h1>
+					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-1">
+					Comparte tu experiencia con otros.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- MAIN CONTENT - All inside same width container -->
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
 			<!-- Create Review Form -->
 			<div
 				v-if="showCreateForm"
@@ -103,17 +106,17 @@
 			<!-- Reviews Header -->
 			<div v-if="!loading" class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
 				<div class="flex items-center gap-3">
-					<div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
+					<!-- <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
 						<i class="ri-chat-3-line text-orange-600 dark:text-orange-400 text-xl"></i>
-					</div>
-					<div>
+					</div> -->
+					<!-- <div>
 						<h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
 							Todas las reseñas
 						</h2>
 						<p class="text-sm text-gray-600 dark:text-gray-400">
 							{{ reviews.length }} {{ reviews.length === 1 ? 'opinión' : 'opiniones' }}
 						</p>
-					</div>
+					</div> -->
 				</div>
 			<button
 	@click="showCreateForm = !showCreateForm"
@@ -252,8 +255,8 @@
 					</div>
 				</div>
 			</div>
+			</div>
 		</div>
-	</div>
 </template>
 
 <script setup lang="ts">

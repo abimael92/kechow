@@ -1,8 +1,8 @@
 <template>
 <div class="min-w-0 bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300">
 
-		<!-- HEADER - YOUR EXACT HEADER, JUST ADDED BETTER SPACING/RESPONSIVENESS -->
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12">
+		<!-- HEADER -->
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 lg:pt-8">
 			<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
 				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
 					<i class="ri-store-3-line text-white text-lg sm:text-xl md:text-2xl"></i>

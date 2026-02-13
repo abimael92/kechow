@@ -12,9 +12,9 @@
 				<a :href="landingHash('#how-it-works')" class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline">Cómo funciona</a>
 				<a :href="landingHash('#testimonials')" class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline">Testimonios</a>
 				<span class="hidden sm:inline w-px h-6 bg-primary-600 dark:bg-gray-600 mx-1" aria-hidden="true" />
-				<router-link to="/login" class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline">Iniciar sesión</router-link>
-				<router-link to="/register" class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline border border-primary-400 dark:border-gray-500">Registrarse</router-link>
-				<router-link to="/restaurants" class="flex items-center min-h-[44px] min-w-0 px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base rounded font-semibold bg-primary-500 text-white hover:bg-primary-600 no-underline">Ordenar ahora</router-link>
+				<router-link to="/login" class="flex items-center min-h-[44px] min-w-0 px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base rounded-lg  font-semibold bg-primary-500 text-white hover:bg-primary-400 hover:text-primary-800 no-underline">Iniciar sesión</router-link>
+				<!-- <router-link to="/register" class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline border border-primary-400 dark:border-gray-500">Registrarse</router-link>
+				<router-link to="/restaurants" class="flex items-center min-h-[44px] min-w-0 px-3 py-2 sm:px-4 sm:py-2.5 text-sm sm:text-base rounded font-semibold bg-primary-500 text-white hover:bg-primary-600 no-underline">Ordenar ahora</router-link> -->
 			</template>
 
 			<!-- Owner Navigation: 44px tap targets -->

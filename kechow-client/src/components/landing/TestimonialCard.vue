@@ -17,7 +17,7 @@
 
 		<!-- Author -->
 		<div class="flex items-center gap-3">
-			<div class="w-10 h-10 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center text-white font-bold">
+			<div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-200 flex items-center justify-center text-white font-bold">
 				{{ avatar }}
 			</div>
 			<div>

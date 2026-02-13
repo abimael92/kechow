@@ -1,23 +1,24 @@
 <template>
-	<div class="min-h-screen bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 py-6 px-4 sm:px-6 lg:px-8">
-		<div class="max-w-4xl mx-auto">
-			<!-- HEADER - Exact same style as RestaurantListPage -->
-			<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12 mb-6">
-				<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
-					<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
-						<i class="ri-user-3-line text-white text-lg sm:text-xl md:text-2xl"></i>
-					</div>
-					<div class="min-w-0 flex-1">
-						<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-							Mi Perfil
-						</h1>
-						<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-1">
-							Administra tu información personal y direcciones
-						</p>
-					</div>
+	<div class="min-w-0 bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300">
+
+		<!-- HEADER -->
+		<div class="max-w-7xl mx-auto px-4 mb-8 sm:px-6 lg:px-8 pt-4 lg:pt-8">
+			<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
+					<i class="ri-shopping-bag-3-line text-white text-lg sm:text-xl md:text-2xl"></i>
+				</div>
+				<div class="min-w-0 flex-1">
+					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
+					Mi Perfil
+					</h1>
+					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-1">
+					Administra tu información personal y direcciones
+					</p>
 				</div>
 			</div>
-
+		</div>
+		<!-- MAIN CONTENT  -->
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
 			<div v-if="loading" class="flex flex-col items-center justify-center min-h-[400px] bg-white dark:bg-secondary-800 rounded-lg border border-primary-100 dark:border-secondary-700">
 				<div class="text-center max-w-sm mx-auto px-4 py-8">
 					<div class="w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-full flex items-center justify-center mx-auto mb-4">

@@ -1,8 +1,8 @@
 <template>
 	<div class="text-center relative">
 		<!-- Step Number -->
-		<div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-			{{ number }}
+		<div class="relative w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-primary-200 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+		{{ number }}
 		</div>
 
 		<!-- Icon -->
