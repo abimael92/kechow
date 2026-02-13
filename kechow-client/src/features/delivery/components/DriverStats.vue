@@ -1,7 +1,7 @@
 <template>
 	<div class="space-y-4">
 		<div class="flex justify-between items-center">
-			<h2 class="text-lg font-bold text-gray-900 dark:text-white">Resumen</h2>
+			<h2 class="text-lg font-bold text-gray-900 dark:text-white"></h2>
 			<router-link
 				to="/delivery/earnings"
 				class="text-sm font-medium text-driver-primary-500 hover:text-driver-primary-600"
