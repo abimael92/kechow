@@ -13,7 +13,38 @@
 						{{ driverStore.isOnline ? 'Listo para recibir pedidos' : 'Activa tu disponibilidad' }}
 						
                     </p>
+                    <!-- Online toggle -->
+			<div class="flex items-center gap-4">
+		<div></div>
+				<span
+					:class="[
+						'text-sm font-medium',
+						driverStore.isOnline ? 'text-driver-success-500' : 'text-gray-500 dark:text-gray-400',
+					]"
+				>
+					{{ driverStore.isOnline ? 'En línea' : 'Desconectado' }}
+				</span>
+				<button
+					role="switch"
+					:aria-checked="driverStore.isOnline"
+					:disabled="driverStore.hasActiveOrder"
+					@click="driverStore.toggleOnline()"
+					:class="[
+						'relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-driver-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900',
+						driverStore.isOnline ? 'bg-driver-success-500' : 'bg-gray-300 dark:bg-gray-600',
+						driverStore.hasActiveOrder ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
+					]"
+				>
+					<span
+						:class="[
+							'inline-block h-6 w-6 transform rounded-full bg-white shadow transition',
+							driverStore.isOnline ? 'translate-x-7' : 'translate-x-1',
+						]"
+					></span>
+				</button>
+			</div>
                 </div>
+                
 			</div>
 
 		<!-- Stats -->
