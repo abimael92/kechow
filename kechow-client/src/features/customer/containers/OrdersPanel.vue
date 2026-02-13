@@ -1,18 +1,19 @@
 <template>
-	<div class="min-h-screen bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 transition-colors duration-300">
-		
-		<!-- HEADER - EXACT same as Reseñas -->
-		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 lg:pt-12">
+	<div class="min-w-0 bg-gradient-to-br from-primary-50 via-primary-100/40 to-primary-200/50 text-secondary-900 dark:bg-secondary-900 dark:text-secondary-100 dark:from-secondary-900 dark:via-secondary-900 dark:to-secondary-800 font-sans transition-colors duration-300">
+
+		<!-- HEADER -->
+		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 lg:pt-8">
 			<div class="flex items-center gap-2 sm:gap-3 md:gap-4">
 				<div class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 flex items-center justify-center shadow-md shadow-primary-500/30 flex-shrink-0">
 					<i class="ri-shopping-bag-3-line text-white text-lg sm:text-xl md:text-2xl"></i>
 				</div>
 				<div class="min-w-0 flex-1">
 					<h1 class="text-bubble font-chewy text-primary-500 dark:text-primary-400 text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight sm:leading-snug">
-						{{ greeting }}
+					Pedidos
 					</h1>
 					<p class="text-neutral-950 dark:text-neutral-200 font-normal text-sm sm:text-base md:text-lg lg:text-xl select-none line-clamp-1">
-						{{ profile.name || 'Usuario' }} • {{ profile.email || 'cargando...' }}
+					{{ greeting }} {{ profile.name || 'Usuario' }} 
+					<!-- • {{ profile.email || 'cargando...' }} -->
 					</p>
 				</div>
 			</div>
@@ -21,7 +22,7 @@
 		<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
 
 			<!-- TABS - Primary colors -->
-			<div class="flex items-center justify-between mb-8">
+			<div class="flex items-center justify-between mb-4">
 				<div class="flex items-center gap-1 bg-white/80 dark:bg-secondary-800/80 backdrop-blur-sm p-1 rounded-2xl shadow-lg border border-primary-100/50 dark:border-secondary-700">
 					<!-- <button
 						v-for="tab in tabs"
@@ -62,7 +63,7 @@
 				</div>
 
 				<!-- Online Status -->
-				<div class="hidden sm:flex items-center gap-2">
+				<!-- <div class="hidden sm:flex items-center gap-2">
 					<span class="flex h-2.5 w-2.5">
 						<span :class="[
 							'absolute inline-flex h-2.5 w-2.5 rounded-full',
@@ -76,7 +77,7 @@
 					<span class="text-xs text-secondary-600 dark:text-secondary-400">
 						{{ isOnline ? 'Conectado' : 'Sin conexión' }}
 					</span>
-				</div>
+				</div> -->
 			</div>
 
 			<!-- SEARCH BAR -->
@@ -896,7 +897,7 @@ onUnmounted((): void => {
 <style scoped>
 /* Same styles as Reseñas */
 .text-bubble {
-	font-size: clamp(1.5rem, 4vw, 2rem);
+	font-size: clamp(2rem, 5vw, 3.5rem);
 }
 
 .scrollbar-hide {
