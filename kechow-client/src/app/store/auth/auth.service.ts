@@ -14,7 +14,7 @@ export const api = axios.create({
 export const login = async (payload: { email: string; password: string }) => {
 	try {
 		await api.get('/sanctum/csrf-cookie');
-		const response = await api.post('/api/login', payload);
+		const response = await api.post('/login', payload);
 		return response.data;
 	} catch (error) {
 		if (import.meta.env.DEV) {
