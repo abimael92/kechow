@@ -10,11 +10,11 @@ class DocsController extends Controller
     {
         return response()->json([
             'RestaurantController' => [
-                'GET /api/restaurants' => 'Get all restaurants',
-                'POST /api/restaurants' => 'Create a new restaurant',
-                'GET /api/restaurants/{id}' => 'Get a specific restaurant',
-                'PUT /api/restaurants/{id}' => 'Update a restaurant',
-                'DELETE /api/restaurants/{id}' => 'Delete a restaurant',
+                'GET /restaurants' => 'Get all restaurants',
+                'POST /restaurants' => 'Create a new restaurant',
+                'GET /restaurants/{id}' => 'Get a specific restaurant',
+                'PUT /restaurants/{id}' => 'Update a restaurant',
+                'DELETE /restaurants/{id}' => 'Delete a restaurant',
             ],
         ]);
     }

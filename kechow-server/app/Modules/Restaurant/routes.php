@@ -1,11 +1,14 @@
 <?php
 // app/Modules/Restaurant/routes.php
+use Illuminate\Support\Facades\Route;
 use App\Modules\Restaurant\Controllers\RestaurantController;
 use App\Modules\Restaurant\Controllers\MenuItemController;
 
 Route::prefix('restaurants')->group(function () {
     // Public routes
     Route::get('/', [RestaurantController::class, 'index']);
+
+     Route::get('/{restaurant}/menu', [MenuItemController::class, 'index']);
     // Serve logo files (public, no auth) - must be before /{restaurant}
     Route::get('/logo/{filename}', [RestaurantController::class, 'serveLogo'])->where('filename', '[a-zA-Z0-9._-]+');
     // Owner list must be before /{restaurant} so /owner/my-restaurants is not matched as id

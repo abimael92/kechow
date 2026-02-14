@@ -21,6 +21,8 @@ class Cart extends Model
         'expires_at' => 'datetime',
     ];
 
+    public const CART_EXPIRY_MINUTES = 30; // ✅ Fixed
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -45,6 +47,4 @@ class Cart extends Model
     {
         $this->update(['expires_at' => now()->addMinutes(30)]);
     }
-
-    public static function CART_EXPIRY_MINUTES = 30;
 }

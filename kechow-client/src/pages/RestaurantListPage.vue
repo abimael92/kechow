@@ -447,7 +447,7 @@ import type { Restaurant } from '@/shared/data/restaurants';
 const router = useRouter();
 const route = useRoute();
 const toast = useToast();
-const API_BASE_URL = `${AppConfig.apiBaseUrl}/api`;
+const API_BASE_URL = `${AppConfig.apiBaseUrl}`;
 
 import RestaurantCard from '@/components/RestaurantCard.vue';
 import MobileFilters from '@/components/MobileFilters.vue';

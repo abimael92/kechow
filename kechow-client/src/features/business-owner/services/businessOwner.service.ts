@@ -4,9 +4,9 @@ import { api, apiBaseUrl } from '@app/lib/axios';
 function ensureAbsoluteLogoUrl(url: string | null | undefined): string {
 	if (!url || typeof url !== 'string') return '';
 	const abs = url.startsWith('http://') || url.startsWith('https://') ? url : apiBaseUrl + (url.startsWith('/') ? url : '/' + url);
-	// Rewrite old /storage/restaurant-logos/X to /api/restaurants/logo/X (avoids 403)
+	// Rewrite old /storage/restaurant-logos/X to /restaurants/logo/X (avoids 403)
 	const m = abs.match(/\/storage\/restaurant-logos\/([a-zA-Z0-9._-]+)(?:\?|$)/);
-	if (m) return apiBaseUrl + '/api/restaurants/logo/' + m[1];
+	if (m) return apiBaseUrl + '/restaurants/logo/' + m[1];
 	return abs;
 }
 import type {
@@ -59,6 +59,23 @@ interface GetAnalyticsParams {
 	dateTo?: string;
 }
 
+// Add this helper function
+const getRestaurantId = async (): Promise<number> => {
+  try {
+    const response = await api.get('/restaurants/owner/my-restaurants');
+    const restaurants = Array.isArray(response.data) ? response.data : (response.data?.data ?? []);
+    
+    if (restaurants.length === 0) {
+      throw new Error('No restaurant found');
+    }
+    
+    return restaurants[0].id;
+  } catch (error) {
+    console.error('Error getting restaurant ID:', error);
+    throw error;
+  }
+};
+
 /* ------------------------- ORDERS ------------------------- */
 export const fetchOrders = async (filters?: OrderFilters): Promise<Order[]> => {
 	if (useSampleData) {
@@ -86,10 +103,10 @@ export const fetchOrders = async (filters?: OrderFilters): Promise<Order[]> => {
 		return filteredOrders;
 	}
 
-	const response = await api.get<OrdersResponse>('/api/owner/orders', {
+	const response = await api.get<OrdersResponse>('/owner/orders', {
 		params: filters,
 	});
-	return response.data.orders ?? response.data.data ?? [];
+	return response.data.orders ?? [];
 };
 
 export const updateOrderStatus = async (
@@ -106,7 +123,7 @@ export const updateOrderStatus = async (
 		return new Promise((resolve) => setTimeout(resolve, 500));
 	}
 
-	await api.patch(`/api/owner/orders/${orderId}/status`, { status, notes });
+	await api.patch(`/owner/orders/${orderId}/status`, { status, notes });
 };
 
 export const getOrderStats = async (): Promise<OrderStats> => {
@@ -144,7 +161,7 @@ export const getOrderStats = async (): Promise<OrderStats> => {
 		};
 	}
 
-	const response = await api.get<OrderStats>('/api/owner/orders/stats');
+	const response = await api.get<OrderStats>('/owner/orders/stats');
 	return response.data;
 };
 
@@ -172,7 +189,7 @@ export const getDashboardStats = async (): Promise<DashboardStats> => {
 		};
 	}
 
-	const response = await api.get<DashboardStats>('/api/owner/dashboard/stats');
+	const response = await api.get<DashboardStats>('/owner/dashboard/stats');
 	return response.data;
 };
 
@@ -183,95 +200,116 @@ export const getOrderById = async (orderId: string): Promise<Order> => {
 		return order;
 	}
 
-	const response = await api.get<Order>(`/api/owner/orders/${orderId}`);
+	const response = await api.get<Order>(`/owner/orders/${orderId}`);
 	return response.data;
 };
 
 /* ------------------------- MENU ------------------------- */
-export const fetchMenuItems = async (
-	category?: string
-): Promise<MenuItem[]> => {
-	if (useSampleData) {
-		let items = [...sampleMenuItems];
-		if (category && category !== 'all') {
-			items = items.filter((item) => item.category === category);
-		}
-		return items;
-	}
+// UPDATE fetchMenuItems
+export const fetchMenuItems = async (category?: string): Promise<MenuItem[]> => {
+  if (useSampleData) {
+    let items = [...sampleMenuItems];
+    if (category && category !== 'all') {
+      items = items.filter((item) => item.category === category);
+    }
+    return items;
+  }
 
-	const response = await api.get<MenuItem[]>('/owner/menu/items', {
-		params: { category },
-	});
-	return response.data;
+  try {
+    const restaurantId = await getRestaurantId();
+    const response = await api.get<MenuItem[]>(`/restaurants/${restaurantId}/menu-items`, {
+      params: { category },
+    });
+     return response.data.map((item) => ({
+       ...item,
+       id: String(item.id),
+     }));
+  } catch (error) {
+    console.error('Error fetching menu items:', error);
+    return [];
+  }
 };
 
-export const createMenuItem = async (
-	formData: MenuItemFormData
-): Promise<MenuItem> => {
-	if (useSampleData) {
-		const newItem: MenuItem = {
-			...formData,
-			id: Math.random().toString(36).substr(2, 9),
-			createdAt: new Date().toISOString(),
-			updatedAt: new Date().toISOString(),
-		};
-		sampleMenuItems.push(newItem);
-		return newItem;
-	}
+// UPDATE createMenuItem
+export const createMenuItem = async (formData: MenuItemFormData): Promise<MenuItem> => {
+  if (useSampleData) {
+    const newItem: MenuItem = {
+      ...formData,
+      id: Math.random().toString(36).substr(2, 9),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    sampleMenuItems.push(newItem);
+    return newItem;
+  }
 
-	const response = await api.post<MenuItem>('/owner/menu/items', formData);
-	return response.data;
+  const restaurantId = await getRestaurantId();
+  const response = await api.post<MenuItem>(`/restaurants/${restaurantId}/menu-items`, formData);
+  return {
+    ...response.data,
+    id: String(response.data.id), // Convert number to string
+  };
 };
 
+// UPDATE updateMenuItem
 export const updateMenuItem = async (
-	id: string,
-	formData: Partial<MenuItemFormData>
+  id: string,
+  formData: Partial<MenuItemFormData>
 ): Promise<MenuItem> => {
-	if (useSampleData) {
-		const index = sampleMenuItems.findIndex((item) => item.id === id);
-		if (index !== -1) {
-			sampleMenuItems[index] = {
-				...sampleMenuItems[index],
-				...formData,
-				updatedAt: new Date().toISOString(),
-			};
-			return sampleMenuItems[index];
-		}
-		throw new Error('Menu item not found');
-	}
+  if (useSampleData) {
+    const index = sampleMenuItems.findIndex((item) => item.id === id);
+    if (index !== -1) {
+      sampleMenuItems[index] = {
+        ...sampleMenuItems[index],
+        ...formData,
+        updatedAt: new Date().toISOString(),
+      };
+      return sampleMenuItems[index];
+    }
+    throw new Error('Menu item not found');
+  }
 
-	const response = await api.put<MenuItem>(`/owner/menu/items/${id}`, formData);
-	return response.data;
+  const restaurantId = await getRestaurantId();
+  const response = await api.put<MenuItem>(`/restaurants/${restaurantId}/menu-items/${id}`, formData);
+  return {
+    ...response.data,
+    id: String(response.data.id),
+  };
 };
 
+// UPDATE deleteMenuItem
 export const deleteMenuItem = async (id: string): Promise<void> => {
-	if (useSampleData) {
-		const index = sampleMenuItems.findIndex((item) => item.id === id);
-		if (index !== -1) {
-			sampleMenuItems.splice(index, 1);
-		}
-		return;
-	}
+  if (useSampleData) {
+    const index = sampleMenuItems.findIndex((item) => item.id === id);
+    if (index !== -1) {
+      sampleMenuItems.splice(index, 1);
+    }
+    return;
+  }
 
-	await api.delete(`/owner/menu/items/${id}`);
+  const restaurantId = await getRestaurantId();
+  await api.delete(`/restaurants/${restaurantId}/menu-items/${id}`);
 };
 
-export const toggleMenuItemAvailability = async (
-	id: string
-): Promise<MenuItem> => {
-	if (useSampleData) {
-		const item = sampleMenuItems.find((item) => item.id === id);
-		if (!item) throw new Error('Menu item not found');
+// UPDATE toggleMenuItemAvailability
+export const toggleMenuItemAvailability = async (id: string): Promise<MenuItem> => {
+  if (useSampleData) {
+    const item = sampleMenuItems.find((item) => item.id === id);
+    if (!item) throw new Error('Menu item not found');
 
-		item.available = !item.available;
-		item.updatedAt = new Date().toISOString();
-		return item;
-	}
+    item.available = !item.available;
+    item.updatedAt = new Date().toISOString();
+    return item;
+  }
 
-	const response = await api.patch<MenuItem>(
-		`/owner/menu/items/${id}/availability`
-	);
-	return response.data;
+  const restaurantId = await getRestaurantId();
+  const response = await api.patch<MenuItem>(
+    `/restaurants/${restaurantId}/menu-items/${id}/toggle-availability`
+  );
+  return {
+    ...response.data,
+    id: String(response.data.id),
+  };
 };
 
 export const getMenuStats = async (): Promise<MenuStats> => {
@@ -309,13 +347,16 @@ export const getMenuStats = async (): Promise<MenuStats> => {
 		};
 	}
 
-	const response = await api.get<MenuStats>('/owner/menu/stats');
-	return response.data;
+	  const restaurantId = await getRestaurantId();
+    const response = await api.get<MenuStats>(
+      `/restaurants/${restaurantId}/menu-items/stats`,
+    );
+    return response.data;
 };
 
 /* ------------------------- SETTINGS ------------------------- */
 
-/** Backend API restaurant shape from GET /api/restaurants/owner/my-restaurants */
+/** Backend API restaurant shape from GET /restaurants/owner/my-restaurants */
 interface ApiRestaurant {
 	id: number;
 	name: string;
@@ -449,7 +490,7 @@ export const getRestaurantSettings = async (): Promise<RestaurantSettings> => {
 		};
 	}
 
-	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/api/restaurants/owner/my-restaurants');
+	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/restaurants/owner/my-restaurants');
 	const raw = res.data;
 	const restaurants = Array.isArray(raw) ? raw : (raw?.data ?? []);
 	if (restaurants.length === 0) {
@@ -483,7 +524,7 @@ export const uploadRestaurantLogo = async (file: File): Promise<string> => {
 	if (useSampleData) {
 		return URL.createObjectURL(file);
 	}
-	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/api/restaurants/owner/my-restaurants');
+	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/restaurants/owner/my-restaurants');
 	const raw = res.data;
 	const restaurants = Array.isArray(raw) ? raw : (raw?.data ?? []);
 	if (restaurants.length === 0) {
@@ -493,7 +534,7 @@ export const uploadRestaurantLogo = async (file: File): Promise<string> => {
 	const formData = new FormData();
 	formData.append('logo', file, file.name);
 	const uploadRes = await api.post<{ logo_url: string }>(
-		`/api/restaurants/${restaurantId}/logo`,
+		`/restaurants/${restaurantId}/logo`,
 		formData
 	);
 	return ensureAbsoluteLogoUrl(uploadRes.data.logo_url) || uploadRes.data.logo_url;
@@ -507,7 +548,7 @@ export const updateRestaurantSettings = async (
 		return new Promise((resolve) => setTimeout(resolve, 500));
 	}
 
-	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/api/restaurants/owner/my-restaurants');
+	const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/restaurants/owner/my-restaurants');
 	const raw = res.data;
 	const restaurants = Array.isArray(raw) ? raw : (raw?.data ?? []);
 	if (restaurants.length === 0) {
@@ -516,7 +557,7 @@ export const updateRestaurantSettings = async (
 	const restaurantId = restaurants[0].id;
 	const payload = mapSettingsToApiPayload(settings);
 	if (Object.keys(payload).length === 0) return;
-	await api.put(`/api/restaurants/${restaurantId}`, payload);
+	await api.put(`/restaurants/${restaurantId}`, payload);
 };
 
 export const getMenuSettings = async (): Promise<MenuSettings> => {
@@ -745,7 +786,7 @@ export const getAnalyticsData = async (
 		return data;
 	}
 
-	const response = await api.get<AnalyticsData>('/api/owner/analytics', {
+	const response = await api.get<AnalyticsData>('/owner/analytics', {
 		params: {
 			period,
 			compare,
@@ -1309,8 +1350,12 @@ export const fetchMenuItemsFiltered = async (
 		};
 	}
 
-	const response = await api.get('/owner/menu/items/filtered', { params });
-	return response.data;
+	  const restaurantId = await getRestaurantId();
+    const response = await api.get(
+      `/restaurants/${restaurantId}/menu-items/filtered`,
+      { params },
+    );
+    return response.data;
 };
 
 // Helper functions for menu stats

@@ -15,48 +15,48 @@ class MenuItemController extends Controller
     public function __construct(private MenuService $menuService)
     {}
 
-    public function index(Request $request, int $restaurantId): JsonResponse
+    public function index(Request $request, int $restaurant): JsonResponse
     {
-        $menuItems = $this->menuService->getMenuItemsByRestaurant($restaurantId, $request->all());
+        $menuItems = $this->menuService->getMenuItemsByRestaurant($restaurant, $request->all());
         return response()->json(MenuItemResource::collection($menuItems));
     }
 
-    public function getCategories(int $restaurantId): JsonResponse
+    public function getCategories(int $restaurant): JsonResponse
     {
-        $categories = $this->menuService->getCategoriesByRestaurant($restaurantId);
+        $categories = $this->menuService->getCategoriesByRestaurant($restaurant);
         return response()->json(['categories' => $categories]);
     }
 
-    public function store(MenuItemRequest $request, int $restaurantId): JsonResponse
+   public function store(MenuItemRequest $request, int $restaurant): JsonResponse
     {
         $data = $request->validated();
-        $data['restaurant_id'] = $restaurantId;
+        $data['restaurant_id'] = $restaurant;
 
         $menuItem = $this->menuService->createMenuItem($data);
         return response()->json(new MenuItemResource($menuItem), 201);
     }
 
-    public function show(int $restaurantId, int $id): JsonResponse
+    public function show(int $restaurant, int $id): JsonResponse
     {
         $menuItem = $this->menuService->getMenuItemById($id);
         return response()->json(new MenuItemResource($menuItem));
     }
 
-    public function update(MenuItemRequest $request, int $restaurantId, int $id): JsonResponse
+    public function update(MenuItemRequest $request, int $restaurant, int $id): JsonResponse
     {
         $menuItem = $this->menuService->getMenuItemById($id);
         $updatedMenuItem = $this->menuService->updateMenuItem($menuItem, $request->validated());
         return response()->json(new MenuItemResource($updatedMenuItem));
     }
 
-    public function destroy(int $restaurantId, int $id): JsonResponse
+    public function destroy(int $restaurant, int $id): JsonResponse
     {
         $menuItem = $this->menuService->getMenuItemById($id);
         $this->menuService->deleteMenuItem($menuItem);
         return response()->json(null, 204);
     }
 
-    public function toggleAvailability(int $restaurantId, int $id): JsonResponse
+    public function toggleAvailability(int $restaurant, int $id): JsonResponse
     {
         $menuItem = $this->menuService->getMenuItemById($id);
         $updatedItem = $this->menuService->toggleMenuItemAvailability($menuItem);

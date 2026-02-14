@@ -7,6 +7,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('/sanctum/csrf-cookie', function () {
+    return response()->json(['message' => 'CSRF cookie set'])->cookie(
+        'XSRF-TOKEN',
+        csrf_token(),
+        60,
+        '/',
+        null,
+        false,
+        true,
+        false,
+        'Lax'
+    );
+})->middleware('web');
+
 // Load Auth module routes
 require app_path('Modules/Auth/routes.php');
 
