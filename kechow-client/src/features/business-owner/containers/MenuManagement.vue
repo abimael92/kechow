@@ -265,6 +265,7 @@ const statLabels: Record<string, string> = {
 	averagePrice: 'Precio Medio'
 };
 
+// Spanish category labels
 const categoryLabels: Record<string, string> = {
 	allItems: 'Todos',
 	'categories.platoprincipal': 'Platos Fuertes',
@@ -446,24 +447,27 @@ const handleSave = async (itemData: Partial<MenuItem>) => {
 		await loadMenuItems();
 		closeModal();
 	} catch (error) {
-		console.error('Failed to save menu item:', error);
+		console.error('Error al guardar el elemento del menú:', error);
+		alert('Ocurrió un error al guardar. Por favor intenta de nuevo.');
 	} finally {
 		loading.value = false;
 	}
 };
 
 const handleQuickEdit = (item: MenuItem, field: string, value: any) => {
-	console.log('Quick edit:', { item, field, value });
+	console.log('Edición rápida:', { item, field, value });
 };
 
 const confirmDelete = async (item: MenuItem) => {
-	if (confirm(t('confirmDeleteItem', { name: item.name }))) {
+	// Spanish confirmation dialog
+	if (confirm(`¿Estás seguro de que deseas eliminar "${item.name}"? Esta acción no se puede deshacer.`)) {
 		try {
 			loading.value = true;
 			await deleteMenuItem(item.id);
 			await loadMenuItems();
 		} catch (error) {
-			console.error('Failed to delete menu item:', error);
+			console.error('Error al eliminar el elemento del menú:', error);
+			alert('Ocurrió un error al eliminar. Por favor intenta de nuevo.');
 		} finally {
 			loading.value = false;
 		}
@@ -476,7 +480,8 @@ const toggleAvailability = async (item: MenuItem) => {
 		await toggleMenuItemAvailability(item.id);
 		await loadMenuItems();
 	} catch (error) {
-		console.error('Failed to toggle availability:', error);
+		console.error('Error al cambiar disponibilidad:', error);
+		alert('Ocurrió un error al cambiar la disponibilidad.');
 	} finally {
 		loading.value = false;
 	}
@@ -496,16 +501,17 @@ const toggleAllAvailability = async () => {
 		
 		await loadMenuItems();
 	} catch (error) {
-		console.error('Failed to toggle all availability:', error);
+		console.error('Error al cambiar disponibilidad de todos:', error);
+		alert('Ocurrió un error al cambiar la disponibilidad de todos los elementos.');
 	}
 };
 
 const exportMenu = () => {
-	console.log('Exporting menu...');
+	console.log('Exportando menú...');
 };
 
 const printMenu = () => {
-	console.log('Printing menu...');
+	console.log('Imprimiendo menú...');
 };
 
 const loadMenuItems = async () => {
@@ -513,7 +519,8 @@ const loadMenuItems = async () => {
 		loading.value = true;
 		menuItems.value = await fetchMenuItems();
 	} catch (error) {
-		console.error('Failed to load menu items:', error);
+		console.error('Error al cargar los elementos del menú:', error);
+		alert('No se pudieron cargar los elementos del menú. Por favor intenta de nuevo.');
 	} finally {
 		loading.value = false;
 	}

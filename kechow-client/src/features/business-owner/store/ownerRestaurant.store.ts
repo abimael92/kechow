@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { api } from '@app/lib/axios';
 import { useAuthStore } from '@app/store/auth/auth.store';
 
-/** API shape for a restaurant from GET /api/restaurants/owner/my-restaurants or GET /api/restaurants/{id} */
+/** API shape for a restaurant from GET /restaurants/owner/my-restaurants or GET /restaurants/{id} */
 export interface ApiRestaurant {
 	id: number;
 	name: string;
@@ -37,7 +37,7 @@ export const useOwnerRestaurantStore = defineStore('ownerRestaurant', () => {
 		if (authStore.user?.role !== 'owner') {
 			throw new Error('Only owners can manage restaurants');
 		}
-		const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/api/restaurants/owner/my-restaurants');
+		const res = await api.get<{ data?: ApiRestaurant[] } | ApiRestaurant[]>('/restaurants/owner/my-restaurants');
 		const raw = res.data;
 		const restaurants = Array.isArray(raw) ? raw : (raw?.data ?? []);
 		if (restaurants.length > 0) {
@@ -64,7 +64,7 @@ export const useOwnerRestaurantStore = defineStore('ownerRestaurant', () => {
 			opening_time: '09:00',
 			closing_time: '22:00',
 		};
-		const { data } = await api.post<ApiRestaurant>('/api/restaurants', payload);
+		const { data } = await api.post<ApiRestaurant>('/restaurants', payload);
 		return data;
 	}
 
