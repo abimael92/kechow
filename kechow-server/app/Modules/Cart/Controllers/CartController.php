@@ -15,10 +15,15 @@ class CartController extends Controller
 {
     /**
      * Create or retrieve cart for current user + restaurant.
-     * POST /api/carts with { restaurant_id }
+     * POST /carts with { restaurant_id }
      */
     public function store(Request $request): JsonResponse
     {
+
+      if (!$request->user()) {
+        return response()->json(['message' => 'No autenticado'], 401);
+    }
+
         $request->validate([
             'restaurant_id' => 'required|exists:restaurants,id',
         ]);
@@ -50,7 +55,7 @@ class CartController extends Controller
 
     /**
      * Get user's current/active cart.
-     * GET /api/carts/current
+     * GET /carts/current
      */
     public function current(Request $request): JsonResponse
     {
@@ -74,7 +79,7 @@ class CartController extends Controller
 
     /**
      * Add or update item in cart.
-     * PUT /api/carts/{cart}/items with { menu_item_id, quantity?, notes? }
+     * PUT /carts/{cart}/items with { menu_item_id, quantity?, notes? }
      */
     public function updateItems(Request $request, Cart $cart): JsonResponse
     {
@@ -121,7 +126,7 @@ class CartController extends Controller
 
     /**
      * Remove item from cart.
-     * DELETE /api/carts/{cart}/items/{item}
+     * DELETE /carts/{cart}/items/{item}
      */
     public function removeItem(Cart $cart, CartItem $cartItem): JsonResponse
     {
