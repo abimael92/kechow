@@ -144,6 +144,22 @@ export interface MenuItemFormData {
 	isGlutenFree: boolean;
 }
 
+// In your types file
+export interface Restaurant {
+  id: number;
+  name: string;
+  description?: string;
+  logo_url?: string;
+  cover_image?: string;
+  image?: string;
+  rating?: number;
+  reviews?: number;
+  delivery_time?: string;
+  distance?: string;
+  is_open?: boolean; // Make it optional with ?
+  menu?: MenuItem[];
+}
+
 export interface RestaurantSettings {
 	name: string;
 	phone: string;

@@ -27,13 +27,12 @@ export interface CartResponse {
 	items: CartItemDto[];
 }
 
-const API_PREFIX = '/api';
 
 /**
  * Create or retrieve cart for restaurant
  */
 export async function createOrGetCart(restaurantId: number): Promise<CartResponse> {
-	const { data } = await api.post<CartResponse>(`${API_PREFIX}/carts`, {
+	const { data } = await api.post<CartResponse>(`/carts`, {
 		restaurant_id: restaurantId,
 	});
 	return data;
@@ -43,7 +42,7 @@ export async function createOrGetCart(restaurantId: number): Promise<CartRespons
  * Get current user's active cart
  */
 export async function getCurrentCart(): Promise<CartResponse> {
-	const { data } = await api.get<CartResponse>(`${API_PREFIX}/carts/current`);
+	const { data } = await api.get<CartResponse>(`/carts/current`);
 	return data;
 }
 
@@ -57,7 +56,7 @@ export async function updateCartItem(
 	notes?: string
 ): Promise<CartResponse> {
 	const { data } = await api.put<CartResponse>(
-		`${API_PREFIX}/carts/${cartId}/items`,
+		`/carts/${cartId}/items`,
 		{ menu_item_id: menuItemId, quantity, notes }
 	);
 	return data;
@@ -71,7 +70,7 @@ export async function removeCartItem(
 	cartItemId: number
 ): Promise<CartResponse> {
 	const { data } = await api.delete<CartResponse>(
-		`${API_PREFIX}/carts/${cartId}/items/${cartItemId}`
+		`/carts/${cartId}/items/${cartItemId}`
 	);
 	return data;
 }
