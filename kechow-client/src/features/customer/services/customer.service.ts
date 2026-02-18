@@ -283,7 +283,7 @@ export const createReview = async (
 
 /* ------------------------- PROFILE & ADDRESSES ------------------------- */
 
-const CUSTOMER_API = '/api/customer';
+const CUSTOMER_API = '/customer';
 
 export interface Address {
 	id: string;
