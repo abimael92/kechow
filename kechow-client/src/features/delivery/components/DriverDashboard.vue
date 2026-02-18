@@ -376,26 +376,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Base styles */
-.text-primary-500 {
-	color: #3b82f6;
-}
-
-.dark .dark\:text-primary-400 {
-	color: #60a5fa;
-}
-
-.bg-primary-500 {
-	background-color: #3b82f6;
-}
-
-.hover\:bg-primary-600:hover {
-	background-color: #2563eb;
-}
-
-.focus\:ring-primary-500:focus {
-	--tw-ring-color: #3b82f6;
-}
 
 /* Animations */
 @keyframes slideDown {
