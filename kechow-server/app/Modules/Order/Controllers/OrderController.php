@@ -1,6 +1,6 @@
 <?php
 // app/Modules/Order/Controllers/OrderController.php
-namespace App\Modules\Order\Controllers;  // ← FIX NAMESPACE
+namespace App\Modules\Order\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Order\Models\Order;
@@ -23,13 +23,21 @@ class OrderController extends Controller
     }
 
     public function store(CreateOrderRequest $request): JsonResponse
-    {
-        $data = $request->validated();
-        $data['user_id'] = $request->user()->id;
+{
+    $validated = $request->validated();
 
-        $order = $this->orderService->createOrder($data);
-        return response()->json(new OrderResource($order), 201);
-    }
+    $orderData = [
+        'user_id' => $request->user()->id,
+        'restaurant_id' => $validated['restaurantId'],
+        'delivery_address' => $validated['deliveryAddress'],
+        'delivery_notes' => $validated['specialInstructions'] ?? null,
+        'items' => $validated['items'],
+    ];
+
+    $order = $this->orderService->createOrder($orderData);
+
+    return response()->json(new OrderResource($order), 201);
+}
 
     public function show(int $id): JsonResponse
     {
