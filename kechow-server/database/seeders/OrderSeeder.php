@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Order;
-use App\Models\OrderItem;
+use App\Modules\Order\Models\Order;
+use App\Modules\Order\Models\OrderItem;
 use App\Models\User;
-use App\Models\Restaurant;
-use App\Models\MenuItem;
+use App\Modules\Restaurant\Models\Restaurant;
+use App\Modules\Restaurant\Models\MenuItem;
 
 class OrderSeeder extends Seeder
 {
@@ -16,26 +16,29 @@ class OrderSeeder extends Seeder
         $users = User::all();
         $restaurants = Restaurant::all();
 
+        if ($users->isEmpty() || $restaurants->isEmpty()) {
+            return;
+        }
+
         foreach ($restaurants as $restaurant) {
-            $menuItems = $restaurant->menuItems;
+            $menuItems = MenuItem::where('restaurant_id', $restaurant->id)->get();
 
-            foreach ($users as $user) {
-                if ($menuItems->count() == 0) continue;
+            if ($menuItems->isEmpty()) continue;
 
+            foreach ($users->take(2) as $user) {
                 $order = Order::create([
                     'user_id' => $user->id,
                     'restaurant_id' => $restaurant->id,
                     'total' => 0,
-                    'status' => 'pending',
+                    'status' => 'ready',
+                    'delivery_address' => 'Av. Tecnologico 123, CD Jimenez',
                 ]);
 
                 $total = 0;
+                $itemsToOrder = $menuItems->random(rand(1, min(3, $menuItems->count())));
 
-                // Add 1-3 random items per order
-                $items = $menuItems->random(rand(1, min(3, $menuItems->count())));
-
-                foreach ($items as $menuItem) {
-                    $qty = rand(1, 3);
+                foreach ($itemsToOrder as $menuItem) {
+                    $qty = rand(1, 2);
                     $total += $menuItem->price * $qty;
 
                     OrderItem::create([
@@ -46,8 +49,7 @@ class OrderSeeder extends Seeder
                     ]);
                 }
 
-                $order->total = $total;
-                $order->save();
+                $order->update(['total' => $total]);
             }
         }
     }

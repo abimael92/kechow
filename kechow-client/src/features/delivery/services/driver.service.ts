@@ -1,85 +1,86 @@
-/**
- * Driver API Service - Integrates with Laravel Driver endpoints
- */
+// src/features/delivery/services/driver.service.ts
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
 
-import { api } from '@app/lib/axios';
+// Helper to handle responses
+const handleResponse = async (response: Response) => {
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.message || 'API request failed');
+  }
+  return response.json();
+};
 
-const API = '/api';
+export const getAvailableJobs = async () => {
+  const response = await fetch(`${API_BASE_URL}/driver/jobs/available`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return handleResponse(response);
+};
 
-export interface DriverOrderDto {
-	id: string;
-	orderNumber: string;
-	status: string;
-	restaurant: {
-		id: string;
-		name: string;
-		address: string;
-		phone: string;
-		location: { latitude: number; longitude: number };
-	};
-	customer: {
-		id: string;
-		name: string;
-		address: string;
-		phone: string;
-		location: { latitude: number; longitude: number };
-	};
-	items: Array<{ id: string; name: string; quantity: number }>;
-	paymentMethod: string;
-	amount: number;
-	fee: number;
-	distance: number;
-	estimatedTime: number;
-	createdAt: string;
-	delivery_notes?: string;
-}
+export const getActiveOrder = async () => {
+  const response = await fetch(`${API_BASE_URL}/driver/order/active`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return handleResponse(response);
+};
 
-export interface DriverStatsDto {
-	isOnline?: boolean;
-	today: { deliveries: number; earnings: number; distance: number; hours: number };
-	week: { deliveries: number; earnings: number; distance: number; hours: number };
-	month: { deliveries: number; earnings: number; distance: number; hours: number };
-	totalEarnings: number;
-	averagePerDelivery: number;
-	rating: number;
-	totalDeliveries: number;
-}
+export const getAvailability = async () => {
+  const response = await fetch(`${API_BASE_URL}/driver/availability`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  return handleResponse(response);
+};
 
-export async function getAvailableOrders(): Promise<DriverOrderDto[]> {
-	const { data } = await api.get<DriverOrderDto[]>(`${API}/driver/available-orders`);
-	return data;
-}
+const headers = {
+  'Content-Type': 'application/json',
+  Accept: 'application/json', // <--- ESTO ES VITAL
+};
 
-export async function getCurrentOrder(): Promise<DriverOrderDto | null> {
-	const { data } = await api.get<{ order: DriverOrderDto | null }>(`${API}/driver/current-order`);
-	return data.order;
-}
+export const updateAvailability = async (isOnline: boolean) => {
+  const response = await fetch(`${API_BASE_URL}/driver/availability`, {
+    method: 'POST',
+    credentials: 'include', // Mantén esto para las cookies de Sanctum
+    headers: headers,
+    body: JSON.stringify({ isOnline }),
+  });
+  return handleResponse(response);
+};
 
-export async function acceptOrder(orderId: string): Promise<unknown> {
-	const { data } = await api.post(`${API}/orders/${orderId}/accept`);
-	return data;
-}
+export const acceptJob = async (orderId: number) => {
+  const response = await fetch(
+    `${API_BASE_URL}/driver/jobs/${orderId}/accept`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  return handleResponse(response);
+};
 
-export async function startDelivery(orderId: string): Promise<unknown> {
-	const { data } = await api.post(`${API}/orders/${orderId}/start-delivery`);
-	return data;
-}
-
-export async function completeDelivery(orderId: string): Promise<unknown> {
-	const { data } = await api.post(`${API}/orders/${orderId}/complete-delivery`);
-	return data;
-}
-
-export async function updateDriverLocation(lat: number, lng: number): Promise<void> {
-	await api.put(`${API}/driver/location`, { latitude: lat, longitude: lng });
-}
-
-export async function toggleDriverStatus(): Promise<{ isOnline: boolean; status: string }> {
-	const { data } = await api.patch<{ isOnline: boolean; status: string }>(`${API}/driver/status`);
-	return data;
-}
-
-export async function getDriverStats(): Promise<DriverStatsDto> {
-	const { data } = await api.get<DriverStatsDto>(`${API}/driver/stats`);
-	return data;
-}
+export const updateOrderStatus = async (orderId: number, status: string) => {
+  const response = await fetch(
+    `${API_BASE_URL}/driver/order/${orderId}/status`,
+    {
+      method: 'PATCH',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status }),
+    },
+  );
+  return handleResponse(response);
+};

@@ -37,42 +37,41 @@ class OrderService
     }
 
     public function createOrder(array $data): Order
-    {
-        return DB::transaction(function () use ($data) {
-            $total = 0;
+{
+    return DB::transaction(function () use ($data) {
+        $total = 0;
 
-            // Calculate total and validate menu items
-            foreach ($data['items'] as $item) {
-                $menuItem = MenuItem::available()->findOrFail($item['menu_item_id']);
-                $total += $menuItem->price * $item['quantity'];
-            }
+        foreach ($data['items'] as $item) {
+            $menuItem = MenuItem::available()->findOrFail($item['menuItemId']);
+            $total += $menuItem->price * $item['quantity'];
+        }
 
-            $order = Order::create([
-                'user_id' => $data['user_id'],
-                'restaurant_id' => $data['restaurant_id'],
-                'total' => $total,
-                'status' => Order::STATUS_PENDING,
-                'delivery_address' => $data['delivery_address'],
-                'delivery_notes' => $data['delivery_notes'] ?? null,
+        $order = Order::create([
+            'user_id' => $data['user_id'],
+            'restaurant_id' => $data['restaurant_id'],
+            'total' => $total,
+            'status' => Order::STATUS_PENDING,
+            'delivery_address' => $data['delivery_address'],
+            'delivery_notes' => $data['delivery_notes'] ?? null,
+        ]);
+
+        foreach ($data['items'] as $item) {
+            $menuItem = MenuItem::findOrFail($item['menuItemId']);
+
+            OrderItem::create([
+                'order_id' => $order->id,
+                'menu_item_id' => $menuItem->id, // database column stays snake_case
+                'quantity' => $item['quantity'],
+                'price' => $menuItem->price,
             ]);
+        }
 
-            // Create order items
-            foreach ($data['items'] as $item) {
-                $menuItem = MenuItem::findOrFail($item['menu_item_id']);
+        $order = $order->load('items.menuItem', 'restaurant', 'user');
+        event(new OrderCreated($order));
 
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'menu_item_id' => $menuItem->id,
-                    'quantity' => $item['quantity'],
-                    'price' => $menuItem->price,
-                ]);
-            }
-
-            $order = $order->load('items.menuItem', 'restaurant', 'user');
-            event(new OrderCreated($order));
-            return $order;
-        });
-    }
+        return $order;
+    });
+}
 
     /**
      * Update order status only if the transition is valid for the given role.

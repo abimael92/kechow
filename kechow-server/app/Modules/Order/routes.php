@@ -1,23 +1,32 @@
 <?php
 // app/Modules/Order/routes.php
+use Illuminate\Support\Facades\Route;
 use App\Modules\Order\Controllers\OrderController;
 
-Route::prefix('orders')->group(function () {
-    Route::get('/', [OrderController::class, 'index']);
-    Route::get('/{order}', [OrderController::class, 'show']);
+Route::prefix('customer')
+    ->middleware('auth:sanctum')
+    ->group(function () {
 
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/', [OrderController::class, 'store']);
-        Route::patch('/{order}/status', [OrderController::class, 'updateStatus']);
-        Route::post('/{order}/cancel', [OrderController::class, 'cancel']);
-
-        // Restaurant owner routes
-        Route::get('/restaurant/orders', [OrderController::class, 'restaurantOrders']);
-
-        // Driver routes
-        Route::get('/driver/available', [OrderController::class, 'driverOrders']);
-        Route::post('/{order}/accept', [OrderController::class, 'acceptOrder']);
-        Route::post('/{order}/start-delivery', [OrderController::class, 'startDelivery']);
-        Route::post('/{order}/complete-delivery', [OrderController::class, 'completeDelivery']);
+        Route::get('orders', [OrderController::class, 'index']);
+        Route::post('orders', [OrderController::class, 'store']);
+        Route::get('orders/{order}', [OrderController::class, 'show']);
+        Route::post('orders/{order}/cancel', [OrderController::class, 'cancel']);
     });
-});
+
+Route::prefix('owner')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+
+        Route::get('restaurant/orders', [OrderController::class, 'restaurantOrders']);
+        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
+    });
+
+Route::prefix('driver')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+
+        Route::get('orders/available', [OrderController::class, 'driverOrders']);
+        Route::post('orders/{order}/accept', [OrderController::class, 'acceptOrder']);
+        Route::post('orders/{order}/start-delivery', [OrderController::class, 'startDelivery']);
+        Route::post('orders/{order}/complete-delivery', [OrderController::class, 'completeDelivery']);
+    });
