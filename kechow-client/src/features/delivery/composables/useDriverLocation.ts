@@ -3,7 +3,7 @@
  */
 
 import { onMounted, onUnmounted, watch } from 'vue';
-import { useDriverStore } from '../store/useDriverStore';
+import { useDriverStore } from '../../delivery/store/driver.store';
 
 const INTERVAL_MS = 30000;
 
@@ -15,7 +15,10 @@ export function useDriverLocation() {
 		if (!navigator.geolocation) return;
 		navigator.geolocation.getCurrentPosition(
 			(pos) => {
-				driverStore.sendLocation(pos.coords.latitude, pos.coords.longitude);
+				// Update driver location in store
+				if (typeof driverStore.updateDriverLocation === 'function') {
+					driverStore.updateDriverLocation(pos.coords.latitude, pos.coords.longitude);
+				}
 			},
 			() => {
 				// Silent fail - GPS might be disabled
