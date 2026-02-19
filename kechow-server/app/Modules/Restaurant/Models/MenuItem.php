@@ -4,6 +4,7 @@ namespace App\Modules\Restaurant\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use OpenApi\Annotations as OA;
 
 /**
@@ -28,6 +29,10 @@ use OpenApi\Annotations as OA;
 class MenuItem extends Model
 {
     use HasFactory;
+protected static function newFactory()
+    {
+        return \Database\Factories\MenuItemFactory::new();
+    }
 
     protected $fillable = [
         'restaurant_id', 'name', 'description', 'price',
