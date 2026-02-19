@@ -9,6 +9,7 @@ use App\Modules\Order\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class DriverController extends Controller
 {
@@ -61,7 +62,10 @@ class DriverController extends Controller
             ];
         });
 
-        return response()->json($data);
+     // En DriverController -> availableOrders
+return response()->json([
+    'jobs' => $data->map(fn($item) => ['order' => $item])
+]);
     }
 
     /**
@@ -184,41 +188,182 @@ class DriverController extends Controller
         ]);
     }
 
-    private function formatOrderForDriver(Order $order): array
-    {
-        $restaurant = $order->restaurant;
-        $restLat = $restaurant->latitude ?? 19.4326;
-        $restLng = $restaurant->longitude ?? -99.1332;
-        return [
-            'id' => (string) $order->id,
-            'orderNumber' => '#' . $order->id,
-            'status' => 'out_for_delivery',
-            'restaurant' => [
-                'id' => (string) $restaurant->id,
-                'name' => $restaurant->name,
-                'address' => $restaurant->address . ', ' . ($restaurant->city ?? '') . ', ' . ($restaurant->state ?? ''),
-                'phone' => $restaurant->phone,
-                'location' => ['latitude' => (float) $restLat, 'longitude' => (float) $restLng],
-            ],
-            'customer' => [
-                'id' => (string) $order->user_id,
-                'name' => $order->user?->name ?? 'Cliente',
-                'address' => $order->delivery_address,
-                'phone' => $order->user?->phone ?? '',
-                'location' => ['latitude' => 19.43, 'longitude' => -99.13],
-            ],
-            'items' => $order->items->map(fn ($i) => [
-                'id' => (string) $i->id,
-                'name' => $i->menuItem?->name ?? 'Item',
-                'quantity' => $i->quantity,
-            ]),
-            'paymentMethod' => 'Card',
-            'amount' => (float) $order->total,
-            'fee' => 30.0,
-            'distance' => 2.5,
-            'estimatedTime' => 15,
-            'createdAt' => $order->created_at?->toIso8601String(),
-            'delivery_notes' => $order->delivery_notes,
-        ];
+    /**
+ * Get driver availability status
+ */
+public function getAvailability(Request $request): JsonResponse
+{
+    $userId = $request->user()->id;
+    $driver = Driver::where('user_id', $userId)->first();
+
+    return response()->json([
+        'isOnline' => $driver?->is_online ?? false,
+        'totalOnlineHours' => 0,
+        'currentSessionStart' => null
+    ]);
+}
+
+/**
+ * Update driver availability
+ */
+public function updateAvailability(Request $request): JsonResponse
+{
+    try {
+        $request->validate([
+            'isOnline' => 'required|boolean'
+        ]);
+
+        $userId = $request->user()->id;
+
+        // Buscamos o creamos el registro del repartidor
+        $driver = Driver::firstOrCreate(
+            ['user_id' => $userId],
+            ['status' => 'offline', 'is_online' => false]
+        );
+
+        // Actualizamos con el valor que viene del frontend
+        $driver->update([
+            'is_online' => $request->isOnline,
+            'status' => $request->isOnline ? 'online' : 'offline',
+        ]);
+
+        return response()->json([
+            'isOnline' => $driver->is_online,
+            'status' => $driver->status,
+            'totalOnlineHours' => 0, // O el cálculo que prefieras
+            'currentSessionStart' => $driver->is_online ? now()->toIso8601String() : null
+        ]);
+
+    } catch (\Exception $e) {
+        Log::error("Error en updateAvailability: " . $e->getMessage());
+        return response()->json([
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
+
+
+/**
+ * Accept a job/order
+ */
+public function acceptJob(Request $request, $orderId): JsonResponse
+{
+    $userId = $request->user()->id;
+
+    $order = Order::findOrFail($orderId);
+
+    if ($order->driver_id) {
+        return response()->json(['error' => 'Order already accepted'], 400);
+    }
+
+    $order->update([
+        'driver_id' => $userId,
+        'status' => Order::STATUS_OUT_FOR_DELIVERY
+    ]);
+
+    $order->load(['items.menuItem', 'restaurant', 'user']);
+
+    // if ($request->status === 'delivered') {
+    //     $order->update(['actual_delivery_time' => now()]);
+
+    //     $driver = Driver::where('user_id', $userId)->first();
+    //     if ($driver) {
+    //         $driver->increment('total_deliveries');
+    //     }
+    // }
+
+    return response()->json($this->formatOrderForDriver($order->fresh(['items.menuItem', 'restaurant', 'user'])));
+}
+
+/**
+ * Update the status of an active order (picked_up, delivered, etc.)
+ */
+public function updateOrderStatus(Request $request, $orderId): JsonResponse
+{
+    try {
+        $request->validate([
+            'status' => 'required|string'
+        ]);
+
+        $userId = $request->user()->id;
+
+        // Buscamos la orden que le pertenece a este repartidor
+        $order = Order::where('id', $orderId)
+            ->where('driver_id', $userId)
+            ->firstOrFail();
+
+        // Mapeamos el estado que viene del frontend a los estados de tu BD
+        // Ajusta Order::STATUS_... según las constantes de tu modelo
+        $newStatus = match ($request->status) {
+            'picked_up'  => Order::STATUS_OUT_FOR_DELIVERY,
+            'delivered'  => Order::STATUS_DELIVERED,
+            default      => $request->status,
+        };
+
+        $updateData = ['status' => $newStatus];
+
+        // Si se entrega, registramos el tiempo y sumamos al contador del repartidor
+        if ($newStatus === Order::STATUS_DELIVERED) {
+            $updateData['actual_delivery_time'] = now();
+
+            $driver = Driver::where('user_id', $userId)->first();
+            if ($driver) {
+                $driver->increment('total_deliveries');
+            }
+        }
+
+        $order->update($updateData);
+
+        return response()->json(
+            $this->formatOrderForDriver($order->fresh(['items.menuItem', 'restaurant', 'user']))
+        );
+
+    } catch (\Exception $e) {
+        Log::error("Error actualizando estado de orden: " . $e->getMessage());
+        return response()->json(['error' => 'No se pudo actualizar el estado'], 500);
+    }
+}
+
+
+/**
+ * Format order for driver response
+ */
+private function formatOrderForDriver(Order $order): array
+{
+    $restaurant = $order->restaurant;
+    $restLat = $restaurant->latitude ?? 19.4326;
+    $restLng = $restaurant->longitude ?? -99.1332;
+
+    return [
+        'id' => (string) $order->id,
+        'orderNumber' => '#' . $order->id,
+        'status' => $order->status,
+        'restaurant' => [
+            'id' => (string) $restaurant->id,
+            'name' => $restaurant->name,
+            'address' => $restaurant->address . ', ' . ($restaurant->city ?? '') . ', ' . ($restaurant->state ?? ''),
+            'phone' => $restaurant->phone,
+            'location' => ['latitude' => (float) $restLat, 'longitude' => (float) $restLng],
+        ],
+        'customer' => [
+            'id' => (string) $order->user_id,
+            'name' => $order->user?->name ?? 'Cliente',
+            'address' => $order->delivery_address,
+            'phone' => $order->user?->phone ?? '',
+            'location' => ['latitude' => 19.43, 'longitude' => -99.13],
+        ],
+        'items' => $order->items->map(fn ($i) => [
+            'id' => (string) $i->id,
+            'name' => $i->menuItem?->name ?? 'Item',
+            'quantity' => $i->quantity,
+        ]),
+        'paymentMethod' => 'Card',
+        'amount' => (float) $order->total,
+        'fee' => 30.0,
+        'distance' => 2.5,
+        'estimatedTime' => 15,
+        'createdAt' => $order->created_at?->toIso8601String(),
+        'delivery_notes' => $order->delivery_notes,
+    ];
+}
 }
