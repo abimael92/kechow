@@ -53,6 +53,20 @@ require app_path('Modules/Driver/routes.php');
 // Owner dashboard, analytics, orders (auth:sanctum, scoped to owner's restaurants)
 require app_path('Modules/Owner/routes_owner.php');
 
+// Driver delivery routes
+Route::prefix('delivery')->middleware('auth:sanctum')->group(function () {
+    Route::get('/availability', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'getAvailability']);
+    Route::post('/availability', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'updateAvailability']);
+    Route::get('/jobs/available', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'getAvailableJobs']);
+    Route::post('/jobs/{orderId}/accept', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'acceptOrder']);
+    Route::post('/jobs/{orderId}/reject', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'rejectOrder']);
+    Route::get('/orders/completed', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'getCompletedOrders']);
+    Route::get('/orders/active', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'getActiveOrder']);
+    Route::get('/stats', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'getStats']);
+Route::get('/settings', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'getSettings']); // ADD THIS
+    Route::patch('/settings', [App\Http\Controllers\Api\Driver\DeliveryController::class, 'updateSettings']); // ADD THIS
+});
+
 // One-time setup route: sessions table + seed users
 Route::get('/setup-backend/one-time-setup', function () {
     // Create sessions table
