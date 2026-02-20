@@ -6,16 +6,9 @@ import {
   updateAvailability,
   getAvailableJobs,
   getActiveOrder,
-  acceptOrder,
-  rejectOrder,
-  updateDeliveryStatus,
-  getDeliveryProgress,
-  updateLocation,
-  getCurrentLocation,
-  getEarningsSummary,
-  getDeliverySettings,
-  updateDeliverySettings,
-} from '../services/delivery.service';
+  acceptJob,
+  updateOrderStatus,
+} from '../services/driver.service';
 
 export const useDeliveryStore = defineStore('delivery', () => {
   // State
@@ -25,15 +18,6 @@ export const useDeliveryStore = defineStore('delivery', () => {
   });
   const availableJobs = ref<any[]>([]);
   const activeOrder = ref<any | null>(null);
-  const deliveryProgress = ref<any | null>(null);
-  const earningsSummary = ref<any | null>(null);
-  const settings = ref({
-    vehicleType: 'motorcycle',
-    maxDistance: 10,
-    autoAccept: false,
-    notificationsEnabled: true,
-  });
-  const currentLocation = ref<any | null>(null);
   const isOnline = ref(false);
   const completedOrders = ref<any[]>([]);
   const loading = ref(false);
@@ -46,21 +30,30 @@ export const useDeliveryStore = defineStore('delivery', () => {
   );
 
   // Initialize
+  // Initialize
   const initialize = async () => {
     try {
       loading.value = true;
       error.value = null;
 
-      const [availabilityData, activeData, settingsData] = await Promise.all([
+      const [availabilityData, activeData] = await Promise.allSettled([
         getAvailability(),
         getActiveOrder(),
-        getDeliverySettings(),
       ]);
 
-      availability.value = availabilityData;
-      isOnline.value = availabilityData.isOnline;
-      activeOrder.value = activeData;
-      settings.value = settingsData;
+      if (availabilityData.status === 'fulfilled') {
+        availability.value = availabilityData.value;
+        isOnline.value = availabilityData.value.isOnline;
+      }
+
+      if (activeData.status === 'fulfilled') {
+        // Solo asignar si no es null y no es objeto vacío
+        if (activeData.value && Object.keys(activeData.value).length > 0) {
+          activeOrder.value = activeData.value;
+        } else {
+          activeOrder.value = null;
+        }
+      }
 
       if (isOnline.value) {
         await loadAvailableJobs();
@@ -81,8 +74,8 @@ export const useDeliveryStore = defineStore('delivery', () => {
       loading.value = true;
       error.value = null;
 
-      const jobs = await getAvailableJobs();
-      availableJobs.value = Array.isArray(jobs) ? jobs : [];
+      const data = await getAvailableJobs();
+      availableJobs.value = data.jobs || [];
     } catch (err: any) {
       error.value = err.message;
       availableJobs.value = [];
@@ -116,49 +109,55 @@ export const useDeliveryStore = defineStore('delivery', () => {
     }
   };
 
-  // Accept order
-  const acceptDeliveryOrder = async (orderId: string) => {
+  // Accept job
+  // Accept job
+  const acceptDeliveryOrder = async (orderId: number) => {
     try {
       loading.value = true;
       error.value = null;
 
-      const order = await acceptOrder(orderId);
+      const order = await acceptJob(orderId);
+      console.log('📦 Order accepted response:', order);
 
-      if (order) {
-        activeOrder.value = order;
-        availableJobs.value = availableJobs.value.filter(
-          (j) => j.id !== orderId,
-        );
-      }
-    } catch (err: any) {
-      error.value = err.message;
-    } finally {
-      loading.value = false;
-    }
-  };
+      // Buscar la orden completa en availableJobs
+      const fullOrder = availableJobs.value.find((j) => j.id === orderId);
+      console.log('📦 Full order from availableJobs:', fullOrder);
 
-  // Reject order
-  const rejectDeliveryOrder = async (orderId: string) => {
-    try {
-      loading.value = true;
-      error.value = null;
+      // ASIGNAR CORRECTAMENTE activeOrder
+      activeOrder.value = {
+        id: orderId,
+        pickup: fullOrder?.pickup || 'Sin dirección',
+        dropoff: fullOrder?.dropoff || 'Sin dirección',
+        amount: fullOrder?.amount || 0,
+        status: 'accepted',
+        restaurant: fullOrder?.restaurant || { name: 'Restaurante' },
+        items: fullOrder?.items || [],
+        distance: fullOrder?.distance || 2.5,
+        estimatedTime: fullOrder?.estimatedTime || 15,
+      };
 
-      await rejectOrder(orderId);
+      console.log('✅ activeOrder asignado:', activeOrder.value);
+
+      // Eliminar de availableJobs
       availableJobs.value = availableJobs.value.filter((j) => j.id !== orderId);
+
+      // También actualizar en el backend que ahora hay una orden activa
+      // Esto no es necesario pero ayuda a mantener consistencia
     } catch (err: any) {
       error.value = err.message;
+      console.error('Error accepting order:', err);
     } finally {
       loading.value = false;
     }
   };
 
   // Update status
-  const updateStatus = async (orderId: string, status: string) => {
+  const updateStatus = async (orderId: number, status: string) => {
     try {
       loading.value = true;
       error.value = null;
 
-      const updatedOrder = await updateDeliveryStatus(orderId, status);
+      const updatedOrder = await updateOrderStatus(orderId, status);
       activeOrder.value = updatedOrder;
 
       if (status === 'delivered') {
@@ -166,97 +165,12 @@ export const useDeliveryStore = defineStore('delivery', () => {
           completedOrders.value.push(activeOrder.value);
         }
         activeOrder.value = null;
-        await loadEarningsSummary();
       }
     } catch (err: any) {
       error.value = err.message;
     } finally {
       loading.value = false;
     }
-  };
-
-  // Load delivery progress
-  const loadDeliveryProgress = async (orderId: string) => {
-    try {
-      loading.value = true;
-      error.value = null;
-
-      deliveryProgress.value = await getDeliveryProgress(orderId);
-    } catch (err: any) {
-      error.value = err.message;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // Update location
-  const updateCurrentLocation = async (orderId?: string) => {
-    try {
-      const order = activeOrder.value;
-      const step = currentStepForGPS.value;
-      const location = getCurrentLocation(order, step);
-      currentLocation.value = location;
-
-      if (orderId && activeOrder.value) {
-        await updateLocation(orderId, location);
-      }
-    } catch (err: any) {
-      error.value = err.message;
-    }
-  };
-
-  // Load earnings
-  const loadEarningsSummary = async () => {
-    try {
-      loading.value = true;
-      error.value = null;
-
-      earningsSummary.value = await getEarningsSummary();
-    } catch (err: any) {
-      error.value = err.message;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // Update settings
-  const updateSettings = async (newSettings: Partial<any>) => {
-    try {
-      loading.value = true;
-      error.value = null;
-
-      settings.value = await updateDeliverySettings(newSettings);
-    } catch (err: any) {
-      error.value = err.message;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  // GPS step
-  const currentStepForGPS = computed(() => {
-    if (!activeOrder.value) return 0;
-    const map: Record<string, number> = {
-      accepted: 0,
-      picked_up: 1,
-      on_the_way: 2,
-      delivered: 3,
-      cancelled: 0,
-    };
-    return map[activeOrder.value.status] ?? 0;
-  });
-
-  // Start tracking
-  const startLocationTracking = (orderId?: string) => {
-    if (!orderId && activeOrder.value) {
-      orderId = activeOrder.value.id;
-    }
-
-    const interval = setInterval(() => {
-      updateCurrentLocation(orderId);
-    }, 10000);
-
-    return () => clearInterval(interval);
   };
 
   // Reset
@@ -264,15 +178,6 @@ export const useDeliveryStore = defineStore('delivery', () => {
     availability.value = { isOnline: false, totalOnlineHours: 0 };
     availableJobs.value = [];
     activeOrder.value = null;
-    deliveryProgress.value = null;
-    earningsSummary.value = null;
-    settings.value = {
-      vehicleType: 'motorcycle',
-      maxDistance: 10,
-      autoAccept: false,
-      notificationsEnabled: true,
-    };
-    currentLocation.value = null;
     isOnline.value = false;
     completedOrders.value = [];
     loading.value = false;
@@ -283,28 +188,17 @@ export const useDeliveryStore = defineStore('delivery', () => {
     availability,
     availableJobs,
     activeOrder,
-    deliveryProgress,
-    earningsSummary,
-    settings,
-    currentLocation,
     isOnline,
     completedOrders,
     loading,
     error,
     hasActiveOrder,
     isAvailable,
-    currentStepForGPS,
     initialize,
     toggleAvailability,
     loadAvailableJobs,
     acceptDeliveryOrder,
-    rejectDeliveryOrder,
     updateStatus,
-    loadDeliveryProgress,
-    updateCurrentLocation,
-    loadEarningsSummary,
-    updateSettings,
-    startLocationTracking,
     $reset,
   };
 });
