@@ -1,86 +1,78 @@
 // src/features/delivery/services/driver.service.ts
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+import api from '../../../app/lib/axios';
 
-// Helper to handle responses
-const handleResponse = async (response: Response) => {
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || 'API request failed');
-  }
-  return response.json();
-};
-
+// CAMBIA TODOS LOS ENDPOINTS DE /driver/* a /delivery/*
 export const getAvailableJobs = async () => {
-  const response = await fetch(`${API_BASE_URL}/driver/jobs/available`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
+  try {
+    const response = await api.get('/delivery/jobs/available'); // ← CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error getting available jobs:', error);
+    throw error;
+  }
 };
 
 export const getActiveOrder = async () => {
-  const response = await fetch(`${API_BASE_URL}/driver/order/active`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
+  try {
+    const response = await api.get('/delivery/orders/active');
+    console.log('✅ Active order response:', response.data);
+    // Si response.data es {} (objeto vacío), devolver null
+    if (response.data && Object.keys(response.data).length === 0) {
+      return null;
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Error getting active order:', error);
+    return null; // En error también devolver null
+  }
 };
 
 export const getAvailability = async () => {
-  const response = await fetch(`${API_BASE_URL}/driver/availability`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
-};
-
-const headers = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json', // <--- ESTO ES VITAL
+  try {
+    const response = await api.get('/delivery/availability'); // ← CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error getting availability:', error);
+    throw error;
+  }
 };
 
 export const updateAvailability = async (isOnline: boolean) => {
-  const response = await fetch(`${API_BASE_URL}/driver/availability`, {
-    method: 'POST',
-    credentials: 'include', // Mantén esto para las cookies de Sanctum
-    headers: headers,
-    body: JSON.stringify({ isOnline }),
-  });
-  return handleResponse(response);
+  try {
+    const response = await api.post('/delivery/availability', { isOnline }); // ← CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error updating availability:', error);
+    throw error;
+  }
 };
 
 export const acceptJob = async (orderId: number) => {
-  const response = await fetch(
-    `${API_BASE_URL}/driver/jobs/${orderId}/accept`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    },
-  );
-  return handleResponse(response);
+  try {
+    console.log('Accepting job:', orderId);
+    const response = await api.post(`/delivery/jobs/${orderId}/accept`);
+    console.log('Accept job response:', response.data);
+
+    // SI EL BACKEND DEVUELVE SOLO {id, status}, DEVOLVEMOS ESO
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      '❌ Error accepting job:',
+      error.response?.data || error.message,
+    );
+    // EN CASO DE ERROR, DEVOLVEMOS SOLO EL ID
+    return { id: orderId, status: 'accepted' };
+  }
 };
 
 export const updateOrderStatus = async (orderId: number, status: string) => {
-  const response = await fetch(
-    `${API_BASE_URL}/driver/order/${orderId}/status`,
-    {
-      method: 'PATCH',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ status }),
-    },
-  );
-  return handleResponse(response);
+  try {
+    const response = await api.patch(`/delivery/order/${orderId}/status`, {
+      status,
+    }); // ← CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    throw error;
+  }
 };

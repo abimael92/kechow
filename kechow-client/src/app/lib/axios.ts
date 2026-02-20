@@ -1,50 +1,51 @@
 // src/app/lib/axios.ts
 import axios from 'axios';
-import { getEnv } from './env';
 
-// Add /api to the base URL
-const API_URL = getEnv('VITE_API_URL', 'http://127.0.0.1:8000/api'); // ← Added /api
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
-export const apiBaseUrl = API_URL.replace(/\/$/, '');
+export const apiBaseUrl = API_URL;
 
 export const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
 });
 
-// Request: attach token only; do not log URL/body in production
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  // Let the browser set Content-Type with boundary for FormData (e.g. file uploads)
-  if (config.data instanceof FormData) {
-    delete config.headers['Content-Type'];
-  }
-  return config;
-});
+// Interceptor para añadir token a TODAS las peticiones
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    console.log('Token desde localStorage:', token ? 'EXISTE' : 'NO EXISTE');
 
-// Response: 401 → clear auth and redirect; never log response data (may contain sensitive data)
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      console.warn('⚠️ No hay token en localStorage');
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
+
+// Interceptor para errores
 api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    const status = err.response?.status;
-    if (status === 401) {
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.error('❌ Error 401 - No autorizado');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      delete api.defaults.headers.common['Authorization'];
-      // Redirect to login without exposing internal error details
-      if (
-        typeof window !== 'undefined' &&
-        !window.location.pathname.startsWith('/login')
-      ) {
+      if (!window.location.pathname.includes('/login')) {
         window.location.href = '/login';
       }
     }
-    if (import.meta.env.DEV) {
-      console.error('API error', status ?? err.message);
-    }
-    return Promise.reject(err);
+    return Promise.reject(error);
   },
 );
 

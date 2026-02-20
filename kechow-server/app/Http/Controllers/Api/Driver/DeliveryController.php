@@ -28,7 +28,6 @@ class DeliveryController extends Controller
                 ->whereIn('status', ['assigned', 'picked_up', 'in_transit'])
                 ->exists();
 
-            // Return simple format without success/data wrapper
             return response()->json([
                 'isOnline' => $driver->is_online,
                 'totalOnlineHours' => 0,
@@ -55,7 +54,6 @@ class DeliveryController extends Controller
 
             $userId = $request->user()->id;
 
-            // Check if user is authenticated
             if (!$userId) {
                 return response()->json(['error' => 'User not authenticated'], 401);
             }
@@ -76,7 +74,6 @@ class DeliveryController extends Controller
                 'status' => $request->isOnline ? 'online' : 'offline',
             ]);
 
-            // Return SIMPLE format that frontend expects (no success/data wrapper)
             return response()->json([
                 'isOnline' => $driver->is_online,
                 'totalOnlineHours' => 0,
@@ -90,81 +87,91 @@ class DeliveryController extends Controller
         }
     }
 
-    public function acceptOrder($orderId)
-    {
+    /**
+     * Get available jobs
+     */
+public function getAvailableJobs(): JsonResponse
+{
+    try {
         $user = Auth::user();
         $driver = Driver::where('user_id', $user->id)->first();
 
-        if (!$driver) {
-            return response()->json(['success' => false, 'message' => 'Driver not found'], 404);
+        if (!$driver || !$driver->is_online) {
+            return response()->json(['jobs' => []]);
         }
 
-        Delivery::create([
-            'order_id' => $orderId,
-            'driver_id' => $driver->id,
-            'status' => 'assigned',
-            'assigned_at' => now()
-        ]);
+        $orders = \App\Modules\Order\Models\Order::where('status', 'pending')
+            ->whereDoesntHave('delivery')
+            ->with('restaurant', 'items')
+            ->take(10)
+            ->get();
 
+        $jobs = $orders->map(function ($order) {
+            return [
+                'id' => $order->id,
+                'pickup' => $order->restaurant->address ?? 'Restaurante',
+                'dropoff' => $order->delivery_address ?? 'Dirección',
+                'distance' => 2.5,
+                'estimatedTime' => 15,
+                'amount' => (float) $order->total,
+                'restaurant' => [
+                    'name' => $order->restaurant->name ?? 'Restaurante'
+                ],
+                'items' => $order->items ?? []
+            ];
+        });
+
+        return response()->json(['jobs' => $jobs]);
+
+    } catch (\Exception $e) {
+        // 🔥 ESTO MOSTRARÁ EL ERROR REAL
         return response()->json([
-            'success' => true,
-            'message' => 'Order accepted'
-        ]);
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ], 500);
     }
+}
 
-    public function rejectOrder($orderId)
-    {
-        return response()->json([
-            'success' => true,
-            'message' => 'Order rejected'
-        ]);
-    }
-
-    public function getCompletedOrders()
-    {
-        return response()->json([
-            'success' => true,
-            'data' => ['orders' => []]
-        ]);
-    }
-
-    public function getActiveOrder(): JsonResponse
+    /**
+     * Accept order
+     */
+    public function acceptOrder($orderId): JsonResponse
     {
         try {
             $user = Auth::user();
             $driver = Driver::where('user_id', $user->id)->first();
 
             if (!$driver) {
-                return response()->json(null); // Return null, not wrapped
+                return response()->json(['error' => 'Driver not found'], 404);
             }
 
-            $activeDelivery = Delivery::with('order.restaurant', 'order.user')
-                ->where('driver_id', $driver->id)
-                ->whereIn('status', ['assigned', 'picked_up', 'in_transit'])
-                ->first();
-
-            if (!$activeDelivery) {
-                return response()->json(null);
+            // Check if order is already assigned
+            $existingDelivery = Delivery::where('order_id', $orderId)->first();
+            if ($existingDelivery) {
+                return response()->json(['error' => 'Order already assigned'], 400);
             }
 
-            // Format the order data to match what frontend expects
-            $order = $activeDelivery->order;
+            $delivery = Delivery::create([
+                'order_id' => $orderId,
+                'driver_id' => $driver->id,
+                'status' => 'assigned',
+                'assigned_at' => now()
+            ]);
+
+            // Load the order with relations
+            $delivery->load('order.restaurant', 'order.user');
+
             return response()->json([
-                'id' => $order->id,
-                'status' => $this->mapDeliveryStatus($activeDelivery->status),
+                'id' => $delivery->order->id,
+                'status' => 'accepted',
+                'pickup' => $delivery->order->restaurant->address ?? 'Restaurante',
+                'dropoff' => $delivery->order->delivery_address ?? 'Dirección',
+                'amount' => (float) $delivery->order->total,
                 'restaurant' => [
-                    'id' => $order->restaurant->id,
-                    'name' => $order->restaurant->name,
-                    'address' => $order->restaurant->address,
+                    'name' => $delivery->order->restaurant->name ?? 'Restaurante'
                 ],
-                'customer' => [
-                    'id' => $order->user->id,
-                    'name' => $order->user->name,
-                    'address' => $order->delivery_address,
-                ],
-                'amount' => (float) $order->total,
-                'fee' => 30.0,
-                'items' => [] // Add items if needed
+                'items' => $delivery->order->items ?? []
             ]);
 
         } catch (\Exception $e) {
@@ -172,7 +179,53 @@ class DeliveryController extends Controller
         }
     }
 
-    // Helper method to map delivery status
+    public function rejectOrder($orderId): JsonResponse
+    {
+        return response()->json(['message' => 'Order rejected']);
+    }
+
+    public function getCompletedOrders(): JsonResponse
+    {
+        return response()->json([]);
+    }
+
+public function getActiveOrder(): JsonResponse
+{
+    try {
+        $user = Auth::user();
+        $driver = Driver::where('user_id', $user->id)->first();
+
+        if (!$driver) {
+            return response()->json(null);
+        }
+
+        $activeDelivery = Delivery::with('order.restaurant', 'order.user')
+            ->where('driver_id', $driver->id)
+            ->whereIn('status', ['assigned', 'picked_up', 'in_transit'])
+            ->first();
+
+        if (!$activeDelivery) {
+            return response()->json(null); // 200 con null, no 404
+        }
+
+        $order = $activeDelivery->order;
+        return response()->json([
+            'id' => $order->id,
+            'status' => $this->mapDeliveryStatus($activeDelivery->status),
+            'pickup' => $order->restaurant->address ?? 'Restaurante',
+            'dropoff' => $order->delivery_address ?? 'Dirección',
+            'amount' => (float) $order->total,
+            'restaurant' => [
+                'name' => $order->restaurant->name ?? 'Restaurante'
+            ],
+            'items' => $order->items ?? []
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json(null);
+    }
+}
+
     private function mapDeliveryStatus($status)
     {
         $map = [
@@ -184,36 +237,28 @@ class DeliveryController extends Controller
         return $map[$status] ?? $status;
     }
 
-    public function getStats()
+    public function getStats(): JsonResponse
     {
         return response()->json([
-            'success' => true,
-            'data' => [
-                'today_deliveries' => 0,
-                'today_earnings' => 0,
-                'rating' => 5.0
-            ]
+            'todayOrders' => 0,
+            'earnings' => 0,
+            'rating' => 5.0,
+            'completed' => 0
         ]);
     }
 
     public function getSettings(): JsonResponse
     {
-        try {
-            // Return simple format without success/data wrapper
-            return response()->json([
-                'vehicleType' => 'motorcycle',
-                'maxDistance' => 10,
-                'autoAccept' => false,
-                'notificationsEnabled' => true,
-                'language' => 'es'
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
+        return response()->json([
+            'vehicleType' => 'motorcycle',
+            'maxDistance' => 10,
+            'autoAccept' => false,
+            'notificationsEnabled' => true,
+            'language' => 'es'
+        ]);
     }
 
-    public function updateSettings(Request $request)
+    public function updateSettings(Request $request): JsonResponse
     {
         $request->validate([
             'vehicleType' => 'sometimes|string',
@@ -222,9 +267,6 @@ class DeliveryController extends Controller
             'notificationsEnabled' => 'sometimes|boolean'
         ]);
 
-        return response()->json([
-            'success' => true,
-            'data' => $request->all()
-        ]);
+        return response()->json($request->all());
     }
 }

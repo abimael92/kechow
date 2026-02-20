@@ -1,165 +1,118 @@
 // src/features/delivery/services/delivery.service.ts
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
+import api from '../../../app/lib/axios';
 
-const handleResponse = async (response: Response) => {
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || 'API request failed');
-  }
-  return response.json();
-};
-
+// Availability
 export const getAvailability = async () => {
-  const response = await fetch(`${API_BASE_URL}/delivery/availability`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
+  try {
+    console.log('🔍 Fetching availability from: /delivery/availability');
+    const response = await api.get('/delivery/availability'); // CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error getting availability:', error);
+    throw error;
+  }
 };
 
 export const updateAvailability = async (isOnline: boolean) => {
-  const response = await fetch(`${API_BASE_URL}/delivery/availability`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ isOnline }),
-  });
-  return handleResponse(response);
+  try {
+    const response = await api.post('/delivery/availability', { isOnline }); // CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error updating availability:', error);
+    throw error;
+  }
 };
 
+// Jobs
 export const getAvailableJobs = async () => {
-  const response = await fetch(`${API_BASE_URL}/delivery/jobs/available`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
+  try {
+    console.log('🔍 Fetching available jobs from: /delivery/jobs/available');
+    const response = await api.get('/delivery/jobs/available'); // CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error getting available jobs:', error);
+    return { jobs: [] };
+  }
 };
 
+// Active order
 export const getActiveOrder = async () => {
-  const response = await fetch(`${API_BASE_URL}/delivery/order/active`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
+  try {
+    console.log('🔍 Fetching active order from: /delivery/orders/active'); // CAMBIADO
+    const response = await api.get('/delivery/orders/active'); // CAMBIADO
+    console.log('✅ Active order response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.warn('No active order found');
+    return null;
+  }
 };
 
+// Accept order
 export const acceptOrder = async (orderId: string) => {
-  const response = await fetch(
-    `${API_BASE_URL}/delivery/orders/${orderId}/accept`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    },
-  );
-  return handleResponse(response);
+  try {
+    console.log('📤 Accepting order:', orderId);
+    const response = await api.post(`/delivery/jobs/${orderId}/accept`); // CAMBIADO
+    console.log('✅ Order accepted:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error accepting order:', error);
+    throw error;
+  }
 };
 
+// Reject order
 export const rejectOrder = async (orderId: string) => {
-  const response = await fetch(
-    `${API_BASE_URL}/delivery/orders/${orderId}/reject`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    },
-  );
-  return handleResponse(response);
+  try {
+    const response = await api.post(`/delivery/jobs/${orderId}/reject`); // CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error rejecting order:', error);
+    throw error;
+  }
 };
 
+// Update status
 export const updateDeliveryStatus = async (orderId: string, status: string) => {
-  const response = await fetch(
-    `${API_BASE_URL}/delivery/orders/${orderId}/status`,
-    {
-      method: 'PATCH',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ status }),
-    },
-  );
-  return handleResponse(response);
+  try {
+    const response = await api.patch(`/delivery/order/${orderId}/status`, {
+      status,
+    }); // CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.error('Error updating status:', error);
+    throw error;
+  }
 };
 
-export const getDeliveryProgress = async (orderId: string) => {
-  const response = await fetch(
-    `${API_BASE_URL}/delivery/orders/${orderId}/progress`,
-    {
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    },
-  );
-  return handleResponse(response);
-};
-
-export const updateLocation = async (orderId: string, location: any) => {
-  const response = await fetch(
-    `${API_BASE_URL}/delivery/orders/${orderId}/location`,
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(location),
-    },
-  );
-  return handleResponse(response);
-};
-
-// This is a helper, not an API call
-export const getCurrentLocation = (order: any, step: number) => {
-  return {
-    latitude: order?.restaurant?.location?.latitude || 0,
-    longitude: order?.restaurant?.location?.longitude || 0,
-    timestamp: new Date().toISOString(),
-  };
-};
-
-export const getEarningsSummary = async () => {
-  const response = await fetch(`${API_BASE_URL}/delivery/earnings`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
-};
-
+// Settings
 export const getDeliverySettings = async () => {
-  const response = await fetch(`${API_BASE_URL}/delivery/settings`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return handleResponse(response);
+  try {
+    const response = await api.get('/delivery/settings'); // CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.warn('Settings endpoint not available, using defaults');
+    return {
+      vehicleType: 'motorcycle',
+      maxDistance: 10,
+      autoAccept: false,
+      notificationsEnabled: true,
+    };
+  }
 };
 
-export const updateDeliverySettings = async (settings: any) => {
-  const response = await fetch(`${API_BASE_URL}/delivery/settings`, {
-    method: 'PUT',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(settings),
-  });
-  return handleResponse(response);
+// Earnings
+export const getEarningsSummary = async () => {
+  try {
+    const response = await api.get('/delivery/earnings'); // CAMBIADO
+    return response.data;
+  } catch (error) {
+    console.warn('Earnings endpoint not available');
+    return {
+      today: 0,
+      week: 0,
+      month: 0,
+      total: 0,
+    };
+  }
 };
