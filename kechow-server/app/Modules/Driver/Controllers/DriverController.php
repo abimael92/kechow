@@ -8,6 +8,7 @@ use App\Modules\Driver\Models\DriverLocation;
 use App\Modules\Order\Models\Order;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -209,35 +210,34 @@ public function getAvailability(Request $request): JsonResponse
 public function updateAvailability(Request $request): JsonResponse
 {
     try {
-        $request->validate([
+        // Validation will fail if you send a raw boolean instead of {isOnline: true}
+        $validated = $request->validate([
             'isOnline' => 'required|boolean'
         ]);
 
-        $userId = $request->user()->id;
+        $userId = Auth::id(); // Use Auth facade for safety
 
-        // Buscamos o creamos el registro del repartidor
-        $driver = Driver::firstOrCreate(
+        $driver = Driver::updateOrCreate(
             ['user_id' => $userId],
-            ['status' => 'offline', 'is_online' => false]
+            [
+                'is_online' => $request->isOnline,
+                'status' => $request->isOnline ? 'online' : 'offline',
+            ]
         );
 
-        // Actualizamos con el valor que viene del frontend
-        $driver->update([
-            'is_online' => $request->isOnline,
-            'status' => $request->isOnline ? 'online' : 'offline',
-        ]);
-
         return response()->json([
-            'isOnline' => $driver->is_online,
+            'isOnline' => (bool)$driver->is_online,
             'status' => $driver->status,
-            'totalOnlineHours' => 0, // O el cálculo que prefieras
+            'totalOnlineHours' => 0,
             'currentSessionStart' => $driver->is_online ? now()->toIso8601String() : null
         ]);
 
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return response()->json(['errors' => $e->errors()], 422); // Return 422 for validation issues
     } catch (\Exception $e) {
-        Log::error("Error en updateAvailability: " . $e->getMessage());
         return response()->json([
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString() // Temporary: remove in production
         ], 500);
     }
 }
