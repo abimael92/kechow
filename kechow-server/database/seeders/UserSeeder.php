@@ -20,13 +20,13 @@ class UserSeeder extends Seeder
             ]
         );
 
-        // REPARTIDOR (DRIVER)
+        // REPARTIDOR (delivery role for api/delivery/*)
         User::updateOrCreate(
             ['email' => 'entrega@entrega.com'],
             [
                 'name'     => 'deliverboy',
                 'password' => Hash::make('123456'),
-                'role'     => 'driver'
+                'role'     => 'delivery'
             ]
         );
 

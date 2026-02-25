@@ -230,7 +230,7 @@
 			<!-- CTA Section -->
 			<section class="py-20">
 				<div class="container mx-auto px-4">
-					<div class="bg-gradient-to-r from-accent-400/90 to-accent-500/90 rounded-3xl p-12 text-center relative overflow-hidden">
+					<div class="bg-gradient-to-r from-orange-500/80 via-orange-500/70 to-orange-500/60 dark:from-accent-900/60 dark:to-accent-900/40 rounded-3xl p-12 text-center relative overflow-hidden">
 						<!-- Background Pattern -->
 						<div class="absolute inset-0 opacity-10">
 							<div class="absolute inset-0" :style="animatedBackground"></div>
@@ -244,10 +244,11 @@
 								Únete a miles de personas que ya disfrutan de la mejor comida local
 							</p>
 							<div class="flex flex-col sm:flex-row gap-4 justify-center">
-								<BaseButton 
-									size="lg"
-									class="bg-accent-800 hover:bg-accent-600 text-white"
-									@click="goToOrder"
+								<BaseButton
+								size="lg"
+								class="bg-primary-600 hover:bg-primary-700 text-white
+								         dark:bg-accent-800 dark:hover:bg-accent-600"
+								@click="goToOrder"
 								>
 									<template #icon>
 										<ShoppingBag class="w-5 h-5" />

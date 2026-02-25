@@ -184,7 +184,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDeliveryStore } from '../store/delivery.store';
 
@@ -269,11 +269,11 @@ const activeOrders = computed<Order[]>(() => {
 	}];
 });
 
-const completedOrdersList = computed<Order[]>(() => 
-	deliveryStore.completedOrders?.map((order: any) => ({
+const completedOrdersFromApi = computed<Order[]>(() =>
+	(deliveryStore.completedOrdersList?.orders ?? []).map((order: any) => ({
 		id: String(order.id || ''),
 		number: `#${order.id || ''}`,
-		restaurant: order.pickup?.split(',')[0] || 'Restaurante',
+		restaurant: order.restaurant?.name || order.pickup?.split(',')[0] || 'Restaurante',
 		customer: order.dropoff?.split(',')[0] || 'Cliente',
 		amount: order.amount?.toFixed(2) || '0.00',
 		items: order.items?.length || 1,
@@ -284,20 +284,27 @@ const completedOrdersList = computed<Order[]>(() =>
 		dropoff: order.dropoff || 'Dirección de entrega',
 		status: 'completed' as const,
 		statusLabel: 'Completado',
-	})) || []
+	}))
 );
+
+// Load completed orders when switching to completed tab
+watch(activeTab, (idx) => {
+	if (tabs.value[idx]?.key === 'completed') {
+		deliveryStore.loadCompletedOrders(1);
+	}
+}, { immediate: true });
 
 const filteredOrders = computed<Order[]>(() => {
 	const key = tabs.value[activeTab.value].key;
 	if (key === 'available') return availableOrders.value;
 	if (key === 'active') return activeOrders.value;
-	return completedOrdersList.value;
+	return completedOrdersFromApi.value;
 });
 
 const tabCount = (key: TabKey): number => {
 	if (key === 'available') return availableOrders.value.length;
 	if (key === 'active') return activeOrders.value.length;
-	return completedOrdersList.value.length;
+	return deliveryStore.completedOrdersList?.total ?? completedOrdersFromApi.value.length;
 };
 
 const emptyMessage = computed<string>(() => {
@@ -352,8 +359,10 @@ const handleAcceptOrder = async (orderId: string): Promise<void> => {
 
 const handleRejectOrder = async (orderId: string): Promise<void> => {
 	try {
-		// Implementar si existe en el store
-		console.log('Reject order', orderId);
+		if (typeof deliveryStore.rejectOrder === 'function') {
+			await deliveryStore.rejectOrder(Number(orderId));
+			deliveryStore.loadAvailableJobs();
+		}
 	} catch (e) {
 		console.error('Reject order failed', e);
 	}
