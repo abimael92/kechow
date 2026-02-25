@@ -7,7 +7,10 @@ import {
   getAvailableJobs,
   getActiveOrder,
   acceptJob,
+  rejectJob,
   updateOrderStatus,
+  getCompletedOrders,
+  getEarnings,
 } from '../services/driver.service';
 
 export const useDeliveryStore = defineStore('delivery', () => {
@@ -20,8 +23,19 @@ export const useDeliveryStore = defineStore('delivery', () => {
   const activeOrder = ref<any | null>(null);
   const isOnline = ref(false);
   const completedOrders = ref<any[]>([]);
+  const completedOrdersList = ref<{ orders: any[]; total: number; current_page: number; per_page: number }>({
+    orders: [],
+    total: 0,
+    current_page: 1,
+    per_page: 15,
+  });
+  const earningsSummary = ref<{ today?: number; week?: number; month?: number; total?: number } | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
+  const earningsLoading = ref(false);
+  const earningsError = ref<string | null>(null);
+  const completedLoading = ref(false);
+  const completedError = ref<string | null>(null);
 
   // Computed
   const hasActiveOrder = computed(() => !!activeOrder.value);
@@ -157,19 +171,64 @@ export const useDeliveryStore = defineStore('delivery', () => {
       loading.value = true;
       error.value = null;
 
-      const updatedOrder = await updateOrderStatus(orderId, status);
-      activeOrder.value = updatedOrder;
+      await updateOrderStatus(orderId, status);
 
       if (status === 'delivered') {
         if (activeOrder.value) {
           completedOrders.value.push(activeOrder.value);
         }
         activeOrder.value = null;
+      } else if (activeOrder.value && activeOrder.value.id === orderId) {
+        activeOrder.value = { ...activeOrder.value, status };
       }
     } catch (err: any) {
       error.value = err.message;
     } finally {
       loading.value = false;
+    }
+  };
+
+  // Earnings
+  const loadEarningsSummary = async (period?: 'week' | 'month') => {
+    try {
+      earningsLoading.value = true;
+      earningsError.value = null;
+      const data = await getEarnings(period);
+      earningsSummary.value = data;
+    } catch (err: any) {
+      earningsError.value = err.message;
+      earningsSummary.value = null;
+    } finally {
+      earningsLoading.value = false;
+    }
+  };
+
+  const rejectOrder = async (orderId: number) => {
+    try {
+      await rejectJob(orderId);
+      availableJobs.value = availableJobs.value.filter((j) => j.id !== orderId);
+    } catch (err: any) {
+      error.value = err.message;
+    }
+  };
+
+  // Completed orders (paginated)
+  const loadCompletedOrders = async (page = 1) => {
+    try {
+      completedLoading.value = true;
+      completedError.value = null;
+      const data = await getCompletedOrders(page, completedOrdersList.value.per_page);
+      completedOrdersList.value = {
+        orders: data.orders ?? [],
+        total: data.total ?? 0,
+        current_page: data.current_page ?? page,
+        per_page: data.per_page ?? 15,
+      };
+    } catch (err: any) {
+      completedError.value = err.message;
+      completedOrdersList.value.orders = [];
+    } finally {
+      completedLoading.value = false;
     }
   };
 
@@ -180,8 +239,14 @@ export const useDeliveryStore = defineStore('delivery', () => {
     activeOrder.value = null;
     isOnline.value = false;
     completedOrders.value = [];
+    completedOrdersList.value = { orders: [], total: 0, current_page: 1, per_page: 15 };
+    earningsSummary.value = null;
     loading.value = false;
     error.value = null;
+    earningsLoading.value = false;
+    earningsError.value = null;
+    completedLoading.value = false;
+    completedError.value = null;
   };
 
   return {
@@ -190,8 +255,14 @@ export const useDeliveryStore = defineStore('delivery', () => {
     activeOrder,
     isOnline,
     completedOrders,
+    completedOrdersList,
+    earningsSummary,
     loading,
     error,
+    earningsLoading,
+    earningsError,
+    completedLoading,
+    completedError,
     hasActiveOrder,
     isAvailable,
     initialize,
@@ -199,6 +270,9 @@ export const useDeliveryStore = defineStore('delivery', () => {
     loadAvailableJobs,
     acceptDeliveryOrder,
     updateStatus,
+    loadEarningsSummary,
+    loadCompletedOrders,
+    rejectOrder,
     $reset,
   };
 });
