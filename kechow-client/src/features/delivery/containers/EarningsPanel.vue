@@ -242,93 +242,29 @@ onMounted(async () => {
 	await deliveryStore.loadEarningsSummary();
 });
 
-// Stats cards from earnings summary
+// Stats cards from earnings summary (API: today, week, month, total)
 const statsCards = computed(() => {
 	const earnings = deliveryStore.earningsSummary;
+	const weekVal = typeof earnings?.week === 'number' ? earnings.week : 0;
+	const monthVal = typeof earnings?.month === 'number' ? earnings.month : 0;
+	const totalVal = typeof earnings?.total === 'number' ? earnings.total : 0;
+	const todayVal = typeof earnings?.today === 'number' ? earnings.today : 0;
+	const selectedVal = period.value === 'week' ? weekVal : monthVal;
+
 	if (!earnings) {
 		return [
-			{
-				titleKey: 'totalEarnings',
-				value: '$0.00',
-				change: t('noData'),
-				changeColor: 'text-gray-600',
-				icon: CurrencyDollarIcon,
-				iconColor: 'text-gray-600',
-				bgColor: 'bg-gray-100',
-			},
-			{
-				titleKey: 'deliveries',
-				value: '0',
-				change: t('noData'),
-				changeColor: 'text-gray-600',
-				icon: TruckIcon,
-				iconColor: 'text-gray-600',
-				bgColor: 'bg-gray-100',
-			},
-			{
-				titleKey: 'hoursOnline',
-				value: '0h',
-				change: t('noData'),
-				changeColor: 'text-gray-600',
-				icon: ClockIcon,
-				iconColor: 'text-gray-600',
-				bgColor: 'bg-gray-100',
-			},
-			{
-				titleKey: 'avgRating',
-				value: '0.0',
-				change: '',
-				changeColor: '',
-				icon: StarIcon,
-				iconColor: 'text-gray-600',
-				bgColor: 'bg-gray-100',
-			},
+			{ titleKey: 'totalEarnings', value: '$0.00', change: t('noData'), changeColor: 'text-gray-600', icon: CurrencyDollarIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
+			{ titleKey: 'deliveries', value: '0', change: t('noData'), changeColor: 'text-gray-600', icon: TruckIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
+			{ titleKey: 'hoursOnline', value: '0h', change: t('noData'), changeColor: 'text-gray-600', icon: ClockIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
+			{ titleKey: 'avgRating', value: '0.0', change: '', changeColor: '', icon: StarIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
 		];
 	}
 
-	const selectedPeriod = period.value === 'week' ? earnings.week : earnings.month;
-
 	return [
-		{
-			titleKey: 'totalEarnings',
-			value: `$${selectedPeriod.earnings.toFixed(2)}`,
-			change: t('changeFromLastWeek', { value: '0%' }),
-			changeColor: 'text-green-600',
-			icon: CurrencyDollarIcon,
-			iconColor: 'text-green-600',
-			bgColor: 'bg-green-100',
-		},
-		{
-			titleKey: 'deliveries',
-			value: selectedPeriod.deliveries.toString(),
-			change: t('avgPerOrder', { value: `$${earnings.averagePerDelivery.toFixed(2)}` }),
-			changeColor: 'text-blue-600',
-			icon: TruckIcon,
-			iconColor: 'text-blue-600',
-			bgColor: 'bg-blue-100',
-		},
-		{
-			titleKey: 'hoursOnline',
-			value: `${selectedPeriod.hours.toFixed(1)}h`,
-			change: t('ratePerHour', {
-				value: `$${(
-					selectedPeriod.earnings / selectedPeriod.hours || 0
-				).toFixed(2)}`,
-			}),
-			changeColor: 'text-purple-600',
-			icon: ClockIcon,
-			iconColor: 'text-purple-600',
-			bgColor: 'bg-purple-100',
-		},
-		{
-			titleKey: 'avgRating',
-			value: '4.9',
-			change: '',
-			changeColor: '',
-			icon: StarIcon,
-			iconColor: 'text-yellow-600',
-			bgColor: 'bg-yellow-100',
-		},
+		{ titleKey: 'totalEarnings', value: `$${selectedVal.toFixed(2)}`, change: period.value === 'week' ? t('thisWeek') : t('thisMonth'), changeColor: 'text-green-600', icon: CurrencyDollarIcon, iconColor: 'text-green-600', bgColor: 'bg-green-100' },
+		{ titleKey: 'deliveries', value: '—', change: t('noData'), changeColor: 'text-blue-600', icon: TruckIcon, iconColor: 'text-blue-600', bgColor: 'bg-blue-100' },
+		{ titleKey: 'hoursOnline', value: '—', change: '', changeColor: 'text-purple-600', icon: ClockIcon, iconColor: 'text-purple-600', bgColor: 'bg-purple-100' },
+		{ titleKey: 'avgRating', value: '—', change: '', changeColor: '', icon: StarIcon, iconColor: 'text-yellow-600', bgColor: 'bg-yellow-100' },
 	];
 });
 
@@ -361,30 +297,13 @@ const payouts = [
 
 const trendChartData = computed(() => {
 	const earnings = deliveryStore.earningsSummary;
+	const weekVal = typeof earnings?.week === 'number' ? earnings.week : 0;
 	return {
-		labels: [
-			t('dayMon'),
-			t('dayTue'),
-			t('dayWed'),
-			t('dayThu'),
-			t('dayFri'),
-			t('daySat'),
-			t('daySun'),
-		],
+		labels: [t('dayMon'), t('dayTue'), t('dayWed'), t('dayThu'), t('dayFri'), t('daySat'), t('daySun')],
 		datasets: [
 			{
 				label: t('earnings'),
-				data: earnings
-					? [
-							earnings.week.earnings * 0.1,
-							earnings.week.earnings * 0.15,
-							earnings.week.earnings * 0.12,
-							earnings.week.earnings * 0.18,
-							earnings.week.earnings * 0.24,
-							earnings.week.earnings * 0.16,
-							earnings.week.earnings * 0.2,
-					  ]
-					: [0, 0, 0, 0, 0, 0, 0],
+				data: weekVal > 0 ? [weekVal * 0.1, weekVal * 0.15, weekVal * 0.12, weekVal * 0.18, weekVal * 0.24, weekVal * 0.16, weekVal * 0.2] : [0, 0, 0, 0, 0, 0, 0],
 				fill: true,
 				backgroundColor: 'rgba(59, 130, 246, 0.3)',
 				borderColor: '#3B82F6',
@@ -411,6 +330,6 @@ const chartOptions = {
 
 const updateStats = async (selected: string) => {
 	period.value = selected;
-	await deliveryStore.loadEarningsSummary();
+	await deliveryStore.loadEarningsSummary(selected === 'month' ? 'month' : 'week');
 };
 </script>
