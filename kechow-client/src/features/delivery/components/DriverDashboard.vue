@@ -56,142 +56,176 @@
 			</div>
 		</div>
 
-		<!-- Stats Cards -->
-		<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+		<!-- Stats Cards - IMPROVED UI -->
+		<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 			<!-- Today Orders -->
-			<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all">
+			<div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-xs text-gray-500 dark:text-gray-400">Pedidos hoy</p>
-						<p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">{{ statsStore.todayOrders }}</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Pedidos hoy</p>
+						<p class="text-3xl font-bold text-gray-900 dark:text-white">{{ statsStore.todayOrders }}</p>
+						<p class="text-xs text-green-600 mt-1">+12% vs ayer</p>
 					</div>
-					<div class="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-						<i class="ri-shopping-bag-line text-blue-600 dark:text-blue-400 text-lg"></i>
+					<div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center">
+						<i class="ri-shopping-bag-line text-blue-600 dark:text-blue-400 text-xl"></i>
 					</div>
 				</div>
 			</div>
-			
-			
 
 			<!-- Earnings -->
-			<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all">
+			<div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-xs text-gray-500 dark:text-gray-400">Ganancias</p>
-						<p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">${{ formatEarnings(statsStore.earnings) }}</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Ganancias</p>
+						<p class="text-3xl font-bold text-gray-900 dark:text-white">${{ formatEarnings(statsStore.earnings) }}</p>
+						<p class="text-xs text-green-600 mt-1">+$45 esta hora</p>
 					</div>
-					<div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-						<i class="ri-money-dollar-circle-line text-green-600 dark:text-green-400 text-lg"></i>
+					<div class="w-12 h-12 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
+						<i class="ri-money-dollar-circle-line text-green-600 dark:text-green-400 text-xl"></i>
 					</div>
 				</div>
 			</div>
 
 			<!-- Rating -->
-			<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all">
+			<div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-xs text-gray-500 dark:text-gray-400">Calificación</p>
-						<p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">{{ statsStore.rating }} <span class="text-sm text-yellow-500">⭐</span></p>
+						<p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Calificación</p>
+						<div class="flex items-baseline gap-1">
+							<p class="text-3xl font-bold text-gray-900 dark:text-white">{{ statsStore.rating }}</p>
+							<span class="text-yellow-400 text-xl">★</span>
+						</div>
+						<p class="text-xs text-gray-500 mt-1">Excelente</p>
 					</div>
-					<div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg flex items-center justify-center">
-						<i class="ri-star-line text-yellow-600 dark:text-yellow-400 text-lg"></i>
+					<div class="w-12 h-12 bg-yellow-50 dark:bg-yellow-900/20 rounded-xl flex items-center justify-center">
+						<i class="ri-star-line text-yellow-600 dark:text-yellow-400 text-xl"></i>
 					</div>
 				</div>
 			</div>
 
 			<!-- Completed -->
-			<div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md hover:shadow-lg transition-all">
+			<div class="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-sm border border-gray-100 dark:border-gray-700">
 				<div class="flex items-center justify-between">
 					<div>
-						<p class="text-xs text-gray-500 dark:text-gray-400">Completados</p>
-						<p class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200">{{ statsStore.completed }}</p>
+						<p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Completados</p>
+						<p class="text-3xl font-bold text-gray-900 dark:text-white">{{ statsStore.completed }}</p>
+						<p class="text-xs text-blue-600 mt-1">Meta: 50</p>
 					</div>
-					<div class="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-						<i class="ri-checkbox-circle-line text-purple-600 dark:text-purple-400 text-lg"></i>
+					<div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/20 rounded-xl flex items-center justify-center">
+						<i class="ri-checkbox-circle-line text-purple-600 dark:text-purple-400 text-xl"></i>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- Current Delivery Banner -->
-<div v-if="deliveryStore.activeOrder" class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-md border-l-4 border-blue-500 mb-4">
-	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-		<div class="flex items-start gap-4">
-			<!-- Icono más sutil -->
-			<div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-				<i class="ri-truck-line text-blue-600 dark:text-blue-400 text-xl"></i>
+		<!-- Quick tips based on state -->
+		<div v-if="driverStore.isOnline && !driverStore.hasActiveOrder" class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 flex items-center gap-3">
+			<i class="ri-information-line text-blue-600 dark:text-blue-400 text-xl"></i>
+			<p class="text-sm text-blue-800 dark:text-blue-200">
+				<span class="font-semibold">{{ filteredOrders.length }} pedidos disponibles</span> · Toca cualquier pedido para ver detalles
+			</p>
+		</div>
+
+		<div v-if="driverStore.hasActiveOrder" class="bg-yellow-50 dark:bg-yellow-900/20 rounded-xl p-4 flex items-center gap-3">
+			<i class="ri-timer-line text-yellow-600 dark:text-yellow-400 text-xl"></i>
+			<p class="text-sm text-yellow-800 dark:text-yellow-200">
+				<span class="font-semibold">Entrega en curso</span> · Completa esta entrega para recibir nuevos pedidos
+			</p>
+		</div>
+
+		<!-- Current Delivery Banner - IMPROVED UI -->
+		<div v-if="deliveryStore.activeOrder" class="relative overflow-hidden bg-gradient-to-br from-orange-300 via-orange-400 to-orange-400 rounded-2xl shadow-xl mb-6 border-2 border-orange-400">
+			<!-- Background pattern -->
+			<div class="absolute inset-0 opacity-10">
+				<div class="absolute -right-10 -top-10 w-40 h-40 bg-white rounded-full"></div>
+				<div class="absolute -left-10 -bottom-10 w-40 h-40 bg-white rounded-full"></div>
 			</div>
 			
-			<!-- Contenido más detallado -->
-			<div class="flex-1">
-				<div class="flex items-center flex-wrap gap-2 mb-1">
-					<h2 class="font-semibold text-gray-800 dark:text-gray-200">Entrega en curso</h2>
-					<span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs rounded-full font-medium">
-						Pedido #{{ deliveryStore.activeOrder.id }}
-					</span>
-					<span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs rounded-full font-medium flex items-center gap-1">
-						<span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-						{{ deliveryStore.activeOrder.status === 'accepted' ? 'Aceptado' : 'En camino' }}
+			<div class="relative p-6">
+				<!-- Header with clear status -->
+				<div class="flex items-center justify-between mb-4">
+					<div class="flex items-center gap-3">
+						<div class="w-[4.5rem] h-[4.5rem] bg-white/60 backdrop-blur rounded-2xl flex items-center justify-center">
+							<i class="ri-truck-line text-orange-500 text-4xl"></i>
+						</div>
+						<div>
+							<div class="flex items-center gap-2 mb-1">
+								<h2 class="text-5xl font-bold text-orange-900">Entrega activa</h2>
+								<span class="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
+									URGENTE
+								</span>
+							</div>
+							<p class="text-orange-700">Completa esta entrega para recibir nuevos pedidos</p>
+						</div>
+					</div>
+					<span class="px-4 py-2 bg-white/20 backdrop-blur text-white font-mono text-sm rounded-xl">
+						#{{ deliveryStore.activeOrder.id }}
 					</span>
 				</div>
-				
-				<!-- Detalles de la entrega -->
-				<div class="space-y-2 mt-2">
-					<!-- Origen -->
-					<div class="flex items-start gap-2 text-sm">
-						<div class="w-5 h-5 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-							<i class="ri-store-2-line text-orange-600 dark:text-orange-400 text-xs"></i>
+
+				<!-- Two-column layout for better readability -->
+				<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+					<!-- Pickup Column -->
+					<div class="bg-orange-50 backdrop-blur rounded-xl p-4">
+						<div class="flex items-center gap-2 mb-3">
+							<div class="w-8 h-8 bg-orange-400 rounded-lg flex items-center justify-center">
+								<i class="ri-store-2-line text-white"></i>
+							</div>
+							<span class="text-orange-800 font-bold text-xl text-center">RECOGER EN</span>
 						</div>
-						<div class="flex-1">
-							<p class="text-xs text-gray-500 dark:text-gray-400">Recoger en:</p>
-							<p class="font-medium text-gray-800 dark:text-gray-200">{{ deliveryStore.activeOrder.pickup }}</p>
+						<p class="text-orange-800 text-lg font-medium mb-2">{{ deliveryStore.activeOrder.pickup }}</p>
+						<div class="flex items-center gap-2 text-black text-sm">
+							<i class="ri-time-line"></i>
+							<span>Preparando pedido</span>
+						</div>
+					</div>
+
+					<!-- Dropoff Column -->
+					<div class="bg-green-50 backdrop-blur rounded-xl p-4">
+						<div class="flex items-center gap-2 mb-3">
+							<div class="w-8 h-8 bg-green-400 rounded-lg flex items-center justify-center">
+								<i class="ri-map-pin-line text-white"></i>
+							</div>
+							<span class="text-green-800 font-bold text-xl text-center">ENTREGAR EN</span>
+						</div>
+						<p class="text-green-800 text-lg font-medium mb-2">{{ deliveryStore.activeOrder.dropoff }}</p>
+						<div class="flex items-center gap-2 text-black text-sm">
+							<i class="ri-road-map-line"></i>
+							<span>{{ deliveryStore.activeOrder.distance || '2.5' }} km · 15 min</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Important info row -->
+				<div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-4 border-t border-white/20">
+					<div class="flex items-center gap-4">
+						<div class="flex items-center gap-2">
+							<i class="ri-money-dollar-circle-line text-white text-2xl"></i>
+							<div>
+								<p class="text-orange-800 text-sm font-semibold">Ganancia total</p>
+								<p class="text-white text-2xl font-bold">${{ deliveryStore.activeOrder.amount }}</p>
+							</div>
+						</div>
+						<div class="w-px h-10 bg-white/20"></div>
+						<div class="flex items-center gap-2">
+							<i class="ri-customer-service-line text-white text-2xl"></i>
+							<div>
+								<p class="text-orange-800 text-sm font-semibold">Cliente</p>
+								<p class="text-white font-medium">Juan Pérez</p>
+							</div>
 						</div>
 					</div>
 					
-					<!-- Línea conectora -->
-					<div class="flex items-center ml-2">
-						<div class="w-5 h-5 flex items-center justify-center">
-							<i class="ri-arrow-down-line text-gray-400"></i>
-						</div>
-					</div>
-					
-					<!-- Destino -->
-					<div class="flex items-start gap-2 text-sm">
-						<div class="w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-							<i class="ri-map-pin-line text-green-600 dark:text-green-400 text-xs"></i>
-						</div>
-						<div class="flex-1">
-							<p class="text-xs text-gray-500 dark:text-gray-400">Entregar en:</p>
-							<p class="font-medium text-gray-800 dark:text-gray-200">{{ deliveryStore.activeOrder.dropoff }}</p>
-						</div>
-					</div>
-				</div>
-				
-				<!-- Info adicional -->
-				<div class="flex items-center gap-4 mt-3 text-xs text-gray-500 dark:text-gray-400">
-					<div class="flex items-center gap-1">
-						<i class="ri-money-dollar-circle-line"></i>
-						<span>${{ deliveryStore.activeOrder.amount }} (incluye propina)</span>
-					</div>
-					<div class="flex items-center gap-1">
-						<i class="ri-road-map-line"></i>
-						<span>{{ deliveryStore.activeOrder.distance || '2.5' }} km</span>
-					</div>
+					<button
+						@click="goToDeliveryDetails"
+						class="px-6 py-3 bg-white text-orange-600 hover:bg-orange-50 rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl flex items-center gap-2"
+					>
+						Ver detalles completos
+						<i class="ri-arrow-right-line"></i>
+					</button>
 				</div>
 			</div>
 		</div>
-		
-		<!-- Botón de acción -->
-		<button
-			@click="goToDeliveryDetails"
-			class="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-medium transition-all shadow-sm hover:shadow whitespace-nowrap"
-		>
-			<i class="ri-eye-line"></i>
-			Ver detalles de entrega
-			<i class="ri-arrow-right-s-line"></i>
-		</button>
-	</div>
-</div>
 
 		<!-- Search and Filters -->
 		<div v-if="driverStore.isOnline && !driverStore.hasActiveOrder" class="space-y-3">
@@ -231,13 +265,6 @@
 				</button>
 			</div>
 		</div>
-		
-		<!-- DEBUG: Pon esto justo después del header -->
-<div class="bg-red-100 p-4 mb-4 text-xs font-mono">
-  <p><strong>🔍 DEBUG activeOrder:</strong></p>
-  <pre>{{ JSON.stringify(deliveryStore.activeOrder, null, 2) }}</pre>
-  <p><strong>🔍 DEBUG hasActiveOrder:</strong> {{ deliveryStore.hasActiveOrder }}</p>
-</div>
 
 		<!-- Available Orders -->
 		<div class="space-y-4">
@@ -278,7 +305,7 @@
 					<div
 						v-for="order in filteredOrders"
 						:key="order.id"
-						class="group bg-white dark:bg-gray-800 rounded-xl p-5 shadow-md hover:shadow-lg transition-all border border-gray-100 dark:border-gray-700 hover:border-primary-200 dark:hover:border-primary-800"
+						class="group bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border-l-4 border-transparent hover:border-primary-500 hover:scale-[1.02]"
 					>
 						<!-- Order Header -->
 						<div class="flex justify-between items-start mb-3">
@@ -740,12 +767,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* Primary color utilities */
-.text-primary-500 { color: #3b82f6; }
-.dark .dark\:text-primary-400 { color: #60a5fa; }
-.bg-primary-500 { background-color: #3b82f6; }
-.hover\:bg-primary-600:hover { background-color: #2563eb; }
-.focus\:ring-primary-500:focus { --tw-ring-color: #3b82f6; }
+
 
 /* Animations */
 @keyframes pulse {
