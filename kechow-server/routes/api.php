@@ -11,7 +11,7 @@ require app_path('Modules/Order/routes.php');
 require app_path('Modules/Cart/routes.php');
 require app_path('Modules/Driver/routes.php');
 
-Route::prefix('delivery')->middleware('auth:sanctum')->group(function () {
+Route::prefix('delivery')->middleware(['auth:sanctum', 'role:delivery'])->group(function () {
     Route::get('/availability', [DeliveryController::class, 'getAvailability']);
     Route::post('/availability', [DeliveryController::class, 'updateAvailability']);
     Route::get('/jobs/available', [DeliveryController::class, 'getAvailableJobs']);
@@ -21,6 +21,7 @@ Route::prefix('delivery')->middleware('auth:sanctum')->group(function () {
     Route::get('/orders/completed', [DeliveryController::class, 'getCompletedOrders']);
     Route::patch('/orders/{orderId}/status', [DeliveryController::class, 'updateOrderStatus']);
     Route::get('/stats', [DeliveryController::class, 'getStats']);
+    Route::get('/earnings', [DeliveryController::class, 'getEarnings']);
     Route::get('/settings', [DeliveryController::class, 'getSettings']);
     Route::patch('/settings', [DeliveryController::class, 'updateSettings']);
 });
