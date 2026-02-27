@@ -4,27 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Restaurant\Models\Restaurant;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\JsonResponse;
-use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
     /**
-     * Handle user login and return a JWT token.
-     *
-     * @param Request $request
-     * @return JsonResponse
+     * SPA auth: session-based (HttpOnly cookie) when from stateful domain.
+     * Returns user only; no token in response. Session cookie is set by Laravel.
      */
     public function login(Request $request): JsonResponse
     {
-
-        Log::info('Login attempt', $request->all());
-
-
         $request->validate([
             'email'    => 'required|string|email',
             'password' => 'required|string|min:6',
@@ -38,7 +31,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('api')->plainTextToken;
+        Auth::login($user, $request->boolean('remember', true));
 
         return response()->json([
             'user' => [
@@ -47,15 +40,11 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role' => $user->role,
             ],
-            'token' => $token,
         ]);
     }
 
     /**
-     * Handle user registration and return a JWT token.
-     *
-     * @param Request $request
-     * @return JsonResponse
+     * Register and log in via session (HttpOnly cookie). Returns user only.
      */
     public function register(Request $request): JsonResponse
     {
@@ -92,7 +81,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $token = $user->createToken('api')->plainTextToken;
+        Auth::login($user, false);
 
         return response()->json([
             'user' => [
@@ -101,7 +90,49 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role'  => $user->role,
             ],
-            'token' => $token,
         ], 201);
+    }
+
+    /**
+     * Return current authenticated user (session or Bearer token).
+     */
+    public function user(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        return response()->json([
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
+        ]);
+    }
+
+    /**
+     * Log out and invalidate session. Revoke current API token if request was token-based.
+     */
+    public function logout(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if ($user) {
+            try {
+                $token = $user->currentAccessToken();
+                if ($token) {
+                    $token->delete();
+                }
+            } catch (\Throwable $e) {
+                // Session-based auth: no token to revoke
+            }
+        }
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(null, 204);
     }
 }
