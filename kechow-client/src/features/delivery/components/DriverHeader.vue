@@ -32,7 +32,7 @@
             {{ statusText }}
           </span>
           <span v-if="hasActiveOrder" class="text-xs text-gray-500 dark:text-gray-400">
-            • {{ $t('delivery.active_order') }}
+            • Pedido activo
           </span>
         </div>
       </div>
@@ -42,7 +42,7 @@
     <div class="flex items-center gap-4">
       <!-- Earnings Today (Mobile) -->
       <div class="sm:hidden">
-        <p class="text-xs text-gray-500 dark:text-gray-400">{{ $t('delivery.today') }}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">Hoy</p>
         <p class="text-lg font-bold text-green-600">${{ formatEarnings(stats.earnings) }}</p>
       </div>
       
@@ -57,7 +57,7 @@
           isOnline ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600',
           hasActiveOrder ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:scale-105',
         ]"
-        :aria-label="isOnline ? $t('delivery.go_offline') : $t('delivery.go_online')"
+        :aria-label="isOnline ? 'Desconectar' : 'Conectar'"
       >
         <span
           :class="[
@@ -77,7 +77,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import type { DriverStatus } from '../types'
 
 const props = defineProps<{
@@ -99,8 +98,6 @@ defineEmits<{
   (e: 'toggle-status'): void
 }>()
 
-const { t } = useI18n()
-
 const statusColorClass = computed(() => {
   if (props.hasActiveOrder) return 'bg-blue-500'
   return props.isOnline ? 'bg-green-500 animate-pulse' : 'bg-gray-500'
@@ -116,17 +113,13 @@ const statusBadgeClass = computed(() => {
 })
 
 const statusText = computed(() => {
-  if (props.hasActiveOrder) return t('delivery.on_delivery')
-  return props.isOnline ? t('delivery.online') : t('delivery.offline')
+  if (props.hasActiveOrder) return 'En entrega'
+  return props.isOnline ? 'En línea' : 'Desconectado'
 })
 
 const statusMessage = computed(() => {
-  if (props.hasActiveOrder) {
-    return t('delivery.active_delivery_message')
-  }
-  return props.isOnline 
-    ? t('delivery.ready_for_orders') 
-    : t('delivery.offline_message')
+  if (props.hasActiveOrder) return 'Tienes una entrega en curso.'
+  return props.isOnline ? 'Listo para recibir pedidos.' : 'Activa tu disponibilidad para ver pedidos.'
 })
 
 const formatEarnings = (value: number) => {

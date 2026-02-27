@@ -45,9 +45,19 @@ export const getCompletedOrders = async (page = 1, perPage = 15) => {
   return response.data;
 };
 
+export const getStats = async () => {
+  const response = await api.get('/delivery/stats');
+  return response.data;
+};
+
 export const getEarnings = async (period?: 'week' | 'month') => {
   const response = await api.get('/delivery/earnings', {
     params: period ? { period } : undefined,
   });
+  return response.data;
+};
+
+export const getOrderDetail = async (orderId: number) => {
+  const response = await api.get(`/delivery/orders/${orderId}`);
   return response.data;
 };

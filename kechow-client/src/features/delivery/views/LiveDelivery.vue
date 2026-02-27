@@ -4,10 +4,10 @@
 		<div class="flex items-center justify-between">
 			<div>
 				<h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-					{{ t('liveDelivery') }}
+					Entrega en vivo
 				</h1>
 				<p class="text-gray-600 dark:text-gray-400 mt-1">
-					{{ t('trackYourDelivery') }}
+					Sigue tu entrega en tiempo real
 				</p>
 			</div>
 			<button
@@ -29,7 +29,7 @@
 						{{ deliveryStore.activeOrder.orderNumber }}
 					</h2>
 					<p class="text-sm text-gray-600 dark:text-gray-400">
-						{{ t('deliveryFee') }}: ${{ deliveryStore.activeOrder.fee.toFixed(2) }}
+						Tarifa de entrega: ${{ (deliveryStore.activeOrder.fee ?? 0).toFixed(2) }}
 					</p>
 				</div>
 				<div class="text-right">
@@ -78,7 +78,7 @@
 									: 'text-gray-500 dark:text-gray-400',
 							]"
 						>
-							{{ t(step.label) }}
+							{{ stepLabel(step.label) }}
 						</span>
 					</div>
 				</div>
@@ -92,15 +92,15 @@
 					class="flex-1 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
 				>
 					<i class="ri-shopping-bag-line mr-2"></i>
-					{{ t('markPickedUp') }}
+					Marcar recogido
 				</button>
 				<button
 					v-if="currentStepIndex === 1"
-					@click="updateStatus('on_the_way')"
+					@click="updateStatus('in_transit')"
 					class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
 				>
 					<i class="ri-truck-line mr-2"></i>
-					{{ t('startDelivery') }}
+					Iniciar entrega
 				</button>
 				<button
 					v-if="currentStepIndex === 2"
@@ -108,14 +108,15 @@
 					class="flex-1 px-6 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
 				>
 					<i class="ri-checkbox-circle-line mr-2"></i>
-					{{ t('markDelivered') }}
+					Marcar entregado
 				</button>
 				<a
+					v-if="deliveryStore.activeOrder?.customer?.phone"
 					:href="`tel:${deliveryStore.activeOrder.customer.phone}`"
 					class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
 				>
 					<i class="ri-phone-line mr-2"></i>
-					{{ t('callCustomer') }}
+					Llamar al cliente
 				</a>
 			</div>
 		</div>
@@ -126,29 +127,29 @@
 		>
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
 				<i class="ri-map-pin-line mr-2"></i>
-				{{ t('currentLocation') }}
+				Ubicación actual
 			</h3>
 			<div v-if="deliveryStore.currentLocation" class="space-y-2">
 				<div class="flex items-center justify-between">
-					<span class="text-gray-600 dark:text-gray-400">{{ t('latitude') }}:</span>
+					<span class="text-gray-600 dark:text-gray-400">Latitud:</span>
 					<span class="font-mono text-gray-900 dark:text-white">
 						{{ deliveryStore.currentLocation.latitude.toFixed(6) }}
 					</span>
 				</div>
 				<div class="flex items-center justify-between">
-					<span class="text-gray-600 dark:text-gray-400">{{ t('longitude') }}:</span>
+					<span class="text-gray-600 dark:text-gray-400">Longitud:</span>
 					<span class="font-mono text-gray-900 dark:text-white">
 						{{ deliveryStore.currentLocation.longitude.toFixed(6) }}
 					</span>
 				</div>
 				<div class="flex items-center justify-between">
-					<span class="text-gray-600 dark:text-gray-400">{{ t('accuracy') }}:</span>
+					<span class="text-gray-600 dark:text-gray-400">Precisión:</span>
 					<span class="font-mono text-gray-900 dark:text-white">
 						{{ deliveryStore.currentLocation.accuracy?.toFixed(0) }}m
 					</span>
 				</div>
 				<div class="flex items-center justify-between">
-					<span class="text-gray-600 dark:text-gray-400">{{ t('lastUpdate') }}:</span>
+					<span class="text-gray-600 dark:text-gray-400">Última actualización:</span>
 					<span class="text-sm text-gray-500 dark:text-gray-400">
 						{{ formatTime(deliveryStore.currentLocation.timestamp) }}
 					</span>
@@ -156,7 +157,7 @@
 			</div>
 			<div v-else class="text-center py-4 text-gray-500 dark:text-gray-400">
 				<i class="ri-map-pin-line text-2xl mb-2"></i>
-				<p>{{ t('locationNotAvailable') }}</p>
+				<p>Ubicación no disponible</p>
 			</div>
 		</div>
 
@@ -166,7 +167,7 @@
 			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-primary-300 dark:border-gray-700 space-y-4"
 		>
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-				{{ t('deliveryRoute') }}
+				Ruta de entrega
 			</h3>
 
 			<!-- Pickup -->
@@ -224,13 +225,13 @@
 			<!-- Distance & ETA -->
 			<div class="flex items-center justify-between pt-4 border-t border-primary-300 dark:border-gray-700">
 				<div class="text-center">
-					<p class="text-sm text-gray-600 dark:text-gray-400">{{ t('distance') }}</p>
+					<p class="text-sm text-gray-600 dark:text-gray-400">Distancia</p>
 					<p class="text-lg font-bold text-gray-900 dark:text-white">
-						{{ deliveryStore.activeOrder.distance }} km
+						{{ deliveryStore.activeOrder.distance ?? 0 }} km
 					</p>
 				</div>
 				<div class="text-center">
-					<p class="text-sm text-gray-600 dark:text-gray-400">{{ t('estimatedTime') }}</p>
+					<p class="text-sm text-gray-600 dark:text-gray-400">Tiempo estimado</p>
 					<p class="text-lg font-bold text-gray-900 dark:text-white">
 						{{ deliveryStore.activeOrder.estimatedTime }} min
 					</p>
@@ -244,7 +245,7 @@
 			class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-primary-300 dark:border-gray-700"
 		>
 			<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-				{{ t('orderItems') }}
+				Artículos del pedido
 			</h3>
 			<div class="space-y-2">
 				<div
@@ -262,17 +263,25 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useDeliveryStore } from '../store/delivery.store';
 import type { DeliveryStatus } from '../types';
 
-const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 const deliveryStore = useDeliveryStore();
 
 const orderId = computed(() => route.params.id as string);
+
+const stepLabels: Record<string, string> = {
+	accepted: 'Aceptado',
+	pickedUp: 'Recogido',
+	picked_up: 'Recogido',
+	onTheWay: 'En camino',
+	in_transit: 'En camino',
+	delivered: 'Entregado',
+};
+const stepLabel = (label: string) => stepLabels[label] ?? label;
 
 // Delivery steps
 const deliverySteps = computed(() => {

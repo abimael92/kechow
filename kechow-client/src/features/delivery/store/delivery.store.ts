@@ -11,6 +11,7 @@ import {
   updateOrderStatus,
   getCompletedOrders,
   getEarnings,
+  getOrderDetail as fetchOrderDetailApi,
 } from '../services/driver.service';
 
 export const useDeliveryStore = defineStore('delivery', () => {
@@ -212,6 +213,23 @@ export const useDeliveryStore = defineStore('delivery', () => {
     }
   };
 
+  const orderDetail = ref<any | null>(null);
+  const orderDetailLoading = ref(false);
+  const orderDetailError = ref<string | null>(null);
+
+  const fetchOrderDetail = async (orderId: number) => {
+    try {
+      orderDetailLoading.value = true;
+      orderDetailError.value = null;
+      orderDetail.value = await fetchOrderDetailApi(orderId);
+    } catch (err: any) {
+      orderDetailError.value = err.message;
+      orderDetail.value = null;
+    } finally {
+      orderDetailLoading.value = false;
+    }
+  };
+
   // Completed orders (paginated)
   const loadCompletedOrders = async (page = 1) => {
     try {
@@ -240,6 +258,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
     isOnline.value = false;
     completedOrders.value = [];
     completedOrdersList.value = { orders: [], total: 0, current_page: 1, per_page: 15 };
+    orderDetail.value = null;
     earningsSummary.value = null;
     loading.value = false;
     error.value = null;
@@ -273,6 +292,10 @@ export const useDeliveryStore = defineStore('delivery', () => {
     loadEarningsSummary,
     loadCompletedOrders,
     rejectOrder,
+    orderDetail,
+    orderDetailLoading,
+    orderDetailError,
+    fetchOrderDetail,
     $reset,
   };
 });

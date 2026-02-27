@@ -845,5 +845,16 @@
         "mexican": "Mexicana",
         "dessert": "Postres",
         "other": "Otro"
+    },
+    "delivery": {
+        "orderDetail": "Detalle del pedido",
+        "status": "Estado",
+        "pickup": "Recogida",
+        "dropoff": "Entrega",
+        "amount": "Monto",
+        "notes": "Notas",
+        "viewLive": "Ver entrega en vivo",
+        "backToOrders": "Volver a pedidos",
+        "noOrder": "No se encontró el pedido"
     }
 }

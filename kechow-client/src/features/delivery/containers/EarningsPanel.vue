@@ -30,7 +30,7 @@
 						updateStats('week');
 					"
 				>
-					{{ $t('thisWeek') }}
+					Esta semana
 				</button>
 				<button
 					class="px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer whitespace-nowrap"
@@ -44,7 +44,7 @@
 						updateStats('month');
 					"
 				>
-					{{ $t('thisMonth') }}
+					Este mes
 				</button>
 			</div>
 		</div>
@@ -53,13 +53,13 @@
 		<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
 			<div
 				v-for="card in statsCards"
-				:key="card.titleKey"
+				:key="card.title"
 				class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 min-w-0"
 			>
 				<div class="flex items-center justify-between">
 					<div class="min-w-0">
 						<p class="text-gray-600 text-sm sm:text-base truncate">
-							{{ $t(card.titleKey) }}
+							{{ card.title }}
 						</p>
 						<p class="text-2xl sm:text-3xl font-bold text-gray-900 truncate">
 							{{ card.value }}
@@ -86,12 +86,12 @@
 			class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 w-full overflow-x-auto"
 		>
 			<h3 class="text-lg font-semibold text-gray-900 mb-6">
-				{{ $t('earningsTrend') }}
+				Tendencia de ganancias
 			</h3>
 			<LineChart :chart-data="trendChartData" :chart-options="chartOptions" v-if="deliveryStore.earningsSummary" />
 			<div v-else class="text-center py-8 text-gray-500">
 				<i class="ri-line-chart-line text-4xl mb-2"></i>
-				<p>{{ t('noDataAvailable') }}</p>
+				<p>No hay datos disponibles</p>
 			</div>
 		</div>
 
@@ -101,7 +101,7 @@
 				class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 w-full overflow-x-auto"
 			>
 				<h3 class="text-lg font-semibold text-gray-900 mb-6">
-					{{ $t('earningsBreakdown') }}
+					Desglose de ganancias
 				</h3>
 				<PieChart
 					:chart-data="breakdownChartData"
@@ -116,12 +116,12 @@
 		>
 			<div class="flex justify-between items-center mb-6">
 				<h3 class="text-lg font-semibold text-gray-900">
-					{{ $t('paymentHistory') }}
+					Historial de pagos
 				</h3>
 				<button
 					class="text-blue-600 hover:text-blue-800 text-sm font-medium cursor-pointer"
 				>
-					{{ $t('viewAll') }}
+					Ver todo
 				</button>
 			</div>
 			<div class="space-y-4">
@@ -148,7 +148,7 @@
 						<span
 							class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
 						>
-							{{ $t(payout.status.toLowerCase()) }}
+							{{ payout.status === 'completed' ? 'Completado' : payout.status }}
 						</span>
 					</div>
 				</div>
@@ -164,8 +164,8 @@
 					<CurrencyDollarIcon
 						class="text-blue-600 text-2xl mb-2 w-8 h-8 mx-auto"
 					/>
-					<p class="font-medium text-gray-900">{{ $t('downloadReport') }}</p>
-					<p class="text-sm text-gray-500">{{ $t('exportEarningsData') }}</p>
+					<p class="font-medium text-gray-900">Descargar informe</p>
+					<p class="text-sm text-gray-500">Exportar datos de ganancias</p>
 				</div>
 			</button>
 			<button
@@ -175,8 +175,8 @@
 					<BadgeCheckIcon
 						class="text-green-600 text-2xl mb-2 w-8 h-8 mx-auto"
 					/>
-					<p class="font-medium text-gray-900">{{ $t('paymentMethods') }}</p>
-					<p class="text-sm text-gray-500">{{ $t('manageBankAccounts') }}</p>
+					<p class="font-medium text-gray-900">Métodos de pago</p>
+					<p class="text-sm text-gray-500">Gestionar cuentas bancarias</p>
 				</div>
 			</button>
 			<button
@@ -186,8 +186,8 @@
 					<CalculatorIcon
 						class="text-purple-600 text-2xl mb-2 w-8 h-8 mx-auto"
 					/>
-					<p class="font-medium text-gray-900">{{ $t('taxDocuments') }}</p>
-					<p class="text-sm text-gray-500">{{ $t('taxFormsReceipts') }}</p>
+					<p class="font-medium text-gray-900">Documentos fiscales</p>
+					<p class="text-sm text-gray-500">Formularios y recibos fiscales</p>
 				</div>
 			</button>
 		</div>
@@ -196,7 +196,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import {
 	Chart as ChartJS,
 	Title,
@@ -232,7 +231,6 @@ ChartJS.register(
 	Filler
 );
 
-const { t } = useI18n();
 const deliveryStore = useDeliveryStore();
 const period = ref('week');
 
@@ -253,56 +251,36 @@ const statsCards = computed(() => {
 
 	if (!earnings) {
 		return [
-			{ titleKey: 'totalEarnings', value: '$0.00', change: t('noData'), changeColor: 'text-gray-600', icon: CurrencyDollarIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
-			{ titleKey: 'deliveries', value: '0', change: t('noData'), changeColor: 'text-gray-600', icon: TruckIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
-			{ titleKey: 'hoursOnline', value: '0h', change: t('noData'), changeColor: 'text-gray-600', icon: ClockIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
-			{ titleKey: 'avgRating', value: '0.0', change: '', changeColor: '', icon: StarIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
+			{ title: 'Ganancias totales', value: '$0.00', change: 'Sin datos', changeColor: 'text-gray-600', icon: CurrencyDollarIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
+			{ title: 'Entregas', value: '0', change: 'Sin datos', changeColor: 'text-gray-600', icon: TruckIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
+			{ title: 'Horas en línea', value: '0h', change: 'Sin datos', changeColor: 'text-gray-600', icon: ClockIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
+			{ title: 'Calificación', value: '0.0', change: '', changeColor: '', icon: StarIcon, iconColor: 'text-gray-600', bgColor: 'bg-gray-100' },
 		];
 	}
 
 	return [
-		{ titleKey: 'totalEarnings', value: `$${selectedVal.toFixed(2)}`, change: period.value === 'week' ? t('thisWeek') : t('thisMonth'), changeColor: 'text-green-600', icon: CurrencyDollarIcon, iconColor: 'text-green-600', bgColor: 'bg-green-100' },
-		{ titleKey: 'deliveries', value: '—', change: t('noData'), changeColor: 'text-blue-600', icon: TruckIcon, iconColor: 'text-blue-600', bgColor: 'bg-blue-100' },
-		{ titleKey: 'hoursOnline', value: '—', change: '', changeColor: 'text-purple-600', icon: ClockIcon, iconColor: 'text-purple-600', bgColor: 'bg-purple-100' },
-		{ titleKey: 'avgRating', value: '—', change: '', changeColor: '', icon: StarIcon, iconColor: 'text-yellow-600', bgColor: 'bg-yellow-100' },
+		{ title: 'Ganancias totales', value: `$${selectedVal.toFixed(2)}`, change: period.value === 'week' ? 'Esta semana' : 'Este mes', changeColor: 'text-green-600', icon: CurrencyDollarIcon, iconColor: 'text-green-600', bgColor: 'bg-green-100' },
+		{ title: 'Entregas', value: '—', change: 'Sin datos', changeColor: 'text-blue-600', icon: TruckIcon, iconColor: 'text-blue-600', bgColor: 'bg-blue-100' },
+		{ title: 'Horas en línea', value: '—', change: '', changeColor: 'text-purple-600', icon: ClockIcon, iconColor: 'text-purple-600', bgColor: 'bg-purple-100' },
+		{ title: 'Calificación', value: '—', change: '', changeColor: '', icon: StarIcon, iconColor: 'text-yellow-600', bgColor: 'bg-yellow-100' },
 	];
 });
 
 const payouts = [
-	{
-		title: t('weeklyPayout'),
-		date: '2024-01-15',
-		amount: 245.5,
-		status: 'completed',
-	},
-	{
-		title: t('weeklyPayout'),
-		date: '2024-01-08',
-		amount: 198.75,
-		status: 'completed',
-	},
-	{
-		title: t('weeklyPayout'),
-		date: '2024-01-01',
-		amount: 267.25,
-		status: 'completed',
-	},
-	{
-		title: t('weeklyPayout'),
-		date: '2023-12-25',
-		amount: 189.5,
-		status: 'completed',
-	},
+	{ title: 'Pago semanal', date: '2024-01-15', amount: 245.5, status: 'completed' },
+	{ title: 'Pago semanal', date: '2024-01-08', amount: 198.75, status: 'completed' },
+	{ title: 'Pago semanal', date: '2024-01-01', amount: 267.25, status: 'completed' },
+	{ title: 'Pago semanal', date: '2023-12-25', amount: 189.5, status: 'completed' },
 ];
 
 const trendChartData = computed(() => {
 	const earnings = deliveryStore.earningsSummary;
 	const weekVal = typeof earnings?.week === 'number' ? earnings.week : 0;
 	return {
-		labels: [t('dayMon'), t('dayTue'), t('dayWed'), t('dayThu'), t('dayFri'), t('daySat'), t('daySun')],
+		labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
 		datasets: [
 			{
-				label: t('earnings'),
+				label: 'Ganancias',
 				data: weekVal > 0 ? [weekVal * 0.1, weekVal * 0.15, weekVal * 0.12, weekVal * 0.18, weekVal * 0.24, weekVal * 0.16, weekVal * 0.2] : [0, 0, 0, 0, 0, 0, 0],
 				fill: true,
 				backgroundColor: 'rgba(59, 130, 246, 0.3)',
@@ -314,7 +292,7 @@ const trendChartData = computed(() => {
 });
 
 const breakdownChartData = {
-	labels: [t('deliveryFees'), t('tips'), t('bonuses'), t('peakHour')],
+	labels: ['Tarifas de entrega', 'Propinas', 'Bonos', 'Hora pico'],
 	datasets: [
 		{
 			data: [245.5, 178.25, 67, 89.25],

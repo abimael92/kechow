@@ -1,10 +1,10 @@
 // src/features/delivery/services/auth.service.ts
-import api from '../../../app/lib/axios';
+import api, { serverBaseUrl } from '../../lib/axios';
 
-// Función para CSRF cookie (no bloqueante)
+// Sanctum CSRF cookie is at server root, not under /api/v1
 const ensureCsrfCookie = async () => {
   try {
-    await api.get('/sanctum/csrf-cookie');
+    await api.get(`${serverBaseUrl}/sanctum/csrf-cookie`);
     if (import.meta.env.DEV) {
       console.log('✅ CSRF cookie obtenida');
     }

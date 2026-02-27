@@ -1,7 +1,7 @@
 // src/features/delivery/store/stats.store.ts
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { getAvailability } from '../services/driver.service';
+import { getStats as getStatsApi } from '../services/driver.service';
 
 interface Stats {
   todayOrders: number;
@@ -33,17 +33,11 @@ export const useStatsStore = defineStore('stats', () => {
     error.value = null;
 
     try {
-      // Usando getAvailability que ya existe en tu servicio
-      const response = await getAvailability();
-
-      // Ajusta según la estructura de tu respuesta real
-      // Asumiendo que la disponibilidad incluye estadísticas del driver
-      const data = response.data || response;
-
-      todayOrders.value = data.today_orders || data.todayOrders || 0;
-      earnings.value = data.earnings || 0;
-      rating.value = data.rating || 0;
-      completed.value = data.completed_deliveries || data.completed || 0;
+      const data = await getStatsApi();
+      todayOrders.value = data.todayOrders ?? 0;
+      earnings.value = data.earnings ?? 0;
+      rating.value = data.rating ?? 0;
+      completed.value = data.completed_deliveries ?? data.completed ?? 0;
 
       return getStats();
     } catch (err) {
