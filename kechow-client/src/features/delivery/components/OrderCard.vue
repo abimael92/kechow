@@ -23,10 +23,10 @@
         
         <!-- Amount -->
         <div class="text-right">
-          <p class="text-xs text-gray-500">{{ $t('delivery.earnings') }}</p>
+          <p class="text-xs text-gray-500">Ganancias</p>
           <p class="text-xl font-bold text-green-600">${{ formatAmount(order.amount, order.tip) }}</p>
           <p v-if="order.tip" class="text-xs text-green-500">
-            +${{ order.tip }} {{ $t('delivery.tip') }}
+            +${{ order.tip }} propina
           </p>
         </div>
       </div>
@@ -39,7 +39,7 @@
             <i class="ri-store-2-line text-orange-600 dark:text-orange-400 text-xs"></i>
           </div>
           <div class="flex-1">
-            <p class="text-xs text-gray-500">{{ $t('delivery.pickup') }}:</p>
+            <p class="text-xs text-gray-500">Recogida:</p>
             <p class="text-sm text-gray-800 dark:text-gray-200">{{ order.pickup.address }}</p>
           </div>
         </div>
@@ -57,7 +57,7 @@
             <i class="ri-map-pin-line text-green-600 dark:text-green-400 text-xs"></i>
           </div>
           <div class="flex-1">
-            <p class="text-xs text-gray-500">{{ $t('delivery.dropoff') }}:</p>
+            <p class="text-xs text-gray-500">Entrega:</p>
             <p class="text-sm text-gray-800 dark:text-gray-200">{{ order.dropoff.address }}</p>
           </div>
         </div>
@@ -65,7 +65,7 @@
       
       <!-- Items Preview -->
       <div v-if="order.items?.length" class="mb-4">
-        <p class="text-xs text-gray-500 mb-2">{{ $t('delivery.items') }}:</p>
+        <p class="text-xs text-gray-500 mb-2">Artículos:</p>
         <div class="flex flex-wrap gap-1">
           <span
             v-for="item in order.items.slice(0, 3)"
@@ -78,7 +78,7 @@
             v-if="order.items.length > 3" 
             class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full text-gray-500"
           >
-            +{{ order.items.length - 3 }} {{ $t('delivery.more') }}
+            +{{ order.items.length - 3 }} más
           </span>
         </div>
       </div>
@@ -101,7 +101,7 @@
           class="flex-1 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
         >
           <i class="ri-eye-line mr-1"></i>
-          {{ $t('common.view') }}
+          Ver
         </button>
         
         <button
@@ -110,7 +110,7 @@
           class="flex-1 px-3 py-2 text-sm font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1"
         >
           <i class="ri-check-line"></i>
-          {{ $t('delivery.accept') }}
+          Aceptar
         </button>
       </div>
     </div>

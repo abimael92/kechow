@@ -43,7 +43,7 @@
 							class="font-semibold text-lg truncate"
 							:class="deliveryStore.isOnline ? 'text-green-600 dark:text-green-400' : 'text-neutral-500 dark:text-neutral-400'"
 						>
-							{{ deliveryStore.isOnline ? t('online') : t('offline') }}
+							{{ deliveryStore.isOnline ? 'En línea' : 'Desconectado' }}
 						</span>
 						<!-- Pulse Dot -->
 						<span
@@ -51,9 +51,8 @@
 							:class="deliveryStore.isOnline ? 'bg-green-500' : 'bg-neutral-400'"
 						></span>
 					</div>
-					<!-- FIXED: Use t() instead of $t() -->
 					<p class="text-sm text-neutral-600 dark:text-neutral-300 mt-1 truncate">
-						{{ deliveryStore.isOnline ? t('receivingOrders') : t('notReceivingOrders') }}
+						{{ deliveryStore.isOnline ? 'Recibiendo pedidos' : 'Activa tu disponibilidad para recibir pedidos' }}
 					</p>
 				</div>
 
@@ -85,7 +84,7 @@
 			class="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6 shadow-soft"
 		>
 			<h2 class="text-xl font-semibold text-neutral-900 dark:text-white mb-6">
-				Current Delivery
+				Entrega actual
 			</h2>
 
 			<!-- Improved Steps Container -->
@@ -121,14 +120,13 @@
 						</div>
 
 						<!-- Step Label -->
-						<!-- FIXED: Use t() for step labels -->
 						<span
 							:class="[
 								'text-sm mt-2 font-medium text-center px-1',
 								step.completed ? 'text-green-600 dark:text-green-400' : 'text-neutral-500 dark:text-neutral-400',
 							]"
 						>
-							{{ t(step.label) }}
+							{{ stepLabel(step.label) }}
 						</span>
 					</div>
 				</div>
@@ -144,7 +142,7 @@
 					class="px-8 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-button hover:shadow-button-hover transition-all duration-200 hover:-translate-y-0.5 cursor-pointer w-full md:w-auto group"
 				>
 					<i class="ri-checkbox-circle-line mr-2"></i>
-				{{ t('markNextStep') }}
+				Marcar siguiente paso
 				</button>
 			</div>
 
@@ -158,7 +156,7 @@
 				>
 					<div class="mb-4 md:mb-0">
 						<h4 class="font-semibold text-neutral-900 dark:text-white text-lg">
-							{{ t('order') }} {{ currentDelivery.id }}
+							Pedido {{ currentDelivery.id }}
 						</h4>
 						<p class="text-sm text-neutral-600 dark:text-neutral-300 mt-2">
 							<i class="ri-map-pin-line mr-2 text-primary-500"></i>
@@ -181,19 +179,20 @@
 						@click="markDelivered"
 						class="flex-1 px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-500 text-white rounded-xl font-medium shadow-button hover:shadow-button-hover transition-all duration-200 hover:-translate-y-0.5 cursor-pointer group flex items-center justify-center"
 					>
-						<i class="ri-checkbox-circle-line mr-2"></i>  {{ t('markDelivered') }}
+						<i class="ri-checkbox-circle-line mr-2"></i>  Marcar entregado
 					</button>
 					<a
-						:href="`tel:${deliveryStore.activeOrder?.customer.phone}`"
+						v-if="deliveryStore.activeOrder?.customer?.phone"
+						:href="`tel:${deliveryStore.activeOrder.customer.phone}`"
 						class="px-6 py-3 border border-primary-400 dark:border-primary-600 text-primary-700 dark:text-primary-400 rounded-xl font-medium hover:bg-primary-50 dark:hover:bg-primary-900/20 hover:border-primary-500 dark:hover:border-primary-500 hover:text-primary-800 dark:hover:text-primary-300 transition-all duration-200 hover:shadow-sm cursor-pointer flex items-center justify-center"
 					>
-						<i class="ri-phone-line mr-2"></i> {{ t('callCustomer') }}
+						<i class="ri-phone-line mr-2"></i> Llamar al cliente
 					</a>
 				</div>
 			</div>
 			<div v-else class="text-center py-8 text-neutral-500 dark:text-neutral-400">
 				<i class="ri-inbox-line text-4xl mb-2"></i>
-				<p>{{ t('noActiveDelivery') }}</p>
+				<p>No tienes una entrega activa</p>
 			</div>
 		</div>
 
@@ -206,8 +205,7 @@
 			>
 				<div class="flex items-center justify-between">
 					<div>
-						<!-- FIXED: Use t() instead of $t() -->
-						<p class="text-neutral-600 dark:text-neutral-300 text-sm font-medium">{{ t(stat.label) }}</p>
+						<p class="text-neutral-600 dark:text-neutral-300 text-sm font-medium">{{ stat.label }}</p>
 						<p class="text-2xl font-bold text-neutral-900 dark:text-white mt-1">{{ stat.value }}</p>
 						<p class="text-xs text-green-600 dark:text-green-400 mt-1">{{ stat.change }}</p>
 					</div>
@@ -230,7 +228,7 @@
 					<i class="ri-lightbulb-flash-line text-white"></i>
 				</div>
 				<h4 class="font-semibold text-lg text-neutral-900 dark:text-white">
-				{{ t('liveInsights') }}
+				Resumen en vivo
 				</h4>
 			</div>
 			<ul class="space-y-3">
@@ -249,12 +247,18 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useI18n } from 'vue-i18n';
 import { useDeliveryStore } from '../store/delivery.store';
 import type { DeliveryStatus } from '../types';
 
-const { t } = useI18n();
 const deliveryStore = useDeliveryStore();
+
+const stepLabels: Record<string, string> = {
+	accepted: 'Aceptado',
+	pickedUp: 'Recogido',
+	onTheWay: 'En camino',
+	delivered: 'Entregado',
+};
+const stepLabel = (label: string) => stepLabels[label] ?? label;
 
 // Initialize store on mount
 onMounted(async () => {
@@ -348,86 +352,39 @@ const markDelivered = async () => {
 	await deliveryStore.updateStatus(deliveryStore.activeOrder.id, 'delivered');
 };
 
-// Stats from earnings summary
+// Stats from earnings summary (API: today, week, month, total)
 const stats = computed(() => {
 	const earnings = deliveryStore.earningsSummary;
+	const todayVal = typeof earnings?.today === 'number' ? earnings.today : 0;
+
 	if (!earnings) {
 		return [
-			{
-				label: 'today',
-				value: 0,
-				change: t('noData'),
-				icon: 'ri-truck-line text-blue-600 dark:text-blue-400 w-5 h-5',
-				bg: 'bg-blue-100 dark:bg-blue-900/30',
-			},
-			{
-				label: 'earnings',
-				value: '$0',
-				change: t('noData'),
-				icon: 'ri-money-dollar-circle-line text-green-600 dark:text-green-400 w-5 h-5',
-				bg: 'bg-green-100 dark:bg-green-900/30',
-			},
-			{
-				label: 'distanceStat',
-				value: '0km',
-				change: t('noData'),
-				icon: 'ri-map-pin-line text-orange-600 dark:text-orange-400 w-5 h-5',
-				bg: 'bg-orange-100 dark:bg-orange-900/30',
-			},
-			{
-				label: 'online',
-				value: '0h',
-				change: t('noData'),
-				icon: 'ri-time-line text-indigo-600 dark:text-indigo-400 w-5 h-5',
-				bg: 'bg-indigo-100 dark:bg-indigo-900/30',
-			},
+			{ label: 'Hoy', value: '0', change: 'Sin datos', icon: 'ri-truck-line text-blue-600 dark:text-blue-400 w-5 h-5', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+			{ label: 'Ganancias', value: '$0', change: 'Sin datos', icon: 'ri-money-dollar-circle-line text-green-600 dark:text-green-400 w-5 h-5', bg: 'bg-green-100 dark:bg-green-900/30' },
+			{ label: 'Semana', value: '$0', change: 'Sin datos', icon: 'ri-map-pin-line text-orange-600 dark:text-orange-400 w-5 h-5', bg: 'bg-orange-100 dark:bg-orange-900/30' },
+			{ label: 'En línea', value: '—', change: 'Sin datos', icon: 'ri-time-line text-indigo-600 dark:text-indigo-400 w-5 h-5', bg: 'bg-indigo-100 dark:bg-indigo-900/30' },
 		];
 	}
 
 	return [
-		{
-			label: 'today',
-			value: earnings.today.deliveries,
-			change: t('changeFromYesterday', { value: earnings.today.deliveries }),
-			icon: 'ri-truck-line text-blue-600 dark:text-blue-400 w-5 h-5',
-			bg: 'bg-blue-100 dark:bg-blue-900/30',
-		},
-		{
-			label: 'earnings',
-			value: `$${earnings.today.earnings.toFixed(2)}`,
-			change: t('changeEarnings', { amount: earnings.today.earnings.toFixed(2) }),
-			icon: 'ri-money-dollar-circle-line text-green-600 dark:text-green-400 w-5 h-5',
-			bg: 'bg-green-100 dark:bg-green-900/30',
-		},
-		{
-			label: 'distanceStat',
-			value: `${earnings.today.distance.toFixed(1)}km`,
-			change: t('avgDistance', { distance: earnings.today.distance.toFixed(1) }),
-			icon: 'ri-map-pin-line text-orange-600 dark:text-orange-400 w-5 h-5',
-			bg: 'bg-orange-100 dark:bg-orange-900/30',
-		},
-		{
-			label: 'online',
-			value: `${earnings.today.hours.toFixed(1)}h`,
-			change: t('sinceTime', { time: new Date().toLocaleTimeString() }),
-			icon: 'ri-time-line text-indigo-600 dark:text-indigo-400 w-5 h-5',
-			bg: 'bg-indigo-100 dark:bg-indigo-900/30',
-		},
+		{ label: 'Hoy', value: '—', change: `Ganancias hoy: $${todayVal.toFixed(2)}`, icon: 'ri-truck-line text-blue-600 dark:text-blue-400 w-5 h-5', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+		{ label: 'Ganancias hoy', value: `$${todayVal.toFixed(2)}`, change: 'Hoy', icon: 'ri-money-dollar-circle-line text-green-600 dark:text-green-400 w-5 h-5', bg: 'bg-green-100 dark:bg-green-900/30' },
+		{ label: 'Esta semana', value: `$${(typeof earnings.week === 'number' ? earnings.week : 0).toFixed(2)}`, change: 'Semana', icon: 'ri-map-pin-line text-orange-600 dark:text-orange-400 w-5 h-5', bg: 'bg-orange-100 dark:bg-orange-900/30' },
+		{ label: 'En línea', value: '—', change: new Date().toLocaleTimeString('es-MX'), icon: 'ri-time-line text-indigo-600 dark:text-indigo-400 w-5 h-5', bg: 'bg-indigo-100 dark:bg-indigo-900/30' },
 	];
 });
 
 const insights = ref([
-	t('insight1'),
-	t('insight2'),
-	t('insight3'),
+	'Activa tu disponibilidad para recibir más pedidos.',
+	'Revisa la ruta antes de salir para ahorrar tiempo.',
+	'Mantén tu perfil actualizado para mejores asignaciones.',
 ]);
 
-// Show "Delivery lifecycle validated" when at least one delivery completed today and no active order
 const showSimulationComplete = computed(
 	() =>
 		!deliveryStore.hasActiveOrder &&
 		deliveryStore.earningsSummary != null &&
-		deliveryStore.earningsSummary.today.deliveries >= 1
+		(typeof deliveryStore.earningsSummary.today === 'number' ? deliveryStore.earningsSummary.today : 0) >= 1
 );
 
 </script>

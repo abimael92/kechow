@@ -43,19 +43,19 @@
 								:key="n"
 								class="ri-star-fill text-yellow-400 w-3 h-3"
 							></i>
-							<span>{{ $t('rating') }}</span>
+							<span>Calificación</span>
 						</div>
 						<span>•</span>
-						<span>{{ $t('deliveriesCount', { count: 1247 }) }}</span>
+						<span>1247 entregas</span>
 						<span>•</span>
-						<span>{{ $t('memberSince', { date: 'March 2023' }) }}</span>
+						<span>Miembro desde marzo 2023</span>
 					</div>
 				</div>
 			</div>
 			<button
 				class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full md:w-auto mt-4 md:mt-0"
 			>
-				{{ $t('editProfile') }}
+				Editar perfil
 			</button>
 		</div>
 
@@ -74,7 +74,7 @@
 					]"
 				>
 					<i :class="tab.icon" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-					<span>{{ $t(tab.label) }}</span>
+					<span>{{ tabLabel(tab.label) }}</span>
 				</button>
 			</div>
 		</div>
@@ -109,6 +109,17 @@ const tabs = [
 	{ id: 'notifications', label: 'notifications', icon: 'ri-notification-line' },
 	{ id: 'support', label: 'support', icon: 'ri-customer-service-line' },
 ];
+
+const tabLabels: Record<string, string> = {
+	profile: 'Perfil',
+	vehicle: 'Vehículo',
+	schedule: 'Horario',
+	notifications: 'Notificaciones',
+	support: 'Soporte',
+};
+function tabLabel(id: string) {
+	return tabLabels[id] ?? id;
+}
 
 function getTabComponent(tabId: string) {
 	switch (tabId) {

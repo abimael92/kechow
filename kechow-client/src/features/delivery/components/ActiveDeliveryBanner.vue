@@ -8,10 +8,10 @@
             <i class="ri-truck-line text-white text-xl"></i>
           </div>
           <div>
-            <h2 class="text-white font-semibold">{{ $t('delivery.current_delivery') }}</h2>
+            <h2 class="text-white font-semibold">Entrega en curso</h2>
             <p class="text-blue-100 text-sm flex items-center gap-1">
               <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-              {{ $t(`delivery.status.${order.status}`) }}
+              {{ statusLabel }}
             </p>
           </div>
         </div>
@@ -24,8 +24,8 @@
       <!-- Progress -->
       <div class="mb-4">
         <div class="flex items-center justify-between text-xs text-blue-100 mb-1">
-          <span>{{ $t('delivery.pickup') }}</span>
-          <span>{{ $t('delivery.dropoff') }}</span>
+          <span>Recogida</span>
+          <span>Entrega</span>
         </div>
         <div class="relative">
           <div class="w-full h-2 bg-white/20 rounded-full overflow-hidden">
@@ -46,7 +46,7 @@
         <div class="flex items-start gap-2">
           <i class="ri-store-2-line text-white/80 mt-1"></i>
           <div class="flex-1">
-            <p class="text-xs text-blue-100">{{ $t('delivery.pickup') }}:</p>
+            <p class="text-xs text-blue-100">Recogida:</p>
             <p class="text-white font-medium">{{ order.pickup.address }}</p>
           </div>
         </div>
@@ -54,7 +54,7 @@
         <div class="flex items-start gap-2">
           <i class="ri-map-pin-line text-white/80 mt-1"></i>
           <div class="flex-1">
-            <p class="text-xs text-blue-100">{{ $t('delivery.dropoff') }}:</p>
+            <p class="text-xs text-blue-100">Entrega:</p>
             <p class="text-white font-medium">{{ order.dropoff.address }}</p>
           </div>
         </div>
@@ -76,7 +76,7 @@
           class="flex-1 bg-white/20 hover:bg-white/30 text-white font-medium py-3 rounded-lg transition-colors backdrop-blur-sm flex items-center justify-center gap-2"
         >
           <i class="ri-eye-line"></i>
-          {{ $t('delivery.view_details') }}
+          Ver detalle
         </button>
         
         <button
@@ -97,6 +97,15 @@ import type { Order } from '../types'
 const props = defineProps<{
   order: Order
 }>()
+
+const statusLabels: Record<string, string> = {
+  accepted: 'Aceptado',
+  picked_up: 'Recogido',
+  in_transit: 'En camino',
+  delivered: 'Entregado',
+  assigned: 'Asignado',
+}
+const statusLabel = computed(() => statusLabels[props.order.status] ?? props.order.status)
 
 defineEmits<{
   (e: 'view-details'): void
