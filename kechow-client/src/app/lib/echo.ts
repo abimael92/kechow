@@ -16,7 +16,7 @@ window.Pusher = Pusher;
 
 export type EchoAuthProvider = () => Promise<{ token?: string }>;
 
-export function createEcho(getAuth: EchoAuthProvider): Echo {
+export function createEcho(getAuth: EchoAuthProvider): Echo<any> {
   const baseUrl =
     (import.meta.env.VITE_API_URL as string)?.replace(/\/api\/?.*$/i, '') ||
     'http://127.0.0.1:8000';
@@ -32,16 +32,22 @@ export function createEcho(getAuth: EchoAuthProvider): Echo {
     enabledTransports: ['ws', 'wss'],
     authEndpoint: `${baseUrl}/broadcasting/auth`,
     auth: {
-      headers: async (): Promise<Record<string, string>> => {
+      headers: {
+        Accept: 'application/json',
+      },
+    },
+    authorizer: (channel: any) => ({
+      authorize: async (socketId: string) => {
         const auth = await getAuth();
         const headers: Record<string, string> = {
           Accept: 'application/json',
+          'X-Socket-ID': socketId,
         };
         if (auth.token) {
           headers.Authorization = `Bearer ${auth.token}`;
         }
-        return headers;
+        return { auth: auth.token || '' };
       },
-    },
+    }),
   });
 }
