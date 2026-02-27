@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Delivery;
 use App\Models\User;
+use App\Policies\DeliveryPolicy;
 use App\Modules\Owner\Policies\OwnerPolicy;
 use App\Modules\Owner\Policies\RestaurantPolicy;
 use App\Modules\Restaurant\Models\Restaurant;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => OwnerPolicy::class,
         Restaurant::class => RestaurantPolicy::class,
+        Delivery::class => DeliveryPolicy::class,
     ];
 
     /**
