@@ -25,7 +25,7 @@ This index lists all official documentation. Obsolete or duplicate files should 
 
 ## 3. API Documentation
 
-- **BACKEND_FRONTEND_INTEGRATION_GUIDE.md** — How frontend calls backend; base URL, auth, endpoints. Update to use `/api/v1` when applied.
+- **BACKEND_FRONTEND_INTEGRATION_GUIDE.md** — How frontend calls backend; base URL (includes `/api/v1`), auth, endpoints.
 - **OWNER_MANAGEMENT_ROUTES.md** — Admin owner CRUD routes and behavior.
 - **OWNER_API_BEHAVIOR_AND_ERRORS.md** — Owner API errors and status codes.
 - **OWNER_RESOURCE_SCHEMA.md** — Owner API resource shapes.
@@ -39,7 +39,7 @@ This index lists all official documentation. Obsolete or duplicate files should 
 ## 4. Database
 
 - **05_DATABASE_FINAL_DESIGN.md** — Full schema, indexes, migrations, seeders.
-- **OWNER_SEEDERS_AND_RESPONSES.md** — Owner seed data and API response examples (keep one; remove "copy" file).
+- **OWNER_SEEDERS_AND_RESPONSES.md** — Owner seed data and API response examples.
 
 ---
 
@@ -53,7 +53,7 @@ This index lists all official documentation. Obsolete or duplicate files should 
 ## 6. CI/CD and Quality
 
 - **CI/CD Pipeline:** Create **CICD.md** — How to run tests (PHPUnit, frontend tests), lint, build; pipeline stages (test, build, deploy); deploy to staging/production (manual or auto from main).
-- **OWNER_TEST_COVERAGE.md** — Owner module test coverage. Keep one; remove "copy".
+- **OWNER_TEST_COVERAGE.md** — Owner module test coverage.
 
 ---
 

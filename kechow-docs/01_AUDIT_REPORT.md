@@ -1,168 +1,131 @@
-# Phase 1 — Full System Audit Report
+# Phase 1 — Full System Audit Report (Post-Refactor)
 
 **Project:** Kechow — Delivery Platform (Ciudad Jiménez, Chihuahua, México)  
 **Date:** 2025-02-25  
-**Scope:** Frontend (Vue 3 + TypeScript), Backend (Laravel), Database, Documentation
+**Status:** Reflects system state after backend and frontend hardening, API versioning, and delivery consolidation.
 
 ---
 
 ## 1. Executive Summary
 
-The codebase is a delivery platform with Customer Web App, Business Owner Panel, Delivery Driver Dashboard, and Admin capabilities. The audit identified duplicate APIs and models, missing authorization on delivery endpoints, incomplete delivery dashboard integration, hardcoded/mock data, no API versioning, no rate limiting, CORS override, and missing database migration for `deliveries` table. Customer and Owner flows are largely complete; Delivery module requires completion and backend alignment.
+The platform has been refactored to a production-ready posture: single driver identity (App\Models\Driver), single delivery API surface (/api/v1/delivery/*), role middleware and DeliveryPolicy for driver actions, Form Requests for delivery, centralized API response format, config-driven CORS, API versioning (/api/v1), rate limiting, delivery logging channel, and frontend store consolidation with compatibility layer. Duplicate Order model removed; duplicate useDriverStore removed; earnings and completed-orders APIs implemented and wired; order detail and reject actions wired. Remaining work is documented in Pending Features and Production Readiness Report.
 
 ---
 
-## 2. Backend (Laravel) Findings
+## 2. Issues Resolved
 
-### 2.1 Dead Code and Duplicates
+### 2.1 Backend
 
-| Item | Location | Issue |
-|------|----------|--------|
-| Order model | `app/Models/Order.php` | Duplicate of `app/Modules/Order/Models/Order.php`. Different status set and fillable. Dead code. |
-| Driver model | `app/Models/Driver.php` vs `app/Modules/Driver\Models/Driver.php` | Two models: one for `Delivery` relationship (drivers.id), one for availability/location. Order model uses `driver_id` as **user_id** (belongsTo User), while Delivery uses **driver_id** as drivers.id. Inconsistent driver identity. |
-| Owner routes | `app/Modules/Owner/routes_owner.php` | Never required in `api.php`. Dashboard/analytics routes in this file are not registered. Dead routes. |
-| BusinessOwnerMiddleware | `app/Http/Middleware/BusinessOwnerMiddleware.php` | Not applied to any route. Unused. |
+| Issue | Resolution |
+|-------|------------|
+| Duplicate Order model | Removed app/Models/Order.php; canonical order is App\Modules\Order\Models\Order. |
+| Duplicate Driver models | Single driver identity: App\Models\Driver with full fillable/casts and locations(); DeliveryController and DriverSeeder use it. Modules\Driver\Models\DriverLocation belongs to App\Models\Driver. |
+| Two driver/delivery APIs | Driver module routes removed from api.php; only delivery/* under v1 is used. Single DeliveryController. |
+| Delivery API without role check | Route group uses middleware ['auth:sanctum', 'role:delivery']. |
+| Unvalidated status on updateOrderStatus | UpdateDeliveryStatusRequest validates status in [assigned, picked_up, in_transit, delivered, cancelled]. |
+| No policy for delivery | DeliveryPolicy registered; updateOrderStatus authorizes via $this->authorize('update', $delivery). |
+| Hardcoded CORS | Cors middleware reads config('cors.allowed_origins'); config/cors.php uses env('CORS_ALLOWED_ORIGINS'). |
+| No API versioning | All API routes under Route::prefix('v1'); frontend baseURL includes /api/v1. |
+| No centralized response format | ApiResponse trait (success/data, error/message/errors); DeliveryController uses it; frontend axios unwraps data. |
+| No rate limiting | Route::middleware('throttle:60,1') applied to v1 group. |
+| No delivery logging | config/logging.php channel 'delivery'; DeliveryController logs accept and status change. |
+| Stub getCompletedOrders/getStats/getEarnings | Implemented with real queries and pagination (completed), today stats, and period earnings. |
+| Missing deliveries table | Migration 2026_02_04_100003_create_deliveries_table added. |
+| acceptOrder not transactional | DB::transaction for create Delivery and update Order status. |
+| ValidationException not consistent | bootstrap/app.php render for ValidationException returns { success, message, errors } on api/*. |
 
-### 2.2 Duplicate Driver/Delivery APIs
+### 2.2 Frontend
 
-- **`api/driver/*`** (DriverController in Modules/Driver): availability, active order, available jobs, accept, location, status, stats.
-- **`api/delivery/*`** (DeliveryController in Http/Controllers/Api/Driver): same concerns (availability, jobs, accept, active order, status, stats, settings).
+| Issue | Resolution |
+|-------|------------|
+| Duplicate driver store (useDriverStore.ts) | Deleted; driver.store.ts is a compatibility layer over useDeliveryStore() and useStatsStore(). |
+| Missing store methods/state | delivery.store: loadEarningsSummary, loadCompletedOrders, rejectOrder, fetchOrderDetail, orderDetail, completedOrdersList, earningsSummary. |
+| Reject not wired | rejectOrder in store calls rejectJob; OrdersPanel handleRejectOrder calls it. |
+| Order detail stub | DeliveryOrderDetail.vue implemented with fetchOrderDetail and i18n. |
+| Backend response shape change | Axios response interceptor unwraps { success, data } so response.data = data. |
+| API base path | baseURL set to include /api/v1 when not already present. |
+| i18n for delivery detail | es.json delivery.orderDetail, status, pickup, dropoff, amount, notes, viewLive, backToOrders, noOrder. |
 
-Frontend uses **`/delivery/*`** only. `api/driver/*` is redundant for the current delivery app and creates maintenance and consistency risk.
+### 2.3 Database
 
-### 2.3 Missing Authorization
+| Issue | Resolution |
+|-------|------------|
+| Indexes for orders | Migration 2026_02_25_100000 adds index on orders(status), orders(restaurant_id, status). |
+| Deliveries table | Migration creates deliveries with FKs, unique order_id, indexes on driver_id/status, delivered_at. |
 
-- **Delivery routes** (`api/delivery/*`): Only `auth:sanctum`. No `role:delivery` or equivalent. Any authenticated user (customer, owner, admin) can call delivery endpoints.
-- **Order driver actions**: No policy or middleware ensuring the authenticated user is the assigned driver for the order when updating status.
+### 2.4 Documentation
 
-### 2.4 Missing Validations and Hardening
-
-- `DeliveryController::updateOrderStatus`: Accepts raw `$request->input('status')` with no validation or whitelist. Allows arbitrary status strings.
-- `DeliveryController::acceptOrder`: No check that order is still `pending` or that it has no existing delivery; no transaction; no update to Order status (e.g. accepted/out_for_delivery).
-- No Form Requests for delivery endpoints (availability, accept, status, settings).
-
-### 2.5 Architecture Gaps
-
-- No API versioning (`/api/v1`).
-- No Repositories; controllers and one-off logic touch Eloquent directly.
-- No DTOs; responses built with ad-hoc arrays.
-- No centralized API response format (success/error envelope).
-- Exception handling: default Laravel JSON for API; no custom API exception layer or consistent error codes.
-- No rate limiting on `api` or auth routes.
-- CORS: Custom middleware forces `Access-Control-Allow-Origin: http://127.0.0.1:5173`, overriding `config/cors.php`. Production and other origins are ignored.
-- Logging: Default only; no dedicated API/audit logging.
-
-### 2.6 Stub or Incomplete Backend Logic
-
-- `getCompletedOrders()`: Returns empty array.
-- `getStats()`: Returns `['todayOrders' => 0, 'earnings' => 0]` (hardcoded).
-- `acceptOrder`: Does not set Order status or `orders.driver_id`; only creates Delivery record. Order remains `pending` for customer/owner views.
-- No earnings/summary endpoint consumed by frontend (EarningsPanel expects `earningsSummary` from store, which is not implemented).
-
-### 2.7 Database
-
-- **Missing migration:** Model `App\Models\Delivery` uses table `deliveries`, but no migration creating `deliveries` was found. Table may exist from manual creation or an untracked migration. Schema must be formalized.
-- **Driver identity:** `orders.driver_id` in Order model is used as User id; Delivery uses `driver_id` as drivers.id. Need single source of truth (recommend: orders link to driver via `drivers.id` or keep user and sync).
+| Issue | Resolution |
+|-------|------------|
+| Obsolete duplicate files | Removed ROUTE_GUARDS copy.md, OWNER_TEST_COVERAGE copy.md, OWNER_SEEDERS_AND_RESPONSES copy.md. |
+| Audit report outdated | This document rewritten to reflect current architecture and resolved items. |
 
 ---
 
-## 3. Frontend (Vue 3 + TypeScript) Findings
+## 3. Architecture Improvements
 
-### 3.1 Dead or Conflicting Code
-
-| Item | Location | Issue |
-|------|----------|--------|
-| useDriverStore | `features/delivery/store/useDriverStore.ts` | Different store shape and API; same Pinia id `'driver'` as `driver.store.ts`. Imports `getAvailableOrders`, `getCurrentOrder` from driver.service which do not exist. Conflicting/dead. |
-| ProfilPage.vue | `pages/delivery/ProfilPage.vue` | Typo; duplicate of ProfilePage. |
-| Shared restaurant mock | `shared/data/restaurants.ts` | Large hardcoded restaurant/menu data; may bypass real API in dev or legacy views. |
-
-### 3.2 Delivery Module — Missing Store API and State
-
-- **delivery.store.ts** does not define: `loadEarningsSummary`, `loadDeliveryProgress`, `earningsSummary`, `deliveryProgress`, `currentLocation`, `updateCurrentLocation`.
-- **EarningsPanel** and **DashboardOverview** call `deliveryStore.loadEarningsSummary()` and use `deliveryStore.earningsSummary` — will be undefined/runtime errors.
-- **LiveDelivery** uses `loadDeliveryProgress`, `deliveryProgress`, `currentLocation`, `updateCurrentLocation` — not implemented in store.
-- **updateStatus** in store assigns `activeOrder.value = updatedOrder` but backend returns `{ status }`, not full order object.
-
-### 3.3 Hardcoded and Mock Data (Delivery)
-
-- **EarningsPanel:** Payout list (dates and amounts), breakdown pie data, rating "4.9" hardcoded. Spanish labels "Ganancias", "Sigue tus ganancias..." in template.
-- **OrdersPanel:** `paymentMethod: 'Tarjeta'` for all orders; Spanish copy in template; ordersSummary and filteredOrders derived from store but labels and fallbacks hardcoded.
-- **DriverDashboard:** Spanish labels and placeholder stats ("+12% vs ayer", "+$45 esta hora", "Meta: 50") hardcoded.
-- **delivery.store** fallbacks: `'Sin dirección'`, `'Restaurante'` when building activeOrder from local availableJobs.
-
-### 3.4 Delivery Order Detail and Reject
-
-- **DeliveryOrderDetail.vue:** Stub only ("Delivery Order Detail Page"); no props, no API, no state.
-- **Reject order:** OrdersPanel has handleRejectOrder; store has no reject implementation (only backend stub). Reject not wired to API or state.
-
-### 3.5 Inconsistent i18n
-
-- Part of delivery UI uses `$t()` / `t()` (e.g. EarningsPanel cards, some buttons); many strings are hardcoded Spanish in template. Nav labels in `nav.config` are Spanish-only (no i18n keys).
-- Rule: all UI content in Spanish; implementation should use i18n for consistency and future locale support.
-
-### 3.6 Router and Guards
-
-- Route guards: `authGuard` checks `requiresAuth` and `meta.role`; redirects to role dashboard. No backend role enforcement on delivery routes.
-- Lazy loading: Used for owner and delivery pages; customer cart/checkout/orders are lazy. Eager: Landing, Login, Register, Home, Restaurant list/detail.
-- Aliases: `@`, `@app`, `@features`, `@shared`, `@assets`, `@components`, `@layout`, `@pages`, `@store` present. No `@core` (use `@app`).
-
-### 3.7 API Layer
-
-- Single axios instance in `app/lib/axios.ts`; base URL from `VITE_API_URL`; Bearer token from localStorage; 401 clears storage and redirects to login.
-- Delivery uses `driver.service.ts` (delivery/availability, jobs/available, orders/active, jobs/:id/accept, orders/:id/status). No `/delivery/earnings` or `/delivery/stats` used for real data in EarningsPanel; stats store uses availability response shape which may not match.
+- **Single delivery API:** All driver/delivery flows use POST/GET /api/v1/delivery/*. No /api/v1/driver/* in use.
+- **Single driver model:** App\Models\Driver is the source of truth; used by Delivery, DeliveryController, DriverSeeder. DriverLocation (Modules\Driver) belongs to App\Models\Driver.
+- **Form Requests:** UpdateAvailabilityRequest, UpdateDeliveryStatusRequest enforce validation and (where applicable) authorization.
+- **Policies:** DeliveryPolicy::update and view ensure only the assigned driver can change or view the delivery.
+- **Centralized API response:** ApiResponse::success($data), ::error($message, $code, $errors). Validation and API errors return consistent JSON.
+- **API versioning:** All routes under /api/v1; frontend configured for /api/v1.
+- **Rate limiting:** 60 requests per minute per client on the v1 group.
+- **Logging:** delivery channel for delivery acceptance and status changes; configurable via LOG_LEVEL and LOG_DAILY_DAYS.
 
 ---
 
-## 4. Documentation
+## 4. Security Improvements
 
-- **Deleted (git):** Multiple files under `Docs/` (ARCHITECTURE, BACKEND_FRONTEND_INTEGRATION_GUIDE, ORDER_STATE_MACHINE, etc.) and PDFs. Content may exist in `kechow-docs/`.
-- **kechow-docs:** Contains OWNER_*, CART_SYSTEM_README, DELIVERY_DASHBOARD_README, ROUTE_GUARDS, etc. Duplicate filenames exist ("ROUTE_GUARDS copy.md", "OWNER_SEEDERS_AND_RESPONSES copy.md"). No single source of truth; structure and naming inconsistent.
-- Obsolete docs should be removed; rest consolidated and referenced from one index.
-
----
-
-## 5. SEO and Meta
-
-- **index.html:** Generic `<title>Kechow</title>`, `lang="en"`, no meta description, no Open Graph, no JSON-LD, no geo or local business markup.
-- No per-route meta (title/description) management for Vue app. No sitemap or robots strategy found in repo.
-- Critical for local SEO (Jiménez, Chihuahua): missing local business schema, Spanish meta, and location-oriented content.
+- **Role enforcement:** delivery/* requires auth:sanctum and role:delivery (CheckRole middleware).
+- **Resource authorization:** updateOrderStatus verifies delivery belongs to current driver and calls $this->authorize('update', $delivery).
+- **Status validation:** Only allowed delivery statuses accepted via UpdateDeliveryStatusRequest.
+- **CORS:** Origins from env (CORS_ALLOWED_ORIGINS); no hardcoded production origin.
+- **Rate limiting:** Reduces abuse on API and auth endpoints.
+- **Transactions:** acceptOrder uses DB::transaction for Delivery create and Order update.
 
 ---
 
-## 6. Security Summary
+## 5. API Restructuring
 
-| Risk | Severity | Location |
-|------|----------|----------|
-| Delivery API without role check | High | api/delivery/* |
-| Order status update without driver ownership check | High | DeliveryController::updateOrderStatus |
-| Unvalidated status string | Medium | updateOrderStatus |
-| No rate limiting on API/auth | Medium | routes |
-| CORS hardcoded origin | Medium | Cors middleware |
-| No policy for Order/Driver/Delivery | Medium | Policies |
+- **Prefix:** /api/v1 for all API routes.
+- **Delivery endpoints:** availability (GET/POST), jobs/available (GET), jobs/{id}/accept (POST), jobs/{id}/reject (POST), orders/active (GET), orders/completed (GET), orders/{id} (GET), orders/{id}/status (PATCH), stats (GET), earnings (GET), settings (GET/PATCH).
+- **Response shape:** success responses via ApiResponse::success($data); client receives unwrapped data after axios interceptor. Errors: success: false, message, optional errors.
+- **Auth and other modules:** Auth, Owner, Restaurant, Order, Cart remain under v1; responses are not yet wrapped (only delivery uses ApiResponse trait; others can be migrated incrementally).
 
 ---
 
-## 7. Performance and Scalability
+## 6. Store Consolidation
 
-- No indexing strategy documented for orders (status, driver_id, restaurant_id, created_at), deliveries (driver_id, status), or drivers (user_id, is_online).
-- N+1 possible in delivery list if relations not eager loaded (getAvailableJobs uses `with('restaurant','items')`; getActiveOrder uses `with('order.restaurant','order.user')` — acceptable).
-- Frontend: no evidence of pagination for delivery orders list; backend getCompletedOrders returns empty array; when implemented, pagination required.
-
----
-
-## 8. Technical Debt Summary
-
-1. Remove or merge duplicate Order/Driver models and single driver identity (user vs driver id).
-2. Consolidate driver/delivery to one API surface and one controller/service layer.
-3. Add role middleware and policy checks for delivery and order-driver actions.
-4. Add Form Requests and validated status transitions for delivery.
-5. Implement earnings and completed-orders API and wire to store and UI.
-6. Add missing `deliveries` table migration if not present.
-7. Replace hardcoded CORS with config-driven CORS.
-8. Introduce API versioning, central response format, and rate limiting.
-9. Frontend: implement missing store methods and state; remove or merge duplicate driver store; replace hardcoded copy with i18n; wire reject and order detail.
-10. Consolidate documentation and remove obsolete/duplicate files.
+- **Canonical store:** useDeliveryStore (delivery.store.ts) holds availability, availableJobs, activeOrder, completedOrdersList, earningsSummary, orderDetail, loading/error states, and actions: initialize, toggleAvailability, loadAvailableJobs, acceptDeliveryOrder, rejectOrder, updateStatus, loadEarningsSummary, loadCompletedOrders, fetchOrderDetail.
+- **Compatibility layer:** driver.store.ts re-exports useDeliveryStore (and useStatsStore for stats) with aliases: toggleOnline → toggleAvailability, acceptOrder/acceptOrderAction → acceptDeliveryOrder, changeOrderStatus → updateStatus, currentOrder → activeOrder, availableOrders → availableJobs, stats from stats store. Existing components (DriverDashboard, CurrentDelivery, DriverStats, AvailableOrders, useDriver, useDriverLocation) continue to use useDriverStore() without breaking.
+- **Duplicate removed:** useDriverStore.ts (second store with same Pinia id and broken imports) deleted.
+- **Stats store:** Fetches from getStats() API; used by DriverStats and driver store compatibility layer.
 
 ---
 
-**Next:** Refactor Plan (Phase 2) and Delivery Module completion (Phase 2).
+## 7. CORS and Deployment
+
+- **CORS:** config/cors.php allowed_origins uses env('CORS_ALLOWED_ORIGINS') with fallback; Cors middleware reads config and sets headers per request. No hardcoded origin.
+- **Render:** No change to start command or env usage. Base URL and CORS origins configurable via env. Migrations are additive (indexes, deliveries table); safe for production.
+
+---
+
+## 8. Remaining Risks and Technical Debt
+
+- **Other modules not wrapped:** Auth, Owner, Restaurant, Order, Cart do not use ApiResponse trait; clients may expect different shapes. Unwrap interceptor only affects responses with success + data.
+- **Module Driver code:** Modules/Driver/Controllers/DriverController and Modules/Driver/Models/Driver remain in codebase but routes are not loaded; can be removed in a future cleanup.
+- **Owner routes_owner.php:** Still not required in api.php; owner dashboard/analytics routes there remain inactive if that file was intended for use.
+- **Frontend:** Some delivery copy still hardcoded in components (e.g. DriverDashboard, OrdersPanel); further i18n can be added incrementally.
+- **Earnings calculation:** Currently based on order total; no separate delivery fee or tip tracking in schema.
+
+---
+
+## 9. Current State Summary
+
+- **Backend:** Laravel with Modules (Auth, Owner, Restaurant, Order, Cart); delivery under Http/Controllers/Api/Driver/DeliveryController. Single Driver model (App\Models\Driver), single Order model (Modules/Order). API v1, throttle, CORS from config, delivery Form Requests and DeliveryPolicy, ApiResponse and delivery logging.
+- **Frontend:** Vue 3 + TypeScript, Pinia; single delivery store with driver compatibility layer; axios baseURL /api/v1 and response unwrap; delivery order detail and reject wired; i18n keys for delivery detail view.
+- **Database:** deliveries table migration and orders indexes migration in place; migrations safe and reversible.
+- **Documentation:** Obsolete duplicate docs removed; 01_AUDIT_REPORT updated; other docs (02–10, OWNER_*, etc.) remain as reference.
+
+This audit represents the true state of the system after the refactor. For launch checklist and remaining work, see 09_PENDING_FEATURES.md and 10_PRODUCTION_READINESS_REPORT.md.
