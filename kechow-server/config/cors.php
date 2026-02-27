@@ -3,11 +3,7 @@
 return [
     'paths' => ['api/*', 'login', 'register', 'sanctum/csrf-cookie', 'user'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => [
-        'http://localhost:5173',
-        'http://127.0.0.1:5173', // local Vite dev
-        'https://kechow-frontend.onrender.com' // production
-    ],
+    'allowed_origins' => array_filter(explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173,https://kechow-frontend.onrender.com'))),
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
