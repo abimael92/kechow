@@ -86,21 +86,13 @@ export const register = async (payload: {
   }
 };
 
-// Get user
-export const getUser = async (token?: string) => {
+// Get user (session cookie or Bearer token sent by interceptor)
+export const getUser = async () => {
   try {
-    const response = await api.get('/user', {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
-    });
+    const response = await api.get('/user');
     return response.data;
   } catch (error: any) {
     if (import.meta.env.DEV) {
-      console.error(
-        '❌ Get user failed:',
-        error.response?.status || error.message,
-      );
-
-      // En desarrollo, devolver usuario del localStorage si existe
       const userStr = localStorage.getItem('user');
       if (userStr) {
         return { user: JSON.parse(userStr) };
@@ -124,9 +116,9 @@ export const logout = async () => {
   }
 };
 
-// Helpers
+// Helpers (session-based: only user is persisted; no token in localStorage)
 export const isAuthenticated = () => {
-  return !!(localStorage.getItem('token') && localStorage.getItem('user'));
+  return !!localStorage.getItem('user');
 };
 
 export const getCurrentUser = () => {

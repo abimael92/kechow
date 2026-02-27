@@ -25,18 +25,13 @@ export const api = axios.create({
   },
 });
 
-// Interceptor para añadir token a TODAS las peticiones
+// Interceptor: add Bearer token when present (or rely on session cookie when using session-based auth)
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-    console.log('Token desde localStorage:', token ? 'EXISTE' : 'NO EXISTE');
-
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-    } else {
-      console.warn('⚠️ No hay token en localStorage');
     }
-
     return config;
   },
   (error) => {

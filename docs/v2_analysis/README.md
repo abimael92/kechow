@@ -16,6 +16,11 @@
 | **TECHNICAL_AUDIT.md** | Deep-dive for full tech team (PM, Devs, DevOps, Data Eng): backend, frontend, CI/CD, data, security, gaps. |
 | **SALES_PITCH.md** | Business value proposition for stakeholders and partners. |
 | **SYSTEM_HEALTH_REPORT.md** | Single-file audit ranking issues by CRITICAL, CRUCIAL, IMPORTANT, WARNING, TRIVIAL (security, scalability, dependencies, refactoring). |
+| **AUTH_SECURITY_PROPOSAL.md** | Auth token/session security and removal of sensitive logging (Phase 1). |
+| **DEPENDENCIES.md** | Modern stack upgrade: Zod/Vuelidate, Laravel Echo, Sentry, Spatie Activity Log, TanStack Vue Query; implementation and code examples. |
+| **ADMIN_COMMAND_CENTER.md** | Design for Real-Time Maintenance Dashboard: Connectivity Monitor, Revenue Engine, Error Logger, Active Job Map (OwnerLayout/DashboardOverview). |
+| **FEATURE_MATRIX.md** | Role-based feature matrix (Client, Driver, Admin) and gaps (e.g. real-time sync). |
+| **ROADMAP_2026.md** | Security (rate limiting, 2FA, SQL audit), architecture (Order/Delivery state machine), add-ons (Google Maps, Twilio). |
 
 ---
 

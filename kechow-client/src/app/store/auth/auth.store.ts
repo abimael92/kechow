@@ -1,4 +1,5 @@
 // src/app/store/auth/auth.store.ts
+// Auth uses session (HttpOnly cookie) when backend supports it; no token in localStorage.
 import { defineStore } from 'pinia';
 import {
   login,
@@ -20,24 +21,21 @@ interface User {
   role: string;
 }
 
+const USER_STORAGE_KEY = 'user';
+
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter();
 
   const user = ref<User | null>(
-    JSON.parse(localStorage.getItem('user') || 'null'),
+    JSON.parse(localStorage.getItem(USER_STORAGE_KEY) || 'null'),
   );
-  const token = ref(localStorage.getItem('token'));
   const error = ref<string | null>(null);
   const isLoading = ref(false);
 
-  const isAuthenticated = computed(() => !!token.value);
+  const isAuthenticated = computed(() => !!user.value);
   const isOwner = computed(() => user.value?.role === 'owner');
   const isDelivery = computed(() => user.value?.role === 'delivery');
   const isCustomer = computed(() => user.value?.role === 'customer');
-
-  const setAuthHeader = () => {
-    // El interceptor de axios ya maneja esto
-  };
 
   const redirectByRole = () => {
     if (!user.value) return;
@@ -55,10 +53,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       const response = await login(credentials);
       user.value = response.user;
-      token.value = response.token;
-
-      localStorage.setItem('user', JSON.stringify(response.user));
-      localStorage.setItem('token', response.token);
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(response.user));
 
       redirectByRole();
 
@@ -85,10 +80,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       const response = await register(payload);
       user.value = response.user;
-      token.value = response.token;
-
-      localStorage.setItem('user', JSON.stringify(response.user));
-      localStorage.setItem('token', response.token);
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(response.user));
 
       redirectByRole();
 
@@ -102,26 +94,27 @@ export const useAuthStore = defineStore('auth', () => {
   };
 
   const initialize = async () => {
-    if (token.value && !user.value) {
-      try {
-        isLoading.value = true;
-        const data = await getUser();
-        user.value = data.user;
-      } catch {
-        logout();
-      } finally {
-        isLoading.value = false;
-      }
+    const storedUser = user.value ?? JSON.parse(localStorage.getItem(USER_STORAGE_KEY) || 'null');
+    if (!storedUser) return;
+
+    try {
+      isLoading.value = true;
+      const data = await getUser();
+      user.value = data.user;
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(data.user));
+    } catch {
+      user.value = null;
+      localStorage.removeItem(USER_STORAGE_KEY);
+      logout();
+    } finally {
+      isLoading.value = false;
     }
   };
 
   const logout = () => {
-    // Clear auth store state
     user.value = null;
-    token.value = null;
     error.value = null;
 
-    // Clear all Pinia stores
     try {
       const cartStore = useCartStore();
       if (cartStore && typeof cartStore.clearCart === 'function') {
@@ -143,8 +136,7 @@ export const useAuthStore = defineStore('auth', () => {
       }
     } catch (err) {}
 
-    // Clear all localStorage items
-    localStorage.removeItem('user');
+    localStorage.removeItem(USER_STORAGE_KEY);
     localStorage.removeItem('token');
     localStorage.removeItem('theme');
     localStorage.removeItem('preferredLanguage');
@@ -156,16 +148,13 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('delivery_completed_orders');
     localStorage.removeItem('delivery_location_updates');
 
-    // Call logout service
     logoutService().catch(() => {});
 
-    // Redirect to login
     router.push('/login');
   };
 
   return {
     user,
-    token,
     error,
     isLoading,
     login: loginAction,
