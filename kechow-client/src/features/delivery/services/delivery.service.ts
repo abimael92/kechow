@@ -75,7 +75,7 @@ export const rejectOrder = async (orderId: string) => {
 // Update status
 export const updateDeliveryStatus = async (orderId: string, status: string) => {
   try {
-    const response = await api.patch(`/delivery/order/${orderId}/status`, {
+    const response = await api.patch(`/delivery/orders/${orderId}/status`, {
       status,
     }); // CAMBIADO
     return response.data;
