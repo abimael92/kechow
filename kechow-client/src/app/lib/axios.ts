@@ -1,12 +1,23 @@
 // src/app/lib/axios.ts
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+const API_URL = String(import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000').replace(/\/$/, '');
+// Avoid double /api: if URL already has /api/v1 use it; if it ends with /api append only /v1; else append /api/v1
+let baseURL: string;
+if (API_URL.endsWith('/api/v1')) {
+  baseURL = API_URL;
+} else if (API_URL.endsWith('/api')) {
+  baseURL = `${API_URL}/v1`;
+} else {
+  baseURL = `${API_URL}/api/v1`;
+}
 
-export const apiBaseUrl = API_URL;
+/** Server origin only (for Sanctum CSRF cookie), e.g. http://127.0.0.1:8000 */
+export const serverBaseUrl = API_URL.replace(/\/api(\/v1)?\/?$/i, '') || API_URL.split('/').slice(0, 3).join('/');
+export const apiBaseUrl = baseURL;
 
 export const api = axios.create({
-  baseURL: API_URL,
+  baseURL,
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
@@ -33,12 +44,17 @@ api.interceptors.request.use(
   },
 );
 
-// Interceptor para errores
+// Unwrap centralized API response: { success, data } -> response.data = data
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    const d = response.data;
+    if (d && typeof d === 'object' && d.success === true && 'data' in d) {
+      response.data = d.data;
+    }
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
-      console.error('❌ Error 401 - No autorizado');
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       if (!window.location.pathname.includes('/login')) {
