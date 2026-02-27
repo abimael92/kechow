@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Modules\Driver\Models\Driver;
+use App\Models\Driver;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
