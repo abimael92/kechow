@@ -4,12 +4,20 @@
  * Role is passed from layout (route), never from auth store, to avoid role leaks.
  */
 
-export type NavRole = 'customer' | 'owner' | 'delivery';
+export type NavRole = 'customer' | 'owner' | 'delivery' | 'admin';
 
 export interface NavItem {
 	path: string;
 	label: string;
 }
+
+const adminNavItems: NavItem[] = [
+	{ path: '/admin/dashboard', label: 'Centro de control' },
+	{ path: '/admin/connectivity', label: 'Estado de conexión' },
+	{ path: '/admin/ledger', label: 'Libro de finanzas' },
+	{ path: '/admin/support', label: 'Soporte e incidencias' },
+	{ path: '/admin/dispatch', label: 'Mapa de despacho' },
+];
 
 const customerNavItems: NavItem[] = [
 	// { path: '/home', label: 'Inicio' },
@@ -38,6 +46,8 @@ const deliveryNavItems: NavItem[] = [
 
 export function getNavItemsForRole(role: NavRole | undefined | null): NavItem[] {
 	switch (role) {
+		case 'admin':
+			return adminNavItems;
 		case 'customer':
 			return customerNavItems;
 		case 'owner':
@@ -50,6 +60,7 @@ export function getNavItemsForRole(role: NavRole | undefined | null): NavItem[] 
 }
 
 export const roleLabels: Record<NavRole, string> = {
+	admin: 'Super Admin',
 	customer: 'Cliente',
 	owner: 'Propietario',
 	delivery: 'Repartidor',
