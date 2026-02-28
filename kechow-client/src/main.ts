@@ -8,6 +8,7 @@ import { AppConfig, ThemeConfig, i18n } from './app/config';
 
 import Toast from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
+import { VueQueryPlugin } from '@tanstack/vue-query';
 
 const app = createApp(App);
 
@@ -28,6 +29,7 @@ const toastOptions = {
 
 app.use(createPinia());
 app.use(router);
+app.use(VueQueryPlugin);
 app.use(i18n);
 app.use(Toast as any, toastOptions);
 
