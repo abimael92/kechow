@@ -264,10 +264,6 @@ const stepLabel = (label: string) => stepLabels[label] ?? label;
 onMounted(async () => {
 	await deliveryStore.initialize();
 	await deliveryStore.loadEarningsSummary();
-	if (deliveryStore.activeOrder) {
-		await deliveryStore.loadDeliveryProgress(deliveryStore.activeOrder.id);
-		deliveryStore.startLocationTracking(deliveryStore.activeOrder.id);
-	}
 });
 
 // Cleanup on unmount
@@ -296,7 +292,7 @@ const deliverySteps = computed(() => {
 		available: -1,
 	};
 
-	const currentStep = statusMap[deliveryStore.activeOrder.status] || 0;
+	const currentStep = statusMap[deliveryStore.activeOrder.status as DeliveryStatus] || 0;
 
 	return [
 		{ label: 'accepted', icon: 'ri-check-line', completed: currentStep >= 0 },
