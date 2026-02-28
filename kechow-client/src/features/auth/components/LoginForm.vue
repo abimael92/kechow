@@ -106,14 +106,12 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { useAuthStore } from '@/app/store/auth/auth.store';
-import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import { useDarkMode } from '@/shared/composables/useDarkMode';
 
 const toast = useToast();
 const showPassword = ref(false);
 const authStore = useAuthStore();
-const router = useRouter();
 const { isDark, toggleDarkMode } = useDarkMode();
 
 const loginForm = reactive({
@@ -123,14 +121,9 @@ const loginForm = reactive({
 
 async function handleLogin() {
 	try {
-		const response = await authStore.login({ ...loginForm });
+		await authStore.login({ ...loginForm });
 		toast.success('Inicio de sesión exitoso');
-
-		if (authStore.isOwner) {
-			await router.push({ name: 'OwnerDashboard' });
-		} else {
-			await router.push({ name: 'Home' });
-		}
+		// Redirect is handled by auth store redirectByRole() (supports admin, owner, delivery, customer).
 	} catch (error: unknown) {
 		console.error('Login error details:', error);
 		toast.error('Credenciales inválidas. Verifica tu correo y contraseña.');
