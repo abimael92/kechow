@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "zod": "^3.23.0",
+    "@tanstack/vue-query": "^5.60.0",
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^1.0.6",
     "axios": "^1.11.0",
