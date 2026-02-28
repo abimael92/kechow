@@ -4,15 +4,14 @@ import api, { serverBaseUrl } from '../../lib/axios';
 // Sanctum CSRF cookie is at server root, not under /api/v1
 const ensureCsrfCookie = async () => {
   try {
+    // Hits http://127.0.0.1:8000/sanctum/csrf-cookie directly
     await api.get(`${serverBaseUrl}/sanctum/csrf-cookie`);
     if (import.meta.env.DEV) {
       console.log('✅ CSRF cookie obtenida');
     }
   } catch (error) {
-    if (import.meta.env.DEV) {
-      console.warn('⚠️ CSRF cookie failed (continuando en modo desarrollo)');
-    }
-    // No lanzamos error para no bloquear el login
+    console.error('❌ CSRF Handshake failed');
+    throw error;
   }
 };
 
