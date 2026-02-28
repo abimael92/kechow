@@ -9,10 +9,16 @@
 use App\Modules\Owner\Controllers\OwnerManagementController;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('owners')->middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    Route::get('/', [OwnerManagementController::class, 'index']);
-    Route::get('/{owner}', [OwnerManagementController::class, 'show']);
-    Route::post('/', [OwnerManagementController::class, 'store']);
-    Route::match(['put', 'patch'], '/{owner}', [OwnerManagementController::class, 'update']);
-    Route::delete('/{owner}', [OwnerManagementController::class, 'destroy']);
+// Business Owner Dashboard Routes
+Route::prefix('owner')->middleware(['auth:sanctum', 'role:owner'])->group(function () {
+
+    // Order Stats - Map to 'orderStats' method
+    Route::get('/orders/stats', [\App\Modules\Order\Controllers\OrderController::class, 'orderStats']);
+
+    // Orders List - Map to 'restaurantOrders' method
+    Route::get('/orders', [\App\Modules\Order\Controllers\OrderController::class, 'restaurantOrders']);
+
+    // Menu Management
+    Route::get('/menu', [\App\Modules\Restaurant\Controllers\RestaurantController::class, 'menu']);
 });
+
