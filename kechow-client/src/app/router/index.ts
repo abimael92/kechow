@@ -4,6 +4,7 @@ import MainLayout from '@layout/MainLayout.vue';
 import CustomerLayout from '@shared/layout/CustomerLayout.vue';
 import OwnerLayout from '@shared/layout/OwnerLayout.vue';
 import DeliveryLayout from '@shared/layout/DeliveryLayout.vue';
+import AdminLayout from '@shared/layout/AdminLayout.vue';
 import { authGuard } from './guards';
 
 // Pages (eager)
@@ -32,6 +33,13 @@ const LiveDelivery = () => import('@features/delivery/views/LiveDelivery.vue');
 const DeliveryProfile = () => import('@pages/delivery/ProfilePage.vue');
 const DeliveryEarnings = () => import('@pages/delivery/EarningsPage.vue');
 const OrderDetailPage = () => import('@pages/delivery/OrderDetailPage.vue');
+
+// Admin pages (Super Admin — app owner)
+const AdminDashboardPage = () => import('@pages/admin/AdminDashboardPage.vue');
+const AdminConnectivityPage = () => import('@pages/admin/ConnectivityPage.vue');
+const AdminLedgerPage = () => import('@pages/admin/LedgerPage.vue');
+const AdminSupportPage = () => import('@pages/admin/SupportPage.vue');
+const AdminDispatchMapPage = () => import('@pages/admin/DispatchMapPage.vue');
 
 const routes = [
 	{
@@ -195,6 +203,43 @@ const routes = [
 				name: 'DeliveryOrders',
 				component: OrderDetailPage,
 				meta: { requiresAuth: true, role: 'delivery' },
+			},
+		],
+	},
+	// Super Admin routes (AdminLayout) — role: admin
+	{
+		path: '/',
+		component: AdminLayout,
+		children: [
+			{
+				path: 'admin/dashboard',
+				name: 'AdminDashboard',
+				component: AdminDashboardPage,
+				meta: { requiresAuth: true, role: 'admin' },
+			},
+			{
+				path: 'admin/connectivity',
+				name: 'AdminConnectivity',
+				component: AdminConnectivityPage,
+				meta: { requiresAuth: true, role: 'admin' },
+			},
+			{
+				path: 'admin/ledger',
+				name: 'AdminLedger',
+				component: AdminLedgerPage,
+				meta: { requiresAuth: true, role: 'admin' },
+			},
+			{
+				path: 'admin/support',
+				name: 'AdminSupport',
+				component: AdminSupportPage,
+				meta: { requiresAuth: true, role: 'admin' },
+			},
+			{
+				path: 'admin/dispatch',
+				name: 'AdminDispatch',
+				component: AdminDispatchMapPage,
+				meta: { requiresAuth: true, role: 'admin' },
 			},
 		],
 	},
