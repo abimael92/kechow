@@ -21,6 +21,8 @@
 | **ADMIN_COMMAND_CENTER.md** | Design for Real-Time Maintenance Dashboard: Connectivity Monitor, Revenue Engine, Error Logger, Active Job Map (OwnerLayout/DashboardOverview). |
 | **FEATURE_MATRIX.md** | Role-based feature matrix (Client, Driver, Admin) and gaps (e.g. real-time sync). |
 | **ROADMAP_2026.md** | Security (rate limiting, 2FA, SQL audit), architecture (Order/Delivery state machine), add-ons (Google Maps, Twilio). |
+| **ADMIN_USER_MANUAL.md** | How to use the Super Admin Command Center (dashboard, connectivity, ledger, support, dispatch map); admin vs owner role. |
+| **DEPENDENCY_SETUP.md** | New installs (zod, @tanstack/vue-query, spatie/laravel-activitylog), config, and step-by-step for adding API keys (Maps, Pusher/Reverb, Sentry). |
 
 ---
 
@@ -28,7 +30,7 @@
 
 - **Database:** Laravel migrations (MySQL/PostgreSQL/SQLite). No Prisma/Neon in codebase.
 - **Backend:** Laravel 12, Sanctum, modules (Auth, Owner, Restaurant, Order, Cart), Api\Driver DeliveryController.
-- **Frontend:** Vue 3, Vite, Pinia, OwnerLayout/DeliveryLayout/CustomerLayout, role-based routing.
+- **Frontend:** Vue 3, Vite, Pinia, OwnerLayout/DeliveryLayout/CustomerLayout/AdminLayout, role-based routing; Super Admin Command Center at `/admin/*`.
 - **Business:** Food delivery (customers, restaurants, drivers) in Jiménez, Chihuahua; Spanish-first UI.
 
 ---
