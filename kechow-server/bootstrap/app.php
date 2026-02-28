@@ -14,13 +14,21 @@ return Application::configure(basePath: dirname(__DIR__))
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
+
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(\App\Http\Middleware\Cors::class);
-        $middleware->alias(['role' => \App\Http\Middleware\CheckRole::class]);
-        $middleware->api(prepend: [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        ]);
-    })
+    $middleware->append(\App\Http\Middleware\Cors::class);
+
+    $middleware->validateCsrfTokens(except: [
+        'api/*',
+    ]);
+
+    $middleware->alias(['role' => \App\Http\Middleware\CheckRole::class]);
+
+    $middleware->api(prepend: [
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+    ]);
+})
+
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(function (Request $request, \Throwable $e) {
             return $request->is('api/*') || $request->expectsJson();
