@@ -258,6 +258,10 @@ import {
 } from '../services/businessOwner.service';
 import type { MenuItem } from '../types/';
 
+window.addEventListener('error', (e) => {
+  console.log('GLOBAL ERROR:', e.error);
+});
+
 const statLabels: Record<string, string> = {
 	totalItems: 'Total',
 	availableItems: 'Disponibles',
@@ -298,9 +302,12 @@ const computedStats = computed(() => {
 	const totalItems = menuItems.value.length;
 	const availableItems = menuItems.value.filter(item => item.available).length;
 	const outOfStockItems = totalItems - availableItems;
-	const averagePrice = totalItems > 0 
-		? menuItems.value.reduce((sum, item) => sum + item.price, 0) / totalItems 
-		: 0;
+	const averagePrice = totalItems > 0
+	  ? menuItems.value.reduce((sum, item) => {
+	      const price = Number(item.price);
+	      return sum + (Number.isFinite(price) ? price : 0);
+	    }, 0) / totalItems
+	  : 0;
 
 	const trends = {
 	    total: menuItems.value.length > 0 ? Math.floor(Math.random() * 8) + 4 : 0,
@@ -343,7 +350,7 @@ const computedStats = computed(() => {
 		{
 			label: 'averagePrice',
 			value: averagePrice,
-			displayValue: `$${averagePrice.toFixed(2)} MXN`,
+		displayValue: `$${Number.isFinite(averagePrice) ? averagePrice.toFixed(2) : '0.00'} MXN`,
 			icon: 'ri-price-tag-line',
 			color: '#f59e0b',
 			bgColor: 'bg-orange-100 dark:bg-orange-900/30',
@@ -365,13 +372,16 @@ const filteredItems = computed(() => {
 	}
 	
 	if (searchQuery.value.trim()) {
-		const query = searchQuery.value.toLowerCase();
-		filtered = filtered.filter(item => 
-			item.name.toLowerCase().includes(query) ||
-			item.description.toLowerCase().includes(query) ||
-			((item as any).tags && (item as any).tags.some((tag: string) => tag.toLowerCase().includes(query)))
-		);
-	}
+	const query = searchQuery.value.toLowerCase();
+
+	filtered = filtered.filter(item =>
+		(item.name ?? '').toLowerCase().includes(query) ||
+		(item.description ?? '').toLowerCase().includes(query) ||
+		((item as any).tags?.some((tag: string) =>
+			tag?.toLowerCase().includes(query)
+		))
+	);
+}
 	
 	return filtered;
 });
@@ -515,15 +525,34 @@ const printMenu = () => {
 };
 
 const loadMenuItems = async () => {
-	try {
-		loading.value = true;
-		menuItems.value = await fetchMenuItems();
-	} catch (error) {
-		console.error('Error al cargar los elementos del menú:', error);
-		alert('No se pudieron cargar los elementos del menú. Por favor intenta de nuevo.');
-	} finally {
-		loading.value = false;
-	}
+  try {
+    loading.value = true;
+
+    const response = await fetchMenuItems();
+    
+    console.log('this is the responses: ',response);
+	
+
+    const items = Array.isArray(response)
+      ? response
+      : (response as any)?.data ?? [];
+
+    menuItems.value = items.map((item: any) => ({
+  id: Number(item.id),
+  name: item.name ?? '',
+  description: item.description ?? '',
+  price: Number(item.price) || 0,
+  image_url: item.image_url ?? null,
+  available: Boolean(item.is_available ?? item.available ?? false),
+  category: item.category ?? 'plato principal', // critical
+  preparation_time: item.preparation_time ?? null,
+}));
+  } catch (error) {
+    console.error('Failed loading menu:', error);
+    menuItems.value = [];
+  } finally {
+    loading.value = false;
+  }
 };
 
 onMounted(() => {

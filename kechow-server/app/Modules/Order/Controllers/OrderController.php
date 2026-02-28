@@ -89,7 +89,7 @@ class OrderController extends Controller
     }
 
     /** Order stats for owner dashboard (today, weekly, monthly). */
-    public function orderStats(Request $request): JsonResponse
+    public function stats(Request $request): JsonResponse
     {
         $restaurantIds = $request->user()->restaurants()->pluck('id')->toArray();
         if (empty($restaurantIds)) {
