@@ -103,7 +103,7 @@ export const fetchOrders = async (filters?: OrderFilters): Promise<Order[]> => {
 		return filteredOrders;
 	}
 
-	const response = await api.get<OrdersResponse>('/owner/orders', {
+	const response = await api.get<OrdersResponse>('/owners/orders', {
 		params: filters,
 	});
 	return response.data.orders ?? [];
@@ -161,7 +161,7 @@ export const getOrderStats = async (): Promise<OrderStats> => {
 		};
 	}
 
-	const response = await api.get<OrderStats>('/owner/orders/stats');
+	const response = await api.get<OrderStats>('/owners/orders/stats');
 	return response.data;
 };
 
