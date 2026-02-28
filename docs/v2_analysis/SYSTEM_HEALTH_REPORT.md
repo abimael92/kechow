@@ -6,6 +6,14 @@
 
 ---
 
+## Resolved / Updates (post–Super Admin & hardening)
+
+- **#1, #2:** Auth refactored to session (HttpOnly cookie) where possible; token no longer stored in localStorage for new logins. Sensitive console.log removed from axios and views. See AUTH_SECURITY_PROPOSAL.md.
+- **#3, #7:** Order module driver routes use `role:delivery`; documented as deprecated in favor of `/delivery/*` (DeliveryController). Canonical driver API: `/delivery/*`.
+- **#4:** Admin routes strictly guarded with `role:admin` (`/admin/*`). Customer, owner, driver route groups use `role:customer`, `role:owner`, `role:delivery` in api.php and Order routes.
+
+---
+
 ## CRITICAL
 
 | # | Area | Issue | Location / Notes |
@@ -20,10 +28,10 @@
 
 | # | Area | Issue | Location / Notes |
 |---|------|--------|-------------------|
-| 4 | **Security** | **Role enforcement** on backend: Owner and customer routes rely on auth + ownership checks; delivery has `role:delivery`. Admin owner CRUD has `role:admin`. Ensure **all** sensitive routes use correct middleware and policies. | `routes/api.php`; Modules (Owner, Order, Restaurant); CheckRole middleware. |
+| 4 | **Security** | **Role enforcement** | **RESOLVED** — Admin routes `role:admin`; owner/driver/customer routes use `role:owner`, `role:delivery`, `role:customer` in api.php and Order routes. |
 | 5 | **Security** | **CORS** is config-driven; ensure production env has correct `CORS_ALLOWED_ORIGINS` and no overly permissive fallback. | `config/cors.php`; `.env` |
 | 6 | **Scalability** | **No pagination** on some list endpoints (e.g. customer orders, restaurant orders). Large result sets can hurt performance and memory. | OrderController index; DeliveryController getCompletedOrders has pagination; verify all list APIs. |
-| 7 | **Refactoring** | **Duplicate/overlap** between Order module driver routes (`/driver/orders/available`, accept, start-delivery, complete-delivery) and DeliveryController (`/delivery/jobs/available`, accept, status). Frontend uses `/delivery/*` only; backend has both. Remove or clearly deprecate one path. | `api.php`; Order module; DeliveryController. |
+| 7 | **Refactoring** | **Driver API** — `/driver/*` deprecated, role:delivery applied; canonical driver API is `/delivery/*`. | `api.php`; Order module; DeliveryController. |
 | 8 | **Dependencies** | **PHP/JS dependencies** not audited in this run. Outdated or vulnerable packages are a security and stability risk. | Run `composer audit`, `npm audit`; schedule regular updates. |
 
 ---
@@ -60,8 +68,15 @@
 | 20 | **Style** | Inconsistent comment language (Spanish vs English) in code. Prefer one language for comments for consistency. | Various PHP/TS/Vue files. |
 | 21 | **Dependencies** | Optional rollup native dependency (`@rollup/rollup-linux-x64-gnu`) in client; build uses `ROLLUP_NO_NATIVE=1`. Minor impact. | package.json. |
 | 22 | **Docs** | Multiple doc folders (kechow-docs, kechow-client/docs, docs). Consolidation and index improve discoverability. | Repo structure. |
-| 23 | **Landscaping** | “Landscaping” mentioned in scope; codebase is **food delivery** (restaurants, menus, orders). No landscaping-specific features found. May be a naming/scope clarification. | N/A. |
 | 24 | **Neon/Prisma** | Task mentioned “Database (Neon/Prisma)”. Repo uses **Laravel migrations + Eloquent** only. Neon (Postgres) can be used as Laravel DB host; no Prisma. | Database layer. |
+
+---
+
+## Legacy / Naming Clarification
+
+| # | Area | Note |
+|---|------|------|
+| 23 | **Landscaping** | "Landscaping" was mentioned in earlier scope; the codebase is food delivery (restaurants, menus, orders). No landscaping-specific features exist. Naming/scope clarification only. |
 
 ---
 
