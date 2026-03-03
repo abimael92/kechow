@@ -33,6 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoading = ref(false);
 
   const isAuthenticated = computed(() => !!user.value);
+  const isAdmin = computed(() => user.value?.role === 'admin');
   const isOwner = computed(() => user.value?.role === 'owner');
   const isDelivery = computed(() => user.value?.role === 'delivery');
   const isCustomer = computed(() => user.value?.role === 'customer');
@@ -55,7 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = response.user;
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(response.user));
 
-      redirectByRole();
+      // redirectByRole();
 
       return response;
     } catch (err: any) {
@@ -162,6 +163,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     initialize,
     isAuthenticated,
+    isAdmin,
     isOwner,
     isDelivery,
     isCustomer,

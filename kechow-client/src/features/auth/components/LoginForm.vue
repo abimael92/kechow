@@ -122,20 +122,15 @@ const loginForm = reactive({
 });
 
 async function handleLogin() {
-	try {
-		const response = await authStore.login({ ...loginForm });
-		toast.success('Inicio de sesión exitoso');
-
-		if (authStore.isOwner) {
-			await router.push({ name: 'OwnerDashboard' });
-		} else {
-			await router.push({ name: 'Home' });
-		}
-	} catch (error: unknown) {
-		console.error('Login error details:', error);
-		toast.error('Credenciales inválidas. Verifica tu correo y contraseña.');
-	}
+  try {
+    await authStore.login({ ...loginForm });
+    toast.success('Inicio de sesión exitoso');
+  } catch (error: unknown) {
+    console.error('Login error details:', error);
+    toast.error('Credenciales inválidas. Verifica tu correo y contraseña.');
+  }
 }
+
 </script>
 
 <style scoped>

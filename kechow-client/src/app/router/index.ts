@@ -34,176 +34,213 @@ const DeliveryEarnings = () => import('@pages/delivery/EarningsPage.vue');
 const OrderDetailPage = () => import('@pages/delivery/OrderDetailPage.vue');
 
 const routes = [
-	{
-		path: '/',
-		component: MainLayout,
-		children: [
-			{ path: '', name: 'Landing', component: LandingPage },
-			{ path: 'login', name: 'Login', component: LoginView },
-			{ path: 'register', name: 'Register', component: RegisterView },
-		],
-	},
-	// Customer routes with CustomerLayout
-	{
-		path: '/',
-		component: CustomerLayout,
-		children: [
-			{
-				path: 'home',
-				name: 'Home',
-				component: HomePage,
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'restaurants',
-				name: 'RestaurantList',
-				component: RestaurantListPage,
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'restaurants/:id',
-				name: 'RestaurantDetail',
-				component: RestaurantDetailView,
-				props: true,
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'cart',
-				name: 'CartPage',
-				component: () => import('@/pages/customer/CartPage.vue'),
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'checkout',
-				name: 'CheckoutPage',
-				component: () => import('@/pages/customer/CheckoutPage.vue'),
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'orders',
-				name: 'OrdersPage',
-				component: () => import('@/pages/customer/OrdersPage.vue'),
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'orders/:id/track',
-				name: 'OrderTracking',
-				component: () => import('@/pages/customer/OrderTrackingPage.vue'),
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'reviews',
-				name: 'ReviewPage',
-				component: () => import('@/pages/customer/ReviewsPage.vue'),
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-			{
-				path: 'profile',
-				name: 'ProfilePage',
-				component: () => import('@/pages/customer/ProfilePage.vue'),
-				meta: { requiresAuth: true, role: 'customer' },
-			},
-		],
-	},
-	// Owner routes with OwnerLayout
-	{
-		path: '/',
-		component: OwnerLayout,
-		children: [
-			{
-				path: 'owner/dashboard',
-				name: 'OwnerDashboard',
-				component: OwnerDashboardPage,
-				meta: { requiresAuth: true, role: 'owner' },
-			},
-			{
-				path: 'owner/menu',
-				name: 'OwnerMenu',
-				component: OwnerMenuPage,
-				meta: { requiresAuth: true, role: 'owner' },
-			},
-			{
-				path: 'owner/menu-items/edit/:id?',
-				name: 'OwnerEditMenuItem',
-				component: EditMenuItemPage,
-				props: true,
-				meta: { requiresAuth: true, role: 'owner' },
-			},
-			{
-				path: 'owner/analytics',
-				name: 'OwnerAnalytics',
-				component: AnalyticsPage,
-				meta: { requiresAuth: true, role: 'owner' },
-			},
-			{
-				path: 'owner/orders',
-				name: 'OwnerOrders',
-				component: OrdersListPage,
-				meta: { requiresAuth: true, role: 'owner' },
-			},
-			{
-				path: 'owner/reviews',
-				name: 'ReviewsPage',
-				component: ReviewsPage,
-				meta: { requiresAuth: true, role: 'owner' },
-			},
-			{
-				path: 'owner/settings',
-				name: 'OwnerSettings',
-				component: OwnerSettingsPage,
-				meta: { requiresAuth: true, role: 'owner' },
-			},
-		],
-	},
-	// Delivery routes with DeliveryLayout
-	{
-		path: '/',
-		component: DeliveryLayout,
-		children: [
-			{
-				path: 'delivery/dashboard',
-				name: 'DeliveryDashboard',
-				component: DeliveryDashboard,
-				meta: { requiresAuth: true, role: 'delivery' },
-			},
-			{
-				path: 'delivery/order/:id',
-				name: 'DeliveryOrderDetail',
-				component: DeliveryOrderDetail,
-				meta: { requiresAuth: true, role: 'delivery' },
-			},
-			{
-				path: 'delivery/live/:id',
-				name: 'LiveDelivery',
-				component: LiveDelivery,
-				meta: { requiresAuth: true, role: 'delivery' },
-			},
-			{
-				path: 'delivery/profile',
-				name: 'DeliveryProfile',
-				component: DeliveryProfile,
-				meta: { requiresAuth: true, role: 'delivery' },
-			},
-			{
-				path: 'delivery/earnings',
-				name: 'DeliveryEarnings',
-				component: DeliveryEarnings,
-				meta: { requiresAuth: true, role: 'delivery' },
-			},
-			{
-				path: 'delivery/orders',
-				name: 'DeliveryOrders',
-				component: OrderDetailPage,
-				meta: { requiresAuth: true, role: 'delivery' },
-			},
-		],
-	},
-	// 404 fallback: show something instead of blank
-	{
-		path: '/:pathMatch(.*)*',
-		name: 'NotFound',
-		component: () => import('@/shared/ui/NotFoundPage.vue'),
-	},
+  {
+    path: '/',
+    component: MainLayout,
+    children: [
+      { path: '', name: 'Landing', component: LandingPage },
+      { path: 'login', name: 'Login', component: LoginView },
+      { path: 'register', name: 'Register', component: RegisterView },
+    ],
+  },
+  // Admin routes with MainLayout (or create AdminLayout if needed)
+  {
+    path: '/',
+    component: MainLayout,
+    children: [
+      {
+        path: 'admin/dashboard',
+        name: 'AdminDashboard',
+        component: () => import('@pages/admin/AdminDashboardPage.vue'),
+        meta: { requiresAuth: true, role: 'admin' },
+      },
+      {
+        path: 'admin/connectivity',
+        name: 'AdminConnectivity',
+        component: () => import('@pages/admin/ConnectivityPage.vue'),
+        meta: { requiresAuth: true, role: 'admin' },
+      },
+      {
+        path: 'admin/dispatch-map',
+        name: 'AdminDispatchMap',
+        component: () => import('@pages/admin/DispatchMapPage.vue'),
+        meta: { requiresAuth: true, role: 'admin' },
+      },
+      {
+        path: 'admin/ledger',
+        name: 'AdminLedger',
+        component: () => import('@pages/admin/LedgerPage.vue'),
+        meta: { requiresAuth: true, role: 'admin' },
+      },
+      {
+        path: 'admin/support',
+        name: 'AdminSupport',
+        component: () => import('@pages/admin/SupportPage.vue'),
+        meta: { requiresAuth: true, role: 'admin' },
+      },
+    ],
+  },
+  // Customer routes with CustomerLayout
+  {
+    path: '/',
+    component: CustomerLayout,
+    children: [
+      {
+        path: 'home',
+        name: 'Home',
+        component: HomePage,
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'restaurants',
+        name: 'RestaurantList',
+        component: RestaurantListPage,
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'restaurants/:id',
+        name: 'RestaurantDetail',
+        component: RestaurantDetailView,
+        props: true,
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'cart',
+        name: 'CartPage',
+        component: () => import('@/pages/customer/CartPage.vue'),
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'checkout',
+        name: 'CheckoutPage',
+        component: () => import('@/pages/customer/CheckoutPage.vue'),
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'orders',
+        name: 'OrdersPage',
+        component: () => import('@/pages/customer/OrdersPage.vue'),
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'orders/:id/track',
+        name: 'OrderTracking',
+        component: () => import('@/pages/customer/OrderTrackingPage.vue'),
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'reviews',
+        name: 'ReviewPage',
+        component: () => import('@/pages/customer/ReviewsPage.vue'),
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+      {
+        path: 'profile',
+        name: 'ProfilePage',
+        component: () => import('@/pages/customer/ProfilePage.vue'),
+        meta: { requiresAuth: true, role: 'customer' },
+      },
+    ],
+  },
+  // Owner routes with OwnerLayout
+  {
+    path: '/',
+    component: OwnerLayout,
+    children: [
+      {
+        path: 'owner/dashboard',
+        name: 'OwnerDashboard',
+        component: OwnerDashboardPage,
+        meta: { requiresAuth: true, role: 'owner' },
+      },
+      {
+        path: 'owner/menu',
+        name: 'OwnerMenu',
+        component: OwnerMenuPage,
+        meta: { requiresAuth: true, role: 'owner' },
+      },
+      {
+        path: 'owner/menu-items/edit/:id?',
+        name: 'OwnerEditMenuItem',
+        component: EditMenuItemPage,
+        props: true,
+        meta: { requiresAuth: true, role: 'owner' },
+      },
+      {
+        path: 'owner/analytics',
+        name: 'OwnerAnalytics',
+        component: AnalyticsPage,
+        meta: { requiresAuth: true, role: 'owner' },
+      },
+      {
+        path: 'owner/orders',
+        name: 'OwnerOrders',
+        component: OrdersListPage,
+        meta: { requiresAuth: true, role: 'owner' },
+      },
+      {
+        path: 'owner/reviews',
+        name: 'ReviewsPage',
+        component: ReviewsPage,
+        meta: { requiresAuth: true, role: 'owner' },
+      },
+      {
+        path: 'owner/settings',
+        name: 'OwnerSettings',
+        component: OwnerSettingsPage,
+        meta: { requiresAuth: true, role: 'owner' },
+      },
+    ],
+  },
+  // Delivery routes with DeliveryLayout
+  {
+    path: '/',
+    component: DeliveryLayout,
+    children: [
+      {
+        path: 'delivery/dashboard',
+        name: 'DeliveryDashboard',
+        component: DeliveryDashboard,
+        meta: { requiresAuth: true, role: 'delivery' },
+      },
+      {
+        path: 'delivery/order/:id',
+        name: 'DeliveryOrderDetail',
+        component: DeliveryOrderDetail,
+        meta: { requiresAuth: true, role: 'delivery' },
+      },
+      {
+        path: 'delivery/live/:id',
+        name: 'LiveDelivery',
+        component: LiveDelivery,
+        meta: { requiresAuth: true, role: 'delivery' },
+      },
+      {
+        path: 'delivery/profile',
+        name: 'DeliveryProfile',
+        component: DeliveryProfile,
+        meta: { requiresAuth: true, role: 'delivery' },
+      },
+      {
+        path: 'delivery/earnings',
+        name: 'DeliveryEarnings',
+        component: DeliveryEarnings,
+        meta: { requiresAuth: true, role: 'delivery' },
+      },
+      {
+        path: 'delivery/orders',
+        name: 'DeliveryOrders',
+        component: OrderDetailPage,
+        meta: { requiresAuth: true, role: 'delivery' },
+      },
+    ],
+  },
+  // 404 fallback: show something instead of blank
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/shared/ui/NotFoundPage.vue'),
+  },
 ];
 
 const router = createRouter({

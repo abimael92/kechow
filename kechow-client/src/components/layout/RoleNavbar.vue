@@ -5,6 +5,39 @@
 		aria-label="Navegación principal"
 	>
 		<div class="flex flex-wrap justify-center items-center gap-1 sm:gap-2 md:gap-4 min-h-0">
+		<!-- Admin Navigation -->
+<template v-if="authStore.isAdmin">
+  <router-link
+    to="/admin/dashboard"
+    class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline break-words"
+    active-class="font-semibold border-b-2 border-primary-500"
+    >Tablero</router-link
+  >
+  <router-link
+    to="/admin/connectivity"
+    class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline break-words"
+    active-class="font-semibold border-b-2 border-primary-500"
+    >Conectividad</router-link
+  >
+  <router-link
+    to="/admin/dispatch-map"
+    class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline break-words"
+    active-class="font-semibold border-b-2 border-primary-500"
+    >Mapa de Despacho</router-link
+  >
+  <router-link
+    to="/admin/ledger"
+    class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline break-words"
+    active-class="font-semibold border-b-2 border-primary-500"
+    >Ledger</router-link
+  >
+  <router-link
+    to="/admin/support"
+    class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline break-words"
+    active-class="font-semibold border-b-2 border-primary-500"
+    >Soporte</router-link
+  >
+</template>
 			<!-- Landing: links + CTAs (when on /, /login, /register) -->
 			<template v-if="isLandingRoute">
 				<a :href="landingHash('#features')" class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline">Características</a>
@@ -86,7 +119,7 @@
 			</template>
 
 			<!-- Customer Navigation -->
-			<template v-else-if="authStore.isAuthenticated">
+			<template v-else-if="authStore.user?.role === 'customer'">
 				<router-link
 					to="/restaurants"
 					class="flex items-center min-h-[44px] min-w-0 px-2 py-2 sm:px-3 sm:py-2.5 text-sm sm:text-base rounded transition-colors text-white hover:text-primary-300 no-underline break-words"

@@ -3,27 +3,30 @@
  * Enforces strict role isolation across the application
  */
 
-export type UserRole = 'owner' | 'delivery' | 'customer';
+export type UserRole = 'owner' | 'delivery' | 'customer' | 'admin';
 
 export interface RoleRouteMap {
 	owner: string;
 	delivery: string;
 	customer: string;
+	admin: string;
 }
 
 /**
  * Default dashboard routes for each role
  */
 export const ROLE_DASHBOARD_ROUTES: RoleRouteMap = {
-	owner: '/owner/dashboard',
-	delivery: '/delivery/dashboard',
-	customer: '/home',
+  owner: '/owner/dashboard',
+  delivery: '/delivery/dashboard',
+  customer: '/home',
+  admin: '/admin/dashboard',
 } as const;
+
 
 /**
  * Valid roles in the system
  */
-export const VALID_ROLES: readonly UserRole[] = ['owner', 'delivery', 'customer'] as const;
+export const VALID_ROLES: readonly UserRole[] = ['owner', 'delivery', 'customer', 'admin'] as const;
 
 /**
  * Check if a role is valid
