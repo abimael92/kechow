@@ -1,5 +1,5 @@
 <template>
-	<div class="min-h-screen p-4 lg:p-8 space-y-8">
+	<div class="min-h-screen p-4 lg:p-8 space-y-8" data-cy="delivery-dashboard">
 		<!-- Header -->
 		<div class="space-y-2">
 			<div class="flex items-center gap-3">
@@ -60,6 +60,7 @@
 				<button
 					type="button"
 					role="switch"
+					data-cy="availability-toggle"
 					:aria-checked="deliveryStore.isOnline"
 					@click="handleToggleAvailability"
 					:disabled="deliveryStore.hasActiveOrder"

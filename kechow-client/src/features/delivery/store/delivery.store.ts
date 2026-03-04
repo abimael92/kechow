@@ -1,6 +1,13 @@
-// src/features/delivery/stores/delivery.store.ts
+// src/features/delivery/store/delivery.store.ts
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
+import type {
+  AvailabilityData,
+  JobItem,
+  ActiveOrderData,
+  EarningsData,
+  CompletedOrderItem,
+} from '../types';
 import {
   getAvailability,
   updateAvailability,
@@ -16,21 +23,21 @@ import {
 
 export const useDeliveryStore = defineStore('delivery', () => {
   // State
-  const availability = ref({
+  const availability = ref<AvailabilityData>({
     isOnline: false,
     totalOnlineHours: 0,
   });
-  const availableJobs = ref<any[]>([]);
-  const activeOrder = ref<any | null>(null);
+  const availableJobs = ref<JobItem[]>([]);
+  const activeOrder = ref<ActiveOrderData | null>(null);
   const isOnline = ref(false);
-  const completedOrders = ref<any[]>([]);
-  const completedOrdersList = ref<{ orders: any[]; total: number; current_page: number; per_page: number }>({
+  const completedOrders = ref<CompletedOrderItem[]>([]);
+  const completedOrdersList = ref<{ orders: CompletedOrderItem[]; total: number; current_page: number; per_page: number }>({
     orders: [],
     total: 0,
     current_page: 1,
     per_page: 15,
   });
-  const earningsSummary = ref<{ today?: number; week?: number; month?: number; total?: number } | null>(null);
+  const earningsSummary = ref<EarningsData | null>(null);
   const loading = ref(false);
   const error = ref<string | null>(null);
   const earningsLoading = ref(false);
@@ -213,7 +220,7 @@ export const useDeliveryStore = defineStore('delivery', () => {
     }
   };
 
-  const orderDetail = ref<any | null>(null);
+  const orderDetail = ref<ActiveOrderData | null>(null);
   const orderDetailLoading = ref(false);
   const orderDetailError = ref<string | null>(null);
 

@@ -65,7 +65,7 @@
 		</div>
 
 		<!-- Orders List -->
-		<div class="space-y-4">
+		<div class="space-y-4" data-cy="available-jobs">
 			<div
 				v-for="order in filteredOrders"
 				:key="order.id"
