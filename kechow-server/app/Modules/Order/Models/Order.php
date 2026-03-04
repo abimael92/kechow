@@ -56,9 +56,14 @@ class Order extends Model
     }
 
     public function delivery()
-{
-    return $this->hasOne(\App\Models\Delivery::class, 'order_id');
-}
+    {
+        return $this->hasOne(\App\Models\Delivery::class, 'order_id');
+    }
+
+    public function deliveryRejections()
+    {
+        return $this->hasMany(\App\Models\DeliveryRejection::class, 'order_id');
+    }
 
     // Helper methods
     public function canBeCancelled(): bool
