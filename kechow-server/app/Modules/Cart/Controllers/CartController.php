@@ -7,12 +7,14 @@ use App\Modules\Cart\Models\Cart;
 use App\Modules\Cart\Models\CartItem;
 use App\Modules\Restaurant\Models\MenuItem;
 use App\Modules\Restaurant\Models\Restaurant;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
+    use ApiResponse;
     /**
      * Create or retrieve cart for current user + restaurant.
      * POST /carts with { restaurant_id }
@@ -20,9 +22,9 @@ class CartController extends Controller
     public function store(Request $request): JsonResponse
     {
 
-      if (!$request->user()) {
-        return response()->json(['message' => 'No autenticado'], 401);
-    }
+        if (!$request->user()) {
+            return $this->error('No autenticado', 401);
+        }
 
         $request->validate([
             'restaurant_id' => 'required|exists:restaurants,id',
@@ -50,7 +52,7 @@ class CartController extends Controller
         }
 
         $cart->load(['items.menuItem', 'restaurant']);
-        return response()->json($this->cartResponse($cart));
+        return $this->success($this->cartResponse($cart));
     }
 
     /**
@@ -70,11 +72,11 @@ class CartController extends Controller
             ->first();
 
         if (! $cart) {
-            return response()->json(['cart' => null, 'items' => [], 'restaurant' => null]);
+            return $this->success(['cart' => null, 'items' => [], 'restaurant' => null]);
         }
 
         $cart->touchExpiration();
-        return response()->json($this->cartResponse($cart));
+        return $this->success($this->cartResponse($cart));
     }
 
     /**
@@ -98,16 +100,14 @@ class CartController extends Controller
 
         $menuItem = MenuItem::findOrFail($menuItemId);
         if ($menuItem->restaurant_id !== $cart->restaurant_id) {
-            return response()->json(['message' => 'El artículo no pertenece al restaurante del carrito.'], 422);
+            return $this->error('El artículo no pertenece al restaurante del carrito.', 422);
         }
         if (! $menuItem->is_available) {
-            return response()->json(['message' => 'El artículo ya no está disponible.'], 422);
+            return $this->error('El artículo ya no está disponible.', 422);
         }
         $maxQty = $menuItem->stock === null ? 20 : min(20, $menuItem->stock);
         if ($quantity > $maxQty) {
-            return response()->json([
-                'message' => "Cantidad máxima: {$maxQty}. Stock limitado.",
-            ], 422);
+            return $this->error("Cantidad máxima: {$maxQty}. Stock limitado.", 422);
         }
 
         if ($quantity <= 0) {
@@ -121,7 +121,7 @@ class CartController extends Controller
 
         $cart->touchExpiration();
         $cart->load(['items.menuItem', 'restaurant']);
-        return response()->json($this->cartResponse($cart));
+        return $this->success($this->cartResponse($cart));
     }
 
     /**
@@ -139,7 +139,7 @@ class CartController extends Controller
         $cartItem->delete();
         $cart->touchExpiration();
         $cart->load(['items.menuItem', 'restaurant']);
-        return response()->json($this->cartResponse($cart));
+        return $this->success($this->cartResponse($cart));
     }
 
     private function cartResponse(Cart $cart): array

@@ -1,4 +1,74 @@
-// Delivery feature types
+// Delivery feature types — match backend /api/v1/delivery/* response shapes (after axios unwrap)
+
+/** Backend success wrapper; axios interceptor unwraps to `data` */
+export interface ApiSuccess<T> {
+  success: true;
+  data: T;
+  message?: string;
+  meta?: Record<string, unknown>;
+}
+
+export interface AvailabilityData {
+  isOnline: boolean;
+  totalOnlineHours?: number;
+  currentSessionStart?: string | null;
+  hasActiveOrder?: boolean;
+}
+
+export interface JobItem {
+  id: number;
+  pickup: string;
+  dropoff: string;
+  amount: number;
+  restaurant: { name: string };
+  items?: Array<{ id?: number; name?: string; quantity?: number }>;
+}
+
+export interface ActiveOrderData {
+  id: number;
+  orderNumber?: string;
+  status: string;
+  pickup: string;
+  dropoff: string;
+  amount: number;
+  fee?: number;
+  paymentMethod?: string;
+  restaurant: { name: string; address?: string; phone?: string };
+  customer?: { name: string; address?: string; phone?: string };
+  items?: Array<{ id?: number; name?: string; quantity?: number }>;
+  distance?: number | null;
+  estimatedTime?: number;
+}
+
+export interface EarningsData {
+  today: number;
+  week: number;
+  month: number;
+  total: number;
+}
+
+export interface StatsData {
+  todayOrders: number;
+  earnings: number;
+  completed_deliveries: number;
+  rating: number;
+}
+
+export interface DeliverySettingsData {
+  language: string;
+}
+
+/** Completed order item from GET /orders/completed */
+export interface CompletedOrderItem {
+  id: number;
+  status: string;
+  pickup?: string;
+  dropoff?: string;
+  amount?: number;
+  restaurant?: { name: string };
+  items?: unknown[];
+  delivered_at?: string;
+}
 
 export type DeliveryStatus =
 	| 'available'

@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+# If run from repo root (kechow-main), enter frontend dir
+if [ -d "kechow-client" ]; then
+  cd kechow-client && npm run lint && npm run typecheck && npm run format:check
+else
+  npm run lint && npm run typecheck && npm run format:check
+fi
