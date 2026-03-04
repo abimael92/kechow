@@ -2,8 +2,8 @@
 
 /**
  * Owner module routes.
- * - Admin-only owner management: GET/POST/PUT/PATCH/DELETE /owners
- * - Middleware: auth:sanctum, role:admin
+ * - Owner management: GET/POST/PUT/PATCH/DELETE /owners
+ * - Middleware: auth:sanctum, role:owner (not admin)
  */
 
 use App\Modules\Owner\Controllers\OwnerManagementController;

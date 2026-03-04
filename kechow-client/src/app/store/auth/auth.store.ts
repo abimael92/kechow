@@ -1,5 +1,6 @@
 // src/app/store/auth/auth.store.ts
 // Auth uses session (HttpOnly cookie) when backend supports it; no token in localStorage.
+// Login/register must NOT set 'token' in localStorage; backend returns only user. Logout clears any stale token.
 import { defineStore } from 'pinia';
 import {
   login,

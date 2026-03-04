@@ -23,6 +23,7 @@ class Driver extends Model
         'is_online',
         'rating',
         'total_deliveries',
+        'preferred_language',
     ];
 
     protected $casts = [

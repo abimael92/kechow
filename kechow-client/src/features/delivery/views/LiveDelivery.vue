@@ -26,18 +26,18 @@
 			<div class="flex items-center justify-between mb-4">
 				<div>
 					<h2 class="text-xl font-bold text-gray-900 dark:text-white">
-						{{ deliveryStore.activeOrder.orderNumber }}
+						{{ deliveryStore.activeOrder.orderNumber ?? '#' + deliveryStore.activeOrder.id }}
 					</h2>
 					<p class="text-sm text-gray-600 dark:text-gray-400">
-						Tarifa de entrega: ${{ (deliveryStore.activeOrder.fee ?? 0).toFixed(2) }}
+						Tarifa de entrega: ${{ ((deliveryStore.activeOrder.fee ?? 0) as number).toFixed(2) }}
 					</p>
 				</div>
 				<div class="text-right">
 					<p class="text-2xl font-bold text-green-600 dark:text-green-400">
-						${{ (deliveryStore.activeOrder.amount + deliveryStore.activeOrder.fee).toFixed(2) }}
+						${{ ((deliveryStore.activeOrder.amount ?? 0) + (deliveryStore.activeOrder.fee ?? 0)).toFixed(2) }}
 					</p>
 					<p class="text-xs text-gray-500 dark:text-gray-400">
-						{{ deliveryStore.activeOrder.paymentMethod }}
+						{{ deliveryStore.activeOrder.paymentMethod ?? '—' }}
 					</p>
 				</div>
 			</div>
@@ -118,6 +118,13 @@
 					<i class="ri-phone-line mr-2"></i>
 					Llamar al cliente
 				</a>
+				<span
+					v-else
+					class="px-6 py-3 border border-gray-200 dark:border-gray-600 text-gray-400 dark:text-gray-500 rounded-lg font-medium"
+				>
+					<i class="ri-phone-line mr-2"></i>
+					Teléfono no disponible
+				</span>
 			</div>
 		</div>
 
@@ -179,12 +186,13 @@
 				</div>
 				<div class="flex-1">
 					<p class="font-medium text-gray-900 dark:text-white">
-						{{ deliveryStore.activeOrder.restaurant.name }}
+						{{ deliveryStore.activeOrder.restaurant?.name ?? 'Restaurante' }}
 					</p>
 					<p class="text-sm text-gray-600 dark:text-gray-400">
-						{{ deliveryStore.activeOrder.restaurant.address }}
+						{{ deliveryStore.activeOrder.restaurant?.address ?? deliveryStore.activeOrder.pickup ?? '' }}
 					</p>
 					<a
+						v-if="deliveryStore.activeOrder.restaurant?.phone"
 						:href="`tel:${deliveryStore.activeOrder.restaurant.phone}`"
 						class="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-1"
 					>
@@ -207,12 +215,13 @@
 				</div>
 				<div class="flex-1">
 					<p class="font-medium text-gray-900 dark:text-white">
-						{{ deliveryStore.activeOrder.customer.name }}
+						{{ deliveryStore.activeOrder.customer?.name ?? 'Cliente' }}
 					</p>
 					<p class="text-sm text-gray-600 dark:text-gray-400">
-						{{ deliveryStore.activeOrder.customer.address }}
+						{{ deliveryStore.activeOrder.customer?.address ?? deliveryStore.activeOrder.dropoff ?? '' }}
 					</p>
 					<a
+						v-if="deliveryStore.activeOrder.customer?.phone"
 						:href="`tel:${deliveryStore.activeOrder.customer.phone}`"
 						class="text-sm text-blue-600 dark:text-blue-400 hover:underline mt-1"
 					>
@@ -233,7 +242,7 @@
 				<div class="text-center">
 					<p class="text-sm text-gray-600 dark:text-gray-400">Tiempo estimado</p>
 					<p class="text-lg font-bold text-gray-900 dark:text-white">
-						{{ deliveryStore.activeOrder.estimatedTime }} min
+						{{ deliveryStore.activeOrder.estimatedTime ?? 15 }} min
 					</p>
 				</div>
 			</div>
@@ -249,12 +258,12 @@
 			</h3>
 			<div class="space-y-2">
 				<div
-					v-for="item in deliveryStore.activeOrder.items"
-					:key="item.id"
+					v-for="(item, idx) in (deliveryStore.activeOrder.items ?? [])"
+					:key="item.id ?? idx"
 					class="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
 				>
-					<span class="text-gray-900 dark:text-white">{{ item.name }}</span>
-					<span class="text-gray-600 dark:text-gray-400">x{{ item.quantity }}</span>
+					<span class="text-gray-900 dark:text-white">{{ item.name ?? item.menu_item?.name ?? 'Item' }}</span>
+					<span class="text-gray-600 dark:text-gray-400">x{{ item.quantity ?? 1 }}</span>
 				</div>
 			</div>
 		</div>

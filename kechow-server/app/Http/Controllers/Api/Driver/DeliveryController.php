@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\Driver;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Delivery\UpdateAvailabilityRequest;
+use App\Http\Requests\Delivery\UpdateDeliverySettingsRequest;
 use App\Http\Requests\Delivery\UpdateDeliveryStatusRequest;
 use App\Models\Delivery;
+use App\Models\DeliveryRejection;
 use App\Models\Driver;
 use App\Modules\Order\Models\Order;
 use App\Traits\ApiResponse;
@@ -14,6 +16,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Delivery log: do not log PII (addresses, names, phone numbers). Log only IDs and status.
+ */
 class DeliveryController extends Controller
 {
     use ApiResponse;
@@ -76,7 +81,14 @@ class DeliveryController extends Controller
 
     public function getAvailableJobs()
     {
-        $orders = Order::where('status', 'pending')->whereDoesntHave('delivery')->with('restaurant', 'items')->get();
+        $driver = $this->getDriver();
+        $query = Order::where('status', 'pending')->whereDoesntHave('delivery');
+        if ($driver) {
+            $query->whereDoesntHave('deliveryRejections', function ($q) use ($driver) {
+                $q->where('driver_id', $driver->id);
+            });
+        }
+        $orders = $query->with('restaurant', 'items')->get();
         $jobs = $orders->map(fn ($o) => [
             'id' => $o->id,
             'pickup' => $o->restaurant->address ?? 'Restaurante',
@@ -105,14 +117,33 @@ class DeliveryController extends Controller
             return $this->success(null);
         }
 
+        $o = $active->order;
+        $restaurant = $o->restaurant;
+        $customer = $o->user;
+        $fee = (float) config('delivery.delivery_fee_fixed', 0);
+
         return $this->success([
-            'id' => $active->order->id,
+            'id' => $o->id,
+            'orderNumber' => '#' . $o->id,
             'status' => $active->status,
-            'pickup' => $active->order->restaurant->address ?? '',
-            'dropoff' => $active->order->delivery_address ?? '',
-            'amount' => (float) $active->order->total,
-            'restaurant' => ['name' => $active->order->restaurant->name ?? ''],
-            'items' => $active->order->items ?? [],
+            'pickup' => $restaurant->address ?? '',
+            'dropoff' => $o->delivery_address ?? '',
+            'amount' => (float) $o->total,
+            'fee' => $fee,
+            'paymentMethod' => 'Card',
+            'restaurant' => [
+                'name' => $restaurant->name ?? '',
+                'address' => $restaurant->address ?? '',
+                'phone' => $restaurant->phone ?? '',
+            ],
+            'customer' => [
+                'name' => $customer->name ?? 'Cliente',
+                'address' => $o->delivery_address ?? '',
+                'phone' => $customer->phone ?? '',
+            ],
+            'items' => $o->items ?? [],
+            'distance' => null,
+            'estimatedTime' => 15,
         ]);
     }
 
@@ -159,15 +190,32 @@ class DeliveryController extends Controller
             return $this->error('Order not found or unauthorized.', 404);
         }
 
+        $this->authorize('view', $delivery);
+
         $o = $delivery->order;
+        $restaurant = $o->restaurant;
+        $customer = $o->user;
+        $fee = (float) config('delivery.delivery_fee_fixed', 0);
 
         return $this->success([
             'id' => $o->id,
+            'orderNumber' => '#' . $o->id,
             'status' => $delivery->status,
-            'pickup' => $o->restaurant->address ?? '',
+            'pickup' => $restaurant->address ?? '',
             'dropoff' => $o->delivery_address ?? '',
             'amount' => (float) $o->total,
-            'restaurant' => ['name' => $o->restaurant->name ?? '', 'address' => $o->restaurant->address ?? ''],
+            'fee' => $fee,
+            'paymentMethod' => 'Card',
+            'restaurant' => [
+                'name' => $restaurant->name ?? '',
+                'address' => $restaurant->address ?? '',
+                'phone' => $restaurant->phone ?? '',
+            ],
+            'customer' => [
+                'name' => $customer->name ?? 'Cliente',
+                'address' => $o->delivery_address ?? '',
+                'phone' => $customer->phone ?? '',
+            ],
             'items' => $o->items ?? [],
             'delivery_notes' => $o->delivery_notes ?? '',
             'assigned_at' => $delivery->assigned_at?->toIso8601String(),
@@ -214,8 +262,33 @@ class DeliveryController extends Controller
         return $this->success(['status' => $delivery->status]);
     }
 
-    public function rejectOrder($orderId)
+    public function rejectOrder(Request $request, $orderId)
     {
+        $driver = $this->getDriver();
+        if (!$driver) {
+            return $this->error('Driver profile not found.', 404);
+        }
+
+        $order = Order::where('id', $orderId)->where('status', 'pending')->whereDoesntHave('delivery')->first();
+        if (!$order) {
+            return $this->error('Order not available for rejection.', 422);
+        }
+
+        DeliveryRejection::firstOrCreate(
+            [
+                'driver_id' => $driver->id,
+                'order_id' => $orderId,
+            ],
+            [
+                'reason' => $request->input('reason'),
+            ]
+        );
+
+        Log::channel('delivery')->info('Order rejected by driver', [
+            'order_id' => (int) $orderId,
+            'driver_id' => $driver->id,
+        ]);
+
         return $this->success(['ok' => true]);
     }
 
@@ -267,11 +340,14 @@ class DeliveryController extends Controller
                 ->where('status', Delivery::STATUS_DELIVERED)
                 ->where('delivered_at', '>=', $todayStart)
                 ->count();
-            $earnings = (float) Delivery::where('driver_id', $driver->id)
+            $orderTotals = (float) Delivery::where('driver_id', $driver->id)
                 ->where('status', Delivery::STATUS_DELIVERED)
                 ->where('delivered_at', '>=', $todayStart)
                 ->join('orders', 'deliveries.order_id', '=', 'orders.id')
                 ->sum('orders.total');
+            $rate = (float) config('delivery.driver_commission_rate', 1.0);
+            $fixed = (float) config('delivery.delivery_fee_fixed', 0);
+            $earnings = $orderTotals * $rate + $todayOrders * $fixed;
         }
 
         return $this->success([
@@ -285,30 +361,54 @@ class DeliveryController extends Controller
     public function getEarnings(Request $request)
     {
         $driver = $this->getDriver();
+        $rate = (float) config('delivery.driver_commission_rate', 1.0);
+        $fixed = (float) config('delivery.delivery_fee_fixed', 0);
         $today = 0.0;
         $week = 0.0;
         $month = 0.0;
         $total = 0.0;
+        $todayCount = 0;
+        $weekCount = 0;
+        $monthCount = 0;
+        $totalCount = 0;
         if ($driver) {
-            $today = (float) Delivery::where('driver_id', $driver->id)
+            $todaySum = (float) Delivery::where('driver_id', $driver->id)
                 ->where('status', Delivery::STATUS_DELIVERED)
                 ->whereDate('delivered_at', today())
                 ->join('orders', 'deliveries.order_id', '=', 'orders.id')
                 ->sum('orders.total');
-            $week = (float) Delivery::where('driver_id', $driver->id)
+            $todayCount = (int) Delivery::where('driver_id', $driver->id)
+                ->where('status', Delivery::STATUS_DELIVERED)
+                ->whereDate('delivered_at', today())->count();
+            $today = $todaySum * $rate + $todayCount * $fixed;
+
+            $weekSum = (float) Delivery::where('driver_id', $driver->id)
                 ->where('status', Delivery::STATUS_DELIVERED)
                 ->where('delivered_at', '>=', now()->startOfWeek())
                 ->join('orders', 'deliveries.order_id', '=', 'orders.id')
                 ->sum('orders.total');
-            $month = (float) Delivery::where('driver_id', $driver->id)
+            $weekCount = (int) Delivery::where('driver_id', $driver->id)
+                ->where('status', Delivery::STATUS_DELIVERED)
+                ->where('delivered_at', '>=', now()->startOfWeek())->count();
+            $week = $weekSum * $rate + $weekCount * $fixed;
+
+            $monthSum = (float) Delivery::where('driver_id', $driver->id)
                 ->where('status', Delivery::STATUS_DELIVERED)
                 ->where('delivered_at', '>=', now()->startOfMonth())
                 ->join('orders', 'deliveries.order_id', '=', 'orders.id')
                 ->sum('orders.total');
-            $total = (float) Delivery::where('driver_id', $driver->id)
+            $monthCount = (int) Delivery::where('driver_id', $driver->id)
+                ->where('status', Delivery::STATUS_DELIVERED)
+                ->where('delivered_at', '>=', now()->startOfMonth())->count();
+            $month = $monthSum * $rate + $monthCount * $fixed;
+
+            $totalSum = (float) Delivery::where('driver_id', $driver->id)
                 ->where('status', Delivery::STATUS_DELIVERED)
                 ->join('orders', 'deliveries.order_id', '=', 'orders.id')
                 ->sum('orders.total');
+            $totalCount = (int) Delivery::where('driver_id', $driver->id)
+                ->where('status', Delivery::STATUS_DELIVERED)->count();
+            $total = $totalSum * $rate + $totalCount * $fixed;
         }
 
         return $this->success([
@@ -321,11 +421,24 @@ class DeliveryController extends Controller
 
     public function getSettings()
     {
-        return $this->success(['language' => 'es']);
+        $driver = $this->getDriver();
+        $language = $driver ? ($driver->preferred_language ?? 'es') : 'es';
+        return $this->success(['language' => $language]);
     }
 
-    public function updateSettings(Request $request)
+    public function updateSettings(UpdateDeliverySettingsRequest $request)
     {
-        return $this->success($request->all());
+        $driver = $this->getDriver();
+        if (!$driver) {
+            return $this->error('Driver profile not found.', 404);
+        }
+
+        $validated = $request->validated();
+        if (array_key_exists('language', $validated)) {
+            $driver->preferred_language = $validated['language'];
+            $driver->save();
+        }
+
+        return $this->success(['language' => $driver->preferred_language ?? 'es']);
     }
 }
