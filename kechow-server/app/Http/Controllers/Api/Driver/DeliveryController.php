@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
+ * Delivery API for drivers (auth:sanctum, role:delivery).
  * Delivery log: do not log PII (addresses, names, phone numbers). Log only IDs and status.
+ *
+ * @OA\Tag(name="Delivery", description="Driver delivery API - availability, jobs, accept/reject, earnings, settings")
  */
 class DeliveryController extends Controller
 {
@@ -28,6 +31,11 @@ class DeliveryController extends Controller
         return Driver::where('user_id', Auth::id())->first();
     }
 
+    /**
+     * @OA\Get(path="/api/v1/delivery/availability", tags={"Delivery"}, security={{"sanctum":{}}},
+     *   @OA\Response(response=200, description="Current availability and hasActiveOrder")
+     * )
+     */
     public function getAvailability()
     {
         $driver = Driver::firstOrCreate(

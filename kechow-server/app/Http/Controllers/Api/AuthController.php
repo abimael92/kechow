@@ -3,15 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Modules\Restaurant\Models\Restaurant;
+use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller
 {
+    use ApiResponse;
     /**
      * SPA auth: session-based (HttpOnly cookie) when from stateful domain.
      * Returns user only; no token in response. Session cookie is set by Laravel.
@@ -26,14 +28,12 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Invalid credentials',
-            ], 401);
+            return $this->error('Invalid credentials', 401);
         }
 
         Auth::login($user, $request->boolean('remember', true));
 
-        return response()->json([
+        return $this->success([
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -83,14 +83,14 @@ class AuthController extends Controller
 
         Auth::login($user, false);
 
-        return response()->json([
+        return $this->success([
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role'  => $user->role,
             ],
-        ], 201);
+        ], '', [], 201);
     }
 
     /**
@@ -100,10 +100,10 @@ class AuthController extends Controller
     {
         $user = $request->user();
         if (!$user) {
-            return response()->json(['message' => 'Unauthenticated'], 401);
+            return $this->error('Unauthenticated', 401);
         }
 
-        return response()->json([
+        return $this->success([
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
