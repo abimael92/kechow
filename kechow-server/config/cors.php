@@ -3,6 +3,7 @@
 return [
     'paths' => ['api/*', 'login', 'register', 'sanctum/csrf-cookie', 'user'],
     'allowed_methods' => ['*'],
+    // In production set CORS_ALLOWED_ORIGINS to exact SPA origin(s). Never use * with supports_credentials.
     'allowed_origins' => array_filter(explode(',', env('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173,https://kechow-frontend.onrender.com'))),
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
