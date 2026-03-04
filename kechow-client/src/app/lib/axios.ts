@@ -25,7 +25,7 @@ export const api = axios.create({
   },
 });
 
-// Interceptor: add Bearer token when present (or rely on session cookie when using session-based auth)
+// Interceptor: add Bearer token when present. When no token, session cookie is used (stateful domain must be in SANCTUM_STATEFUL_DOMAINS). Do not store token in localStorage from login/register when backend returns only user.
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
