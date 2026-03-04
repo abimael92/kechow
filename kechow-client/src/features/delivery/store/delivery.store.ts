@@ -217,6 +217,31 @@ export const useDeliveryStore = defineStore('delivery', () => {
   const orderDetailLoading = ref(false);
   const orderDetailError = ref<string | null>(null);
 
+  // LiveDelivery: derived from activeOrder.status when no backend progress endpoint
+  const deliveryProgress = computed(() => {
+    const order = activeOrder.value;
+    if (!order) return null;
+    const status = order.status || 'assigned';
+    const steps = [
+      { label: 'accepted', completed: true },
+      { label: 'pickedUp', completed: ['picked_up', 'in_transit', 'delivered'].includes(status) },
+      { label: 'onTheWay', completed: ['in_transit', 'delivered'].includes(status) },
+      { label: 'delivered', completed: status === 'delivered' },
+    ];
+    const currentStep = status === 'assigned' ? 0 : status === 'picked_up' ? 1 : status === 'in_transit' ? 2 : 3;
+    return { steps, currentStep };
+  });
+
+  // LiveDelivery: optional GPS; not implemented until backend supports driver location
+  const currentLocation = ref<{ latitude: number; longitude: number; accuracy?: number; timestamp?: string } | null>(null);
+  const loadDeliveryProgress = async (_orderId: string | number) => {
+    // Progress is derived from activeOrder in deliveryProgress computed; no API call needed
+  };
+  const updateCurrentLocation = (_orderId: string | number) => {
+    // Optional: integrate with driver location API when available
+    currentLocation.value = null;
+  };
+
   const fetchOrderDetail = async (orderId: number) => {
     try {
       orderDetailLoading.value = true;
@@ -284,6 +309,10 @@ export const useDeliveryStore = defineStore('delivery', () => {
     completedError,
     hasActiveOrder,
     isAvailable,
+    deliveryProgress,
+    currentLocation,
+    loadDeliveryProgress,
+    updateCurrentLocation,
     initialize,
     toggleAvailability,
     loadAvailableJobs,
