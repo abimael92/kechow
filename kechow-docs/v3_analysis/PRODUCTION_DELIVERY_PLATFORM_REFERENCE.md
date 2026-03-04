@@ -1,15 +1,15 @@
 # Kechow Delivery Platform — Production Reference (v3)
 
-**Document version:** 2.0  
+**Document version:** 2.2  
 **Last updated:** March 2025  
-**Purpose:** Authoritative reference for the production delivery platform: features, current behavior, issues addressed, and verification.
+**Purpose:** Single authoritative reference for the production delivery platform: issue analysis (cause, impact, risks), safe non-breaking fixes, code/config snippets, verification steps, and current system behavior.
 
 ---
 
 ## Table of Contents
 
 1. [Executive Summary](#1-executive-summary)
-2. [Issues Addressed (Re-Analysis)](#2-issues-addressed-re-analysis)
+2. [Issue Analysis & Fixes](#2-issue-analysis--fixes)
 3. [Architecture Overview](#3-architecture-overview)
 4. [Backend Features](#4-backend-features)
 5. [Frontend Features](#5-frontend-features)
@@ -35,78 +35,169 @@
 
 ---
 
-## 2. Issues Addressed (Re-Analysis)
+## 2. Issue Analysis & Fixes
+
+Each subsection covers: **Issue description** → **Analysis (cause, impact, risks)** → **Recommended fixes (backend, frontend, config)** → **Code/config snippets** (where applicable) → **Verification/QA**. All fixes are safe and non-breaking; existing endpoints, API contracts, and frontend workflows are preserved.
+
+---
 
 ### 2.1 Reject order
 
 **Issue description**  
-Frontend called `POST /delivery/jobs/{id}/reject`; backend returned `{ ok: true }` without persisting or removing the job from the available pool. Reject was non-functional.
+`POST /delivery/jobs/{id}/reject` returns `{ ok: true }` but does not persist the rejection or remove the job from the driver’s available pool. The reject action is non-functional from a data perspective.
 
-**Cause and impact**  
-- Cause: `rejectOrder` in DeliveryController had no DB logic.  
-- Impact: Drivers believed they had rejected a job; the order stayed in the list; support/ops confusion.
+**Analysis**
 
-**Recommended fix (implemented)**  
+| Aspect | Detail |
+|--------|--------|
+| **Cause** | `rejectOrder()` in DeliveryController had no database logic; it only returned a success response. No table or model existed to record “driver D rejected order O.” `getAvailableJobs` did not filter out orders this driver had rejected. |
+| **Impact** | Drivers believe they have rejected a job; the same order continues to appear in their available list. Other drivers can still accept it (correct), but the rejecting driver sees no change. Support and ops cannot distinguish real rejections from UI-only actions; no audit trail. |
+| **Risks** | Driver trust erosion; duplicate accept attempts if the driver thinks the job was removed; inability to analyze rejection patterns or enforce “do not re-offer to same driver” policies. |
+
+**Recommended fixes**
 
 | Layer | Change |
 |-------|--------|
-| **Backend** | New table `delivery_rejections` (driver_id, order_id, rejected_at, reason). Model `DeliveryRejection`. `rejectOrder`: resolve driver; validate order (pending, no delivery); insert/update rejection; log (order_id, driver_id); return `{ ok: true }`. `getAvailableJobs`: exclude orders this driver has rejected via `deliveryRejections` relation on Order. |
-| **Frontend** | No change; same button and store call. |
-| **Config** | Run migration `2026_03_03_100001_create_delivery_rejections_table`. |
+| **Backend** | Add `delivery_rejections` table (driver_id, order_id, rejected_at, reason). Add model `DeliveryRejection`. In `rejectOrder`: resolve driver; validate order (pending, no delivery); insert or firstOrCreate rejection; log to delivery channel (order_id, driver_id only); return `{ ok: true }`. In `getAvailableJobs`: exclude orders this driver has rejected via Order relation `deliveryRejections`. |
+| **Frontend** | No change; same endpoint and payload. Reject button and store action remain; backend now persists and filters. |
+| **Config** | Run migration for `delivery_rejections`; no new env vars. |
 
-**Verification/QA**  
-- As driver, reject a job → 200, row in `delivery_rejections`.  
-- Get available jobs again → that order not in list for this driver.  
-- Another driver still sees the order (if still pending).  
-- Reject button in UI removes job from list without error.
+**Code/config snippets**
+
+Migration (`database/migrations/2026_03_03_100001_create_delivery_rejections_table.php`):
+
+```php
+Schema::create('delivery_rejections', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('driver_id')->constrained('drivers')->onDelete('cascade');
+    $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
+    $table->timestamp('rejected_at')->useCurrent();
+    $table->text('reason')->nullable();
+    $table->index(['driver_id', 'order_id']);
+});
+```
+
+Controller (reject + filter in getAvailableJobs):
+
+```php
+// rejectOrder: after validating driver and order (pending, no delivery)
+DeliveryRejection::firstOrCreate(
+    ['driver_id' => $driver->id, 'order_id' => $orderId],
+    ['reason' => $request->input('reason')]
+);
+// getAvailableJobs: add to query when driver exists
+$query->whereDoesntHave('deliveryRejections', fn ($q) => $q->where('driver_id', $driver->id));
+```
+
+**Verification/QA**
+
+- [ ] As driver, POST `/delivery/jobs/{orderId}/reject` → 200, body `{ ok: true }` (or unwrapped equivalent).
+- [ ] Query DB: one row in `delivery_rejections` for that driver_id and order_id.
+- [ ] GET `/delivery/jobs/available` as same driver → that order no longer in `jobs` array.
+- [ ] As a different driver, GET available jobs → order still present if still pending and no delivery.
+- [ ] In UI, click Reject on a job → job disappears from list; no console or network errors.
 
 ---
 
 ### 2.2 Earnings calculation
 
 **Issue description**  
-Earnings were the sum of `orders.total` for delivered deliveries. There was no commission or fee logic; drivers saw the full order amount as “earnings”.
+Earnings are computed as the sum of `orders.total` for delivered deliveries. There is no commission or fee logic; drivers see the full order amount as “earnings,” which may not match business rules.
 
-**Cause and impact**  
-- Cause: getStats and getEarnings used `sum('orders.total')` with no rate or fee.  
-- Impact: Business rules (commission/fees) could not be applied; driver-facing amounts were misleading.
+**Analysis**
 
-**Recommended fix (implemented)**  
+| Aspect | Detail |
+|--------|--------|
+| **Cause** | `getStats()` and `getEarnings()` use `sum('orders.total')` (and count of deliveries for stats) with no multiplier or fixed fee. The platform did not introduce a configurable driver share. |
+| **Impact** | Finance/ops cannot reflect real driver pay (e.g. 15% commission + fixed fee per delivery). Driver-facing numbers are misleading if the business model is not “100% of order total to driver.” |
+| **Risks** | Contractual or legal issues if displayed “earnings” do not match actual pay; driver disputes; inability to A/B test or change commission without code change. |
+
+**Recommended fixes**
 
 | Layer | Change |
 |-------|--------|
-| **Backend** | New `config/delivery.php`: `driver_commission_rate` (0–1, default 1.0), `delivery_fee_fixed` (default 0). Env: `DELIVERY_DRIVER_COMMISSION_RATE`, `DELIVERY_FEE_FIXED`. In getStats and getEarnings: driver earnings = (sum of order totals) × rate + (number of deliveries) × fixed. Order totals in DB unchanged. |
-| **Frontend** | No change; same endpoints and response shape (earnings values now reflect commission/fee). |
-| **Config** | Set `DELIVERY_DRIVER_COMMISSION_RATE` (e.g. 0.15 for 15%) and optionally `DELIVERY_FEE_FIXED` in production. |
+| **Backend** | Introduce config for driver share: e.g. `driver_commission_rate` (0–1) and `delivery_fee_fixed` (currency units). In getStats and getEarnings: driver earnings = (sum of order totals for period) × rate + (count of deliveries in period) × fixed. Do not change `orders.total` or completed-order payloads; only the numeric values returned for “earnings” in stats and earnings endpoints. |
+| **Frontend** | No change; same endpoints and response shape. Values may be lower when rate &lt; 1 or fixed is used; no new fields. |
+| **Config** | Add env vars (e.g. `DELIVERY_DRIVER_COMMISSION_RATE`, `DELIVERY_FEE_FIXED`) and document in .env.example. Default rate 1.0 and fixed 0 to preserve current behavior. |
 
-**Verification/QA**  
-- With default config (rate=1, fixed=0): earnings equal sum of order totals (unchanged behavior).  
-- With rate=0.15, fixed=5: earnings = 15% of order total + 5 per delivery.  
-- Stats and earnings endpoints return rounded amounts; no change to order total or completed-order list.
+**Code/config snippets**
+
+Config (`config/delivery.php`):
+
+```php
+return [
+    'driver_commission_rate' => (float) env('DELIVERY_DRIVER_COMMISSION_RATE', 1.0),
+    'delivery_fee_fixed'     => (float) env('DELIVERY_FEE_FIXED', 0),
+];
+```
+
+Controller (concept for getStats; same pattern in getEarnings):
+
+```php
+$orderTotals = (float) Delivery::where(...)->join('orders', ...)->sum('orders.total');
+$count = Delivery::where(...)->count();
+$rate = (float) config('delivery.driver_commission_rate', 1.0);
+$fixed = (float) config('delivery.delivery_fee_fixed', 0);
+$earnings = $orderTotals * $rate + $count * $fixed;
+return $this->success([..., 'earnings' => round($earnings, 2)]);
+```
+
+**.env.example:**
+
+```env
+DELIVERY_DRIVER_COMMISSION_RATE=1.0
+DELIVERY_FEE_FIXED=0
+```
+
+**Verification/QA**
+
+- [ ] With defaults (rate=1, fixed=0): GET `/delivery/stats` and `/delivery/earnings` → earnings equal sum of order totals (unchanged).
+- [ ] Set `DELIVERY_DRIVER_COMMISSION_RATE=0.15`, `DELIVERY_FEE_FIXED=5`: earnings = 15% of sum + 5 per delivery for the period.
+- [ ] Order total and completed-order list payloads unchanged; no regression in accept/complete flow.
 
 ---
 
 ### 2.3 Owner routes
 
 **Issue description**  
-Owner module routes (`/api/v1/owners/*`) had a comment stating “role:admin”, while the code used `role:owner`. If frontend or ops expected admin, access could be wrong; some flows might be inactive or untested.
+`/api/v1/owners/*` routes exist with a file comment stating “role:admin.” The actual middleware is `role:owner`. Frontend or ops may assume admin users can access these routes, leading to role mismatch; some flows may be inactive or untested.
 
-**Cause and impact**  
-- Cause: Outdated comment in `app/Modules/Owner/routes.php`.  
-- Impact: Documentation/onboarding confusion; possible wrong expectation that admin users access owner routes.
+**Analysis**
 
-**Recommended fix (implemented)**  
+| Aspect | Detail |
+|--------|--------|
+| **Cause** | Comment in `app/Modules/Owner/routes.php` was outdated (e.g. “Admin-only owner management”, “role:admin”) while the code uses `middleware(['auth:sanctum', 'role:owner'])`. |
+| **Impact** | New developers or ops may grant “admin” expecting owner access, or expect “admin” to access owner endpoints; 403s or wrong access. Documentation and onboarding are misleading. |
+| **Risks** | Inactive or untested owner flows if tests/roles are set up for admin; confusion when debugging permission issues. |
+
+**Recommended fixes**
 
 | Layer | Change |
 |-------|--------|
-| **Backend** | Comment updated to state that middleware is `auth:sanctum`, `role:owner` (not admin). No change to route logic. |
-| **Frontend** | Frontend already uses `role: 'owner'` for owner routes; no change. |
+| **Backend** | Update the comment to state that middleware is `auth:sanctum`, `role:owner` (not admin). Do not change route definitions or middleware arguments. |
+| **Frontend** | Confirm router meta uses `role: 'owner'` for owner paths; no change if already correct. |
 | **Config** | None. |
 
-**Verification/QA**  
-- User with role `owner` can access `/api/v1/owners/*`.  
-- User with role `admin` receives 403 on owner routes unless also given owner role.  
-- Owner dashboard and owner-only flows work with `role: 'owner'`.
+**Code/config snippets**
+
+Owner routes comment (`app/Modules/Owner/routes.php`):
+
+```php
+/**
+ * Owner module routes.
+ * - Owner management: GET/POST/PUT/PATCH/DELETE /owners
+ * - Middleware: auth:sanctum, role:owner (not admin)
+ */
+Route::prefix('owners')->middleware(['auth:sanctum', 'role:owner'])->group(function () {
+    // ...
+});
+```
+
+**Verification/QA**
+
+- [ ] User with role `owner` can call `/api/v1/owners/*` and reach owner dashboard in UI.
+- [ ] User with role `admin` only receives 403 on owner routes unless they also have owner role.
+- [ ] No change to admin-only routes or delivery routes.
 
 ---
 
@@ -125,7 +216,13 @@ LiveDelivery expected `activeOrder.orderNumber`, `fee`, `paymentMethod`, `custom
 |-------|--------|
 | **Backend** | getActiveOrder and getOrderDetail now return: `orderNumber` (#id), `fee` (from config), `paymentMethod` ('Card'), `restaurant` (name, address, phone), `customer` (name, address from order, phone from order.user), `distance` (null), `estimatedTime` (15). Order.user and restaurant loaded for customer/phone. |
 | **Frontend** | **Store:** Added `deliveryProgress` (computed from activeOrder.status with steps accepted/pickedUp/onTheWay/delivered), `currentLocation` (ref null until location API exists), `loadDeliveryProgress` (no-op), `updateCurrentLocation` (no-op). **LiveDelivery:** Fallbacks: orderNumber → `#${id}`, fee → 0, paymentMethod → '—', customer/restaurant → optional chaining and defaults; “Teléfono no disponible” when customer.phone missing; restaurant phone link only if phone present; items with item.name ?? item.menu_item?.name ?? 'Item'; estimatedTime ?? 15. |
-| **Config** | None. |
+| **Config** | None for UI; fee from delivery config. |
+
+**Risks**  
+Poor driver UX; runtime errors if optional chaining is missing; inability to call customer/restaurant when data exists but was not returned.
+
+**Code/config snippets**  
+Backend: extend getActiveOrder/getOrderDetail with `orderNumber` ('#' . id), `fee` from config, `paymentMethod` ('Card'), `restaurant` (name, address, phone), `customer` (name, address, phone from order.user), `distance` (null), `estimatedTime` (15). Store: add computed `deliveryProgress` from activeOrder.status; ref `currentLocation` (null); no-op `loadDeliveryProgress` and `updateCurrentLocation`. LiveDelivery: fallbacks `orderNumber ?? '#' + id`, `fee ?? 0`, `paymentMethod ?? '—'`; optional chaining for customer/restaurant; v-if for phone links; "Teléfono no disponible" when missing.
 
 **Verification/QA**  
 - Open Live Delivery with an active order: order number, amount, fee, payment method, pickup/dropoff, and steps render.  
